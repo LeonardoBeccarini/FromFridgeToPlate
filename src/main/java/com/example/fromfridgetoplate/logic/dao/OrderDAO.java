@@ -43,14 +43,15 @@ public class OrderDAO {
                         rs.getInt("CustomerId"),
                         rs.getString("NegozioId"),
                         "pronto",
-                        new ArrayList<>(), //  gli 'Item' saramno gestiti poi in modo separato
-                        rs.getTimestamp("orderTime").toLocalDateTime(),
-                        //rs.getTimestamp("deliveryTime").toLocalDateTime(), da impostare in seguito, non al momento della creazione
-                        rs.getString("shippingStreet"),
-                        rs.getInt("shippingStreetNumber"),
-                        rs.getString("shippingCity"),
-                        rs.getString("shippingProvince"));
+                        new ArrayList<>(),
+                        rs.getTimestamp("orderTime").toLocalDateTime()
+                );
 
+// Imposta gli altri campi tramite i metodi setter
+                order.setShippingStreet(rs.getString("shippingStreet"));
+                order.setShippingStreetNumber(rs.getInt("shippingStreetNumber"));
+                order.setShippingCity(rs.getString("shippingCity"));
+                order.setShippingProvince(rs.getString("shippingProvince"));
                 order.setStatus(rs.getString("status")); // questo serve solo per vedere se prende gli ordini pronti
                 order.setIsAcceptedByRider(rs.getBoolean("isAcceptedByRider")); // da moddare
                 // Impostare altri campi x futuro se serve

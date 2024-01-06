@@ -31,17 +31,13 @@ public class Order {
 
 
 
-    public Order(int orderId, int customerId, String retailerId, String status, List<Food_item> foodItems, LocalDateTime orderTime,String shippingStreet, int shippingStreetNumber, String shippingCity, String shippingProvince) {
+    public Order(int orderId, int customerId, String retailerId, String status, List<Food_item> foodItems, LocalDateTime orderTime) {
         this.orderId = orderId;
         this.customerId = customerId;
         this.retailerId = retailerId;
         this.status = status;
         this.foodItems = foodItems;
         this.orderTime = orderTime;
-        this.shippingStreet = shippingStreet;
-        this.shippingStreetNumber = shippingStreetNumber;
-        this.shippingCity = shippingCity;
-        this.shippingProvince = shippingProvince;
     }
 
 
@@ -118,6 +114,30 @@ public class Order {
         isAcceptedByRider = acceptedByRider;
     }
 
+    public String getShippingStreet() {
+        return shippingStreet;
+    }
+
+    public void setShippingStreet(String shippingStreet) {
+        this.shippingStreet = shippingStreet;
+    }
+
+    public int getShippingStreetNumber() {
+        return shippingStreetNumber;
+    }
+
+    public void setShippingStreetNumber(int shippingStreetNumber) {
+        this.shippingStreetNumber = shippingStreetNumber;
+    }
+
+    public String getShippingProvince() {
+        return shippingProvince;
+    }
+
+    public void setShippingProvince(String shippingProvince) {
+        this.shippingProvince = shippingProvince;
+    }
+
     public String getShippingCity() {
         return shippingCity;
     }
@@ -147,14 +167,14 @@ public class Order {
 
     // Esempio di metodo per calcolare il tempo stimato di consegna
     public void estimateDeliveryTime() {
-        // Implementa la logica per calcolare il tempo di consegna
+        // da finire
     }
 
     public void setIsAcceptedByRider(boolean isAcceptedByRider) {
+        // da finire
     }
 
 
-    // E altri metodi utili per la gestione dell'ordine
 
 
 }
