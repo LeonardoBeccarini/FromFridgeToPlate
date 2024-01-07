@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.fromfridgetoplate.guicontrollers.SearchRidersGraphicController">
+   <top>
+      <AnchorPane prefHeight="41.0" prefWidth="600.0" style="-fx-background-color: gold;" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="homeButton" layoutX="703.0" layoutY="6.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="52.0" text="Home" />
+            <Button fx:id="profileButton" layoutX="784.0" layoutY="6.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="52.0" text="Profile" />
+            <Text layoutX="14.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Home" wrappingWidth="71.09033203125">
+               <font>
+                  <Font size="27.0" />
+               </font>
+            </Text>
+         </children>
+      </AnchorPane>
+   </top>
+   <center>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <TableView fx:id="RidersTable" layoutX="343.0" layoutY="53.0" prefHeight="537.0" prefWidth="482.0" AnchorPane.leftAnchor="343.0" AnchorPane.rightAnchor="25.0">
+               <columns>
+                  <TableColumn fx:id="IdColumn" prefWidth="120.5" text="Id" />
+                  <TableColumn fx:id="NameColumn" prefWidth="120.5" text="Name" />
+                  <TableColumn fx:id="SurnameColumn" minWidth="0.0" prefWidth="120.5" text="Surname" />
+                  <TableColumn fx:id="CityColumn" prefWidth="120.5" text="City" />
+               </columns>
+            </TableView>
+            <Text layoutX="305.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Available riders" textAlignment="CENTER" wrappingWidth="240.82568359375">
+               <font>
+                  <Font size="27.0" />
+               </font>
+            </Text>
+            <Button layoutX="390.0" layoutY="657.0" mnemonicParsing="false" onAction="#choose_rider" prefHeight="26.0" prefWidth="70.0" text="Continue" AnchorPane.bottomAnchor="76.0" AnchorPane.leftAnchor="390.0" AnchorPane.rightAnchor="390.0" AnchorPane.topAnchor="657.0" />
+            <ImageView fitHeight="231.0" fitWidth="344.0" layoutX="14.0" layoutY="53.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../images/mappa.jpg" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="249.0" fitWidth="329.0" layoutX="13.0" layoutY="336.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../images/rider.jpg" />
+               </image>
+            </ImageView>
+         </children>
+      </AnchorPane>
+   </center>
+</BorderPane>
