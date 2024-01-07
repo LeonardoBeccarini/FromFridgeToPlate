@@ -34,6 +34,8 @@ import java.util.TimerTask;
 
 public class PendingOrdersGraphicController extends GenericGraphicController  {
 
+
+
     @FXML
     private TableView<OrderBean> ordersTable;
     @FXML
@@ -49,6 +51,7 @@ public class PendingOrdersGraphicController extends GenericGraphicController  {
     @FXML
     private TableColumn<OrderBean, String> shippingCityColumn;
 
+    private OrderListBean orderListBean;
 
 
 
@@ -97,7 +100,7 @@ public class PendingOrdersGraphicController extends GenericGraphicController  {
 
         } else {
             // caso in cui nessuna riga è selezionata
-            //System.out.println("Nessuna riga selezionata");
+
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Selezione mancante");
             alert.setHeaderText("Attenzione:");
@@ -107,10 +110,7 @@ public class PendingOrdersGraphicController extends GenericGraphicController  {
     }
 
 
-
-
-    private OrderListBean orderListBean;
-
+    @Override
     public void initialize(URL location, ResourceBundle resources) {
 
         super.initialize(location, resources); // anche la classe padre: GenericGraphicController, ha il suo initialize, quindi bisogna chiamarlo
@@ -148,13 +148,14 @@ public class PendingOrdersGraphicController extends GenericGraphicController  {
     private void loadData() {
         // Chiama il controller applicativo per ottenere i dati
         PendingOrdersController pendingOrdersControl = new PendingOrdersController();
-        OrderListBean orderListBean = pendingOrdersControl.getPendingOrderListBean();
+        OrderListBean order_listBean = pendingOrdersControl.getPendingOrderListBean();
 
         // Popola la TableView con i dati
-        ordersTable.setItems(FXCollections.observableArrayList(orderListBean.getOrderBeans()));// forse questo da rivedere per
+        ordersTable.setItems(FXCollections.observableArrayList(order_listBean.getOrderBeans()));// forse questo da rivedere per
         // evitare duplicazione di codice
         //updateUI(pendingOrders); ??
         System.out.println("check");
+
     }
 
     private void updateUI(List<Order> orders) {

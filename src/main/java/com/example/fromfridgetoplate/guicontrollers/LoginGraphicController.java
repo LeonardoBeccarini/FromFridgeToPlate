@@ -49,6 +49,8 @@ public class LoginGraphicController implements Initializable {
                 }
                 if(loggedUser.getRole() == Role.RIDER) {
                     /* goto rider homepage*/
+                    navigator.goTo("riderMainPage.fxml");
+
                 }
                 if(loggedUser.getRole() == Role.OWNER){
                     navigator.goTo("resellerMainPage2.fxml");
