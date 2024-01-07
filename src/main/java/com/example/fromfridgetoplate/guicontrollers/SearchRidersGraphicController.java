@@ -19,35 +19,7 @@ import javafx.event.ActionEvent;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
-/*public class SearchRidersGraphicController {
 
-    @FXML
-    private TableColumn<?, ?> CityColumn;
-
-    @FXML
-    private TableColumn<?, ?> IdColumn;
-
-    @FXML
-    private TableColumn<?, ?> NameColumn;
-
-    @FXML
-    private TableView<?> RidersTable;
-
-    @FXML
-    private TableColumn<?, ?> SurnameColumn;
-
-    @FXML
-    private Button homeButton;
-
-    @FXML
-    private Button profileButton;
-
-    @FXML
-    void choose_rider(ActionEvent event) {
-
-    }
-
-}*/
 
 
 public class SearchRidersGraphicController extends GenericGraphicController {
@@ -57,21 +29,21 @@ public class SearchRidersGraphicController extends GenericGraphicController {
 
 
     @FXML
-    private TableView<RiderBean> RidersTable;
+    private TableView<RiderBean> ridersTable;
     @FXML
-    private TableColumn<RiderBean, String> CityColumn;
-
-    @FXML
-    private TableColumn<RiderBean, Integer> IdColumn;
+    private TableColumn<RiderBean, String> cityColumn;
 
     @FXML
-    private TableColumn<RiderBean, String> NameColumn;
+    private TableColumn<RiderBean, Integer> idColumn;
 
     @FXML
-    private TableColumn<RiderBean, String> SurnameColumn;
+    private TableColumn<RiderBean, String> nameColumn;
+
+    @FXML
+    private TableColumn<RiderBean, String> surnameColumn;
 
 
-
+    @Override
     public void initialize(URL location, ResourceBundle resources) {
 
         super.initialize(location, resources); // anche la classe padre: GenericGraphicController, ha il suo initialize, quindi bisogna chiamarlo
@@ -83,10 +55,10 @@ public class SearchRidersGraphicController extends GenericGraphicController {
         // Callback un'istanza di " PropertyValueFactory" , e internamente chiama il metodo "call" sovrascritto da
         // PropertyValueFactory, in cui chiama il getter per l'attributo il cui nome viene passato come parametro
 
-        CityColumn.setCellValueFactory(new PropertyValueFactory<>("assignedCity"));
-        IdColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
-        NameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-        SurnameColumn.setCellValueFactory(new PropertyValueFactory<>("surname"));
+        cityColumn.setCellValueFactory(new PropertyValueFactory<>("assignedCity"));
+        idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        surnameColumn.setCellValueFactory(new PropertyValueFactory<>("surname"));
 
         /*come funziona il collegamento tra colonna della tableview e valore dell’attributo del Bean-->>:
         Ogni volta che una riga viene visualizzata nella TableView, la PropertyValueFactory associata a una specifica colonna
@@ -96,11 +68,8 @@ public class SearchRidersGraphicController extends GenericGraphicController {
         metodo getOrderId(), cioè chiama il getter dell' attributo che gli passiamo, di OrderBean per ottenere il valore da mostrare in quella colonna
         per ogni riga. */
 
-        //System.out.println("bobbo, city assegnata nell'iitialize di searchridersgraphiccontro0ller: " + this.assignedCity);
 
 
-        //loadData();
-        //setupRefreshTimer();
     }
 
 
@@ -109,7 +78,7 @@ public class SearchRidersGraphicController extends GenericGraphicController {
     // viene chiamato
     @FXML
     void choose_rider(ActionEvent event) throws IOException{
-        RiderBean selectedRiderBean = RidersTable.getSelectionModel().getSelectedItem();
+        RiderBean selectedRiderBean = ridersTable.getSelectionModel().getSelectedItem();
         if (selectedRiderBean != null) {
             selectRider(selectedRiderBean);
         } else {
@@ -133,7 +102,7 @@ public class SearchRidersGraphicController extends GenericGraphicController {
 
         if (riderSelectionListener != null) {
             riderSelectionListener.onRiderSelected(selectedRiderBean);
-            Stage currentStage = (Stage) RidersTable.getScene().getWindow();
+            Stage currentStage = (Stage) ridersTable.getScene().getWindow();
             //currentStage.close(); // Chiude la finestra dopo la selezione del rider
             Navigator nav = Navigator.getInstance(currentStage);
             nav.goTo("viewPendingOrders2.fxml");
@@ -178,7 +147,7 @@ public class SearchRidersGraphicController extends GenericGraphicController {
         }
 
         // Popola la TableView con i dati
-        RidersTable.setItems(FXCollections.observableArrayList(avRidersBean));
+        ridersTable.setItems(FXCollections.observableArrayList(avRidersBean));
 
         //updateUI(pendingOrders); ??
         System.out.println("checkloaddatasearchriders");

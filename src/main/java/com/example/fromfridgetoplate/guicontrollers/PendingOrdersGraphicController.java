@@ -50,13 +50,6 @@ public class PendingOrdersGraphicController extends GenericGraphicController  {
     private TableColumn<OrderBean, String> shippingCityColumn;
 
 
-    /*
-    @FXML
-    void search_riders(ActionEvent event) throws IOException
-    {
-        //System.out.println("ciao");
-        navigator.goTo("searchRiders.fxml");
-    }*/
 
 
 
@@ -271,7 +264,7 @@ class RiderSelectionListener {
 
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         System.out.println("L'ordine è stato preso in carico dal rider : " + selectedRiderBean.getName());
-        //Alert alert = new Alert(Alert.AlertType.INFORMATION);
+
         alert.setTitle("Conferma Assegnazione Rider");
         alert.setHeaderText("Assegnazione Rider Completata");
         alert.setContentText("L'ordine è stato preso in carico dal rider:\n" +
