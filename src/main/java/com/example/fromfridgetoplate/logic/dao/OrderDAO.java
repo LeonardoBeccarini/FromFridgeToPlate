@@ -61,8 +61,9 @@ public class OrderDAO {
                 orderList.addOrder(order);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
-            // Gestione delle eccezioni
+
+            System.err.println("Si è verificato un errore: " + e.getMessage());
+
         } finally {
 
             closeQuietly(rs);
