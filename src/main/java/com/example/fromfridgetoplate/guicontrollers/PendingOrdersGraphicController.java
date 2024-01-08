@@ -3,7 +3,7 @@ package com.example.fromfridgetoplate.guicontrollers;
 
 import com.example.fromfridgetoplate.logic.bean.RiderBean;
 import com.example.fromfridgetoplate.logic.dao.OrderDAO;
-import com.example.fromfridgetoplate.logic.model.Food_item;
+import com.example.fromfridgetoplate.logic.model.FoodItem;
 import com.example.fromfridgetoplate.logic.model.Rider;
 import com.example.fromfridgetoplate.patterns.factory.DAOFactory;
 import javafx.application.Platform;
@@ -243,7 +243,7 @@ class DetailButtonCell extends TableCell<OrderBean, Void> {
             alert.setHeaderText("Food Items per Order ID: " + order.getOrderId());
 
             StringBuilder content = new StringBuilder();
-            for (Food_item item : order.getFoodItems()) {
+            for (FoodItem item : order.getFoodItems()) {
                 content.append(item.getName()).append(" - Quantità: ").append(item.getQuantity()).append("\n");
             }
 

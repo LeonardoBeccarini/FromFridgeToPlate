@@ -64,7 +64,7 @@ public class LoginGraphicController implements Initializable {
             try {
                 navigator.goTo("chooseUserPage.fxml"); /*qui devo mettere la schermata per scegliere il tipo di user che si vuole registrare*/
             }catch(IOException e){
-                throw new RuntimeException(e); /*non va bene, dovrebbe essere un'eccezione definita da me*/
+                e.printStackTrace();
             }
         });
     }

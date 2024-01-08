@@ -33,7 +33,7 @@ public class GenericGraphicController implements Initializable {
                     navigator.goTo("resellerMainPage2.fxml");
                 }
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                e.printStackTrace();
             }
         });
 /*
@@ -53,7 +53,7 @@ public class GenericGraphicController implements Initializable {
                 navigator.goTo("shopProfilePage.fxml");
             }
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                e.printStackTrace();
             }
         });
     }
