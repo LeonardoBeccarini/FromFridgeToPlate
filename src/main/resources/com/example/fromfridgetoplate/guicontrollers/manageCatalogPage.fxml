@@ -9,7 +9,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="900.0" style="-fx-background-color: #4f4f4f;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.fromfridgetoplate.guicontrollers.ManageCatalogGraphicController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="900.0" style="-fx-background-color: #4f4f4f;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.fromfridgetoplate.guicontrollers.ManageCatalogGraphicController">
    <children>
       <BorderPane prefHeight="750.0" prefWidth="900.0">
          <center>
@@ -17,7 +17,7 @@
                <children>
                   <AnchorPane layoutX="45.0" layoutY="61.0" prefHeight="559.0" prefWidth="814.0" style="-fx-background-color: FFECB3;" AnchorPane.bottomAnchor="61.0" AnchorPane.leftAnchor="45.0" AnchorPane.rightAnchor="41.0" AnchorPane.topAnchor="61.0">
                      <children>
-                        <ListView fx:id="ingredientsList" layoutX="438.0" layoutY="86.0" prefHeight="387.0" prefWidth="313.0" />
+                        <ListView fx:id="ingredientsListView" editable="true" layoutX="438.0" layoutY="86.0" prefHeight="387.0" prefWidth="313.0" />
                         <Label layoutX="86.0" layoutY="160.0" prefHeight="31.0" prefWidth="53.0" text="Name">
                            <font>
                               <Font size="18.0" />
@@ -36,8 +36,8 @@
                         <TextField fx:id="nameText" layoutX="165.0" layoutY="163.0" />
                         <TextField fx:id="typeText" layoutX="165.0" layoutY="204.0" />
                         <TextField fx:id="priceText" layoutX="165.0" layoutY="240.0" />
-                        <Button fx:id="addButton" layoutX="212.0" layoutY="294.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="56.0" style="-fx-background-color: white;" text="Add" />
-                        <Button fx:id="refreshButton" layoutX="567.0" layoutY="491.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="56.0" style="-fx-background-color: white;" text="Refresh" />
+                        <Button fx:id="addButton" layoutX="212.0" layoutY="294.0" mnemonicParsing="false" onAction="#onButtonClicked" prefHeight="28.0" prefWidth="56.0" style="-fx-background-color: white;" text="Add" />
+                        <Button fx:id="refreshButton" layoutX="567.0" layoutY="491.0" mnemonicParsing="false" onAction="#onButtonClicked" prefHeight="28.0" prefWidth="56.0" style="-fx-background-color: white;" text="Refresh" />
                      </children>
                   </AnchorPane>
                </children>

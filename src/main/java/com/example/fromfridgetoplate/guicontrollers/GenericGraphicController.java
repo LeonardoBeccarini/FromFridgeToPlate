@@ -36,20 +36,12 @@ public class GenericGraphicController implements Initializable {
                 e.printStackTrace();
             }
         });
-/*
-        aboutButton.setOnMouseClicked(event -> {
-            try {
-                navigator.goTo("guicontrollers/aboutPage.fxml");
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }); */
+
         profileButton.setOnMouseClicked(event -> {
             try {  if(Session.getSession().getUser().getRole() == Role.CLIENT) {    //qui non so se andrebbe bene anche getUser()
                 navigator.goTo("profilePage.fxml"); //non esiste lol
             }
             else if(Session.getSession().getUser().getRole() == Role.OWNER){
-                ShopProfileGraphicController shopProfileGraphicController = new ShopProfileGraphicController();
                 navigator.goTo("shopProfilePage.fxml");
             }
             } catch (IOException e) {
