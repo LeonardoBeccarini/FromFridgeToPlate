@@ -15,6 +15,10 @@ public class ShopBean {
         this.vatNumber = vatNumber;
     }
 
+    public ShopBean(String email) {
+        this.email = email;
+    }
+
     public String getEmail() {
         return email;
     }

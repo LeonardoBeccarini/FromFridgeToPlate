@@ -28,11 +28,6 @@ public class Shop extends User {
         this.VATnumber = VATnumber;
         this.phoneNumber = phoneNumber;
     }
-    public ShopBean getShopByEmail(String email){ // sono molto in dubbio che questo metodo sia corretto
-        ShopDAO shopDAO = new ShopDAO(); // qui dovrei usare la dao factory
-        Shop shop = shopDAO.retrieveShopByEmail(email);
-        return new ShopBean(shop.getName(), shop.getAddress(), shop.getPhoneNumber(), shop.getVATnumber());
-    }
 
     public String getPhoneNumber() {
         return phoneNumber;

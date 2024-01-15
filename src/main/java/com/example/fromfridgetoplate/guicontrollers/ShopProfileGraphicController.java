@@ -1,8 +1,8 @@
 package com.example.fromfridgetoplate.guicontrollers;
 
 import com.example.fromfridgetoplate.logic.bean.ShopBean;
+import com.example.fromfridgetoplate.logic.control.ShopProfileController;
 import com.example.fromfridgetoplate.logic.model.Session;
-import com.example.fromfridgetoplate.logic.model.Shop;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.text.Text;
@@ -27,8 +27,8 @@ public class ShopProfileGraphicController extends GenericGraphicController {
     public void initialize(URL location,
                            ResourceBundle resources) {
 
-            Shop shop = new Shop();
-            ShopBean shopBean = shop.getShopByEmail(Session.getSession().getUser().getEmail());
+            ShopProfileController shopProfileController = new ShopProfileController();
+            ShopBean shopBean = shopProfileController.getShopByEmail(new ShopBean(Session.getSession().getUser().getEmail()));
             textName.setText(shopBean.getName());
             textAddress.setText(shopBean.getAddress());
             textPhone.setText(shopBean.getPhoneNumber());
@@ -38,7 +38,7 @@ public class ShopProfileGraphicController extends GenericGraphicController {
                 try {
                     navigator.goTo("manageCatalogPage.fxml");
                 } catch (IOException e) {
-                    throw new RuntimeException(e);
+                    e.printStackTrace();
                 }
             });
 
