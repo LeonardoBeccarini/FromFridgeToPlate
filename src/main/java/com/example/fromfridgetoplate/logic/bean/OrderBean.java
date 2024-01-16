@@ -11,6 +11,8 @@ public class OrderBean {
     private int customerId;
     private List<Food_item> foodItems; // food_item alias ingrediente, ancora da definire
     private LocalDateTime orderTime;
+    private AddressBean shippingAddress;
+
     private String shippingCity;
 
     private String status;
@@ -58,6 +60,14 @@ public class OrderBean {
 
     public void setOrderTime(LocalDateTime orderTime) {
         this.orderTime = orderTime;
+    }
+
+    public AddressBean getShippingAddress() {
+        return shippingAddress;
+    }
+
+    public void setShippingAddress(AddressBean shippingAddress) {
+        this.shippingAddress = shippingAddress;
     }
 
     public String getShippingCity() {

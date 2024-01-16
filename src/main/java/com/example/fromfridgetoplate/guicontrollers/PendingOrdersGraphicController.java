@@ -1,7 +1,9 @@
 package com.example.fromfridgetoplate.guicontrollers;
 
 
-import com.example.fromfridgetoplate.logic.bean.RiderBean;
+import com.example.fromfridgetoplate.logic.bean.*;
+
+import com.example.fromfridgetoplate.logic.control.NotificationManager;
 import com.example.fromfridgetoplate.logic.dao.OrderDAO;
 import com.example.fromfridgetoplate.logic.model.Food_item;
 import com.example.fromfridgetoplate.logic.model.Rider;
@@ -16,8 +18,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 
-import com.example.fromfridgetoplate.logic.bean.OrderBean;
-import com.example.fromfridgetoplate.logic.bean.OrderListBean;
 import com.example.fromfridgetoplate.logic.control.PendingOrdersController;
 import com.example.fromfridgetoplate.logic.model.Order;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -52,13 +52,43 @@ public class PendingOrdersGraphicController extends GenericGraphicController  {
     private TableColumn<OrderBean, String> shippingCityColumn;
 
     private OrderListBean orderListBean;
-
+   // private OrderBean selectedOrder;
 
 
 
     @FXML  // Questo metodo viene chiamato quando si clicca sul pulsante per cercare i rider
     void search_riders(ActionEvent event) throws IOException {
         OrderBean selectedOrder = ordersTable.getSelectionModel().getSelectedItem();
+
+        System.out.println("Order ID: " + selectedOrder.getOrderId());
+        System.out.println("Customer ID: " + selectedOrder.getCustomerId());
+        System.out.println("Order Time: " + selectedOrder.getOrderTime());
+
+        List<Food_item> foodItems = selectedOrder.getFoodItems();
+        if (foodItems != null && !foodItems.isEmpty()) {
+            System.out.println("Food Items:");
+            for (Food_item foodItem : foodItems) {
+                System.out.println("   - " + foodItem.toString());
+            }
+        } else {
+            System.out.println("No Food Items.");
+        }
+
+        AddressBean shippingAddress = selectedOrder.getShippingAddress();
+        if (shippingAddress != null) {
+            System.out.println("Shipping Address:");
+            System.out.println("   - Street: " + shippingAddress.getShippingStreet());
+            System.out.println("   - Street Number: " + shippingAddress.getShippingStreetNumber());
+            System.out.println("   - City: " + shippingAddress.getShippingCity());
+            System.out.println("   - Province: " + shippingAddress.getShippingProvince());
+        } else {
+            System.out.println("No Shipping Address.");
+        }
+
+        System.out.println("Shipping City: " + selectedOrder.getShippingCity());
+        System.out.println("Status: " + selectedOrder.getStatus());
+
+
         if (selectedOrder != null) {
             String shippingCity = selectedOrder.getShippingCity(); // prendiamo un riferimento alla città in cui deve essere consegnato l'ordine,
 
@@ -67,9 +97,11 @@ public class PendingOrdersGraphicController extends GenericGraphicController  {
             Parent root = loader.load();
 
             SearchRidersGraphicController searchRidersGController = loader.getController();
-            searchRidersGController.setAssignedCity(shippingCity);
-            searchRidersGController.setRiderSelectionListener(new RiderSelectionListener());
-            searchRidersGController.loadData(); // Carica i dati nella TableView relativa alla scelta del rider
+            SearchBean sBean = new SearchBean(shippingCity, new RiderSelectionListener(), selectedOrder);
+
+            //searchRidersGController.setAssignedCity(shippingCity);
+            //searchRidersGController.setRiderSelectionListener(new RiderSelectionListener());
+            searchRidersGController.loadData(sBean); // Carica i dati nella TableView relativa alla scelta del rider
 
 
             Stage currentStage = (Stage) ordersTable.getScene().getWindow();
@@ -187,6 +219,8 @@ public class PendingOrdersGraphicController extends GenericGraphicController  {
     }
 
 
+
+
 }
 
 
@@ -259,28 +293,7 @@ class DetailButtonCell extends TableCell<OrderBean, Void> {
 
 
 
-class RiderSelectionListener {
 
-    void onRiderSelected(RiderBean selectedRiderBean) {
-
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        System.out.println("L'ordine è stato preso in carico dal rider : " + selectedRiderBean.getName());
-
-        alert.setTitle("Conferma Assegnazione Rider");
-        alert.setHeaderText("Assegnazione Rider Completata");
-        alert.setContentText("L'ordine è stato preso in carico dal rider:\n" +
-                    "Nome: " + selectedRiderBean.getName() + "\n" +
-                    "Cognome: " + selectedRiderBean.getSurname() + "\n" +
-                    "Città Assegnata: " + selectedRiderBean.getAssignedCity());
-        alert.showAndWait();
-
-
-
-
-
-    }
-
-}
 
 
 

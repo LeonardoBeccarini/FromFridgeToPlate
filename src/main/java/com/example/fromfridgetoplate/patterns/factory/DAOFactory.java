@@ -1,5 +1,6 @@
 package com.example.fromfridgetoplate.patterns.factory;
 
+import com.example.fromfridgetoplate.logic.dao.NotificationDAO;
 import com.example.fromfridgetoplate.logic.dao.OrderDAO;
 import com.example.fromfridgetoplate.logic.dao.RiderDAO;
 import com.example.fromfridgetoplate.logic.dao.SingletonConnector;
@@ -16,9 +17,14 @@ public class DAOFactory { // rappresenta la factory della struttura nelle slide
             return new OrderDAO(getConnection());
         }
 
-        public RiderDAO getRidersDAO() {
+        public RiderDAO getRiderDAO() {
         return new RiderDAO(getConnection());
     }
+
+        public NotificationDAO getNotificationDAO() {return new NotificationDAO(getConnection());}
+
+
+
 
         // Altri metodi per gli altri DAo
 }

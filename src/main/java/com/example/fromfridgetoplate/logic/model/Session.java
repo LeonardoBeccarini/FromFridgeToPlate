@@ -15,6 +15,7 @@ public class Session {
             session = new Session(user);
     }
 
+
     public static Session getSession() {
         if(session == null) {
             throw new IllegalStateException();

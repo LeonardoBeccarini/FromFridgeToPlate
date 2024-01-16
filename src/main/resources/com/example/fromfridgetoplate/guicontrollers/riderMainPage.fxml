@@ -31,11 +31,11 @@
                <children>
                   <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Button mnemonicParsing="false" prefHeight="83.0" prefWidth="449.0" text="Entra in servizio" />
+                        <Button fx:id="serviceBtn" mnemonicParsing="false" onAction="#goOnline" prefHeight="83.0" prefWidth="449.0" text="Entra in servizio" />
                      </children></VBox>
                   <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Button mnemonicParsing="false" prefHeight="88.0" prefWidth="453.0" text="Vai fuori servizio" />
+                        <Button mnemonicParsing="false" onAction="#goOffline" prefHeight="88.0" prefWidth="453.0" text="Vai fuori servizio" />
                      </children></VBox>
                </children>
             </HBox>
@@ -90,7 +90,7 @@
                                     <Image url="@../../images/centroMessaggi.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="notificationsButton" mnemonicParsing="false" style="-fx-background-color: grey; -fx-background-radius: 25;" text="4 new messagges" textFill="RED">
+                              <Button fx:id="notificationsButton" mnemonicParsing="false" onAction="#onNotificationsButtonClick" style="-fx-background-color: grey; -fx-background-radius: 25;" text="Nessuna nuova notifica" textFill="RED">
                                  <StackPane.margin>
                                     <Insets bottom="280.0" left="10.0" />
                                  </StackPane.margin>

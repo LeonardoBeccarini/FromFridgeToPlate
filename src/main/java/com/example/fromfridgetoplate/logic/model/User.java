@@ -35,4 +35,6 @@ public class User implements Serializable {
     public Role getRole() {
         return role;
     }
+
+
 }

@@ -1,12 +1,12 @@
 package com.example.fromfridgetoplate.logic.dao;
 
+import com.example.fromfridgetoplate.logic.bean.RiderBean;
 import com.example.fromfridgetoplate.logic.bean.RiderPrefBean;
+import com.example.fromfridgetoplate.logic.bean.SearchBean;
 import com.example.fromfridgetoplate.logic.model.Rider;
+import com.example.fromfridgetoplate.logic.model.Session;
 
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +19,7 @@ public class RiderDAO {
     }
 
     // Metodo per ottenere i rider disponibili
-    public List<Rider> getAvailableRiders(RiderPrefBean rpBean) {
+    public List<Rider> getAvailableRiders(SearchBean rpBean) {
         List<Rider> availableRiders = new ArrayList<>();
         CallableStatement cstmt = null;
         ResultSet rs = null;
@@ -59,7 +59,63 @@ public class RiderDAO {
 
     //public void updateA
 
+    public void setRiderAvailable(RiderBean riderBn) {
+        String query = "{CALL SetRiderAvailability(?, ?)}";
+        try (CallableStatement cstmt = connection.prepareCall(query)) {
+            cstmt.setInt(1, riderBn.getId());
+            cstmt.setBoolean(2, riderBn.isAvailable());
+            cstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
 
+        }
+    }
+
+
+    public boolean isRiderAvailable(RiderBean riderBn) {
+        String query = "{CALL GetRiderAvailability(?, ?)}";
+        try (CallableStatement cstmt = connection.prepareCall(query)) {
+            cstmt.setInt(1, riderBn.getId());
+            cstmt.registerOutParameter(2, Types.BOOLEAN);
+            cstmt.execute();
+
+            return cstmt.getBoolean(2);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // sempre da combiare poi
+        }
+        return false;
+    }
+
+    public RiderBean getRiderDetailsFromSession() {
+        String userEmail = Session.getSession().getUser().getEmail(); // con "Session.getSession().getUser()" ricavo il current User,
+        //questo contiene le informazione immesse al momento del login, quindi username, pw, e role, poi ne prendo l'email (usernm) cosi
+        // da poter accedere alle informazioni immesse al momento della registrazione, che mi servono, per popolare il riderbean,
+        // che verrà poi passata dal controlle grafico del rider sia a quello applicativo sia al controller delle notifiche
+        System.out.println("useremail: "+ userEmail);
+        String query = "{CALL GetRiderDetailsByEmail(?)}";
+
+        try (CallableStatement cstmt = connection.prepareCall(query)) {
+            cstmt.setString(1, userEmail);
+            try (ResultSet rs = cstmt.executeQuery()) {
+                if (rs.next()) {
+                    RiderBean riderBean = new RiderBean(
+                            rs.getString("Nome"),
+                            rs.getString("Cognome"),
+                            rs.getBoolean("isAvailable"),
+                            rs.getString("assignedCity")
+                    );
+
+                    riderBean.setId(rs.getInt("Id"));
+                    return riderBean;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+        }
+        return null;
+    }
 
 
 

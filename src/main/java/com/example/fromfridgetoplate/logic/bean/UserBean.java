@@ -7,6 +7,7 @@ public class UserBean {
     String password;
     Role role;
 
+
     public UserBean(String email, String password) {
         this.email = email;
         this.password = password;
