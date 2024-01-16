@@ -1,10 +1,9 @@
 package com.example.fromfridgetoplate.logic.dao;
 
 import com.example.fromfridgetoplate.logic.bean.OrderBean;
-import com.example.fromfridgetoplate.logic.model.Food_item;
+import com.example.fromfridgetoplate.logic.model.FoodItem;
 import com.example.fromfridgetoplate.logic.model.Order;
 import com.example.fromfridgetoplate.logic.model.OrderList;
-import com.example.fromfridgetoplate.patterns.factory.BaseDAO;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -16,7 +15,7 @@ import java.util.List;
 // public class OrderDAO implements BaseDAO<Void, OrderList> {
 public class OrderDAO {
 
-    private Connection connection;
+    private final Connection connection;
 
     public OrderDAO(Connection connection) {
         this.connection = connection;
@@ -85,10 +84,10 @@ public class OrderDAO {
             cstmt.setInt(1, orderId);
             rs = cstmt.executeQuery();
 
-            List<Food_item> items = new ArrayList<>();
+            List<FoodItem> items = new ArrayList<>();
 
             while (rs.next()) {
-                Food_item item = new Food_item(
+                FoodItem item = new FoodItem(
                         rs.getString("Ingrediente"),
                         rs.getDouble("Quantita")
                 );
@@ -141,7 +140,7 @@ public class OrderDAO {
 
             // Stampa gli ingredienti alimentari per l'ordine
             System.out.println("Food Items:");
-            for (Food_item item : order.getItems()) {
+            for (FoodItem item : order.getItems()) {
                 System.out.println(" - Name: " + item.getName() + ", Quantity: " + item.getQuantity());
             }
             System.out.println("-------------------------------------");

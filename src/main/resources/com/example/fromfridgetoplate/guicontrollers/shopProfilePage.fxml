@@ -7,7 +7,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="900.0" style="-fx-background-color: #4f4f4f;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.fromfridgetoplate.guicontrollers.ShopProfileGraphicController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="900.0" style="-fx-background-color: #4f4f4f;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.fromfridgetoplate.guicontrollers.ShopProfileGraphicController">
    <children>
       <BorderPane prefHeight="750.0" prefWidth="900.0">
          <center>
@@ -55,6 +55,7 @@
                               <Font size="18.0" />
                            </font>
                         </Text>
+                        <Button fx:id="manageCatalogButton" layoutX="244.0" layoutY="395.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="113.0" style="-fx-background-color: white;" text="Manage catalog" />
                      </children>
                   </AnchorPane>
                </children>

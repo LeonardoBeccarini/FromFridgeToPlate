@@ -46,7 +46,7 @@ public class ClientSignInGraphicController implements Initializable {
                     try {
                         navigator.goTo("loginPage.fxml");
                     }catch (IOException e){
-                        throw new RuntimeException();
+                        e.printStackTrace();
                     }
                 }
             }

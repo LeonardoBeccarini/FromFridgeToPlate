@@ -3,7 +3,7 @@ package com.example.fromfridgetoplate.logic.control;
 import com.example.fromfridgetoplate.logic.bean.*;
 import com.example.fromfridgetoplate.logic.dao.OrderDAO;
 import com.example.fromfridgetoplate.logic.dao.RiderDAO;
-import com.example.fromfridgetoplate.logic.model.Food_item;
+import com.example.fromfridgetoplate.logic.model.FoodItem;
 import com.example.fromfridgetoplate.logic.model.Order;
 import com.example.fromfridgetoplate.logic.model.OrderList;
 import com.example.fromfridgetoplate.logic.model.Rider;
@@ -138,7 +138,7 @@ public class PendingOrdersController {
 
             // Stampa gli food_items per l'ordine
             System.out.println("Food Items per l'ordine con order_id " + orderBean.getOrderId() + " :");
-            for (Food_item item : orderBean.getFoodItems()) {
+            for (FoodItem item : orderBean.getFoodItems()) {
                 System.out.println(" - Name: " + item.getName() + ", Quantity: " + item.getQuantity());
             }
             System.out.println("-------------------------------------");

@@ -29,13 +29,13 @@ public class ChooseUserGraphicController implements Initializable {
                 try {
                     navigator.goTo("clientSigninPage.fxml");
                 } catch (IOException e) {
-                    throw new RuntimeException(e);  /*qui dovremmo fare un'eccezzione nostra, non usare quella a runtime*/
+                    e.printStackTrace();
                 }
             } else if (ownerButton.isSelected()) {
                 try {
                     navigator.goTo("shopOwnerSigninPage.fxml");
                 } catch (IOException e) {
-                    throw new RuntimeException(e);  /*qui dovremmo fare un'eccezzione nostra, non usare quella a runtime*/
+                    e.printStackTrace();
                 }
             }
         });
@@ -43,7 +43,7 @@ public class ChooseUserGraphicController implements Initializable {
             try {
                 navigator.goTo("mainPage6.fxml");
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                e.printStackTrace();
             }
         });
     }

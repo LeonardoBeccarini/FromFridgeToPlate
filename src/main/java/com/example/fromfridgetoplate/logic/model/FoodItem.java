@@ -1,18 +1,24 @@
 package com.example.fromfridgetoplate.logic.model;
 
-public class Food_item {
+public class FoodItem {
 
 
         private int itemId;
         private String name;
         private double quantity;
+        private float price;
         private String unit; // es. kg, litri, ecc., forse una enum
 
 
 
-        public Food_item(String name, double qnt){
+        public FoodItem(String name, double qnt){
                 this.name = name;
                 this.quantity = qnt;
+        }
+
+        public FoodItem(String name, float price) {
+                this.name = name;
+                this.price = price;
         }
 
         public int getItemId() {
@@ -45,6 +51,10 @@ public class Food_item {
 
         public void setUnit(String unit) {
                 this.unit = unit;
+        }
+
+        public float getPrice() {
+                return price;
         }
 }
 
