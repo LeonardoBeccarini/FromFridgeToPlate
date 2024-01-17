@@ -15,7 +15,7 @@ public class Order {
 
     private String status; // "Pending", "Accepted", "Delivered"........altri? dovrebbe essere un enum
 
-    private List<FoodItem> foodItems; // Una lista degli ingredienti alimentari ordinati
+    private List<Food_item> foodItems; // Una lista degli ingredienti alimentari ordinati
 
     private LocalDateTime orderTime;
 
@@ -31,7 +31,7 @@ public class Order {
 
 
 
-    public Order(int orderId, int customerId, String retailerId, String status, List<FoodItem> foodItems, LocalDateTime orderTime) {
+    public Order(int orderId, int customerId, String retailerId, String status, List<Food_item> foodItems, LocalDateTime orderTime) {
         this.orderId = orderId;
         this.customerId = customerId;
         this.retailerId = retailerId;
@@ -82,11 +82,11 @@ public class Order {
         this.status = status;
     }
 
-    public List<FoodItem> getItems() {
+    public List<Food_item> getItems() {
         return foodItems;
     }
 
-    public void setItems(List<FoodItem> items) {
+    public void setItems(List<Food_item> items) {
         this.foodItems = items;
     }
 
@@ -147,7 +147,7 @@ public class Order {
     }
 
 
-/** questi metodi che seguono son un pò dubbi, sopratutto acceptOrderByRider dovrebbe prendersi come paramentro l'entitò Rider e non solo l'id**/
+    /** questi metodi che seguono son un pò dubbi, sopratutto acceptOrderByRider dovrebbe prendersi come paramentro l'entitò Rider e non solo l'id**/
 
     // Altri metodi, come per accettare l'ordine da parte del rider
     public void acceptOrderByRider(int riderId) {

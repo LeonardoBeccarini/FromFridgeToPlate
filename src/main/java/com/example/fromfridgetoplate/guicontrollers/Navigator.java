@@ -26,6 +26,18 @@ public class Navigator {
         stage.setScene(scene);
         stage.show();
     }
+
+    // metodo overloadato che utilizza un controller esistente, nuova aggiuntabyquircio
+    /*
+    public void goTo(String fxmlString, Object controller) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlString));
+        loader.setController(controller); // Imposto il controller esistente
+        Parent root = loader.load();
+        Scene scene = new Scene(root, 850, 800);
+        stage.setScene(scene);
+        stage.show();
+    }*/
+
     public void setMainPage(String fxmlString) throws IOException{
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxmlString));
         Scene scene = new Scene(fxmlLoader.load(), 800, 800);

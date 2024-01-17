@@ -10,6 +10,8 @@ public class Notification {
     private String province;
     private String messageText;
 
+    private boolean isRead;
+
     public Notification(int riderId, int orderId, String street, int streetNumber, String city, String province, String messageText) {
         this.riderId = riderId;
         this.orderId = orderId;
@@ -82,6 +84,14 @@ public class Notification {
 
     public void setNotificationId(int notificationId) {
         this.notificationId = notificationId;
+    }
+
+    public boolean isRead() {
+        return isRead;
+    }
+
+    public void markAsRead() {
+        this.isRead = true;
     }
 }
 

@@ -2,13 +2,19 @@ package com.example.fromfridgetoplate.guicontrollers;
 
 import com.example.fromfridgetoplate.logic.bean.NotificationBean;
 
+import com.example.fromfridgetoplate.logic.bean.NotificationListBean;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
@@ -16,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class NotificationPageGraphicController extends GenericGraphicController  {
+public class NotificationPageGraphicController extends GenericGraphicController implements NotificationObserver  {
 
     @FXML
     private ResourceBundle resources;
@@ -54,14 +60,30 @@ public class NotificationPageGraphicController extends GenericGraphicController 
     @FXML
     private TableColumn<NotificationBean, Integer> streetNumberColumn;
 
+    private RiderHomePageGraphicController riderGC;
+
     @FXML
     void Accept(ActionEvent event) {
 
     }
 
     @FXML
-    void goBack(ActionEvent event) throws IOException {
-        navigator.goTo("riderMainPage.fxml");
+    void goBack(ActionEvent event) throws IOException { // non funziona gesucristo
+        riderGC.SetNotificationsAsRead();
+        //riderGC.goOnline(event);
+
+        // come gestisco il cambio scena ??
+
+        if (riderGC != null) {
+            Scene existingScene = riderGC.getRootNode().getScene();
+            if (existingScene != null) {
+                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                stage.setScene(existingScene);
+                stage.show();
+            } else {
+                System.out.println("error in goback");
+            }
+        }
     }
 
     @Override
@@ -101,9 +123,23 @@ public class NotificationPageGraphicController extends GenericGraphicController 
     }
 
 
+    @Override
+    public void update(ObservableList<NotificationBean> notificationBeans) {
+    // stampe di controllo, da eleminare poi
+        /*for (NotificationBean bean : notificationBeans) {
+            System.out.println("Rider ID: " + bean.getRiderId());
+            System.out.println("Order ID: " + bean.getOrderId());
+            System.out.println("Street: " + bean.getStreet());
+            System.out.println("Street Number: " + bean.getStreetNumber());
+            System.out.println("City: " + bean.getCity());
+            System.out.println("Province: " + bean.getProvince());
+            System.out.println("Message: " + bean.getMessageText());
+            System.out.println("------------------------------------");
+        }*/
+        notTable.setItems(notificationBeans);
+    }
 
-
-
-
-
+    public void setCallback(RiderHomePageGraphicController riderHomePageGraphicController) {
+        riderGC = riderHomePageGraphicController;
+    }
 }

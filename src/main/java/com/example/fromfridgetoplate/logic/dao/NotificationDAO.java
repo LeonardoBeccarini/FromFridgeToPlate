@@ -17,6 +17,7 @@ public class NotificationDAO {
 
     private Connection connection;
 
+
     public NotificationDAO(Connection conn) {
         this.connection = conn;
     }
@@ -67,7 +68,7 @@ public class NotificationDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            //
         }
         return notifications;
     }

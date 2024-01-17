@@ -2,6 +2,7 @@ package com.example.fromfridgetoplate.logic.control;
 
 import com.example.fromfridgetoplate.guicontrollers.RiderHomePageGraphicController;
 import com.example.fromfridgetoplate.logic.bean.NotificationBean;
+import com.example.fromfridgetoplate.logic.bean.NotificationListBean;
 import com.example.fromfridgetoplate.logic.bean.OrderBean;
 import com.example.fromfridgetoplate.logic.bean.RiderBean;
 import com.example.fromfridgetoplate.logic.dao.NotificationDAO;
@@ -22,14 +23,18 @@ public class RiderHPController {
 
     private final RiderBean riderBean;
     private Timer notificationPoller;
-    private RiderHomePageGraphicController rgp;
+    private RiderHomePageGraphicController rgp; // da eliminare e sistemare
 
-    private List<NotificationBean> undeliveredNotifications = new ArrayList<>();
+    List<Notification> deliveredNotification;
     private int lastNotificationId = 0;
 
+    private NotificationListBean nlb;
 
-    public RiderHPController(RiderBean riderBean) {
-         this.riderBean = riderBean;
+
+    public RiderHPController(RiderBean riderBean, NotificationListBean nlb) {
+        this.riderBean = riderBean;
+        this.nlb = nlb;
+        this.deliveredNotification = new ArrayList<>();
 
     }
 
@@ -39,7 +44,7 @@ public class RiderHPController {
 
         NotificationManager ntfManager = NotificationManager.getInstance();
         ntfManager.registerRiderAvailability(riderBean);
-        startNotificationPolling();
+        //startNotificationPolling();
 
     }
 
@@ -73,22 +78,42 @@ public class RiderHPController {
         NotificationDAO ntfDAO = daoFactory.getNotificationDAO();
         List<Notification> newNotifications = ntfDAO.getNotificationsForRider(riderBean.getId(), lastNotificationId);
 
+        System.out.println("NewNot size : "+ newNotifications.size() );
+        for (Notification notification : newNotifications) {
+            System.out.println("Notification ID: " + notification.getNotificationId());
+            System.out.println("lastNotification ID: " + lastNotificationId);
+        }
+
         if (!newNotifications.isEmpty()) {
+            List<NotificationBean> newNotificationBeans = new ArrayList<>();
             for (Notification notification : newNotifications) {
                 if (notification.getNotificationId() > lastNotificationId) {
+                        System.out.println("check");
+
+                        System.out.println("Rider ID: " + notification.getRiderId());
+                        System.out.println("Order ID: " + notification.getOrderId());
+                        System.out.println("Street: " + notification.getStreet());
+                        System.out.println("Street Number: " + notification.getStreetNumber());
+                        System.out.println("City: " + notification.getCity());
+                        System.out.println("Province: " + notification.getProvince());
+                        System.out.println("Message: " + notification.getMessageText());
+                        System.out.println("------------------------------------");
+
+                    deliveredNotification.add(notification);
                     NotificationBean notificationBean = convertToNotificationBean(notification);
-                    undeliveredNotifications.add(notificationBean);
+                    newNotificationBeans.add(notificationBean);
                     lastNotificationId = notification.getNotificationId();
                 }
             }
-            if (!undeliveredNotifications.isEmpty()) {
-                rgp.updateNotifications(undeliveredNotifications);
-                System.out.println("Rilevate nuove notifiche, aggiorno la vista, lastNotification id: "+ lastNotificationId);
+            if (!newNotificationBeans.isEmpty()) {
+                nlb.addNotifications(newNotificationBeans); // Aggiorna la lista nella NotificationListBean
+                System.out.println("Rilevate nuove notifiche, lastNotification id: "+ lastNotificationId);
             }
         } else {
-            System.out.println("Non rilevate nuove notifiche, non c'è bisogno di aggiornare la vista, lastNotification id: "+ lastNotificationId);
+            System.out.println("Non rilevate nuove notifiche, lastNotification id: "+ lastNotificationId);
         }
     }
+
 
     private NotificationBean convertToNotificationBean(Notification notification) {
         NotificationBean ntfBean = new NotificationBean(
@@ -108,17 +133,24 @@ public class RiderHPController {
 
     public void markNotificationsAsRead() {
 
-        this.stopNotificationPolling(); // interrompo momentaneamente il polling del db
+        //this.stopNotificationPolling(); // interrompo momentaneamente il polling del db
 
         DAOFactory daoFactory = new DAOFactory();
         NotificationDAO ntfDAO = daoFactory.getNotificationDAO();
-        for (NotificationBean notification : undeliveredNotifications) {
-            ntfDAO.markNotificationAsRead(notification.getNotificationId());
+        for (NotificationBean notificationBn : nlb.getNotifications()) {
+            ntfDAO.markNotificationAsRead(notificationBn.getNotificationId()); // marca le notifiche come lette , aggiornando il model e il db
+            // Aggiorna la lista deliveredNotification
+            for (Notification deliveredNotif : deliveredNotification) {
+                if (deliveredNotif.getNotificationId() == notificationBn.getNotificationId()) {
+                    deliveredNotif.markAsRead(); // Aggiorna lo stato nella lista in memoria
+                    break;
+                }
+            }
         }
-        undeliveredNotifications.clear();// pulisco la lista(buffer delle notifiche), in modo da rappresentare che l'utente rider abbia visualizzato tutte le
+        nlb.clearNotifications();// pulisco la lista(buffer delle notifiche), in modo da rappresentare che l'utente rider abbia visualizzato tutte le
         // notifiche consegnate, questo metodo in effetti viene chiamato dal controller grafico quando l'utente rider
         // clicca per visualizzare e quindi leggere le notifihce
-        this.startNotificationPolling(); // ristarto
+        //this.startNotificationPolling(); // ristarto
     }
 
 
@@ -134,6 +166,6 @@ public class RiderHPController {
         rgp.updateMsgView(orderBean);
     }
 
-    // ... altri metodi ...
+
 }
 

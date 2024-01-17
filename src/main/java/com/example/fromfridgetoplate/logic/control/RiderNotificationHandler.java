@@ -6,7 +6,7 @@ import com.example.fromfridgetoplate.logic.model.Notification;
 
 import java.util.List;
 
-
+//-----------------------------------inutilizzato--------------------------------
 public class RiderNotificationHandler implements OrdersObserver {
     private final RiderHPController riderController;
     private final RiderBean rider;
