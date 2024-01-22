@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox fx:id="vBox" alignment="CENTER" prefHeight="125.0" prefWidth="335.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <HBox alignment="CENTER" prefHeight="136.0" prefWidth="375.0" spacing="10.0">
+         <children>
+            <ImageView fx:id="productImageView" fitHeight="125.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+               <HBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </HBox.margin>
+            </ImageView>
+            <VBox alignment="CENTER" prefHeight="136.0" prefWidth="243.0" spacing="10.0">
+               <children>
+                  <Label fx:id="shopNameLabel" alignment="TOP_CENTER" text="Nome negozio">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="addressLabel" alignment="CENTER" prefHeight="23.0" prefWidth="136.0" text="indirizzo" textAlignment="CENTER" />
+                  <Label fx:id="phoneLabel" alignment="CENTER" prefHeight="23.0" prefWidth="142.0" text="numerotelefono" />
+               </children>
+               <padding>
+                  <Insets bottom="20.0" top="20.0" />
+               </padding>
+            </VBox>
+         </children>
+         <VBox.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" />
+         </VBox.margin>
+      </HBox>
+   </children>
+</VBox>

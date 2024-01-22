@@ -1,8 +1,6 @@
 
 t
 Dsrc/main/java/com/example/fromfridgetoplate/logic/bean/UserBean.java,6\b\6b0b62504118e5354c1032f87b671a04fe76a755
-~
-Nsrc/main/java/com/example/fromfridgetoplate/logic/control/LoginController.java,1\e\1e40b8f779d260dd4516cb1e1f5d6de93a36b826
 q
 Asrc/main/java/com/example/fromfridgetoplate/logic/model/Role.java,a\0\a0d4f2bd8a71b98abcce8310403cf1aa9502a5de
 r
@@ -21,8 +19,6 @@ Esrc/main/java/com/example/fromfridgetoplate/logic/bean/OrderBean.java,2\1\21fb
 pom.xml,4\4\442292b8a7efeabbe4cc176709b833b1792140ec
 }
 Msrc/main/java/com/example/fromfridgetoplate/patterns/factory/UserFactory.java,3\a\3af85be45c6131798fa9f1435bc5cf58b56ca1e6
-Å
-Qsrc/main/java/com/example/fromfridgetoplate/logic/control/RegisterController.java,1\e\1eab06a355b563b73bdbff6d988889fd2bd2910e
 }
 Msrc/main/java/com/example/fromfridgetoplate/logic/dao/SingletonConnector.java,b\9\b97ce51f93cb3870a9a954eabe45ed6aa38b930c
 |
@@ -51,8 +47,6 @@ Isrc/main/java/com/example/fromfridgetoplate/logic/bean/RiderPrefBean.java,e\e\
 [src/main/java/com/example/fromfridgetoplate/guicontrollers/ShopSigninGraphicController.java,4\e\4e859e6a502c07dabb7173aee30bf6ab3737bda7
 Ö
 Usrc/main/java/com/example/fromfridgetoplate/guicontrollers/HomeGraphicController.java,8\8\88956bf88680a43f298a7a253514302b8ef63443
-r
-Bsrc/main/java/com/example/fromfridgetoplate/logic/dao/ShopDAO.java,6\0\6032459062d57a9884705f624d4766f00057f96d
 v
 Fsrc/main/java/com/example/fromfridgetoplate/logic/model/OrderList.java,9\1\91a822bffe8a1a0914ad1c864c04174d8d737884
 y
@@ -85,3 +79,11 @@ N
 src/main/java/module-info.java,1\c\1c89a5491fbfda3fb050196d6a239f20200296e7
 é
 ^src/main/java/com/example/fromfridgetoplate/guicontrollers/ManageCatalogGraphicController.java,6\b\6bad635a5eb71f1e847c75a2fe17be020680242d
+Ñ
+Tsrc/main/java/com/example/fromfridgetoplate/logic/control/ShopProfileController.java,6\3\6382a51400c8bdd5237a9c312360274b95543933
+å
+\src/main/java/com/example/fromfridgetoplate/guicontrollers/ShopProfileGraphicController.java,a\0\a0aca62e84a434cfd31c2f9d10b91f0bc093c1f2
+~
+Nsrc/main/java/com/example/fromfridgetoplate/logic/control/LoginController.java,1\e\1e40b8f779d260dd4516cb1e1f5d6de93a36b826
+û
+nsrc/main/java/com/example/fromfridgetoplate/guicontrollers/list_cell_factories/IngredientsListCellFactory.java,d\b\dbf302fc7951fb7669a5026c57c7092d8c637ebe

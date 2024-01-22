@@ -29,6 +29,13 @@ public class Shop extends User {
         this.phoneNumber = phoneNumber;
     }
 
+    public Shop(String email, String name, String address, String phoneNumber) {
+        super(email);
+        this.name = name;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+    }
+
     public String getPhoneNumber() {
         return phoneNumber;
     }
