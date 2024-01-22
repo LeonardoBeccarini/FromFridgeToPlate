@@ -1,9 +1,6 @@
 package com.example.fromfridgetoplate.logic.control;
 
-import com.example.fromfridgetoplate.logic.bean.OrderBean;
-import com.example.fromfridgetoplate.logic.bean.OrderListBean;
-import com.example.fromfridgetoplate.logic.bean.RiderBean;
-import com.example.fromfridgetoplate.logic.bean.RiderPrefBean;
+import com.example.fromfridgetoplate.logic.bean.*;
 import com.example.fromfridgetoplate.logic.dao.OrderDAO;
 import com.example.fromfridgetoplate.logic.dao.RiderDAO;
 import com.example.fromfridgetoplate.logic.model.FoodItem;
@@ -62,6 +59,9 @@ public class PendingOrdersController {
         orderBean.setOrderTime(order.getOrderTime());
         orderBean.setShippingCity(order.getShippingCity());
 
+        AddressBean addrBean = new AddressBean(order.getShippingStreet(), order.getShippingStreetNumber(),order.getShippingCity(), order.getShippingProvince());
+        orderBean.setShippingAddress(addrBean);
+
         return orderBean;
     }
 
@@ -79,12 +79,12 @@ public class PendingOrdersController {
         order_dao.update_availability(order_bean);
     }
 
-    public List<RiderBean> getAvalaibleRiders(RiderPrefBean riderPrefBean) {
+    public List<RiderBean> getAvalaibleRiders(SearchBean searchBean) {
 
         // Chiamata al DAO per ottenere la lista di ordini pendenti
         DAOFactory daoFactory = new DAOFactory();
-        RiderDAO riderDao = daoFactory.getRidersDAO();
-        List<Rider> availableRiders = riderDao.getAvailableRiders(riderPrefBean);
+        RiderDAO riderDao = daoFactory.getRiderDAO();
+        List<Rider> availableRiders = riderDao.getAvailableRiders(searchBean);
         List<RiderBean> avRidersBean = new ArrayList<>();
         // bisogna convertire  List <Rider> in List <RiderBean>
         for (Rider rider : availableRiders) {
@@ -113,6 +113,17 @@ public class PendingOrdersController {
     }
 
 
+
+
+
+
+
+
+
+
+
+
+/*
 
     // main per provare se i dati sono giusti prima di passarli alla view
     public static void main(String[] args) {
@@ -146,7 +157,7 @@ public class PendingOrdersController {
 
 
     }
-
+*/
 }
 
 

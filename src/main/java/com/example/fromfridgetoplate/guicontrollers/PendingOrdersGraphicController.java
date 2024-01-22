@@ -1,9 +1,12 @@
+
 package com.example.fromfridgetoplate.guicontrollers;
 
 
-import com.example.fromfridgetoplate.logic.bean.RiderBean;
+import com.example.fromfridgetoplate.logic.bean.*;
+
+import com.example.fromfridgetoplate.logic.control.NotificationManager;
 import com.example.fromfridgetoplate.logic.dao.OrderDAO;
-import com.example.fromfridgetoplate.logic.model.FoodItem;
+import com.example.fromfridgetoplate.logic.model.Food_item;
 import com.example.fromfridgetoplate.logic.model.Rider;
 import com.example.fromfridgetoplate.patterns.factory.DAOFactory;
 import javafx.application.Platform;
@@ -16,8 +19,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 
-import com.example.fromfridgetoplate.logic.bean.OrderBean;
-import com.example.fromfridgetoplate.logic.bean.OrderListBean;
 import com.example.fromfridgetoplate.logic.control.PendingOrdersController;
 import com.example.fromfridgetoplate.logic.model.Order;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -52,13 +53,79 @@ public class PendingOrdersGraphicController extends GenericGraphicController  {
     private TableColumn<OrderBean, String> shippingCityColumn;
 
     private OrderListBean orderListBean;
+    // private OrderBean selectedOrder;
 
 
+
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
+        super.initialize(location, resources); // anche la classe padre: GenericGraphicController, ha il suo initialize, quindi bisogna chiamarlo
+        // prima di chiamare l'initialize di questo controller
+        this.orderListBean = new OrderListBean();
+
+        // Collega le colonne agli attributi di OrderBean
+
+
+        //PropertyValueFactory, implementa l'interfaccia "Callback", e setCellValueFactory riceve come parametro di tipo
+        // Callback un'istanza di " PropertyValueFactory" , e internamente chiama il metodo "call" sovrascritto da
+        // PropertyValueFactory, in cui chiama il getter per l'attributo il cui nome viene passato come parametro
+
+        orderIdColumn.setCellValueFactory(new PropertyValueFactory<>("orderId"));
+        customerIdColumn.setCellValueFactory(new PropertyValueFactory<>("customerId"));
+        orderTimeColumn.setCellValueFactory(new PropertyValueFactory<>("orderTime"));
+        shippingCityColumn.setCellValueFactory(new PropertyValueFactory<>("shippingCity"));
+        // quindi con "orderIdColumn.setCellValueFactory(new PropertyValueFactory<>("orderId"));"
+        // linko la colonna "orderId" della tableView al valore dell'attributo "orderId" , passato a
+        // PropertyValueFactory
+        System.out.println("check1");
+        // Imposta la CellFactory per la colonna dei dettagli, cioè per ogni cella nella colonna "detailsColumn"
+        // della TableView, JavaFX utilizzerà DetailButtonCell per creare il contenuto della cella.
+        detailsColumn.setCellFactory((TableColumn<OrderBean, Void> column) -> {
+            return new DetailButtonCell();
+        });
+        // ritorna un oggetto DetailButtonCell che is a kind of TableCell, come richiesto dall'interfaccia funzionale
+
+        // Carica i dati nella TableView
+        loadData();
+        setupRefreshTimer();
+    }
 
 
     @FXML  // Questo metodo viene chiamato quando si clicca sul pulsante per cercare i rider
     void search_riders(ActionEvent event) throws IOException {
         OrderBean selectedOrder = ordersTable.getSelectionModel().getSelectedItem();
+
+        System.out.println("Order ID: " + selectedOrder.getOrderId());
+        System.out.println("Customer ID: " + selectedOrder.getCustomerId());
+        System.out.println("Order Time: " + selectedOrder.getOrderTime());
+
+        List<Food_item> foodItems = selectedOrder.getFoodItems();
+        if (foodItems != null && !foodItems.isEmpty()) {
+            System.out.println("Food Items:");
+            for (Food_item foodItem : foodItems) {
+                System.out.println("   - " + foodItem.toString());
+            }
+        } else {
+            System.out.println("No Food Items.");
+        }
+
+        AddressBean shippingAddress = selectedOrder.getShippingAddress();
+        if (shippingAddress != null) {
+            System.out.println("Shipping Address:");
+            System.out.println("   - Street: " + shippingAddress.getShippingStreet());
+            System.out.println("   - Street Number: " + shippingAddress.getShippingStreetNumber());
+            System.out.println("   - City: " + shippingAddress.getShippingCity());
+            System.out.println("   - Province: " + shippingAddress.getShippingProvince());
+        } else {
+            System.out.println("No Shipping Address.");
+        }
+
+        System.out.println("Shipping City: " + selectedOrder.getShippingCity());
+        System.out.println("Status: " + selectedOrder.getStatus());
+
+
         if (selectedOrder != null) {
             String shippingCity = selectedOrder.getShippingCity(); // prendiamo un riferimento alla città in cui deve essere consegnato l'ordine,
 
@@ -67,9 +134,11 @@ public class PendingOrdersGraphicController extends GenericGraphicController  {
             Parent root = loader.load();
 
             SearchRidersGraphicController searchRidersGController = loader.getController();
-            searchRidersGController.setAssignedCity(shippingCity);
-            searchRidersGController.setRiderSelectionListener(new RiderSelectionListener());
-            searchRidersGController.loadData(); // Carica i dati nella TableView relativa alla scelta del rider
+            SearchBean sBean = new SearchBean(shippingCity, new RiderSelectionListener(), selectedOrder);
+
+            //searchRidersGController.setAssignedCity(shippingCity);
+            //searchRidersGController.setRiderSelectionListener(new RiderSelectionListener());
+            searchRidersGController.loadData(sBean); // Carica i dati nella TableView relativa alla scelta del rider
 
 
             Stage currentStage = (Stage) ordersTable.getScene().getWindow();
@@ -110,40 +179,6 @@ public class PendingOrdersGraphicController extends GenericGraphicController  {
     }
 
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-
-        super.initialize(location, resources); // anche la classe padre: GenericGraphicController, ha il suo initialize, quindi bisogna chiamarlo
-                                                // prima di chiamare l'initialize di questo controller
-        this.orderListBean = new OrderListBean();
-
-        // Collega le colonne agli attributi di OrderBean
-
-
-        //PropertyValueFactory, implementa l'interfaccia "Callback", e setCellValueFactory riceve come parametro di tipo
-        // Callback un'istanza di " PropertyValueFactory" , e internamente chiama il metodo "call" sovrascritto da
-        // PropertyValueFactory, in cui chiama il getter per l'attributo il cui nome viene passato come parametro
-
-        orderIdColumn.setCellValueFactory(new PropertyValueFactory<>("orderId"));
-        customerIdColumn.setCellValueFactory(new PropertyValueFactory<>("customerId"));
-        orderTimeColumn.setCellValueFactory(new PropertyValueFactory<>("orderTime"));
-        shippingCityColumn.setCellValueFactory(new PropertyValueFactory<>("shippingCity"));
-        // quindi con "orderIdColumn.setCellValueFactory(new PropertyValueFactory<>("orderId"));"
-        // linko la colonna "orderId" della tableView al valore dell'attributo "orderId" , passato a
-        // PropertyValueFactory
-        System.out.println("check1");
-        // Imposta la CellFactory per la colonna dei dettagli, cioè per ogni cella nella colonna "detailsColumn"
-        // della TableView, JavaFX utilizzerà DetailButtonCell per creare il contenuto della cella.
-        detailsColumn.setCellFactory((TableColumn<OrderBean, Void> column) -> {
-            return new DetailButtonCell();
-        });
-        // ritorna un oggetto DetailButtonCell che is a kind of TableCell, come richiesto dall'interfaccia funzionale
-
-        // Carica i dati nella TableView
-        loadData();
-        setupRefreshTimer();
-    }
-
 
     private void loadData() {
         // Chiama il controller applicativo per ottenere i dati
@@ -162,7 +197,7 @@ public class PendingOrdersGraphicController extends GenericGraphicController  {
         // Aggiorna gli elementi della UI (ad esempio, una ListView) con gli ordini
     }
 
-// modello pull , in cui la view attraverso la bean fa la get sul model, in realtà la bean fa la get sul controller
+    // modello pull , in cui la view attraverso la bean fa la get sul model, in realtà la bean fa la get sul controller
     // invece che sul model, ma cmq dovrebbe restare il fatto da rispettare che è che: se evolve il model, evolverà solo
     // il bean (qui in realtà neanche il bean ma solo il controller che cmq dovrebbe evolvere uguale se cambiasse il model,
     // e non la parte grafica , poi i nrealtà vale anche che: in una modalità pull, il controller scrive i dati nel bean, che poi
@@ -185,6 +220,8 @@ public class PendingOrdersGraphicController extends GenericGraphicController  {
         ObservableList<OrderBean> updatedList = FXCollections.observableArrayList(orderListBean.getOrderBeans());
         ordersTable.setItems(updatedList);
     }
+
+
 
 
 }
@@ -243,7 +280,7 @@ class DetailButtonCell extends TableCell<OrderBean, Void> {
             alert.setHeaderText("Food Items per Order ID: " + order.getOrderId());
 
             StringBuilder content = new StringBuilder();
-            for (FoodItem item : order.getFoodItems()) {
+            for (Food_item item : order.getFoodItems()) {
                 content.append(item.getName()).append(" - Quantità: ").append(item.getQuantity()).append("\n");
             }
 
@@ -259,28 +296,7 @@ class DetailButtonCell extends TableCell<OrderBean, Void> {
 
 
 
-class RiderSelectionListener {
 
-    void onRiderSelected(RiderBean selectedRiderBean) {
-
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        System.out.println("L'ordine è stato preso in carico dal rider : " + selectedRiderBean.getName());
-
-        alert.setTitle("Conferma Assegnazione Rider");
-        alert.setHeaderText("Assegnazione Rider Completata");
-        alert.setContentText("L'ordine è stato preso in carico dal rider:\n" +
-                    "Nome: " + selectedRiderBean.getName() + "\n" +
-                    "Cognome: " + selectedRiderBean.getSurname() + "\n" +
-                    "Città Assegnata: " + selectedRiderBean.getAssignedCity());
-        alert.showAndWait();
-
-
-
-
-
-    }
-
-}
 
 
 

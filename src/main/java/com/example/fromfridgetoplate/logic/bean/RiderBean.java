@@ -10,6 +10,7 @@ public class RiderBean {
     private String assignedCity;
 
     public RiderBean(String name, String surname, boolean isAvailable, String assignedCity) {
+
         this.name = name;
         this.surname = surname;
         this.isAvailable = isAvailable;

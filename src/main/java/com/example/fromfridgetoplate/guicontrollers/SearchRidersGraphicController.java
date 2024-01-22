@@ -1,7 +1,9 @@
 package com.example.fromfridgetoplate.guicontrollers;
 
+import com.example.fromfridgetoplate.logic.bean.OrderBean;
 import com.example.fromfridgetoplate.logic.bean.RiderBean;
 import com.example.fromfridgetoplate.logic.bean.RiderPrefBean;
+import com.example.fromfridgetoplate.logic.bean.SearchBean;
 import com.example.fromfridgetoplate.logic.control.PendingOrdersController;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -26,6 +28,8 @@ public class SearchRidersGraphicController extends GenericGraphicController {
 
     private String assignedCity;
     private RiderSelectionListener riderSelectionListener;
+
+    private OrderBean orderBean;
 
 
     @FXML
@@ -75,12 +79,39 @@ public class SearchRidersGraphicController extends GenericGraphicController {
 
     //choose_rider() è invocato quando si fa clic sul pulsante continue nella scene, e recupera il RiderBean
     // selezionato dalla TableView(ogni riga è un riderBean). Se un rider è selezionato dall'utente, il metodo selectRider
-    // viene chiamato
+    // viene chiamato.
+    public void loadData(SearchBean searchBean) {
+        // Chiamiamo prima il controller applicativo per ottenere i dati
+        PendingOrdersController pendingOrdersControl = new PendingOrdersController();
+        //RiderPrefBean riderPrefBean = new RiderPrefBean(assignedCity);
+        //System.out.println("assigned city :" + assignedCity);
+        String assignedCity = searchBean.getCity();
+        this.setAssignedCity(assignedCity);
+        this.setRiderSelectionListener(searchBean.getRiderSelListener());
+        this.orderBean = searchBean.getSelectedOrderBean(); // ordine che deve assegnato al rider selezionato
+
+        List<RiderBean> avRidersBean = pendingOrdersControl.getAvalaibleRiders(searchBean);
+        //List<RiderBean> avRidersBean = pendingOrdersControl.getAvalaibleRiders(assignedCity);
+
+        for (RiderBean rider : avRidersBean) {
+            System.out.println("ID: " + rider.getId() + ", Nome: " + rider.getName() +
+                    ", Cognome: " + rider.getSurname() + ", Città: " + rider.getAssignedCity());
+        }
+
+        // Popola la TableView con i dati
+        ridersTable.setItems(FXCollections.observableArrayList(avRidersBean));
+
+        //updateUI(pendingOrders); ??
+        System.out.println("checkloaddatasearchriders");
+    }
+
     @FXML
     void choose_rider(ActionEvent event) throws IOException{
         RiderBean selectedRiderBean = ridersTable.getSelectionModel().getSelectedItem();
+
         if (selectedRiderBean != null) {
             selectRider(selectedRiderBean);
+
         } else {
             // qui va un altro alert
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -93,6 +124,7 @@ public class SearchRidersGraphicController extends GenericGraphicController {
     }
 
 
+
     // Metodo chiamato quando un rider viene selezionato
     private void selectRider(RiderBean selectedRiderBean) throws IOException {
         // quando lutente seleziona un rider e lo conferma col button, chiamiamo il metodo di
@@ -100,13 +132,15 @@ public class SearchRidersGraphicController extends GenericGraphicController {
         // il rider , in realtà dpvrebbe essere un RiderBean.
 
 
-        if (riderSelectionListener != null) {
-            riderSelectionListener.onRiderSelected(selectedRiderBean);
+        if (this.riderSelectionListener != null) {
+
+            riderSelectionListener.onRiderSelected(selectedRiderBean, orderBean);
             Stage currentStage = (Stage) ridersTable.getScene().getWindow();
             //currentStage.close(); // Chiude la finestra dopo la selezione del rider
             Navigator nav = Navigator.getInstance(currentStage);
             nav.goTo("viewPendingOrders2.fxml");
         }
+
         else{
             System.out.println("Error");
         }
@@ -133,29 +167,11 @@ public class SearchRidersGraphicController extends GenericGraphicController {
 
 
 
-    public void loadData() {
-        // Chiamiamo prima il controller applicativo per ottenere i dati
-        PendingOrdersController pendingOrdersControl = new PendingOrdersController();
-        RiderPrefBean riderPrefBean = new RiderPrefBean(assignedCity);
-        System.out.println("assigned city :" + assignedCity);
-        List<RiderBean> avRidersBean = pendingOrdersControl.getAvalaibleRiders(riderPrefBean);
-        //List<RiderBean> avRidersBean = pendingOrdersControl.getAvalaibleRiders(assignedCity);
-
-        for (RiderBean rider : avRidersBean) {
-            System.out.println("ID: " + rider.getId() + ", Nome: " + rider.getName() +
-                    ", Cognome: " + rider.getSurname() + ", Città: " + rider.getAssignedCity());
-        }
-
-        // Popola la TableView con i dati
-        ridersTable.setItems(FXCollections.observableArrayList(avRidersBean));
-
-        //updateUI(pendingOrders); ??
-        System.out.println("checkloaddatasearchriders");
-    }
 
 
 
 
+/*
     // per provare se ji dati sono giusti
     public static void main(String[] args) {
 
@@ -180,7 +196,7 @@ public class SearchRidersGraphicController extends GenericGraphicController {
         PendingOrdersController pendingOrdersControl = new PendingOrdersController();
         RiderPrefBean riderPrefBean = new RiderPrefBean(assignedCity);
         return pendingOrdersControl.getAvalaibleRiders(riderPrefBean);
-    }
+    }*/
 
 
 

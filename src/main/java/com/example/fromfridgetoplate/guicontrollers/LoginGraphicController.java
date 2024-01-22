@@ -3,6 +3,7 @@ package com.example.fromfridgetoplate.guicontrollers;
 import com.example.fromfridgetoplate.logic.bean.UserBean;
 import com.example.fromfridgetoplate.logic.control.LoginController;
 import com.example.fromfridgetoplate.logic.model.Role;
+import com.example.fromfridgetoplate.logic.model.Session;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -26,6 +27,7 @@ public class LoginGraphicController implements Initializable {
 
     Navigator navigator = Navigator.getInstance(null);
 
+
     @Override
     public void initialize(URL location,
                            ResourceBundle resources) {
@@ -37,6 +39,7 @@ public class LoginGraphicController implements Initializable {
                 alert.showAndWait();
                 return;
             }
+
             else {
                 UserBean userBean = new UserBean(emailText.getText(), pwdText.getText());
                 LoginController loginController = new LoginController();
@@ -49,6 +52,7 @@ public class LoginGraphicController implements Initializable {
                 }
                 if(loggedUser.getRole() == Role.RIDER) {
                     /* goto rider homepage*/
+
                     navigator.goTo("riderMainPage.fxml");
 
                 }

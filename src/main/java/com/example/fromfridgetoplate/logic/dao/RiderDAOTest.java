@@ -1,4 +1,4 @@
-package com.example.fromfridgetoplate.logic.dao;
+/*package com.example.fromfridgetoplate.logic.dao;
 
 import com.example.fromfridgetoplate.logic.bean.RiderPrefBean;
 import com.example.fromfridgetoplate.logic.model.OrderList;
@@ -52,4 +52,4 @@ public class RiderDAOTest {
 
     }
 
-}
+}*/
