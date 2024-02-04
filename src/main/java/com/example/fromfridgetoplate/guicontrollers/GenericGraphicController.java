@@ -38,12 +38,13 @@ public class GenericGraphicController implements Initializable {
         });
 
         profileButton.setOnMouseClicked(event -> {
-            try {  if(Session.getSession().getUser().getRole() == Role.CLIENT) {    //qui non so se andrebbe bene anche getUser()
-                navigator.goTo("profilePage.fxml"); //non esiste lol
-            }
-            else if(Session.getSession().getUser().getRole() == Role.OWNER){
-                navigator.goTo("shopProfilePage.fxml");
-            }
+            try {
+                if(Session.getSession().getUser().getRole() == Role.CLIENT) {
+                    navigator.goTo("profilePage.fxml"); //non esiste lol
+                }
+                 else if(Session.getSession().getUser().getRole() == Role.OWNER){
+                     navigator.goTo("shopProfilePage.fxml");
+                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }

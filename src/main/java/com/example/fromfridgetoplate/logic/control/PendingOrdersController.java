@@ -3,7 +3,6 @@ package com.example.fromfridgetoplate.logic.control;
 import com.example.fromfridgetoplate.logic.bean.*;
 import com.example.fromfridgetoplate.logic.dao.OrderDAO;
 import com.example.fromfridgetoplate.logic.dao.RiderDAO;
-import com.example.fromfridgetoplate.logic.model.FoodItem;
 import com.example.fromfridgetoplate.logic.model.Order;
 import com.example.fromfridgetoplate.logic.model.OrderList;
 import com.example.fromfridgetoplate.logic.model.Rider;

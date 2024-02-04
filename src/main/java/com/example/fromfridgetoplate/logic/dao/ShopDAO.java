@@ -6,7 +6,9 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ShopDAO {
     public boolean saveShop(String email, String password, String name, String vatNumber, String address, String phoneNumber){
@@ -42,14 +44,14 @@ public class ShopDAO {
     }
     public List<Shop> retrieveShopByName(String name){
         Connection connection = SingletonConnector.getInstance().getConnection();
-        List<Shop> shopList = null;
+        List<Shop> shopList = new ArrayList<>();
         try(CallableStatement cs = connection.prepareCall("{call retrieveShopByName(?)}")){
             cs.setString(1, name);
             cs.execute();
             ResultSet rs = cs.getResultSet();
             while(rs.next()){
                 Shop shop = new Shop(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4));
-                shopList.add(shop);
+                Objects.requireNonNull(shopList).add(shop);
             }
         }catch(SQLException e){
             e.printStackTrace();

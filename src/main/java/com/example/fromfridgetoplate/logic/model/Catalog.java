@@ -17,5 +17,13 @@ public class Catalog {
     public List<FoodItem> getItems() {
         return ingredients;
     }
-
+    public List<FoodItem> filterByName(String name){
+        List<FoodItem> filteredList = new ArrayList<>();
+        for( FoodItem foodItem : ingredients){
+            if(foodItem.getName().contains(name)){
+                filteredList.add(foodItem);
+            }
+        }
+        return filteredList;
+    }
 }

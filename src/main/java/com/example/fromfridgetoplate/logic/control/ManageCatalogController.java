@@ -9,9 +9,6 @@ import com.example.fromfridgetoplate.logic.model.FoodItem;
 import com.example.fromfridgetoplate.logic.model.Session;
 import com.example.fromfridgetoplate.logic.model.Shop;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class ManageCatalogController {
     public FoodItemListBean getIngredients(){
         CatalogDAO catalogDAO = new CatalogDAO();

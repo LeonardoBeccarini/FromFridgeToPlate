@@ -6,8 +6,9 @@ public class FoodItem {
         private int itemId;
         private String name;
         private double quantity;
-        private float price;
         private String unit; // es. kg, litri, ecc., forse una enum
+
+        private float price;
 
 
 

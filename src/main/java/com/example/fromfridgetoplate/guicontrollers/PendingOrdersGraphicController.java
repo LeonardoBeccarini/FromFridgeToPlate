@@ -4,11 +4,7 @@ package com.example.fromfridgetoplate.guicontrollers;
 
 import com.example.fromfridgetoplate.logic.bean.*;
 
-import com.example.fromfridgetoplate.logic.control.NotificationManager;
-import com.example.fromfridgetoplate.logic.dao.OrderDAO;
-import com.example.fromfridgetoplate.logic.model.Food_item;
-import com.example.fromfridgetoplate.logic.model.Rider;
-import com.example.fromfridgetoplate.patterns.factory.DAOFactory;
+import com.example.fromfridgetoplate.logic.model.FoodItem;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -101,10 +97,10 @@ public class PendingOrdersGraphicController extends GenericGraphicController  {
         System.out.println("Customer ID: " + selectedOrder.getCustomerId());
         System.out.println("Order Time: " + selectedOrder.getOrderTime());
 
-        List<Food_item> foodItems = selectedOrder.getFoodItems();
+        List<FoodItem> foodItems = selectedOrder.getFoodItems();
         if (foodItems != null && !foodItems.isEmpty()) {
             System.out.println("Food Items:");
-            for (Food_item foodItem : foodItems) {
+            for (FoodItem foodItem : foodItems) {
                 System.out.println("   - " + foodItem.toString());
             }
         } else {
@@ -280,7 +276,7 @@ class DetailButtonCell extends TableCell<OrderBean, Void> {
             alert.setHeaderText("Food Items per Order ID: " + order.getOrderId());
 
             StringBuilder content = new StringBuilder();
-            for (Food_item item : order.getFoodItems()) {
+            for (FoodItem item : order.getFoodItems()) {
                 content.append(item.getName()).append(" - Quantità: ").append(item.getQuantity()).append("\n");
             }
 

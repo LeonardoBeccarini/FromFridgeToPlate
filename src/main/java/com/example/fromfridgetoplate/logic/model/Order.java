@@ -15,7 +15,7 @@ public class Order {
 
     private String status; // "Pending", "Accepted", "Delivered"........altri? dovrebbe essere un enum
 
-    private List<Food_item> foodItems; // Una lista degli ingredienti alimentari ordinati
+    private List<FoodItem> foodItems; // Una lista degli ingredienti alimentari ordinati
 
     private LocalDateTime orderTime;
 
@@ -31,7 +31,7 @@ public class Order {
 
 
 
-    public Order(int orderId, int customerId, String retailerId, String status, List<Food_item> foodItems, LocalDateTime orderTime) {
+    public Order(int orderId, int customerId, String retailerId, String status, List<FoodItem> foodItems, LocalDateTime orderTime) {
         this.orderId = orderId;
         this.customerId = customerId;
         this.retailerId = retailerId;
@@ -82,11 +82,11 @@ public class Order {
         this.status = status;
     }
 
-    public List<Food_item> getItems() {
+    public List<FoodItem> getItems() {
         return foodItems;
     }
 
-    public void setItems(List<Food_item> items) {
+    public void setItems(List<FoodItem> items) {
         this.foodItems = items;
     }
 

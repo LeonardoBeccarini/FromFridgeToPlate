@@ -1,8 +1,5 @@
 package com.example.fromfridgetoplate.logic.model;
 
-import com.example.fromfridgetoplate.logic.bean.ShopBean;
-import com.example.fromfridgetoplate.logic.dao.ShopDAO;
-
 public class Shop extends User {
     private String name;
 
@@ -29,11 +26,12 @@ public class Shop extends User {
         this.phoneNumber = phoneNumber;
     }
 
-    public Shop(String email, String name, String address, String phoneNumber) {
-        super(email);
+    public Shop(String name, String address, String phoneNumber, String VATnumber) {
+        super();
         this.name = name;
         this.address = address;
         this.phoneNumber = phoneNumber;
+        this.VATnumber = VATnumber;
     }
 
     public String getPhoneNumber() {

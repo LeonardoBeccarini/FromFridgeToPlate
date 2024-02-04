@@ -9,6 +9,10 @@ public class FoodItemBean {
         this.price = price;
     }
 
+    public FoodItemBean(String name) {
+        this.name = name;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
