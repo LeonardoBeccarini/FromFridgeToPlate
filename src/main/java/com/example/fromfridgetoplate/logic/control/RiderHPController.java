@@ -21,7 +21,7 @@ import java.util.TimerTask;
 public class RiderHPController {
 
 
-    private final RiderBean riderBean;
+    private RiderBean riderBean;
     private Timer notificationPoller;
     private RiderHomePageGraphicController rgp; // da eliminare e sistemare
 
@@ -35,6 +35,11 @@ public class RiderHPController {
         this.riderBean = riderBean;
         this.nlb = nlb;
         this.deliveredNotification = new ArrayList<>();
+
+    }
+
+    // 2o costruttore
+    public RiderHPController() {
 
     }
 
@@ -154,17 +159,17 @@ public class RiderHPController {
     }
 
 
-    public void setRgp(RiderHomePageGraphicController rgp) {
-        this.rgp = rgp;
+
+    public void acceptOrder(NotificationBean notification) {
+
+
+        RiderDAO riderDAO = new DAOFactory().getRiderDAO();
+        riderDAO.acceptOrder(notification.getOrderId(), notification.getRiderId());
     }
 
 
 
-    public void update(OrderBean orderBean) {
-        // Aggiorna la View del rider con la nuova notifica dell'ordine
-        // Questo metodo verrà chiamato da RiderNotificationHandler, che a sua volta chimaerà l'updateMsgView del contreller grafico
-        rgp.updateMsgView(orderBean);
-    }
+
 
 
 }

@@ -17,6 +17,10 @@ public class OrderBean {
     private String shippingCity;
 
     private String status;
+    int riderId;
+    String retailerId;
+
+
 
     public String getStatus() {
         return status;
@@ -26,9 +30,15 @@ public class OrderBean {
         this.status = status;
     }
 
-    public OrderBean() {
-
+    public OrderBean(int orderId, int customerId, String retailerId, String status, LocalDateTime orderTime, int riderId) {
+        this.orderId = orderId;
+        this.customerId = customerId;
+        this.retailerId = retailerId;
+        this.status = status;
+        this.orderTime = orderTime;
+        this.riderId = riderId;
     }
+    public OrderBean(){}
 
 
     public int getOrderId() {

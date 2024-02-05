@@ -3,6 +3,7 @@ package com.example.fromfridgetoplate.guicontrollers;
 import com.example.fromfridgetoplate.logic.bean.NotificationBean;
 
 import com.example.fromfridgetoplate.logic.bean.NotificationListBean;
+import com.example.fromfridgetoplate.logic.control.RiderHPController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -22,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class NotificationPageGraphicController extends GenericGraphicController implements NotificationObserver  {
+public class NotificationPageGraphicController extends GenericGraphicController  {
 
     @FXML
     private ResourceBundle resources;
@@ -59,6 +60,12 @@ public class NotificationPageGraphicController extends GenericGraphicController 
 
     @FXML
     private TableColumn<NotificationBean, Integer> streetNumberColumn;
+
+    @FXML
+    private Button acceptButton;
+
+    @FXML
+    private Button declineButton;
 
     private RiderHomePageGraphicController riderGC;
 
@@ -100,8 +107,33 @@ public class NotificationPageGraphicController extends GenericGraphicController 
         msgColumn.setCellValueFactory(new PropertyValueFactory<>("messageText"));
         provinceColumn.setCellValueFactory(new PropertyValueFactory<>("province"));
         streetNumberColumn.setCellValueFactory(new PropertyValueFactory<>("streetNumber"));
+
+        notTable.setOnMouseClicked(event -> {
+            boolean isRowSelected = notTable.getSelectionModel().getSelectedItem() != null;
+            acceptButton.setDisable(!isRowSelected);
+            declineButton.setDisable(!isRowSelected);
+        });
     }
 
+    @FXML
+    private void handleAccept(ActionEvent event) {
+        NotificationBean selectedNotification = notTable.getSelectionModel().getSelectedItem();
+        if (selectedNotification != null) {
+            RiderHPController riderCtrl = new RiderHPController();
+            riderCtrl.acceptOrder(selectedNotification);
+            System.out.println("Accettato incarico per l'ordine ID: " + selectedNotification.getOrderId());
+        }
+
+    }
+
+    @FXML
+    private void handleDecline(ActionEvent event) {
+        NotificationBean selectedNotification = notTable.getSelectionModel().getSelectedItem();
+        if (selectedNotification != null) {
+            // Logica per "Rifiuta Incarico" con l'oggetto selezionato
+            System.out.println("Rifiutato incarico per l'ordine ID: " + selectedNotification.getOrderId());
+        }
+    }
 
 
     public void populateTableWithSampleData() {
@@ -123,7 +155,7 @@ public class NotificationPageGraphicController extends GenericGraphicController 
     }
 
 
-    @Override
+    //@Override
     public void update(ObservableList<NotificationBean> notificationBeans) {
     // stampe di controllo, da eleminare poi
         /*for (NotificationBean bean : notificationBeans) {

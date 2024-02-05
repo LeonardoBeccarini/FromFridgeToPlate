@@ -47,6 +47,18 @@ public class PendingOrdersController {
         return orderListBean;
     }
 
+    public OrderListBean getAssignedOrdersBean() {
+        OrderDAO orderDAO = new DAOFactory().getOrderDAO();
+        OrderList assignedOrders = orderDAO.getAssignedOrders();
+
+        OrderListBean orderListBean = new OrderListBean();
+        for (Order order : assignedOrders.getOrders()) {
+            OrderBean orderBean = new OrderBean(order.getOrderId(), order.getCustomerId(), order.getRetailerId(), order.getStatus(), order.getOrderTime(), order.getRiderId());
+            orderListBean.getOrderBeans().add(orderBean);
+        }
+        return orderListBean;
+    }
+
 
     private OrderBean convertToOrderBean(Order order) {
         OrderBean orderBean = new OrderBean();

@@ -29,7 +29,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RiderHomePageGraphicController extends GenericGraphicController {
+public class RiderHomePageGraphicController extends GenericGraphicController implements NotificationObserver {
 
     @FXML
     private AnchorPane root;
@@ -199,7 +199,7 @@ public class RiderHomePageGraphicController extends GenericGraphicController {
         // Aggiorna la vista per riflettere che le notifiche sono state lette
         //notificationsButton.setText("Notifiche (0)");
         //navigator.goTo("riderNotificationPage.fxml");
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("riderNotificationPage.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("riderNotificationPage2.fxml"));
         Parent root = loader.load();
         notificationPageGController = loader.getController();
         notificationPageGController.setCallback(this);
@@ -218,7 +218,7 @@ public class RiderHomePageGraphicController extends GenericGraphicController {
 
 
 
-    public void update(ObservableList<NotificationBean> notificationBeans) {
+    public void update(List<NotificationBean> notificationBeans) {
         int newNotificationsCount = notificationBeans.size();
         System.out.println("update riderhomepagegraphiccontroller check");
         // aggiorna il testo del bottone notificationsButton
