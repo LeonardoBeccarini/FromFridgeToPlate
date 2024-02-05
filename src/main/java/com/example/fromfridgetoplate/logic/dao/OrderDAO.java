@@ -1,6 +1,7 @@
 package com.example.fromfridgetoplate.logic.dao;
 
 import com.example.fromfridgetoplate.logic.bean.OrderBean;
+import com.example.fromfridgetoplate.logic.model.CartItem;
 import com.example.fromfridgetoplate.logic.model.FoodItem;
 import com.example.fromfridgetoplate.logic.model.Order;
 import com.example.fromfridgetoplate.logic.model.OrderList;
@@ -84,10 +85,10 @@ public class OrderDAO {
             cstmt.setInt(1, orderId);
             rs = cstmt.executeQuery();
 
-            List<FoodItem> items = new ArrayList<>();
+            List<CartItem> items = new ArrayList<>();
 
             while (rs.next()) {
-                FoodItem item = new FoodItem(
+                CartItem item = new CartItem(
                         rs.getString("Ingrediente"),
                         rs.getDouble("Quantita")
                 );
@@ -140,7 +141,7 @@ public class OrderDAO {
 
             // Stampa gli ingredienti alimentari per l'ordine
             System.out.println("Food Items:");
-            for (FoodItem item : order.getItems()) {
+            for (CartItem item : order.getItems()) {
                 System.out.println(" - Name: " + item.getName() + ", Quantity: " + item.getQuantity());
             }
             System.out.println("-------------------------------------");

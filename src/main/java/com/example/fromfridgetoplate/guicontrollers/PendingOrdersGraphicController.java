@@ -4,6 +4,7 @@ package com.example.fromfridgetoplate.guicontrollers;
 
 import com.example.fromfridgetoplate.logic.bean.*;
 
+import com.example.fromfridgetoplate.logic.model.CartItem;
 import com.example.fromfridgetoplate.logic.model.FoodItem;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -97,11 +98,11 @@ public class PendingOrdersGraphicController extends GenericGraphicController  {
         System.out.println("Customer ID: " + selectedOrder.getCustomerId());
         System.out.println("Order Time: " + selectedOrder.getOrderTime());
 
-        List<FoodItem> foodItems = selectedOrder.getFoodItems();
-        if (foodItems != null && !foodItems.isEmpty()) {
+        List<CartItem> cartItems = selectedOrder.getCartItems();
+        if (cartItems != null && !cartItems.isEmpty()) {
             System.out.println("Food Items:");
-            for (FoodItem foodItem : foodItems) {
-                System.out.println("   - " + foodItem.toString());
+            for (CartItem cartItem : cartItems) {
+                System.out.println("   - " + cartItem.toString());
             }
         } else {
             System.out.println("No Food Items.");
@@ -276,7 +277,7 @@ class DetailButtonCell extends TableCell<OrderBean, Void> {
             alert.setHeaderText("Food Items per Order ID: " + order.getOrderId());
 
             StringBuilder content = new StringBuilder();
-            for (FoodItem item : order.getFoodItems()) {
+            for (CartItem item : order.getCartItems()) {
                 content.append(item.getName()).append(" - Quantità: ").append(item.getQuantity()).append("\n");
             }
 
