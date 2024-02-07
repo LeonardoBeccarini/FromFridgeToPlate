@@ -1,5 +1,6 @@
 package com.example.fromfridgetoplate.logic.dao;
 
+import com.example.fromfridgetoplate.logic.bean.NotificationBean;
 import com.example.fromfridgetoplate.logic.bean.RiderBean;
 import com.example.fromfridgetoplate.logic.bean.RiderPrefBean;
 import com.example.fromfridgetoplate.logic.bean.SearchBean;
@@ -138,9 +139,17 @@ public class RiderDAO {
     }
 
 
-
-
-
+    public void acceptOrder(int orderId, int riderId) {
+        String query = "{CALL AcceptOrder(?, ?)}";
+        try (CallableStatement cstmt = connection.prepareCall(query)) {
+            cstmt.setInt(1, orderId);
+            cstmt.setInt(2, riderId);
+            cstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Gestisci l'eccezione
+        }
+    }
 
 
 }

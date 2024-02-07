@@ -26,7 +26,13 @@ public class ResellerMainPageGraphicController extends GenericGraphicController 
         @FXML
         private ImageView viewStatusImg;
 
-        @FXML
+
+    @FXML // bo?
+    void zoom(MouseEvent event) {
+        // Logica per lo zoom (se necessaria)
+    }
+
+    @FXML
         void onClick(MouseEvent event) throws IOException {
             Node sourceNode = (Node) event.getSource() ;
            if(sourceNode == pendingOrdersImg){
@@ -36,11 +42,6 @@ public class ResellerMainPageGraphicController extends GenericGraphicController 
            }
         }
 
-
-        @FXML // bo?
-        void zoom(MouseEvent event) {
-            // Logica per lo zoom (se necessaria)
-        }
 
         // Metodi per gestire l'ingrandimento e il cambio di colore del bordo, quando il mouse passa sopra le imageview
         //

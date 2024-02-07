@@ -40,6 +40,15 @@ public class Order {
         this.orderTime = orderTime;
     }
 
+    public Order(int orderId, int customerId, String retailerId, String status, LocalDateTime orderTime, int riderId) {
+        this.orderId = orderId;
+        this.customerId = customerId;
+        this.retailerId = retailerId;
+        this.status = status;
+        this.orderTime = orderTime;
+        this.riderId = riderId;
+    }
+
 
     // Metodi getter e setter
     public int getOrderId() {

@@ -1,5 +1,6 @@
 package com.example.fromfridgetoplate.logic.bean;
 
+import com.example.fromfridgetoplate.guicontrollers.NotificationObserver;
 import com.example.fromfridgetoplate.guicontrollers.RiderHomePageGraphicController;
 import com.example.fromfridgetoplate.logic.bean.NotificationBean;
 import javafx.application.Platform;
@@ -9,15 +10,17 @@ import com.example.fromfridgetoplate.guicontrollers.NotificationPageGraphicContr
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class NotificationListBean {
     private List<NotificationBean> notifications;
-    private RiderHomePageGraphicController graphicController;
+
+    private NotificationObserver graphicController; // controllerJavaFx o controllerCLI
 
     public NotificationListBean() {
         this.notifications = new ArrayList<>();
     }
 
-    public void setGraphicController(RiderHomePageGraphicController controller) {
+    public void setGraphicController(NotificationObserver controller) {
         this.graphicController = controller;
     }
 
@@ -45,7 +48,7 @@ public class NotificationListBean {
 
         if (graphicController != null) {
             System.out.println("check");
-            graphicController.update(FXCollections.observableArrayList(notifications));
+            graphicController.update(notifications);
 
         }
         else {

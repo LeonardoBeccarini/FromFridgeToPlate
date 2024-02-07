@@ -13,7 +13,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-// public class OrderDAO implements BaseDAO<Void, OrderList> {
+
 public class OrderDAO {
 
     private Connection connection;
@@ -160,4 +160,43 @@ public class OrderDAO {
             }
         }
     }
+
+    public void setAssignation(int orderId) {
+        String query = "{CALL MoveOrderToAssigned(?)}";
+        try (CallableStatement cstmt = connection.prepareCall(query)) {
+            cstmt.setInt(1, orderId);
+            cstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Gestisci l'eccezione
+        }
+    }
+
+    public OrderList getAssignedOrders() {
+        OrderList orderList = new OrderList();
+        try (CallableStatement cstmt = connection.prepareCall("{CALL GetAssignedOrders()}")) {
+            try (ResultSet rs = cstmt.executeQuery()) {
+
+                while (rs.next()) {
+                    Order order = new Order(
+                            rs.getInt("orderId"),
+                            rs.getInt("CustomerId"),
+                            rs.getString("NegozioId"),
+                            rs.getString("status"),
+                            rs.getTimestamp("orderTime").toLocalDateTime(),
+                            rs.getInt("RiderId")
+                    );
+
+                    orderList.addOrder(order);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Gestione dell'eccezione
+        }
+        return orderList;
+    }
+
+
+
 }

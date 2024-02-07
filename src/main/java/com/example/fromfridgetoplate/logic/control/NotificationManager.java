@@ -3,6 +3,7 @@ package com.example.fromfridgetoplate.logic.control;
 import com.example.fromfridgetoplate.logic.bean.OrderBean;
 import com.example.fromfridgetoplate.logic.bean.RiderBean;
 import com.example.fromfridgetoplate.logic.dao.NotificationDAO;
+import com.example.fromfridgetoplate.logic.dao.OrderDAO;
 import com.example.fromfridgetoplate.logic.dao.RiderDAO;
 import com.example.fromfridgetoplate.patterns.factory.DAOFactory;
 
@@ -44,6 +45,10 @@ public class NotificationManager {
         } else {
             System.out.println("Rider ID: " + riderBean.getId() + " non è disponibile.");
         }
+
+        OrderDAO orderDAO = daoFactory.getOrderDAO();
+        orderDAO.setAssignation(orderBean.getOrderId());
+
     }
 
 
