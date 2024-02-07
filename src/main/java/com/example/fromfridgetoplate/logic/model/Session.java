@@ -1,18 +1,22 @@
 package com.example.fromfridgetoplate.logic.model;
 
+import com.example.fromfridgetoplate.logic.bean.CartItemBean;
 import com.example.fromfridgetoplate.logic.bean.UserBean;
 
 public class Session {
     private final User user;
     private static Session session = null;
+    private Cart cart;
 
-    private Session(User user) {
+    private Session(User user, Cart cart) {
         this.user = user;
+        this.cart = cart;
     }
 
-    public static void init(User user) {
-        if (session == null)
-            session = new Session(user);
+    public static void init(User user, Cart cart) {
+        if (session == null) {
+            session = new Session(user, cart);
+        }
     }
 
 
@@ -25,5 +29,10 @@ public class Session {
     public User getUser() {
         return user;
     }
-    public UserBean getUserBean(){return new UserBean(user.getRole());}
+    public UserBean getUserBean(){return new UserBean(user.getRole());} // da cambiare
+
+    public Cart getCart() {
+        return cart;
+    }
+
 }

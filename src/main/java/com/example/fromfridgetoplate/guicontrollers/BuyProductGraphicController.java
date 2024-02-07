@@ -14,6 +14,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -62,7 +63,7 @@ public class BuyProductGraphicController extends GenericGraphicController{
     // in catalogo del negozio scelto in precedenza
     public FoodItemListBean loadFoodItems(){
         FoodItemListBean foodItemListBean;
-        foodItemListBean  = makeOrderControl.loadProducts(shopBean);
+        foodItemListBean  = makeOrderControl.loadProducts();
         return foodItemListBean ;
     }
     @FXML
@@ -76,11 +77,15 @@ public class BuyProductGraphicController extends GenericGraphicController{
         }
         else if(sourceNode == addButton){
             FoodItemBean selectedFoodItemBean = productListView.getSelectionModel().getSelectedItem();
-
-
+            System.out.println(selectedFoodItemBean.getName()); // debug casalingo
+            makeOrderControl.addToCart(selectedFoodItemBean);
         }
         else if(sourceNode == goToCartButton){
-
+            try {
+                navigator.goToWithController("cartPage.fxml", new CartGraphicController(shopBean));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 

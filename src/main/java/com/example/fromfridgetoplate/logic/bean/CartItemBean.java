@@ -1,16 +1,11 @@
-package com.example.fromfridgetoplate.logic.model;
+package com.example.fromfridgetoplate.logic.bean;
 
-public class CartItem {
+public class CartItemBean {
     private String name;
     private float price;
     private double quantity;
 
-    public CartItem(String name, double quantity) {
-        this.name = name;
-        this.quantity = quantity;
-    }
-
-    public CartItem(String name, float price, double quantity) {
+    public CartItemBean(String name, float price, double quantity) {
         this.name = name;
         this.price = price;
         this.quantity = quantity;
@@ -39,5 +34,4 @@ public class CartItem {
     public void setQuantity(double quantity) {
         this.quantity = quantity;
     }
-
 }

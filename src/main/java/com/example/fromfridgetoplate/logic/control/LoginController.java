@@ -3,6 +3,7 @@ package com.example.fromfridgetoplate.logic.control;
 import com.example.fromfridgetoplate.logic.bean.UserBean;
 import com.example.fromfridgetoplate.logic.dao.UserDAO;
 import com.example.fromfridgetoplate.logic.exceptions.NotExistentUserException;
+import com.example.fromfridgetoplate.logic.model.Cart;
 import com.example.fromfridgetoplate.logic.model.Session;
 import com.example.fromfridgetoplate.logic.model.User;
 import javafx.scene.control.Alert;
@@ -21,7 +22,7 @@ public class LoginController {
         }
         loggedUser = new UserBean(user.getEmail(), user.getRole());
 
-        Session.init(user); /*setta il session user (dovrei metterci i figli, cioè client owner e rider??)*/
+        Session.init(user, new Cart()); /*setta il session user (dovrei metterci i figli, cioè client owner e rider??)*/
         return loggedUser;
     }
 }
