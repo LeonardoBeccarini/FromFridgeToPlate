@@ -7,9 +7,9 @@ public class Order {
 
     private int orderId;
 
-    private int customerId;
+    private String customerId;
 
-    private String retailerId;
+    private String shopId;
 
     private int riderId;
 
@@ -31,24 +31,41 @@ public class Order {
 
 
 
-    public Order(int orderId, int customerId, String retailerId, String status, List<CartItem> cartItems, LocalDateTime orderTime) {
+    public Order(int orderId, String customerId, String shopId, String status, List<CartItem> cartItems, LocalDateTime orderTime) {
         this.orderId = orderId;
         this.customerId = customerId;
-        this.retailerId = retailerId;
+        this.shopId = shopId;
         this.status = status;
         this.cartItems = cartItems;
         this.orderTime = orderTime;
     }
 
-    public Order(int orderId, int customerId, String retailerId, String status, LocalDateTime orderTime, int riderId) {
+    public Order(int orderId, String customerId, String shopId, String status, LocalDateTime orderTime, int riderId) {
         this.orderId = orderId;
         this.customerId = customerId;
-        this.retailerId = retailerId;
+        this.shopId = shopId;
         this.status = status;
         this.orderTime = orderTime;
         this.riderId = riderId;
     }
 
+    public Order(int orderId) {
+        this.orderId = orderId;
+    }
+
+    public Order(int orderId, String customerId) {
+        this.orderId = orderId;
+        this.customerId = customerId;
+    }
+
+    public Order(String shopId, String customerId, String shippingStreet, int shippingStreetNumber, String shippingCity, String shippingProvince) {
+        this.shopId = shopId;
+        this.customerId = customerId;
+        this.shippingStreet = shippingStreet;
+        this.shippingStreetNumber = shippingStreetNumber;
+        this.shippingCity = shippingCity;
+        this.shippingProvince = shippingProvince;
+    }
 
     // Metodi getter e setter
     public int getOrderId() {
@@ -59,20 +76,22 @@ public class Order {
         this.orderId = orderId;
     }
 
-    public int getCustomerId() {
+    public String getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(int customerId) {
+
+
+    public void setCustomerId(String customerId) {
         this.customerId = customerId;
     }
 
-    public String getRetailerId() {
-        return retailerId;
+    public String getShopId() {
+        return shopId;
     }
 
-    public void setRetailerId(String retailerId) {
-        this.retailerId = retailerId;
+    public void setShopId(String shopId) {
+        this.shopId = shopId;
     }
 
     public int getRiderId() {
@@ -155,8 +174,6 @@ public class Order {
         this.shippingCity = shippingCity;
     }
 
-
-    /** questi metodi che seguono son un pò dubbi, sopratutto acceptOrderByRider dovrebbe prendersi come paramentro l'entitò Rider e non solo l'id**/
 
     // Altri metodi, come per accettare l'ordine da parte del rider
     public void acceptOrderByRider(int riderId) {

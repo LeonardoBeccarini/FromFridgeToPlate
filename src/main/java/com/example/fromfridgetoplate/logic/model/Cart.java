@@ -1,10 +1,12 @@
 package com.example.fromfridgetoplate.logic.model;
 
+import com.example.fromfridgetoplate.patterns.decorator.Discountable;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Cart {
+public class Cart implements Discountable {
 
     private List<CartItem> itemList;
 
@@ -42,5 +44,14 @@ public class Cart {
             }
         }
         return null;
+    }
+
+    public Double getPrice(){
+        double price = 0.0;
+        for(CartItem cartItem : itemList){
+            double temp = cartItem.getPrice()* cartItem.getQuantity();
+            price = price+temp;
+        }
+        return price;
     }
 }

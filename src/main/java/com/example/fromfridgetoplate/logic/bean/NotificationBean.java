@@ -7,6 +7,8 @@ public class NotificationBean {
 
     private int notificationId;
     private int riderId;
+
+    private String customer;
     private int orderId;
     private String street;
     private int streetNumber;
@@ -22,6 +24,20 @@ public class NotificationBean {
         this.city = city;
         this.province = province;
         this.messageText = messageText;
+    }
+
+    public NotificationBean(String customer, int orderId, String street, int streetNumber, String city, String province, String messageText) {
+        this.customer = customer;
+        this.orderId = orderId;
+        this.street = street;
+        this.streetNumber = streetNumber;
+        this.city = city;
+        this.province = province;
+        this.messageText = messageText;
+    }
+
+    public String getCustomer() {
+        return customer;
     }
 
     public int getRiderId() {

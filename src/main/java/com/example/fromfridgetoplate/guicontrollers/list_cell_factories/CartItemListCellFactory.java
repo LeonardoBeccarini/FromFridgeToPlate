@@ -1,8 +1,6 @@
 package com.example.fromfridgetoplate.guicontrollers.list_cell_factories;
 
 import com.example.fromfridgetoplate.logic.bean.CartItemBean;
-import com.example.fromfridgetoplate.logic.bean.FoodItemBean;
-import com.example.fromfridgetoplate.logic.model.CartItem;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;

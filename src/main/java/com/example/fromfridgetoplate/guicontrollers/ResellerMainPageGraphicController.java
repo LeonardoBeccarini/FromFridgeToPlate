@@ -1,16 +1,19 @@
 package com.example.fromfridgetoplate.guicontrollers;
 
+import com.example.fromfridgetoplate.logic.bean.NotificationBean;
+import com.example.fromfridgetoplate.logic.control.MakeOrderControl;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.List;
+import java.util.ResourceBundle;
 
 
 public class ResellerMainPageGraphicController extends GenericGraphicController {
@@ -25,6 +28,28 @@ public class ResellerMainPageGraphicController extends GenericGraphicController 
 
         @FXML
         private ImageView viewStatusImg;
+        @FXML
+        private Button notificationButton;
+        private List<NotificationBean> notificationBeanList;
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        int counter;
+        MakeOrderControl makeOrderControl = new MakeOrderControl();
+        notificationBeanList = makeOrderControl.loadNotification();
+
+        for(NotificationBean notificationBean: notificationBeanList){
+            System.out.println(notificationBean.getNotificationId());
+        }
+
+        counter = notificationBeanList.size();
+        notificationButton.setText("Notification" + " " + "(" + counter + ")");
+        if(counter>0){
+            notificationButton.setStyle("-fx-background-color: #FF0000");
+        }
+        super.initialize(location, resources);
+    }
+
 
 
     @FXML // bo?
@@ -33,12 +58,15 @@ public class ResellerMainPageGraphicController extends GenericGraphicController 
     }
 
     @FXML
-        void onClick(MouseEvent event) throws IOException {
+       public  void onClick(MouseEvent event) throws IOException {
             Node sourceNode = (Node) event.getSource() ;
            if(sourceNode == pendingOrdersImg){
                navigator.goTo("viewPendingOrders2.fxml");
            } else if (sourceNode == viewStatusImg) {
                // navigator.goTo(la view di viewStatus);
+           }
+           else if(sourceNode == notificationButton){
+               navigator.goToWithController("resellerNotificationPage.fxml", new ResellerNotificationGraphicController(notificationBeanList));
            }
         }
 

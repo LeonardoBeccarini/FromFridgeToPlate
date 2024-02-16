@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="900.0" style="-fx-background-color: #4f4f4f;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <BorderPane prefHeight="750.0" prefWidth="900.0">
+         <center>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <children>
+                  <AnchorPane fx:id="anchorpane" layoutX="45.0" layoutY="61.0" prefHeight="559.0" prefWidth="814.0" style="-fx-background-color: FFECB3;" AnchorPane.bottomAnchor="61.0" AnchorPane.leftAnchor="45.0" AnchorPane.rightAnchor="41.0" AnchorPane.topAnchor="61.0">
+                     <children>
+                        <ListView fx:id="notificationListView" editable="true" layoutX="55.0" layoutY="48.0" prefHeight="425.0" prefWidth="702.0" />
+                        <Button fx:id="updateButton" layoutX="378.0" layoutY="494.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="56.0" style="-fx-background-color: white;" text="Update" />
+                        <Label fx:id="nameLabel" layoutX="189.0" layoutY="237.0" />
+                        <Label fx:id="phoneLabel" layoutX="189.0" layoutY="325.0" />
+                        <Label fx:id="addressLabel" layoutX="189.0" layoutY="286.0" />
+                     </children>
+                  </AnchorPane>
+               </children>
+            </AnchorPane>
+         </center>
+         <top>
+            <AnchorPane prefHeight="69.0" prefWidth="900.0" style="-fx-background-color: FFECB3;" BorderPane.alignment="CENTER">
+               <children>
+                  <Button fx:id="homeButton" layoutX="702.0" layoutY="14.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="66.0" style="-fx-background-color: white;" text="Home" />
+                  <Button fx:id="profileButton" layoutX="802.0" layoutY="16.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="55.0" style="-fx-background-color: white;" text="Profile" />
+                  <Text layoutX="45.0" layoutY="44.0" opacity="0.58" strokeType="OUTSIDE" strokeWidth="0.0" text="Notifications">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Text>
+               </children>
+            </AnchorPane>
+         </top>
+      </BorderPane>
+   </children>
+</AnchorPane>

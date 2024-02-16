@@ -2,14 +2,15 @@ package com.example.fromfridgetoplate.logic.bean;
 
 
 import com.example.fromfridgetoplate.logic.model.CartItem;
-import com.example.fromfridgetoplate.logic.model.FoodItem;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 public class OrderBean {
     private int orderId;
-    private int customerId;
+    private String customerId;
+
+    private String shopId;
     private List<CartItem> cartItems; // food_item alias ingrediente, ancora da definire
     private LocalDateTime orderTime;
     private AddressBean shippingAddress;
@@ -30,7 +31,7 @@ public class OrderBean {
         this.status = status;
     }
 
-    public OrderBean(int orderId, int customerId, String retailerId, String status, LocalDateTime orderTime, int riderId) {
+    public OrderBean(int orderId, String customerId, String retailerId, String status, LocalDateTime orderTime, int riderId) {
         this.orderId = orderId;
         this.customerId = customerId;
         this.retailerId = retailerId;
@@ -38,6 +39,12 @@ public class OrderBean {
         this.orderTime = orderTime;
         this.riderId = riderId;
     }
+
+    public OrderBean(String shopId, AddressBean shippingAddress) {
+        this.shopId = shopId;
+        this.shippingAddress = shippingAddress;
+    }
+
     public OrderBean(){}
 
 
@@ -49,11 +56,15 @@ public class OrderBean {
         this.orderId = orderId;
     }
 
-    public int getCustomerId() {
+    public String getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(int customerId) {
+    public String getShopId() {
+        return shopId;
+    }
+
+    public void setCustomerId(String customerId) {
         this.customerId = customerId;
     }
 

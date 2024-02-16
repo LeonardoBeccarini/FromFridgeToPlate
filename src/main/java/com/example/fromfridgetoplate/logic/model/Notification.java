@@ -4,6 +4,7 @@ public class Notification {
     private int notificationId;
     private int riderId;
     private int orderId;
+    private String customer;
     private String street;
     private int streetNumber;
     private String city;
@@ -20,6 +21,24 @@ public class Notification {
         this.city = city;
         this.province = province;
         this.messageText = messageText;
+    }
+    public Notification(String customer, int orderId, String street, int streetNumber, String city, String province, String messageText) {
+        this.customer = customer;
+        this.orderId = orderId;
+        this.street = street;
+        this.streetNumber = streetNumber;
+        this.city = city;
+        this.province = province;
+        this.messageText = messageText;
+    }
+
+    public Notification(int orderId, String customer) {
+        this.orderId = orderId;
+        this.customer = customer;
+    }
+
+    public String getCustomer() {
+        return customer;
     }
 
     public int getRiderId() {

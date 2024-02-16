@@ -53,7 +53,7 @@ public class PendingOrdersController {
 
         OrderListBean orderListBean = new OrderListBean();
         for (Order order : assignedOrders.getOrders()) {
-            OrderBean orderBean = new OrderBean(order.getOrderId(), order.getCustomerId(), order.getRetailerId(), order.getStatus(), order.getOrderTime(), order.getRiderId());
+            OrderBean orderBean = new OrderBean(order.getOrderId(), order.getCustomerId(), order.getShopId(), order.getStatus(), order.getOrderTime(), order.getRiderId());
             orderListBean.getOrderBeans().add(orderBean);
         }
         return orderListBean;

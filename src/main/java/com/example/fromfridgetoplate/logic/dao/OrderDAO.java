@@ -1,15 +1,12 @@
 package com.example.fromfridgetoplate.logic.dao;
 
 import com.example.fromfridgetoplate.logic.bean.OrderBean;
+import com.example.fromfridgetoplate.logic.exceptions.DbException;
 import com.example.fromfridgetoplate.logic.model.CartItem;
-import com.example.fromfridgetoplate.logic.model.FoodItem;
 import com.example.fromfridgetoplate.logic.model.Order;
 import com.example.fromfridgetoplate.logic.model.OrderList;
 
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +37,7 @@ public class OrderDAO {
 
                 Order order = new Order(
                         order_id,
-                        rs.getInt("CustomerId"),
+                        rs.getString("CustomerId"),
                         rs.getString("NegozioId"),
                         "pronto",
                         new ArrayList<>(),
@@ -107,8 +104,6 @@ public class OrderDAO {
     }
 
 
-
-
     public void update_availability(OrderBean orderBean) {
         CallableStatement cstmt = null;
 
@@ -125,14 +120,11 @@ public class OrderDAO {
     }
 
 
-
-
-
     // Metodo per stampare le informazioni dell'ordine a schermo, solo per vedere se le retrieva corretly
     public void printOrders(OrderList orderList) {
         for (Order order : orderList.getOrders()) {
             System.out.println("OrderId: " + order.getOrderId() +
-                    ", RivenditaId: " + order.getRetailerId() +
+                    ", RivenditaId: " + order.getShopId() +
                     ", CustomerId: " + order.getCustomerId() +
                     ", Status: " + order.getStatus() +
                     ", OrderTime: " + order.getOrderTime() +
@@ -180,7 +172,7 @@ public class OrderDAO {
                 while (rs.next()) {
                     Order order = new Order(
                             rs.getInt("orderId"),
-                            rs.getInt("CustomerId"),
+                            rs.getString("CustomerId"),
                             rs.getString("NegozioId"),
                             rs.getString("status"),
                             rs.getTimestamp("orderTime").toLocalDateTime(),
@@ -198,5 +190,36 @@ public class OrderDAO {
     }
 
 
+// ------------------- BECCA ---------------------- BECCA ---------------------- BECCA ---------------------- //
+
+    public Order saveOrder(Order order) throws DbException {
+        int orderID;
+        List<CartItem> cartItemList= order.getItems();
+        try(CallableStatement cs = connection.prepareCall("{CALL saveOrder(?,?,?,?,?,?,?)}")){
+            cs.setString(1, order.getShopId());
+            cs.setString(2, order.getCustomerId());
+            cs.setString(3, order.getShippingStreet());
+            cs.setInt(4, order.getShippingStreetNumber());
+            cs.setString(5, order.getShippingCity());
+            cs.setString(6, order.getShippingProvince());
+            cs.registerOutParameter(7, Types.NUMERIC);
+            cs.executeQuery();
+            orderID = cs.getInt(7);
+        for(CartItem cartItem: cartItemList){
+            System.out.println(orderID);    //  DEBUG CASALINGO
+            try(CallableStatement cs2 = connection.prepareCall("{CALL addIngredientToOrder(?,?,?)}")){
+                cs2.setInt(1, orderID);
+                cs2.setString(2, cartItem.getName());
+                cs2.setDouble(3, cartItem.getQuantity());
+                cs2.executeQuery();
+            }
+        }
+
+        }catch(SQLException e){
+            throw new DbException(e.getMessage());
+        }
+       order.setOrderId(orderID);
+        return order;
+    }
 
 }
