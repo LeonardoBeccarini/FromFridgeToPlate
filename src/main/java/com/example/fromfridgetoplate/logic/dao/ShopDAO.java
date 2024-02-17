@@ -11,8 +11,11 @@ import java.util.List;
 import java.util.Objects;
 
 public class ShopDAO {
+
+    private Connection connection;
+    public ShopDAO(Connection conn) {this.connection = conn;}
+    public ShopDAO(){} // questo dovresti eliminarlo quando hai adattato il resto del tuo codice (becca) ad usare la DAOfactory
     public boolean saveShop(String email, String password, String name, String vatNumber, String address, String phoneNumber){
-        Connection connection = SingletonConnector.getInstance().getConnection();
 
         try(CallableStatement cs = connection.prepareCall("{call registerShop(?,?,?,?,?,?)}")){
             cs.setString(1,email);

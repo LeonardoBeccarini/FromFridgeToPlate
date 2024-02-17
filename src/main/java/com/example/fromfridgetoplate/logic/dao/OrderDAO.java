@@ -44,7 +44,7 @@ public class OrderDAO {
                         rs.getTimestamp("orderTime").toLocalDateTime()
                 );
 
-// Imposta gli altri campi tramite i metodi setter
+
                 order.setShippingStreet(rs.getString("shippingStreet"));
                 order.setShippingStreetNumber(rs.getInt("shippingStreetNumber"));
                 order.setShippingCity(rs.getString("shippingCity"));
@@ -164,27 +164,33 @@ public class OrderDAO {
         }
     }
 
-    public OrderList getAssignedOrders() {
+
+    public OrderList getAssignedOrders(String currentRiderEmail) {
+
         OrderList orderList = new OrderList();
-        try (CallableStatement cstmt = connection.prepareCall("{CALL GetAssignedOrders()}")) {
+        try (CallableStatement cstmt = connection.prepareCall("{CALL GetAssignedOrders(?)}")) {
+            cstmt.setString(1, currentRiderEmail);
+
             try (ResultSet rs = cstmt.executeQuery()) {
 
                 while (rs.next()) {
                     Order order = new Order(
                             rs.getInt("orderId"),
                             rs.getString("CustomerId"),
-                            rs.getString("NegozioId"),
+                            rs.getString("NegozioId"), // questo corrisponderà al vatnumber dello specifico reseller che è attualmente loggato
                             rs.getString("status"),
                             rs.getTimestamp("orderTime").toLocalDateTime(),
                             rs.getInt("RiderId")
                     );
-
+                    String city = rs.getString("shippingCity");
+                    order.setShippingCity(city);
+                    System.out.println("shipping city: "+ city );
                     orderList.addOrder(order);
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            // Gestione dell'eccezione
+
         }
         return orderList;
     }

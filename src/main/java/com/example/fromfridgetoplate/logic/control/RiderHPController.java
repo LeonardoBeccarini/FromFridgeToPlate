@@ -167,6 +167,12 @@ public class RiderHPController {
         riderDAO.acceptOrder(notification.getOrderId(), notification.getRiderId());
     }
 
+    public void declineOrder(NotificationBean notification) {
+
+        RiderDAO riderDAO = new DAOFactory().getRiderDAO();
+        riderDAO.declineOrder(notification.getOrderId(), notification.getRiderId());
+    }
+
 
 
 

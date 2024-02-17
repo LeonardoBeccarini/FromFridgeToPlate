@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="SqlDialectMappings">
-    <file url="dbSrc:///e7de050a/a56f9464-a37d-4c64-bbac-ca187c4de08b/schema/ispwdb/routine/retrieveCoupon@(char(11),int).sql" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/src/main/java/com/example/fromfridgetoplate/logic/dao/NotificationDAO.java" dialect="GenericSQL" />
   </component>
 </project>

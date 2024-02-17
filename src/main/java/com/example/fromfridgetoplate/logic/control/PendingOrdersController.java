@@ -3,9 +3,11 @@ package com.example.fromfridgetoplate.logic.control;
 import com.example.fromfridgetoplate.logic.bean.*;
 import com.example.fromfridgetoplate.logic.dao.OrderDAO;
 import com.example.fromfridgetoplate.logic.dao.RiderDAO;
+import com.example.fromfridgetoplate.logic.dao.ShopDAO;
 import com.example.fromfridgetoplate.logic.model.Order;
 import com.example.fromfridgetoplate.logic.model.OrderList;
 import com.example.fromfridgetoplate.logic.model.Rider;
+import com.example.fromfridgetoplate.logic.model.Session;
 import com.example.fromfridgetoplate.patterns.factory.DAOFactory;
 
 import java.util.ArrayList;
@@ -49,15 +51,27 @@ public class PendingOrdersController {
 
     public OrderListBean getAssignedOrdersBean() {
         OrderDAO orderDAO = new DAOFactory().getOrderDAO();
-        OrderList assignedOrders = orderDAO.getAssignedOrders();
+        String resellerEmail = Session.getSession().getUser().getEmail();
+        OrderList assignedOrders = orderDAO.getAssignedOrders(resellerEmail);
 
         OrderListBean orderListBean = new OrderListBean();
         for (Order order : assignedOrders.getOrders()) {
-            OrderBean orderBean = new OrderBean(order.getOrderId(), order.getCustomerId(), order.getShopId(), order.getStatus(), order.getOrderTime(), order.getRiderId());
+            OrderBean orderBean = new OrderBean(order.getOrderId(), order.getCustomerId(), order.getShopId(), order.getStatus(), order.getOrderTime(), order.getRiderId(), order.getShippingCity());
             orderListBean.getOrderBeans().add(orderBean);
         }
+
         return orderListBean;
     }
+
+    // da aggiungere qui, ed eliminare l'altro controller SessionController
+    /*public RiderBean getResellerDetailsFromSession() {
+
+        DAOFactory daoFactory = new DAOFactory();
+        ShopDAO shopDAO = daoFactory.getShopDAO();
+        return riderDAO.getRiderDetailsFromSession();
+    }*/
+
+
 
 
     private OrderBean convertToOrderBean(Order order) {

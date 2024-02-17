@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -23,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+// -----------------------------------------notification page per il RIDER----------------------------------------------
 public class NotificationPageGraphicController extends GenericGraphicController  {
 
     @FXML
@@ -76,7 +78,7 @@ public class NotificationPageGraphicController extends GenericGraphicController 
 
     @FXML
     void goBack(ActionEvent event) throws IOException { // non funziona gesucristo
-        riderGC.SetNotificationsAsRead();
+
         //riderGC.goOnline(event);
 
         // come gestisco il cambio scena ??
@@ -124,15 +126,35 @@ public class NotificationPageGraphicController extends GenericGraphicController 
             System.out.println("Accettato incarico per l'ordine ID: " + selectedNotification.getOrderId());
         }
 
+        riderGC.SetNotificationsAsRead();
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setAlertType(Alert.AlertType.INFORMATION);
+        alert.setTitle("Hai preso in carico l'ordine");
+
+        alert.setContentText("con orderId : "+ selectedNotification.getOrderId());
+        alert.showAndWait();
+
     }
+
+
 
     @FXML
     private void handleDecline(ActionEvent event) {
         NotificationBean selectedNotification = notTable.getSelectionModel().getSelectedItem();
         if (selectedNotification != null) {
-            // Logica per "Rifiuta Incarico" con l'oggetto selezionato
+
+            RiderHPController riderCtrl = new RiderHPController();
+            riderCtrl.declineOrder(selectedNotification);
             System.out.println("Rifiutato incarico per l'ordine ID: " + selectedNotification.getOrderId());
         }
+        riderGC.SetNotificationsAsRead();
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setAlertType(Alert.AlertType.INFORMATION);
+        alert.setTitle("Hai rifiutato l'ordine");
+
+        alert.setContentText("con orderId : "+ selectedNotification.getOrderId());
+        alert.showAndWait();
     }
 
 

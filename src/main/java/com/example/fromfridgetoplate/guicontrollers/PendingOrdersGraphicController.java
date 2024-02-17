@@ -30,7 +30,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 
-public class PendingOrdersGraphicController extends GenericGraphicController  {
+public class PendingOrdersGraphicController extends GenericGraphicController {
 
 
 
@@ -153,16 +153,6 @@ public class PendingOrdersGraphicController extends GenericGraphicController  {
             // ricevuta la notifica, e averla accettat dovrà impostare il suo status da "disponibile"->"occupato".
             // Effettuata la consegna, lo reimpostera da "occupato" a "disponibile"
             // - OrderDao vada a cambiare lo stato dell' ordine da "pronto" -> "in consegna"
-
-            // tanto per mettiamo per ora l'aggiornamento chiamando la dao qua, poi andra fatto dall AController
-            PendingOrdersController poController = new PendingOrdersController();
-            selectedOrder.setStatus("in consegna");
-            poController.update_orderStatus(selectedOrder);
-
-
-            System.out.println("Fine metodo search_riders");
-
-
 
         } else {
             // caso in cui nessuna riga è selezionata

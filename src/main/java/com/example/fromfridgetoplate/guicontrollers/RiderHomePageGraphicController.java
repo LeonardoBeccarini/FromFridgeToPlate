@@ -234,10 +234,7 @@ public class RiderHomePageGraphicController extends GenericGraphicController imp
     }
 
 
-    public void updateMsgView(OrderBean orderBean){
-        // impl:
-        System.out.println("sono updateMsgView di riderhomegraphiccontroller, mi è stato assegnato l'ordine con id:" + orderBean.getOrderId());
-    }
+
 
     public void SetNotificationsAsRead() {
         riderController.markNotificationsAsRead();
@@ -245,7 +242,7 @@ public class RiderHomePageGraphicController extends GenericGraphicController imp
     }
 
     public Node getRootNode() {
-        return root; // 'root' è il tuo AnchorPane o qualsiasi altro nodo radice
+        return root; // 'root' è l'AnchorPane
     }
 
 }

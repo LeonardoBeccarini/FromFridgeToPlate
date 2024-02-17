@@ -17,8 +17,10 @@ public class OrderBean {
 
     private String shippingCity;
 
+
     private String status;
     int riderId;
+
     String retailerId;
 
 
@@ -38,6 +40,17 @@ public class OrderBean {
         this.status = status;
         this.orderTime = orderTime;
         this.riderId = riderId;
+
+    }
+
+    public OrderBean(int orderId, String customerId, String retailerId, String status, LocalDateTime orderTime, int riderId, String city) {
+        this.orderId = orderId;
+        this.customerId = customerId;
+        this.retailerId = retailerId;
+        this.status = status;
+        this.orderTime = orderTime;
+        this.riderId = riderId;
+        this.shippingCity = city;
     }
 
     public OrderBean(String shopId, AddressBean shippingAddress) {
@@ -99,4 +112,22 @@ public class OrderBean {
     public void setShippingCity(String shippingCity) {
         this.shippingCity = shippingCity;
     }
+
+    public String getRetailerId() {
+        return retailerId;
+    }
+
+    public void setRetailerId(String retailerId) {
+        this.retailerId = retailerId;
+    }
+
+    public int getRiderId() {
+        return riderId;
+    }
+
+    public void setRiderId(int riderId) {
+        this.riderId = riderId;
+    }
+
+
 }

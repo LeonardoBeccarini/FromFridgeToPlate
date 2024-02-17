@@ -6,10 +6,11 @@ import com.example.fromfridgetoplate.logic.model.OrderList;
 import com.example.fromfridgetoplate.patterns.factory.DAOFactory;
 import javafx.application.Platform;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class OrderListBean {
-    private List<OrderBean> orderBeans;
+    private List<OrderBean> orderBeans = new ArrayList<>(); // la inizializzo per non farmi restituire null, ma la lista vuota, quando la listaè vuota
 
     // Costruttore
     public OrderListBean() {

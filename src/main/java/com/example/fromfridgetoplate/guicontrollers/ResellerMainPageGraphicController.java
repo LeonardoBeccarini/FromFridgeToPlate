@@ -63,7 +63,7 @@ public class ResellerMainPageGraphicController extends GenericGraphicController 
            if(sourceNode == pendingOrdersImg){
                navigator.goTo("viewPendingOrders2.fxml");
            } else if (sourceNode == viewStatusImg) {
-               // navigator.goTo(la view di viewStatus);
+               navigator.goTo("OrderStatusPage.fxml");
            }
            else if(sourceNode == notificationButton){
                navigator.goToWithController("resellerNotificationPage.fxml", new ResellerNotificationGraphicController(notificationBeanList));

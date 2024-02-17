@@ -41,9 +41,10 @@ public class RiderSelectionListener {
     // questa impl nel controller applicativo
     private void assignOrderToRider(OrderBean orderBn, RiderBean riderBn) {
 
-        // ... logica di assegnazione dell'ordine ...
+
         System.out.println("assignOrderToRider");
         //NotificationManager.getInstance().notifyObservers(riderBn.getId(), orderBn);
+
         NotificationManager.getInstance().notifyRider(riderBn, orderBn);
 
     }

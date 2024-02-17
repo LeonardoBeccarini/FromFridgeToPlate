@@ -1,6 +1,7 @@
 package com.example.fromfridgetoplate.logic.control;
 
 import com.example.fromfridgetoplate.logic.bean.OrderBean;
+import com.example.fromfridgetoplate.logic.model.Order;
 import com.example.fromfridgetoplate.logic.bean.RiderBean;
 import com.example.fromfridgetoplate.logic.dao.NotificationDAO;
 import com.example.fromfridgetoplate.logic.dao.OrderDAO;
@@ -40,7 +41,13 @@ public class NotificationManager {
         boolean isAvailable = riderDAO.isRiderAvailable(riderBean);
         if (isAvailable) {
             // Crea una notifica nel database per il rider
-            ntfDAO.insertNotification(riderBean.getId(), orderBean, "Nuovo ordine assegnato");
+            Order order = new Order(orderBean.getOrderId(), orderBean.getCustomerId(), orderBean.getRetailerId(), orderBean.getStatus(), orderBean.getOrderTime(), orderBean.getRiderId());
+            order.setShippingCity(orderBean.getShippingAddress().getShippingCity());
+            System.out.println("shiiping city: "+ orderBean.getShippingAddress().getShippingCity());
+            order.setShippingProvince(orderBean.getShippingAddress().getShippingProvince());
+            order.setShippingStreet(orderBean.getShippingAddress().getShippingStreet());
+            order.setShippingStreetNumber(orderBean.getShippingAddress().getShippingStreetNumber());
+            ntfDAO.insertNotification(riderBean.getId(), order, "Nuovo ordine assegnato");
             System.out.println("Notifica creata per Rider ID: " + riderBean.getId());
         } else {
             System.out.println("Rider ID: " + riderBean.getId() + " non è disponibile.");
@@ -50,8 +57,6 @@ public class NotificationManager {
         orderDAO.setAssignation(orderBean.getOrderId());
 
     }
-
-
 
 
 

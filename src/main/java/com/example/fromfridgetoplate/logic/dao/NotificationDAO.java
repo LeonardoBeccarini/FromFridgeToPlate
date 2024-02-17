@@ -22,21 +22,22 @@ public class NotificationDAO {
     }
 
 
-    public void insertNotification(int riderId, OrderBean orderBn, String message )
+    public void insertNotification(int riderId, Order order, String message )
     {
-        String query = "{CALL insertNotification(?, ?, ?, ?, ?, ?, ?, ?, ?)}";
+        String query = "{CALL insertNotification(?, ?, ?, ?, ?, ?, ?)}";
 
         try (CallableStatement cstmt = connection.prepareCall(query)) {
             cstmt.setInt(1, riderId);
-            cstmt.setInt(2, orderBn.getOrderId());
+            cstmt.setInt(2, order.getOrderId());
             cstmt.setString(3,null);        // perchè ho aggiunto customerId alla notifica          //quircio non so quanto abbia senso riscrivere tutti i campi di order in notification,
-                                                                                                                    // bastava mettere dentro a notification un'istanza dell'entità order
+            // bastava mettere dentro a notification un'istanza dell'entità order
             cstmt.setString(4,null);        // perchè ho aggiunto shopId alla notifica
-            cstmt.setString(5, orderBn.getShippingAddress().getShippingStreet());
-            cstmt.setInt(6, orderBn.getShippingAddress().getShippingStreetNumber());
-            cstmt.setString(7, orderBn.getShippingAddress().getShippingCity());
-            cstmt.setString(8, orderBn.getShippingAddress().getShippingProvince());
-            cstmt.setString(9, message);
+            cstmt.setString(3, order.getShippingStreet());
+            System.out.println("shipping street: " + order.getShippingStreet());
+            cstmt.setInt(4, order.getShippingStreetNumber());
+            cstmt.setString(5, order.getShippingCity());
+            cstmt.setString(6, order.getShippingProvince());
+            cstmt.setString(7, message);
             cstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

@@ -1,9 +1,6 @@
 package com.example.fromfridgetoplate.patterns.factory;
 
-import com.example.fromfridgetoplate.logic.dao.NotificationDAO;
-import com.example.fromfridgetoplate.logic.dao.OrderDAO;
-import com.example.fromfridgetoplate.logic.dao.RiderDAO;
-import com.example.fromfridgetoplate.logic.dao.SingletonConnector;
+import com.example.fromfridgetoplate.logic.dao.*;
 
 import java.sql.Connection;
 
@@ -22,6 +19,9 @@ public class DAOFactory { // rappresenta la factory della struttura nelle slide
     }
 
         public NotificationDAO getNotificationDAO() {return new NotificationDAO(getConnection());}
+
+        public ShopDAO getShopDAO() {return new ShopDAO(getConnection());}
+
 
 
 

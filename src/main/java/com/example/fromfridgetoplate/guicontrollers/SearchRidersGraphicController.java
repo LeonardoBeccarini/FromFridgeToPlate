@@ -135,6 +135,9 @@ public class SearchRidersGraphicController extends GenericGraphicController {
         if (this.riderSelectionListener != null) {
 
             riderSelectionListener.onRiderSelected(selectedRiderBean, orderBean);
+            //PendingOrdersController poController = new PendingOrdersController();
+            //orderBean.setStatus("in consegna");
+            //poController.update_orderStatus(orderBean);
             Stage currentStage = (Stage) ridersTable.getScene().getWindow();
             //currentStage.close(); // Chiude la finestra dopo la selezione del rider
             Navigator nav = Navigator.getInstance(currentStage);

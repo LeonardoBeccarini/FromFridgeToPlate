@@ -147,7 +147,20 @@ public class RiderDAO {
             cstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-            // Gestisci l'eccezione
+            // da moddare bene poi
+        }
+
+    }
+
+    public void declineOrder(int orderId, int riderId) {
+        String query = "{CALL DeclineOrder(?, ?)}";
+        try (CallableStatement cstmt = connection.prepareCall(query)) {
+            cstmt.setInt(1, orderId);
+            cstmt.setInt(2, riderId);
+            cstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // da moddare bene poi
         }
     }
 
