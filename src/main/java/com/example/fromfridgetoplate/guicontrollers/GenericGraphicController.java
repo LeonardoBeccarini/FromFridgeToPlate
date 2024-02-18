@@ -32,6 +32,9 @@ public class GenericGraphicController implements Initializable {
                 else if(Session.getSession().getUserBean().getRole() == Role.OWNER){
                     navigator.goTo("resellerMainPage2.fxml");
                 }
+                else if(Session.getSession().getUserBean().getRole() == Role.RIDER){
+                    navigator.goTo("riderMainPage.fxml");
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -45,6 +48,9 @@ public class GenericGraphicController implements Initializable {
                  else if(Session.getSession().getUser().getRole() == Role.OWNER){
                      navigator.goTo("shopProfilePage.fxml");
                  }
+                else if(Session.getSession().getUserBean().getRole() == Role.RIDER){
+                    navigator.goTo("riderMainPage.fxml");
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }

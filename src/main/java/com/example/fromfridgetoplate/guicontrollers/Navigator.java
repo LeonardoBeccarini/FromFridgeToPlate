@@ -13,7 +13,7 @@ import java.util.Objects;
 
 public class Navigator {
     private static Navigator navigator = null;
-    private static Stage stage;
+    static Stage stage;
 
     private Navigator() {}
     public static Navigator getInstance(Stage newStage){

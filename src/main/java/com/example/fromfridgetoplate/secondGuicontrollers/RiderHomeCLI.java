@@ -1,12 +1,11 @@
 package com.example.fromfridgetoplate.secondGuicontrollers;
 
 import com.example.fromfridgetoplate.guicontrollers.NotificationObserver;
-import com.example.fromfridgetoplate.guicontrollers.NotificationPageGraphicController;
+import com.example.fromfridgetoplate.guicontrollers.RiderNotificationPageGraphicController;
 import com.example.fromfridgetoplate.logic.bean.NotificationBean;
 import com.example.fromfridgetoplate.logic.bean.NotificationListBean;
 import com.example.fromfridgetoplate.logic.bean.RiderBean;
 import com.example.fromfridgetoplate.logic.control.RiderHPController;
-import com.example.fromfridgetoplate.logic.control.SessionController;
 import javafx.collections.ObservableList;
 
 import java.io.IOException;
@@ -64,8 +63,7 @@ public class RiderHomeCLI implements NotificationObserver {
             isOnline = true;
 
             // Recupero i dettagli del rider dalla sessione, come nel controller grafico
-            SessionController sessionCtrl = new SessionController();
-            RiderBean riderBn = sessionCtrl.getRiderDetailsFromSession();
+            RiderBean riderBn = riderController.getRiderDetailsFromSession();
 
             if (riderBn == null) {
                 System.out.println("Errore di Login: Dettagli Rider Non Trovati. Assicurati di essere loggato correttamente.");

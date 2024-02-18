@@ -41,7 +41,7 @@ public class NotificationManager {
         boolean isAvailable = riderDAO.isRiderAvailable(riderBean);
         if (isAvailable) {
             // Crea una notifica nel database per il rider
-            Order order = new Order(orderBean.getOrderId(), orderBean.getCustomerId(), orderBean.getRetailerId(), orderBean.getStatus(), orderBean.getOrderTime(), orderBean.getRiderId());
+            Order order = new Order(orderBean.getOrderId(), orderBean.getCustomerId(), orderBean.getShopId(), orderBean.getStatus(), orderBean.getOrderTime(), orderBean.getRiderId());
             order.setShippingCity(orderBean.getShippingAddress().getShippingCity());
             System.out.println("shiiping city: "+ orderBean.getShippingAddress().getShippingCity());
             order.setShippingProvince(orderBean.getShippingAddress().getShippingProvince());

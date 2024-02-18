@@ -21,7 +21,6 @@ public class OrderBean {
     private String status;
     int riderId;
 
-    String retailerId;
 
 
 
@@ -33,24 +32,29 @@ public class OrderBean {
         this.status = status;
     }
 
-    public OrderBean(int orderId, String customerId, String retailerId, String status, LocalDateTime orderTime, int riderId) {
+    public OrderBean(int orderId, String customerId, String shopId, String status, LocalDateTime orderTime, int riderId) {
         this.orderId = orderId;
         this.customerId = customerId;
-        this.retailerId = retailerId;
+        this.shopId = shopId;
         this.status = status;
         this.orderTime = orderTime;
         this.riderId = riderId;
 
     }
 
-    public OrderBean(int orderId, String customerId, String retailerId, String status, LocalDateTime orderTime, int riderId, String city) {
+    public OrderBean(int orderId, String customerId, String shopId, String status, LocalDateTime orderTime, int riderId, String city) {
         this.orderId = orderId;
         this.customerId = customerId;
-        this.retailerId = retailerId;
+        this.shopId = shopId;
         this.status = status;
         this.orderTime = orderTime;
         this.riderId = riderId;
         this.shippingCity = city;
+    }
+
+    public OrderBean(int orderId, AddressBean shippingAddress) {
+        this.orderId = orderId;
+        this.shippingAddress = shippingAddress;
     }
 
     public OrderBean(String shopId, AddressBean shippingAddress) {
@@ -113,13 +117,6 @@ public class OrderBean {
         this.shippingCity = shippingCity;
     }
 
-    public String getRetailerId() {
-        return retailerId;
-    }
-
-    public void setRetailerId(String retailerId) {
-        this.retailerId = retailerId;
-    }
 
     public int getRiderId() {
         return riderId;

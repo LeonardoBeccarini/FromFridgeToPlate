@@ -6,7 +6,7 @@ import com.example.fromfridgetoplate.logic.bean.NotificationListBean;
 import com.example.fromfridgetoplate.logic.bean.OrderBean;
 import com.example.fromfridgetoplate.logic.bean.RiderBean;
 import com.example.fromfridgetoplate.logic.control.RiderHPController;
-import com.example.fromfridgetoplate.logic.control.SessionController;
+
 import com.example.fromfridgetoplate.logic.model.Session;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -26,8 +26,10 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 public class RiderHomePageGraphicController extends GenericGraphicController implements NotificationObserver {
 
@@ -68,13 +70,14 @@ public class RiderHomePageGraphicController extends GenericGraphicController imp
     private  Button offlineButton;
 
     private RiderHPController riderController;
-    private NotificationPageGraphicController notificationPageGController;
+    private RiderNotificationPageGraphicController notificationPageGController;
     private NotificationListBean nlb = new NotificationListBean();
     private boolean isOnline = false;
 
 
-    @FXML
-    void initialize() {
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        super.initialize(location, resources);
         assert homeButton != null : "fx:id=\"homeButton\" was not injected: check your FXML file 'riderMainPage.fxml'.";
         assert msgImage != null : "fx:id=\"msgImage\" was not injected: check your FXML file 'riderMainPage.fxml'.";
         assert notificationsButton != null : "fx:id=\"notificationsButton\" was not injected: check your FXML file 'riderMainPage.fxml'.";
@@ -85,11 +88,7 @@ public class RiderHomePageGraphicController extends GenericGraphicController imp
         assert stackpaneId2 != null : "fx:id=\"stackpaneId2\" was not injected: check your FXML file 'riderMainPage.fxml'.";
         assert stackpaneId3 != null : "fx:id=\"stackpaneId3\" was not injected: check your FXML file 'riderMainPage.fxml'.";
 
-
-    }
-
-    @FXML
-    void onClick(MouseEvent event) {
+        processOnline();
 
     }
 
@@ -113,6 +112,11 @@ public class RiderHomePageGraphicController extends GenericGraphicController imp
 
     @FXML
     void goOnline(ActionEvent event) {
+
+        processOnline();
+    }
+
+    private void processOnline() {
         // quando andro online chiamero il notificationmanager per segnalare la mia entrata in servizio
         // in qualche modo il controller grafico di login dovrà passare in caso di successo di login, il rispettivo riderBean, a quest'altro
         // controller grafico.
@@ -124,8 +128,8 @@ public class RiderHomePageGraphicController extends GenericGraphicController imp
         if (!isOnline) {
             //  istruzioni da eseguire la prima volta che si clicca sul pulsante goOnline
             isOnline = true;
-            SessionController sessionCtrl = new SessionController();
-            RiderBean riderBn = sessionCtrl.getRiderDetailsFromSession();// serve per accedere alle informazioni immesse al momento della
+            RiderHPController riderCtrl = new RiderHPController();
+            RiderBean riderBn = riderCtrl.getRiderDetailsFromSession();// serve per accedere alle informazioni immesse al momento della
             // registrazione, che mi servono, per popolare il riderbean
 
             if (riderBn == null) {
@@ -144,7 +148,7 @@ public class RiderHomePageGraphicController extends GenericGraphicController imp
 
 
         riderController.setRiderAvailable(true);
-       // riderController.setRgp(this); // da eliminare
+        // riderController.setRgp(this); // da eliminare
 
         System.out.println("Entra in servizio button clicked");
 
@@ -158,29 +162,6 @@ public class RiderHomePageGraphicController extends GenericGraphicController imp
         riderController.startNotificationPolling();
 
 
-
-    }
-
-    public void updateNotifications(List<NotificationBean> notificationBns) {
-        // per aggiornare la vista con le nuove notifiche
-
-        int newNotificationsCount = notificationBns.size();
-
-        // aggiorna il testo del bottone notificationsButton
-        Platform.runLater(() -> {
-            notificationsButton.setText("Notifiche (" + newNotificationsCount + ")");
-        });
-
-        /*for (NotificationBean notificationBean : notificationBns) {
-            System.out.println("Rider ID: " + notificationBean.getRiderId());
-            System.out.println("Order ID: " + notificationBean.getOrderId());
-            System.out.println("Street: " + notificationBean.getStreet());
-            System.out.println("Street Number: " + notificationBean.getStreetNumber());
-            System.out.println("City: " + notificationBean.getCity());
-            System.out.println("Province: " + notificationBean.getProvince());
-            System.out.println("Message: " + notificationBean.getMessageText());
-            System.out.println("------------------------------------");
-        }*/
     }
 
 
@@ -238,11 +219,29 @@ public class RiderHomePageGraphicController extends GenericGraphicController imp
 
     public void SetNotificationsAsRead() {
         riderController.markNotificationsAsRead();
-        //this.nlb.clearNotifications();
+
+    }
+
+    public void SetNotificationAsRead(NotificationBean notifBn){
+        riderController.markNotificationAsRead(notifBn);
     }
 
     public Node getRootNode() {
         return root; // 'root' è l'AnchorPane
+    }
+
+
+    @FXML
+    public void onClick(MouseEvent event) throws IOException {
+        Node sourceNode = (Node) event.getSource() ;
+        if(sourceNode == reportImg){
+            goOffline(null);
+            navigator.goTo("RiderDeliveryReport.fxml");
+        } else if (sourceNode == orderImage) {
+            goOffline(null);
+            navigator.goTo("RiderCurrentOrder.fxml");
+        }
+
     }
 
 }

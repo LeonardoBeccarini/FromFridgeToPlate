@@ -2,14 +2,13 @@ package com.example.fromfridgetoplate.guicontrollers;
 
 import com.example.fromfridgetoplate.logic.bean.NotificationBean;
 
-import com.example.fromfridgetoplate.logic.bean.NotificationListBean;
+import com.example.fromfridgetoplate.logic.bean.RiderBean;
 import com.example.fromfridgetoplate.logic.control.RiderHPController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -25,22 +24,13 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 // -----------------------------------------notification page per il RIDER----------------------------------------------
-public class NotificationPageGraphicController extends GenericGraphicController  {
+public class RiderNotificationPageGraphicController extends GenericGraphicController  {
 
-    @FXML
-    private ResourceBundle resources;
 
-    @FXML
-    private URL location;
 
     @FXML
     private Button backButton;
 
-    @FXML
-    private Button homeButton;
-
-    @FXML
-    private Button profileButton;
 
     @FXML
     private TableView<NotificationBean> notTable;
@@ -122,18 +112,33 @@ public class NotificationPageGraphicController extends GenericGraphicController 
         NotificationBean selectedNotification = notTable.getSelectionModel().getSelectedItem();
         if (selectedNotification != null) {
             RiderHPController riderCtrl = new RiderHPController();
-            riderCtrl.acceptOrder(selectedNotification);
-            System.out.println("Accettato incarico per l'ordine ID: " + selectedNotification.getOrderId());
+            RiderBean currentRider = riderCtrl.getRiderDetailsFromSession();
+
+            // verifichiamo se il rider ha già un ordine in consegna
+            boolean hasOrderInDelivery = riderCtrl.checkForOrderInDelivery(currentRider);
+
+            if (hasOrderInDelivery) {
+
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Consegna in corso");
+                alert.setHeaderText("Hai già un ordine in consegna");
+                alert.setContentText("Devi completare la consegna corrente prima di accettarne un'altra.");
+                alert.showAndWait();
+            } else {
+                // Se non ci sono ordini in consegna, allora siprocederà con l'accettazione dell'ordine
+                riderCtrl.acceptOrder(selectedNotification);
+                System.out.println("Accettato incarico per l'ordine ID: " + selectedNotification.getOrderId());
+
+
+                riderGC.SetNotificationAsRead(selectedNotification);
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setAlertType(Alert.AlertType.INFORMATION);
+                alert.setTitle("Consegna accettata");
+                alert.setHeaderText("Hai preso in carico l'ordine");
+                alert.setContentText("con orderId: " + selectedNotification.getOrderId());
+                alert.showAndWait();
+            }
         }
-
-        riderGC.SetNotificationsAsRead();
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setAlertType(Alert.AlertType.INFORMATION);
-        alert.setTitle("Hai preso in carico l'ordine");
-
-        alert.setContentText("con orderId : "+ selectedNotification.getOrderId());
-        alert.showAndWait();
-
     }
 
 
@@ -147,49 +152,18 @@ public class NotificationPageGraphicController extends GenericGraphicController 
             riderCtrl.declineOrder(selectedNotification);
             System.out.println("Rifiutato incarico per l'ordine ID: " + selectedNotification.getOrderId());
         }
-        riderGC.SetNotificationsAsRead();
 
+        riderGC.SetNotificationAsRead(selectedNotification);
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setAlertType(Alert.AlertType.INFORMATION);
         alert.setTitle("Hai rifiutato l'ordine");
 
-        alert.setContentText("con orderId : "+ selectedNotification.getOrderId());
+        alert.setContentText("Hai rifiutato l'ordine con orderId : "+ selectedNotification.getOrderId());
         alert.showAndWait();
     }
 
-
-    public void populateTableWithSampleData() {
-        // Creazione dati di esempio
-        List<NotificationBean> sampleData = new ArrayList<>();
-        sampleData.add(new NotificationBean(
-                1,          // riderId
-                100,        // orderId
-                "Sample Street", // street
-                10,         // streetNumber
-                "Sample City",   // city
-                "SC",       // province
-                "Your order is ready!" // messageText
-        ));
-
-
-        // Imposta i dati sulla TableView
-        notTable.setItems(FXCollections.observableArrayList(sampleData));
-    }
-
-
-    //@Override
     public void update(ObservableList<NotificationBean> notificationBeans) {
-    // stampe di controllo, da eleminare poi
-        /*for (NotificationBean bean : notificationBeans) {
-            System.out.println("Rider ID: " + bean.getRiderId());
-            System.out.println("Order ID: " + bean.getOrderId());
-            System.out.println("Street: " + bean.getStreet());
-            System.out.println("Street Number: " + bean.getStreetNumber());
-            System.out.println("City: " + bean.getCity());
-            System.out.println("Province: " + bean.getProvince());
-            System.out.println("Message: " + bean.getMessageText());
-            System.out.println("------------------------------------");
-        }*/
+
         notTable.setItems(notificationBeans);
     }
 

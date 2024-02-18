@@ -1,13 +1,13 @@
 package com.example.fromfridgetoplate.logic.dao;
 
-import com.example.fromfridgetoplate.logic.bean.NotificationBean;
-import com.example.fromfridgetoplate.logic.bean.RiderBean;
-import com.example.fromfridgetoplate.logic.bean.RiderPrefBean;
-import com.example.fromfridgetoplate.logic.bean.SearchBean;
+import com.example.fromfridgetoplate.logic.bean.*;
+import com.example.fromfridgetoplate.logic.model.Order;
+import com.example.fromfridgetoplate.logic.model.OrderList;
 import com.example.fromfridgetoplate.logic.model.Rider;
 import com.example.fromfridgetoplate.logic.model.Session;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -163,6 +163,89 @@ public class RiderDAO {
             // da moddare bene poi
         }
     }
+
+
+    public OrderList getConfirmedDeliveriesForRider(int riderId) {
+        OrderList confirmedDeliveries = new OrderList();
+
+        String call = "{CALL GetConfirmedDeliveriesForRider(?)}";
+        try (CallableStatement cstmt = connection.prepareCall(call)) {
+            cstmt.setInt(1, riderId);
+
+            try (ResultSet rs = cstmt.executeQuery()) {
+                while (rs.next()) {
+                    Order order = new Order(
+                            rs.getInt("orderId"),
+                            rs.getString("CustomerId"),
+                            rs.getString("NegozioId"),
+                            rs.getString("status"),
+                            rs.getTimestamp("orderTime").toLocalDateTime(),
+                            rs.getInt("RiderId")
+                    );
+                    order.setDeliveryTime(rs.getTimestamp("deliveryTime").toLocalDateTime());
+                    order.setShippingStreet(rs.getString("shippingStreet"));
+                    order.setShippingStreetNumber(rs.getInt("shippingStreetNumber"));
+                    order.setShippingCity(rs.getString("shippingCity"));
+                    order.setShippingProvince(rs.getString("shippingProvince"));
+                    // Impostare altre proprietà di Order come necessario...
+
+                    confirmedDeliveries.addOrder(order);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Gestione dell'eccezione
+        }
+
+        return confirmedDeliveries;
+    }
+
+    public boolean checkForOrderInDelivery(int riderId) {
+        String query = "{CALL checkOrderInDeliveryForRider(?, ?)}";
+        try (CallableStatement cstmt = connection.prepareCall(query)) {
+            cstmt.setInt(1, riderId);
+            cstmt.registerOutParameter(2, Types.BOOLEAN);
+            cstmt.execute();
+
+            return cstmt.getBoolean(2);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public Order getInDeliveryOrderForRider(int riderId) {
+        Order order = null;
+        String query = "{CALL GetInDeliveryOrderForRider(?)}";
+        try (CallableStatement cstmt = connection.prepareCall(query)) {
+            cstmt.setInt(1, riderId);
+            ResultSet rs = cstmt.executeQuery();
+
+            if (rs.next()) {
+                order = new Order(rs.getInt("orderId"), rs.getString("shippingStreet"), rs.getInt("shippingStreetNumber"), rs.getString("shippingCity"), rs.getString("shippingProvince")  );
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return order;
+    }
+
+    public void updateOrderStatusToDelivered(int orderId, LocalDateTime deliveryTime) {
+        String query = "{CALL UpdateOrderToDelivered(?, ?)}";
+        try (CallableStatement cstmt = connection.prepareCall(query)) {
+            cstmt.setInt(1, orderId);
+            cstmt.setTimestamp(2, Timestamp.valueOf(deliveryTime));
+            cstmt.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+
+
 
 
 }
