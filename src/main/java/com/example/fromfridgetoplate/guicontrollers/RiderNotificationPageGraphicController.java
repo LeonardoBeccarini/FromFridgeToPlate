@@ -1,10 +1,8 @@
 package com.example.fromfridgetoplate.guicontrollers;
 
 import com.example.fromfridgetoplate.logic.bean.NotificationBean;
-
 import com.example.fromfridgetoplate.logic.bean.RiderBean;
 import com.example.fromfridgetoplate.logic.control.RiderHPController;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -17,10 +15,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 
 // -----------------------------------------notification page per il RIDER----------------------------------------------
@@ -63,23 +58,28 @@ public class RiderNotificationPageGraphicController extends GenericGraphicContro
 
 
     @FXML
-    void goBack(ActionEvent event) throws IOException { // non funziona gesucristo
-
-        //riderGC.goOnline(event);
-
-        // come gestisco il cambio scena ??
-
-        if (riderGC != null) {
-            Scene existingScene = riderGC.getRootNode().getScene();
-            if (existingScene != null) {
-                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                stage.setScene(existingScene);
-                stage.show();
-            } else {
-                System.out.println("error in goback");
+    void goBack(ActionEvent event) {
+        try {
+            if (riderGC != null) {
+                Scene existingScene = riderGC.getRootNode().getScene();
+                if (existingScene != null) {
+                    Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                    stage.setScene(existingScene);
+                    stage.show();
+                } else {
+                    throw new IllegalStateException("La scena precedente non è disponibile.");
+                }
             }
+        } catch (Exception e) {
+
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Errore di navigazione");
+            alert.setHeaderText(null);
+            alert.setContentText("Impossibile tornare alla vista precedente: " + e.getMessage());
+            alert.showAndWait();
         }
     }
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -107,31 +107,29 @@ public class RiderNotificationPageGraphicController extends GenericGraphicContro
     private void handleAccept(ActionEvent event) {
         NotificationBean selectedNotification = notTable.getSelectionModel().getSelectedItem();
         if (selectedNotification != null) {
-            RiderHPController riderCtrl = new RiderHPController();
-            RiderBean currentRider = riderCtrl.getRiderDetailsFromSession();
+            try {
+                RiderHPController riderCtrl = new RiderHPController();
+                RiderBean currentRider = riderCtrl.getRiderDetailsFromSession();
+                // verifica se il rider ha già un ordine in consegna
+                boolean hasOrderInDelivery = riderCtrl.checkForOrderInDelivery(currentRider);
 
-            // verifichiamo se il rider ha già un ordine in consegna
-            boolean hasOrderInDelivery = riderCtrl.checkForOrderInDelivery(currentRider);
+                if (hasOrderInDelivery) {
+                    throw new IllegalStateException("Hai già un ordine in consegna.");
+                } else {
+                    riderCtrl.acceptOrder(selectedNotification);
+                    riderGC.SetNotificationAsRead(selectedNotification);
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Consegna accettata");
+                    alert.setHeaderText("Hai preso in carico l'ordine");
+                    alert.setContentText("con orderId: " + selectedNotification.getOrderId());
+                    alert.showAndWait();
+                }
+            } catch (Exception e) {
 
-            if (hasOrderInDelivery) {
-
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Consegna in corso");
-                alert.setHeaderText("Hai già un ordine in consegna");
-                alert.setContentText("Devi completare la consegna corrente prima di accettarne un'altra.");
-                alert.showAndWait();
-            } else {
-                // Se non ci sono ordini in consegna, allora siprocederà con l'accettazione dell'ordine
-                riderCtrl.acceptOrder(selectedNotification);
-                System.out.println("Accettato incarico per l'ordine ID: " + selectedNotification.getOrderId());
-
-
-                riderGC.SetNotificationAsRead(selectedNotification);
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setAlertType(Alert.AlertType.INFORMATION);
-                alert.setTitle("Consegna accettata");
-                alert.setHeaderText("Hai preso in carico l'ordine");
-                alert.setContentText("con orderId: " + selectedNotification.getOrderId());
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Errore nell'accettazione dell'ordine");
+                alert.setHeaderText(null);
+                alert.setContentText("Non è stato possibile accettare l'ordine: " + e.getMessage());
                 alert.showAndWait();
             }
         }
@@ -143,20 +141,28 @@ public class RiderNotificationPageGraphicController extends GenericGraphicContro
     private void handleDecline(ActionEvent event) {
         NotificationBean selectedNotification = notTable.getSelectionModel().getSelectedItem();
         if (selectedNotification != null) {
+            try {
+                RiderHPController riderCtrl = new RiderHPController();
+                riderCtrl.declineOrder(selectedNotification);
+                riderGC.SetNotificationAsRead(selectedNotification);
 
-            RiderHPController riderCtrl = new RiderHPController();
-            riderCtrl.declineOrder(selectedNotification);
-            System.out.println("Rifiutato incarico per l'ordine ID: " + selectedNotification.getOrderId());
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Ordine rifiutato");
+                alert.setHeaderText(null);
+                alert.setContentText("Hai rifiutato l'ordine con orderId: " + selectedNotification.getOrderId());
+                alert.showAndWait();
+
+            } catch (Exception e) {
+
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Errore nel rifiuto dell'ordine");
+                alert.setHeaderText(null);
+                alert.setContentText("Non è stato possibile rifiutare l'ordine: " + e.getMessage());
+                alert.showAndWait();
+            }
         }
-
-        riderGC.SetNotificationAsRead(selectedNotification);
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setAlertType(Alert.AlertType.INFORMATION);
-        alert.setTitle("Hai rifiutato l'ordine");
-
-        alert.setContentText("Hai rifiutato l'ordine con orderId : "+ selectedNotification.getOrderId());
-        alert.showAndWait();
     }
+
 
     public void update(ObservableList<NotificationBean> notificationBeans) {
 

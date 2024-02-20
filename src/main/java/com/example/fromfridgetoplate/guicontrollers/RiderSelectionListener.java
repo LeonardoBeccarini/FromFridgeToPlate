@@ -10,21 +10,9 @@ public class RiderSelectionListener implements IRiderSelectionListener {
 
     public void onRiderSelected(RiderBean selectedRiderBean, OrderBean orderBean) { // in realtà dovrà mandare una notifica al rider
 
-        /* Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        System.out.println("L'ordine è stato preso in carico dal rider : " + selectedRiderBean.getName());
-
-        alert.setTitle("Conferma Assegnazione Rider");
-        alert.setHeaderText("Assegnazione Rider Completata");
-        alert.setContentText("L'ordine è stato preso in carico dal rider:\n" +
-                    "Nome: " + selectedRiderBean.getName() + "\n" +
-                    "Cognome: " + selectedRiderBean.getSurname() + "\n" +
-                    "Città Assegnata: " + selectedRiderBean.getAssignedCity());
-        alert.showAndWait(); */
-
         assignOrderToRider(orderBean, selectedRiderBean);
 
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        System.out.println("Al rider : " + selectedRiderBean.getName() + " è stata inviata una notifica per l'incarico di consegna.");
 
         alert.setTitle("Sending messagge...");
         alert.setHeaderText("Notifica al rider inviata");
@@ -41,13 +29,7 @@ public class RiderSelectionListener implements IRiderSelectionListener {
     // questa impl nel controller applicativo
     private void assignOrderToRider(OrderBean orderBn, RiderBean riderBn) {
 
-
-        System.out.println("assignOrderToRider");
-        //NotificationManager.getInstance().notifyObservers(riderBn.getId(), orderBn);
-
         NotificationManager.getInstance().notifyRider(riderBn, orderBn);
-        // metodo della OrderDAO per impostare per quell'ordine , il riderid del rider scelto:
-
 
     }
 

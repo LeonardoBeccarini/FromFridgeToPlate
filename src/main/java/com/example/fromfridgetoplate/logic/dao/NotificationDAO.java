@@ -1,6 +1,6 @@
 package com.example.fromfridgetoplate.logic.dao;
 
-import com.example.fromfridgetoplate.logic.bean.OrderBean;
+
 import com.example.fromfridgetoplate.logic.model.Notification;
 import com.example.fromfridgetoplate.logic.model.Order;
 
@@ -29,11 +29,11 @@ public class NotificationDAO {
         try (CallableStatement cstmt = connection.prepareCall(query)) {
             cstmt.setInt(1, riderId);
             cstmt.setInt(2, order.getOrderId());
-            cstmt.setString(3,null);        // perchè ho aggiunto customerId alla notifica          //quircio non so quanto abbia senso riscrivere tutti i campi di order in notification,
+            cstmt.setString(3,null);        // perchè ho aggiunto customerId alla notifica
             // bastava mettere dentro a notification un'istanza dell'entità order
             cstmt.setString(4,null);        // perchè ho aggiunto shopId alla notifica
             cstmt.setString(3, order.getShippingStreet());
-            System.out.println("shipping street: " + order.getShippingStreet());
+
             cstmt.setInt(4, order.getShippingStreetNumber());
             cstmt.setString(5, order.getShippingCity());
             cstmt.setString(6, order.getShippingProvince());
@@ -44,9 +44,9 @@ public class NotificationDAO {
 
         }
     }
-    public void insertNotificationBecca(Order order, String message){
+    public void insertNotificationRes(Order order, String message){
         String query = "{CALL insertNotification(?, ?, ?, ?, ?, ?, ?, ?, ?)}";
-        System.out.println(order.getShopId());
+
         try (CallableStatement cstmt = connection.prepareCall(query)) {
             cstmt.setInt(1, 0);
             cstmt.setInt(2, order.getOrderId());
@@ -121,15 +121,6 @@ public class NotificationDAO {
         return notifications;
     }
 
-
-    /*
-                    System.out.println("Notification - Rider ID: " + notification.getRiderId());
-                    System.out.println("Notification - Order ID: " + notification.getOrderId());
-                    System.out.println("Notification - Street: " + notification.getStreet());
-                    System.out.println("Notification - Street Number: " + notification.getStreetNumber());
-                    System.out.println("Notification - City: " + notification.getCity());
-                    System.out.println("Notification - Province: " + notification.getProvince());
-                    System.out.println("Notification - Message: " + notification.getMessageText());*/
 
     public void markNotificationAsRead(int notificationId) {
         String query = "{CALL SetNotificationAsRead(?)}";

@@ -116,7 +116,7 @@ public class MakeOrderControl {
         newOrder.setItems(cart.getItemList());
         Order savedOrder = orderDAO.saveOrder(newOrder);
 
-        notificationDAO.insertNotificationBecca(savedOrder, "nuovo ordine ricevuto!");
+        notificationDAO.insertNotificationRes(savedOrder, "nuovo ordine ricevuto!");
 
     }
     public List<NotificationBean> loadNotification(){
