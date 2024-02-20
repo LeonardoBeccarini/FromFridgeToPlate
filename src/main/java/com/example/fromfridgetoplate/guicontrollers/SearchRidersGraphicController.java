@@ -5,6 +5,7 @@ import com.example.fromfridgetoplate.logic.bean.RiderBean;
 import com.example.fromfridgetoplate.logic.bean.RiderPrefBean;
 import com.example.fromfridgetoplate.logic.bean.SearchBean;
 import com.example.fromfridgetoplate.logic.control.PendingOrdersController;
+import com.example.fromfridgetoplate.logic.exceptions.RiderSelectionException;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -80,7 +81,7 @@ public class SearchRidersGraphicController extends GenericGraphicController {
     // selezionato dalla TableView(ogni riga è un riderBean). Se un rider è selezionato dall'utente, il metodo selectRider
     // viene chiamato.
     public void loadData(SearchBean searchBean) {
-        // Chiamiamo prima il controller applicativo per ottenere i dati
+
         PendingOrdersController pendingOrdersControl = new PendingOrdersController();
 
         this.setAssignedCity(searchBean.getCity());
@@ -89,59 +90,53 @@ public class SearchRidersGraphicController extends GenericGraphicController {
 
         List<RiderBean> avRidersBean = pendingOrdersControl.getAvalaibleRiders(searchBean);
 
-
-        for (RiderBean rider : avRidersBean) {
-            System.out.println("ID: " + rider.getId() + ", Nome: " + rider.getName() +
-                    ", Cognome: " + rider.getSurname() + ", Città: " + rider.getAssignedCity());
-        }
-
-        // Popola la TableView con i dati
         ridersTable.setItems(FXCollections.observableArrayList(avRidersBean));
 
-        //updateUI(pendingOrders); ??
-        System.out.println("checkloaddatasearchriders");
     }
 
     @FXML
-    void choose_rider(ActionEvent event) throws IOException{
-        RiderBean selectedRiderBean = ridersTable.getSelectionModel().getSelectedItem();
-
-        if (selectedRiderBean != null) {
-            selectRider(selectedRiderBean);
-
-        } else {
-            // qui va un altro alert
+    void choose_rider(ActionEvent event) {
+        try {
+            RiderBean selectedRiderBean = ridersTable.getSelectionModel().getSelectedItem();
+            if (selectedRiderBean != null) {
+                selectRider(selectedRiderBean);
+            } else {
+                throw new RiderSelectionException("Nessun Rider Selezionato. Per favore, seleziona un rider prima di confermare.");
+            }
+        } catch (RiderSelectionException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setAlertType(Alert.AlertType.ERROR);
-            alert.setTitle("Errore nella Selezione");
-            alert.setHeaderText("Nessun Rider Selezionato");
-            alert.setContentText("Per favore, seleziona un rider prima di confermare.");
+            alert.setTitle("Errore di Selezione");
+            alert.setHeaderText(null);
+            alert.setContentText(e.getMessage());
             alert.showAndWait();
         }
     }
 
 
 
+
     // Metodo chiamato quando un rider viene selezionato
-    private void selectRider(RiderBean selectedRiderBean) throws IOException {
-        // quando lutente seleziona un rider e lo conferma col button, chiamiamo il metodo di
-        // riderSelectionListener.onRiderSelected(rider), e gli passiamo
-        // il rider , in realtà dpvrebbe essere un RiderBean.
+    private void selectRider(RiderBean selectedRiderBean) {
+        try {
+            if (this.riderSelectionListener != null) {
+                riderSelectionListener.onRiderSelected(selectedRiderBean, orderBean);
+                Stage currentStage = (Stage) ridersTable.getScene().getWindow();
+                Navigator nav = Navigator.getInstance(currentStage);
+                nav.goTo("viewPendingOrders2.fxml");
+            } else {
+                throw new IllegalStateException("Il RiderSelectionListener non è impostato.");
+            } //IllegalStateException è una sottoclasse di RuntimeException, che a sua volta è una sottoclasse di Exception.
+        } catch (Exception e) {
+
+            e.printStackTrace();
 
 
-        if (this.riderSelectionListener != null) {
-
-            riderSelectionListener.onRiderSelected(selectedRiderBean, orderBean);
-            Stage currentStage = (Stage) ridersTable.getScene().getWindow();
-            Navigator nav = Navigator.getInstance(currentStage);
-            nav.goTo("viewPendingOrders2.fxml");
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Errore di Selezione");
+            alert.setHeaderText("Impossibile completare la selezione");
+            alert.setContentText("Si è verificato un errore durante la selezione del rider: " + e.getMessage());
+            alert.showAndWait();
         }
-
-        else{
-            System.out.println("Error");
-        }
-
-
     }
 
     public String getAssignedCity() {

@@ -48,13 +48,13 @@ public class RiderCurrentOrderGraphicController extends GenericGraphicController
     }
 
     public void loadOrderDetails()  {
-        System.out.println("check0");
+
         try {
             RiderHPController riderCtrl = new RiderHPController();
             RiderBean riderBn = riderCtrl.getRiderDetailsFromSession();
-            System.out.println("riderId form loadOrderDetails:" + riderBn.getId());
+
             this.currentOrderBean = riderCtrl.getInDeliveryOrderForRider(riderBn);
-            System.out.println("id ordine from loadorderdetails:" + currentOrderBean.getOrderId());
+
             orderIdLabel.setText("Id dell'ordine: " + currentOrderBean.getOrderId());
             shippingStreetLabel.setText("Via: " + currentOrderBean.getShippingAddress().getShippingStreet());
             shippingCityLabel.setText("Città: " + currentOrderBean.getShippingAddress().getShippingCity());
