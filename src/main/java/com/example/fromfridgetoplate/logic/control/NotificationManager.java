@@ -10,14 +10,14 @@ import com.example.fromfridgetoplate.patterns.factory.DAOFactory;
 
 public class NotificationManager {
 
-    private static NotificationManager instance = new NotificationManager();
-
-
-
     private NotificationManager() {}
 
+    private static class SingletonHelper {
+        private static final NotificationManager INSTANCE = new NotificationManager();
+    }
+
     public static NotificationManager getInstance() {
-        return instance;
+        return SingletonHelper.INSTANCE;
     }
 
 
@@ -27,7 +27,7 @@ public class NotificationManager {
         RiderDAO riderDAO = daoFactory.getRiderDAO();
 
         riderDAO.setRiderAvailable(riderBn);
-        //System.out.println("Stato di disponibilità aggiornato per Rider ID: " + riderBn.getId());
+
     }
 
     public void notifyRider(RiderBean riderBean, OrderBean orderBean) { // purtroppo da qui il rider, dovrà andarsi a retrievare
@@ -43,14 +43,12 @@ public class NotificationManager {
             // Crea una notifica nel database per il rider
             Order order = new Order(orderBean.getOrderId(), orderBean.getCustomerId(), orderBean.getShopId(), orderBean.getStatus(), orderBean.getOrderTime(), orderBean.getRiderId());
             order.setShippingCity(orderBean.getShippingAddress().getShippingCity());
-            System.out.println("shiiping city: "+ orderBean.getShippingAddress().getShippingCity());
+
             order.setShippingProvince(orderBean.getShippingAddress().getShippingProvince());
             order.setShippingStreet(orderBean.getShippingAddress().getShippingStreet());
             order.setShippingStreetNumber(orderBean.getShippingAddress().getShippingStreetNumber());
             ntfDAO.insertNotification(riderBean.getId(), order, "Nuovo ordine assegnato");
-            System.out.println("Notifica creata per Rider ID: " + riderBean.getId());
-        } else {
-            System.out.println("Rider ID: " + riderBean.getId() + " non è disponibile.");
+
         }
 
         OrderDAO orderDAO = daoFactory.getOrderDAO();
@@ -58,9 +56,6 @@ public class NotificationManager {
         orderDAO.setAssignation(orderBean.getOrderId());
 
     }
-
-
-
 
 
 
