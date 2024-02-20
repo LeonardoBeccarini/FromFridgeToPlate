@@ -39,7 +39,6 @@ public class RiderDAO {
 
             while (rs.next()) {
                 int riderId = rs.getInt("Id");
-                System.out.println("riderId:"+ riderId);
                 Rider rider = new Rider(
                         riderId,
                         rs.getString("Nome"),
@@ -47,15 +46,11 @@ public class RiderDAO {
                         rs.getString("assignedCity")
 
                 );
-                // non sono inizializzati dal costruttore, perchè quando
-                // viene creato un rider, si suppone che quei campi potrebbero ancora non essere decisi al momento della creazione
-                // rider.setAvailable(rs.getBoolean("isAvailable")); // questo sarà sempre true
-                //rider.setAssignedCity(rs.getString("assignedCity"));
                 availableRiders.add(rider);
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            // Gestione delle eccezioni
+
         } finally {
 
             closeQuietly(rs);
@@ -103,7 +98,7 @@ public class RiderDAO {
         //questo contiene le informazione immesse al momento del login, quindi username, pw, e role, poi ne prendo l'email (usernm) cosi
         // da poter accedere alle informazioni immesse al momento della registrazione, che mi servono, per popolare il riderbean,
         // che verrà poi passata dal controlle grafico del rider sia a quello applicativo sia al controller delle notifiche
-        //System.out.println("useremail: "+ userEmail);
+
         String query = "{CALL GetRiderDetailsByEmail(?)}";
 
         try (CallableStatement cstmt = connection.prepareCall(query)) {
@@ -118,7 +113,6 @@ public class RiderDAO {
                     );
 
                     riderBean.setId(rs.getInt("Id"));
-                    //System.out.println("riderId from details: "+ rs.getInt("Id") );
                     return riderBean;
                 }
             }
@@ -270,7 +264,7 @@ public class RiderDAO {
     public boolean registerRider(String name, String surname, String email, String password, String city) {
         CallableStatement stmt = null;
         try {
-            System.out.println("name"+ name + "pw" + password);
+
             stmt = connection.prepareCall("{CALL RegisterRider(?, ?, ?, ?, ?, ?)}");
 
             stmt.setString(1, name);
@@ -279,14 +273,10 @@ public class RiderDAO {
             stmt.setString(4, password);
             stmt.setString(5, city);
 
-
             stmt.registerOutParameter(6, Types.BOOLEAN);
-
             stmt.execute();
 
-            boolean result = stmt.getBoolean(6);
-
-            return result;
+            return stmt.getBoolean(6);
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
