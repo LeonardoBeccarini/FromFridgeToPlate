@@ -20,7 +20,8 @@ public class RiderHomePageCLIController implements NotificationObserver {
     }
 
     public void mainMenu() {
-        while (true) {
+        boolean isRunning = true;
+        while (isRunning) {
             System.out.println("\n*** Menu Principale Rider ***");
             System.out.println("1. Vai Online");
             System.out.println("2. Vai Offline");
@@ -56,7 +57,7 @@ public class RiderHomePageCLIController implements NotificationObserver {
 
                 case 6:
                     System.out.println("Uscita dal sistema...");
-                    System.exit(0);
+                    isRunning = false;
                     break;
                 default:
                     System.out.println("Opzione non valida, riprova.");

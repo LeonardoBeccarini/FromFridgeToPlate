@@ -246,13 +246,23 @@ public class RiderDAO {
 
     public void updateOrderStatusToDelivered(int orderId, LocalDateTime deliveryTime) {
         String query = "{CALL UpdateOrderToDelivered(?, ?)}";
+        CallableStatement cstmt = null;  // metto qui null perche per il blocco finally, cstmt deve risultare inizializzato, e il blocco finally devo farlo perchè devo sempre chiudere la risorsa
         try {
-            CallableStatement cstmt = connection.prepareCall(query);
+            cstmt = connection.prepareCall(query);
             cstmt.setInt(1, orderId);
             cstmt.setTimestamp(2, Timestamp.valueOf(deliveryTime));
             cstmt.execute();
         } catch (SQLException e) {
             e.printStackTrace();
+        }finally {
+            // chiudo risorse aperte
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
@@ -281,7 +291,7 @@ public class RiderDAO {
             e.printStackTrace();
             return false;
         }finally {
-            // Chiudi le risorse JDBC in modo sicuro
+            // chiudo risorse aperte
             if (stmt != null) {
                 try {
                     stmt.close();
