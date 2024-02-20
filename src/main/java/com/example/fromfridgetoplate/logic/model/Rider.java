@@ -27,6 +27,12 @@ public class Rider extends User{
         this.id = id;
     } // costruttore da aggiornare per includere anche i nuovi attributi isAvailable e assignedCity?
 
+    public Rider(String email, String password, String name, String surname) {
+        super(email, password);
+        this.name = name;
+        this.surname = surname;
+    }
+
     public String getName() {
         return name;
     }
