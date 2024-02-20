@@ -33,7 +33,6 @@ import java.util.TimerTask;
 public class PendingOrdersGraphicController extends GenericGraphicController {
 
 
-
     @FXML
     private TableView<OrderBean> ordersTable;
     @FXML
@@ -50,9 +49,6 @@ public class PendingOrdersGraphicController extends GenericGraphicController {
     private TableColumn<OrderBean, String> shippingCityColumn;
 
     private OrderListBean orderListBean;
-    // private OrderBean selectedOrder;
-
-
 
 
     @Override
@@ -76,7 +72,7 @@ public class PendingOrdersGraphicController extends GenericGraphicController {
         // quindi con "orderIdColumn.setCellValueFactory(new PropertyValueFactory<>("orderId"));"
         // linko la colonna "orderId" della tableView al valore dell'attributo "orderId" , passato a
         // PropertyValueFactory
-        System.out.println("check1");
+
         // Imposta la CellFactory per la colonna dei dettagli, cioè per ogni cella nella colonna "detailsColumn"
         // della TableView, JavaFX utilizzerà DetailButtonCell per creare il contenuto della cella.
         detailsColumn.setCellFactory((TableColumn<OrderBean, Void> column) -> {
@@ -94,10 +90,6 @@ public class PendingOrdersGraphicController extends GenericGraphicController {
     void search_riders(ActionEvent event) throws IOException {
         OrderBean selectedOrder = ordersTable.getSelectionModel().getSelectedItem();
 
-        //List<CartItem> cartItems = selectedOrder.getCartItems();
-
-        //AddressBean shippingAddress = selectedOrder.getShippingAddress();
-
         if (selectedOrder != null) {
             String shippingCity = selectedOrder.getShippingCity(); // prendiamo un riferimento alla città in cui deve essere consegnato l'ordine,
 
@@ -108,11 +100,7 @@ public class PendingOrdersGraphicController extends GenericGraphicController {
             SearchRidersGraphicController searchRidersGController = loader.getController();
             IRiderSelectionListener riderSelectionListener = new RiderSelectionListener();
             SearchBean sBean = new SearchBean(shippingCity, riderSelectionListener, selectedOrder);
-
-            //searchRidersGController.setAssignedCity(shippingCity);
-            //searchRidersGController.setRiderSelectionListener(new RiderSelectionListener());
             searchRidersGController.loadData(sBean); // Carica i dati nella TableView relativa alla scelta del rider
-
 
             Stage currentStage = (Stage) ordersTable.getScene().getWindow();
             currentStage.setScene(new Scene(root));
@@ -120,7 +108,6 @@ public class PendingOrdersGraphicController extends GenericGraphicController {
             // risiamo qua quando il controller grafico SearchRidersGraphicController ha finito il suo compito(prima di terminare
             // chiama onRiderSelected() di RiderSelectionListener,
             // e quando ha finito chiude la sua scena da solo:
-
 
             //--------------------------------
             // qua bisogna chiamare un metodo del controller applicativo, in modo che contatti RiderDao e OrderDao in modo che :
@@ -144,15 +131,11 @@ public class PendingOrdersGraphicController extends GenericGraphicController {
 
 
     private void loadData() {
-        // Chiama il controller applicativo per ottenere i dati
+
         PendingOrdersController pendingOrdersControl = new PendingOrdersController();
-        OrderListBean order_listBean = pendingOrdersControl.getPendingOrderListBean();
-
-        // Popola la TableView con i dati
-        ordersTable.setItems(FXCollections.observableArrayList(order_listBean.getOrderBeans()));// forse questo da rivedere per
+        OrderListBean orderListBean = pendingOrdersControl.getPendingOrderListBean();
+        ordersTable.setItems(FXCollections.observableArrayList(orderListBean.getOrderBeans()));// forse questo da rivedere per
         // evitare duplicazione di codice
-        //updateUI(pendingOrders); ??
-
 
     }
 
@@ -225,7 +208,6 @@ class DetailButtonCell extends TableCell<OrderBean, Void> {
             setGraphic(detailButton);
         }
     }
-
 
 
     //  metodo per mostrare un popup con i dettagli dell'ordine

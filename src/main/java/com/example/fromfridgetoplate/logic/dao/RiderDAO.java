@@ -31,11 +31,7 @@ public class RiderDAO {
             cstmt = connection.prepareCall("{CALL GetAvailableRiders(?)}");// la stored procedure ritornerà un result_set con
             // i riders operanti in quella città(indiciata da pBean.getCity())
             cstmt.setString(1, rpBean.getCity());
-            System.out.println("cityrider:" + rpBean.getCity() );
-
             rs = cstmt.executeQuery();
-
-
 
             while (rs.next()) {
                 int riderId = rs.getInt("Id");
@@ -122,9 +118,6 @@ public class RiderDAO {
         }
         return null;
     }
-
-
-
 
 
 
