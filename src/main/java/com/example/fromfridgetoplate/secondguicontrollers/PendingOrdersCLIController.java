@@ -44,10 +44,10 @@ public class PendingOrdersCLIController {
                 return;
             }
             if (!searchingRiders) {
-                //loadAndDisplayOrders();
+
                 handleOrderInput();
             } else {
-                //handleRiderSearchInput();
+
                 stopRefreshTimer();
                 searchRidersCLI(selectedOrder);
                 searchingRiders = false;
@@ -56,14 +56,6 @@ public class PendingOrdersCLIController {
         }
     }
 
-    private void handleRiderSearchInput() {
-    }
-
-    private void stopInputThread() {
-        if (inputThread != null) {
-            inputThread.interrupt(); // Interrompo il thread di input
-        }
-    }
 
     private void setupRefreshTimer() {
         if (refreshTimer != null) {
@@ -90,15 +82,12 @@ public class PendingOrdersCLIController {
 
 
     private void handleOrderInput() {
-        //System.out.println("Premi 'd' seguito da ID ordine per cercare rider, 'r' per aggiornare la lista.");
         String input = scanner.nextLine().trim();
         if (input.startsWith("d")) {
             int orderId = Integer.parseInt(input.substring(1));
             selectedOrder = findOrderById(orderId);
             if (selectedOrder != null) {
-                //stopRefreshTimer();
                 searchingRiders = true;
-                //searchRidersCLI(selectedOrder);
             } else {
                 System.out.println("ID ordine non trovato.");
             }
@@ -140,61 +129,64 @@ public class PendingOrdersCLIController {
     }
 
 
+
+
     private void searchRidersCLI(OrderBean selectedOrder) {
-        //stopInputThread(); // Interrompe il thread di input prima di iniziare la ricerca dei rider
-        if (selectedOrder != null) {
-            String shippingCity = selectedOrder.getShippingCity();
-
-            // Crea un RiderSelectionListener per gestire la selezione del rider
-            IRiderSelectionListener riderSelectionListenerCLI = new RiderSelectionListenerCLI();
-
-            // Crea una SearchBean con i dettagli necessari
-            SearchBean searchBean = new SearchBean(shippingCity, riderSelectionListenerCLI, selectedOrder);
-
-            // Utilizza il controller applicativo per ottenere la lista dei rider disponibili
-            PendingOrdersController pendingOrdersControl = new PendingOrdersController();
-            List<RiderBean> availableRiders = pendingOrdersControl.getAvalaibleRiders(searchBean);
-
-            // Mostra i rider disponibili
-            System.out.println("Rider disponibili in " + shippingCity + ":");
-            for (RiderBean rider : availableRiders) {
-                System.out.println("ID: " + rider.getId() + ", Nome: " + rider.getName() + ", Cognome: " + rider.getSurname());
-            }
-
-
-            System.out.println("Inserisci l'ID del rider per assegnare l'ordine, o premi 'r' per tornare indietro.");
-            String input = scanner.nextLine().trim();
-
-            if ("r".equals(input)) {
-                return; // Torna al menu precedente
-            } else {
-                try {
-                    int riderId = Integer.parseInt(input);
-                    RiderBean selectedRider = null;
-                    for (RiderBean rider : availableRiders) {
-                        if (rider.getId() == riderId) {
-                            selectedRider = rider;
-                            System.out.println("rider id:" + riderId);
-                            break;
-                        }
-                    }
-
-                    if (selectedRider != null) {
-                        // Simula la selezione del rider come farebbe il RiderSelectionListener in un contesto GUI
-                        riderSelectionListenerCLI.onRiderSelected(selectedRider, selectedOrder);
-                    } else {
-                        System.out.println("ID rider non trovato. Riprova.");
-                    }
-                } catch (NumberFormatException e) {
-                    System.out.println("Input non valido. Riprova.");
-                }
-            }
-        } else {
+        if (selectedOrder == null) {
             System.out.println("Ordine non specificato. Riprova.");
+            return;
         }
 
+        String shippingCity = selectedOrder.getShippingCity();
+        List<RiderBean> availableRiders = getAvailableRiders(shippingCity, selectedOrder);
+        displayAvailableRiders(availableRiders, shippingCity);
 
+        String input = scanner.nextLine().trim();
+        if ("r".equals(input)) {
+            return; // Torna al menu precedente
+        }
+
+        processRiderSelection(input, availableRiders, selectedOrder);
     }
+
+    private List<RiderBean> getAvailableRiders(String shippingCity, OrderBean selectedOrder) {
+        IRiderSelectionListener riderSelectionListenerCLI = new RiderSelectionListenerCLI();
+        SearchBean searchBean = new SearchBean(shippingCity, riderSelectionListenerCLI, selectedOrder);
+        PendingOrdersController pendingOrdersControl = new PendingOrdersController();
+        return pendingOrdersControl.getAvalaibleRiders(searchBean);
+    }
+
+    private void displayAvailableRiders(List<RiderBean> availableRiders, String shippingCity) {
+        System.out.println("Rider disponibili in " + shippingCity + ":");
+        for (RiderBean rider : availableRiders) {
+            System.out.println("ID: " + rider.getId() + ", Nome: " + rider.getName() + ", Cognome: " + rider.getSurname());
+        }
+        System.out.println("Inserisci l'ID del rider per assegnare l'ordine, o premi 'r' per tornare indietro.");
+    }
+
+    private void processRiderSelection(String input, List<RiderBean> availableRiders, OrderBean selectedOrder) {
+        try {
+            int riderId = Integer.parseInt(input);
+            RiderBean selectedRider = findRiderById(availableRiders, riderId);
+            if (selectedRider != null) {
+                new RiderSelectionListenerCLI().onRiderSelected(selectedRider, selectedOrder);
+            } else {
+                System.out.println("ID rider non trovato. Riprova.");
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Input non valido. Riprova.");
+        }
+    }
+
+    private RiderBean findRiderById(List<RiderBean> availableRiders, int riderId) {
+        for (RiderBean rider : availableRiders) {
+            if (rider.getId() == riderId) {
+                return rider;
+            }
+        }
+        return null;
+    }
+
 
 
     /*public static void main (String[]args){
