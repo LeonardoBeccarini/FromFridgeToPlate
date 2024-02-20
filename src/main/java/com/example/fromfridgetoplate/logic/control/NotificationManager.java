@@ -10,14 +10,21 @@ import com.example.fromfridgetoplate.patterns.factory.DAOFactory;
 
 public class NotificationManager {
 
-    private NotificationManager() {}
+    private static volatile NotificationManager instance;
 
-    private static class SingletonHelper {
-        private static final NotificationManager INSTANCE = new NotificationManager();
+    private NotificationManager() {
+        if (instance != null) {
+            throw new RuntimeException("Use getInstance() method to get the single instance of this class.");
+        }
     }
 
     public static NotificationManager getInstance() {
-        return SingletonHelper.INSTANCE;
+        if (instance == null) {
+            synchronized (NotificationManager.class) {
+                if (instance == null) instance = new NotificationManager();
+            }
+        }
+        return instance;
     }
 
 
