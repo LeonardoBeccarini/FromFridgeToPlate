@@ -3,7 +3,6 @@ package com.example.fromfridgetoplate.logic.dao;
 import com.example.fromfridgetoplate.logic.bean.*;
 import com.example.fromfridgetoplate.logic.exceptions.DeliveryRetrievalException;
 import com.example.fromfridgetoplate.logic.exceptions.OrderNotFoundException;
-import com.example.fromfridgetoplate.logic.exceptions.RiderGcException;
 import com.example.fromfridgetoplate.logic.model.Order;
 import com.example.fromfridgetoplate.logic.model.OrderList;
 import com.example.fromfridgetoplate.logic.model.Rider;

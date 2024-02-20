@@ -197,20 +197,33 @@ public class OrderDAO {
 
 
     public boolean assignRiderToOrder(int orderId, int riderId) {
+
+        CallableStatement stmt = null;
+
         try {
-            System.out.println("assignordertorider: orderid e riderid :" + orderId + riderId);
-            CallableStatement stmt = connection.prepareCall("{CALL AssignRiderToOrder(?, ?)}");
+
+            stmt = connection.prepareCall("{CALL AssignRiderToOrder(?, ?)}");
             stmt.setInt(1, orderId);
             stmt.setInt(2, riderId);
 
-
+            // Esecuzione della stored procedure
             stmt.execute();
-            return true; // L'aggiornamento ok
+            return true; // L'aggiornamento ha avuto successo
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            return false; // L'aggiornamento non è riuscito
+        } finally {
+            // Chiudi le risorse JDBC in modo sicuro
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
+
 
 
 
