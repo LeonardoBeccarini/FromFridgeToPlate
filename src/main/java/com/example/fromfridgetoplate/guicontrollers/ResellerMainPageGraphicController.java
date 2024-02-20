@@ -38,10 +38,6 @@ public class ResellerMainPageGraphicController extends GenericGraphicController 
         MakeOrderControl makeOrderControl = new MakeOrderControl();
         notificationBeanList = makeOrderControl.loadNotification();
 
-        for(NotificationBean notificationBean: notificationBeanList){
-            System.out.println(notificationBean.getNotificationId());
-        }
-
         counter = notificationBeanList.size();
         notificationButton.setText("Notification" + " " + "(" + counter + ")");
         if(counter>0){
@@ -75,8 +71,7 @@ public class ResellerMainPageGraphicController extends GenericGraphicController 
         //
         @FXML
         void onMouseEnteredForStackPane1(MouseEvent event) {
-            //pendingOrdersImg.setScaleX(1.05);
-            //pendingOrdersImg.setScaleY(1.05);
+
             stackpaneId.setScaleX(1.05);
             stackpaneId.setScaleY(1.05);
             stackpaneId.setStyle("-fx-border-color: blue; -fx-border-width: 2; -fx-border-style: solid;");
@@ -84,8 +79,7 @@ public class ResellerMainPageGraphicController extends GenericGraphicController 
 
         @FXML
         void onMouseExitedForStackPane1(MouseEvent event) {
-            //pendingOrdersImg.setScaleX(1.0);
-            //pendingOrdersImg.setScaleY(1.0);
+
             stackpaneId.setScaleX(1.0); // Reimposta la scala del StackPane
             stackpaneId.setScaleY(1.0);
             stackpaneId.setStyle("-fx-border-color: black; -fx-border-width: 2; -fx-border-style: solid;");
@@ -93,8 +87,7 @@ public class ResellerMainPageGraphicController extends GenericGraphicController 
 
         @FXML
         void onMouseEnteredForStackPane2(MouseEvent event) {
-            //viewStatusImg.setScaleX(1.05);
-            //viewStatusImg.setScaleY(1.05);
+
             stackpaneId2.setScaleX(1.05);
             stackpaneId2.setScaleY(1.05);
             stackpaneId2.setStyle("-fx-border-color: blue; -fx-border-width: 2; -fx-border-style: solid;");
@@ -102,8 +95,7 @@ public class ResellerMainPageGraphicController extends GenericGraphicController 
 
         @FXML
         void onMouseExitedForStackPane2(MouseEvent event) {
-            //viewStatusImg.setScaleX(1.0);
-            //viewStatusImg.setScaleY(1.0);
+
             stackpaneId2.setScaleX(1.0);
             stackpaneId2.setScaleY(1.0);
             stackpaneId2.setStyle("-fx-border-color: black; -fx-border-width: 2; -fx-border-style: solid;");

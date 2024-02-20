@@ -133,8 +133,8 @@ public class PendingOrdersGraphicController extends GenericGraphicController {
     private void loadData() {
 
         PendingOrdersController pendingOrdersControl = new PendingOrdersController();
-        OrderListBean orderListBean = pendingOrdersControl.getPendingOrderListBean();
-        ordersTable.setItems(FXCollections.observableArrayList(orderListBean.getOrderBeans()));// forse questo da rivedere per
+        OrderListBean orderListBn = pendingOrdersControl.getPendingOrderListBean();
+        ordersTable.setItems(FXCollections.observableArrayList(orderListBn.getOrderBeans()));// forse questo da rivedere per
         // evitare duplicazione di codice
 
     }

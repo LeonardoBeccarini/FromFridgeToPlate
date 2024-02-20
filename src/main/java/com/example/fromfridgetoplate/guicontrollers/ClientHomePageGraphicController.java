@@ -27,22 +27,21 @@ public class ClientHomePageGraphicController extends GenericGraphicController{
         if(sourceNode == makeOrderImage){
             navigator.goTo("marketListPage.fxml");
         } else if (sourceNode == viewStatusImg) {
-            // navigator.goTo(la view di viewStatus);
+            // col navigatore devi andare alla view di viewstatus fxml
         }
     }
 
 
-    @FXML // bo?
+    @FXML
     void zoom(MouseEvent event) {
-        // Logica per lo zoom (se necessaria)
+        // Logica per lo zoom ()
     }
 
     // Metodi per gestire l'ingrandimento e il cambio di colore del bordo, quando il mouse passa sopra le imageview
     //
     @FXML
     void onMouseEnteredForStackPane1(MouseEvent event) {
-        //pendingOrdersImg.setScaleX(1.05);
-        //pendingOrdersImg.setScaleY(1.05);
+
         stackpaneId.setScaleX(1.05);
         stackpaneId.setScaleY(1.05);
         stackpaneId.setStyle("-fx-border-color: blue; -fx-border-width: 2; -fx-border-style: solid;");
@@ -50,8 +49,7 @@ public class ClientHomePageGraphicController extends GenericGraphicController{
 
     @FXML
     void onMouseExitedForStackPane1(MouseEvent event) {
-        //pendingOrdersImg.setScaleX(1.0);
-        //pendingOrdersImg.setScaleY(1.0);
+
         stackpaneId.setScaleX(1.0); // Reimposta la scala del StackPane
         stackpaneId.setScaleY(1.0);
         stackpaneId.setStyle("-fx-border-color: black; -fx-border-width: 2; -fx-border-style: solid;");
@@ -59,8 +57,7 @@ public class ClientHomePageGraphicController extends GenericGraphicController{
 
     @FXML
     void onMouseEnteredForStackPane2(MouseEvent event) {
-        //viewStatusImg.setScaleX(1.05);
-        //viewStatusImg.setScaleY(1.05);
+
         stackpaneId2.setScaleX(1.05);
         stackpaneId2.setScaleY(1.05);
         stackpaneId2.setStyle("-fx-border-color: blue; -fx-border-width: 2; -fx-border-style: solid;");
@@ -68,8 +65,7 @@ public class ClientHomePageGraphicController extends GenericGraphicController{
 
     @FXML
     void onMouseExitedForStackPane2(MouseEvent event) {
-        //viewStatusImg.setScaleX(1.0);
-        //viewStatusImg.setScaleY(1.0);
+
         stackpaneId2.setScaleX(1.0);
         stackpaneId2.setScaleY(1.0);
         stackpaneId2.setStyle("-fx-border-color: black; -fx-border-width: 2; -fx-border-style: solid;");
