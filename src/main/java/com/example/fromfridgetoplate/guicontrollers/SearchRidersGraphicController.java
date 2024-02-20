@@ -23,7 +23,6 @@ import javafx.stage.Stage;
 
 
 
-
 public class SearchRidersGraphicController extends GenericGraphicController {
 
     private String assignedCity;
@@ -83,10 +82,8 @@ public class SearchRidersGraphicController extends GenericGraphicController {
     public void loadData(SearchBean searchBean) {
         // Chiamiamo prima il controller applicativo per ottenere i dati
         PendingOrdersController pendingOrdersControl = new PendingOrdersController();
-        //RiderPrefBean riderPrefBean = new RiderPrefBean(assignedCity);
-        //System.out.println("assigned city :" + assignedCity);
-        String assignedCity = searchBean.getCity();
-        this.setAssignedCity(assignedCity);
+
+        this.setAssignedCity(searchBean.getCity());
         this.setRiderSelectionListener(searchBean.getRiderSelListener());
         this.orderBean = searchBean.getSelectedOrderBean(); // ordine che deve assegnato al rider selezionato
 
@@ -135,11 +132,7 @@ public class SearchRidersGraphicController extends GenericGraphicController {
         if (this.riderSelectionListener != null) {
 
             riderSelectionListener.onRiderSelected(selectedRiderBean, orderBean);
-            //PendingOrdersController poController = new PendingOrdersController();
-            //orderBean.setStatus("in consegna");
-            //poController.update_orderStatus(orderBean);
             Stage currentStage = (Stage) ridersTable.getScene().getWindow();
-            //currentStage.close(); // Chiude la finestra dopo la selezione del rider
             Navigator nav = Navigator.getInstance(currentStage);
             nav.goTo("viewPendingOrders2.fxml");
         }
@@ -150,10 +143,6 @@ public class SearchRidersGraphicController extends GenericGraphicController {
 
 
     }
-
-
-
-
 
     public String getAssignedCity() {
         return assignedCity;
@@ -166,43 +155,6 @@ public class SearchRidersGraphicController extends GenericGraphicController {
     public void setRiderSelectionListener(IRiderSelectionListener listener) {
         this.riderSelectionListener = listener;
     }
-
-
-
-
-
-
-
-
-/*
-    // per provare se ji dati sono giusti
-    public static void main(String[] args) {
-
-        SearchRidersGraphicController controller = new SearchRidersGraphicController();
-
-
-        controller.setAssignedCity("Milano");
-
-
-        List<RiderBean> availableRiders = controller.pippo();
-
-
-        for (RiderBean rider : availableRiders) {
-            System.out.println("ID: " + rider.getId() + ", Nome: " + rider.getName() +
-                    ", Cognome: " + rider.getSurname() + ", Città: " + rider.getAssignedCity());
-        }
-    }
-
-
-    public List<RiderBean> pippo() {
-
-        PendingOrdersController pendingOrdersControl = new PendingOrdersController();
-        RiderPrefBean riderPrefBean = new RiderPrefBean(assignedCity);
-        return pendingOrdersControl.getAvalaibleRiders(riderPrefBean);
-    }*/
-
-
-
 
 
 

@@ -10,9 +10,6 @@ import java.util.Scanner;
 
 public class OrderStatusCLIController {
 
-    public OrderStatusCLIController() {
-
-    }
 
     public void displayAssignedOrders() {
 
@@ -48,8 +45,4 @@ public class OrderStatusCLIController {
         }
     }
 
-    public static void main(String[] args) {
-        OrderStatusCLIController controller = new OrderStatusCLIController();
-        controller.displayAssignedOrders();
-    }
 }

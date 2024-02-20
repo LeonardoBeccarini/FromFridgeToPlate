@@ -61,10 +61,6 @@ public class RiderNotificationPageGraphicController extends GenericGraphicContro
 
     private RiderHomePageGraphicController riderGC;
 
-    @FXML
-    void Accept(ActionEvent event) {
-
-    }
 
     @FXML
     void goBack(ActionEvent event) throws IOException { // non funziona gesucristo
