@@ -189,10 +189,6 @@ public class PendingOrdersCLIController {
 
 
 
-    /*public static void main (String[]args){
-        PendingOrdersCLIController controller = new PendingOrdersCLIController();
-        controller.displayPendingOrders();
-    }*/
 
 
 }

@@ -3,7 +3,6 @@ package com.example.fromfridgetoplate.logic.control;
 import com.example.fromfridgetoplate.guicontrollers.RiderHomePageGraphicController;
 import com.example.fromfridgetoplate.logic.bean.*;
 import com.example.fromfridgetoplate.logic.dao.NotificationDAO;
-import com.example.fromfridgetoplate.logic.dao.OrderDAO;
 import com.example.fromfridgetoplate.logic.dao.RiderDAO;
 import com.example.fromfridgetoplate.logic.exceptions.*;
 import com.example.fromfridgetoplate.logic.model.Notification;
@@ -11,7 +10,7 @@ import com.example.fromfridgetoplate.logic.model.Order;
 import com.example.fromfridgetoplate.logic.model.OrderList;
 import com.example.fromfridgetoplate.patterns.factory.DAOFactory;
 
-import java.sql.SQLException;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +23,7 @@ public class RiderHPController {
 
     private RiderBean riderBean;
     private Timer notificationPoller;
-    private RiderHomePageGraphicController rgp; // da eliminare e sistemare
+
 
     List<Notification> deliveredNotification;
     private int lastNotificationId = 0;
@@ -52,7 +51,7 @@ public class RiderHPController {
 
         NotificationManager ntfManager = NotificationManager.getInstance();
         ntfManager.registerRiderAvailability(riderBean);
-        //startNotificationPolling();
+
 
     }
 
@@ -78,49 +77,32 @@ public class RiderHPController {
         public void run() {
             pollForNotifications();
         }
-    }
+
+        private void pollForNotifications() {
+            DAOFactory daoFactory = new DAOFactory();
+            NotificationDAO ntfDAO = daoFactory.getNotificationDAO();
+            List<Notification> newNotifications = ntfDAO.getNotificationsForRider(riderBean.getId(), lastNotificationId);
 
 
-    private void pollForNotifications() {
-        DAOFactory daoFactory = new DAOFactory();
-        NotificationDAO ntfDAO = daoFactory.getNotificationDAO();
-        List<Notification> newNotifications = ntfDAO.getNotificationsForRider(riderBean.getId(), lastNotificationId);
-
-        /*System.out.println("NewNot size : "+ newNotifications.size() );
-        for (Notification notification : newNotifications) {
-            System.out.println("Notification ID: " + notification.getNotificationId());
-            System.out.println("lastNotification ID: " + lastNotificationId);
-        }*/
-
-        if (!newNotifications.isEmpty()) {
-            List<NotificationBean> newNotificationBeans = new ArrayList<>();
-            for (Notification notification : newNotifications) {
-                if (notification.getNotificationId() > lastNotificationId) {
-                        //System.out.println("check");
-
-                        //System.out.println("Rider ID: " + notification.getRiderId());
-                        //System.out.println("Order ID: " + notification.getOrderId());
-                        //System.out.println("Street: " + notification.getStreet());
-                    //System.out.println("Street Number: " + notification.getStreetNumber());
-                        //System.out.println("City: " + notification.getCity());
-                        //System.out.println("Province: " + notification.getProvince());
-                        //System.out.println("Message: " + notification.getMessageText());
-                        //System.out.println("------------------------------------");
-
-                    deliveredNotification.add(notification);
-                    NotificationBean notificationBean = convertToNotificationBean(notification);
-                    newNotificationBeans.add(notificationBean);
-                    lastNotificationId = notification.getNotificationId();
+            if (!newNotifications.isEmpty()) {
+                List<NotificationBean> newNotificationBeans = new ArrayList<>();
+                for (Notification notification : newNotifications) {
+                    if (notification.getNotificationId() > lastNotificationId) {
+                        deliveredNotification.add(notification);
+                        NotificationBean notificationBean = convertToNotificationBean(notification);
+                        newNotificationBeans.add(notificationBean);
+                        lastNotificationId = notification.getNotificationId();
+                    }
+                }
+                if (!newNotificationBeans.isEmpty()) {
+                    nlb.addNotifications(newNotificationBeans); // Aggiorna la lista nella NotificationListBean
                 }
             }
-            if (!newNotificationBeans.isEmpty()) {
-                nlb.addNotifications(newNotificationBeans); // Aggiorna la lista nella NotificationListBean
-                //System.out.println("Rilevate nuove notifiche, lastNotification id: "+ lastNotificationId);
-            }
-        } else {
-            //System.out.println("Non rilevate nuove notifiche, lastNotification id: "+ lastNotificationId);
         }
     }
+
+
+
 
 
     private NotificationBean convertToNotificationBean(Notification notification) {
@@ -158,15 +140,13 @@ public class RiderHPController {
         nlb.clearNotifications();// pulisco la lista(buffer delle notifiche), in modo da rappresentare che l'utente rider abbia visualizzato tutte le
         // notifiche consegnate, questo metodo in effetti viene chiamato dal controller grafico quando l'utente rider
         // clicca per visualizzare e quindi leggere le notifihce
-        //this.startNotificationPolling(); // ristarto
+
     }
 
     public void markNotificationAsRead(NotificationBean notificationToMark) throws NotificationProcessingException {
         if (notificationToMark == null) {
             throw new IllegalArgumentException("La notifica da marcare come letta non può essere null.");
         }
-        // Interrompo momentaneamente il polling del db
-        // this.stopNotificationPolling();
 
         DAOFactory daoFactory = new DAOFactory();
         NotificationDAO ntfDAO = daoFactory.getNotificationDAO();
@@ -190,8 +170,6 @@ public class RiderHPController {
             throw new NotificationProcessingException("Errore nella gestione della notifica con ID: " + notificationToMark.getNotificationId(), e);
         }
 
-        // Riavvia il polling delle notifiche, se necessario
-        // this.startNotificationPolling();
     }
 
 
@@ -224,7 +202,7 @@ public class RiderHPController {
             // Ottieniamo la lista degli ordini dall'OrderList
             List<Order> orders = confirmedOrders.getOrders();
             for (Order order : orders) {
-                OrderBean orderBean = convert_toOrderBean(order);
+                OrderBean orderBean = convertToOrdBean(order);
                 orderBeans.add(orderBean);
             }
 
@@ -238,11 +216,11 @@ public class RiderHPController {
         return orderListBean;
     }
 
-    private OrderBean convert_toOrderBean(Order order) {
+    private OrderBean convertToOrdBean(Order order) {
 
-        OrderBean orderBean = new OrderBean(order.getOrderId(), order.getCustomerId(), order.getShopId(), order.getStatus(), order.getOrderTime(), order.getRiderId() );
+        return new OrderBean(order.getOrderId(), order.getCustomerId(), order.getShopId(), order.getStatus(), order.getOrderTime(), order.getRiderId() );
 
-        return orderBean;
+
     }
 
 

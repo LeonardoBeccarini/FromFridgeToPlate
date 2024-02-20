@@ -102,7 +102,7 @@ public class RiderHomePageGraphicController extends GenericGraphicController imp
         serviceBtn.setDisable(false);
 
         riderController.stopNotificationPolling();
-        //SetNotificationsAsRead();
+
 
         System.out.println("Uscita dal servizio effettuata.");
 
@@ -123,9 +123,6 @@ public class RiderHomePageGraphicController extends GenericGraphicController imp
         // controller grafico.
         // qui ne faccio uno adhoc per esempio
 
-        //RiderBean riderBean = new RiderBean("marco", "giggi", true, "Milano");
-        //riderBean.setId(5);
-
         if (!isOnline) {
             //  istruzioni da eseguire la prima volta che si clicca sul pulsante goOnline
             isOnline = true;
@@ -144,12 +141,12 @@ public class RiderHomePageGraphicController extends GenericGraphicController imp
             }
             this.riderController = new RiderHPController(nlb);
             nlb.setGraphicController(this);
-            //System.out.println("Rider ID: " + riderBn.getId()+ "nome: " + riderBn.getName() + "cognome: " + riderBn.getSurname());
+
         }
 
 
         riderController.setRiderAvailable(true);
-        // riderController.setRgp(this); // da eliminare
+
 
         System.out.println("Entra in servizio button clicked");
 
@@ -173,24 +170,17 @@ public class RiderHomePageGraphicController extends GenericGraphicController imp
 
         // Chiama il metodo nel controller applicativo per marcare le notifiche come lette
 
-        //riderController.markNotificationsAsRead();
-
         // dopo che sono state
         // mostrate nella gui del rider, queste notifiche verranno marcate come lette, in modo che poi al prossimo retrieving dal db, non
         // vengano riestratte
         // Aggiorna la vista per riflettere che le notifiche sono state lette
-        //notificationsButton.setText("Notifiche (0)");
-        //navigator.goTo("riderNotificationPage.fxml");
+
         FXMLLoader loader = new FXMLLoader(getClass().getResource("riderNotificationPage2.fxml"));
         Parent root = loader.load();
         notificationPageGController = loader.getController();
         notificationPageGController.setCallback(this);
 
         notificationPageGController.update(FXCollections.observableArrayList(nlb.getNotifications()));
-
-        //notificationPageController.setNotificationListBean(nlb);
-
-        //nlb.setGraphicController(this);
 
         Scene scene = new Scene(root);
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();

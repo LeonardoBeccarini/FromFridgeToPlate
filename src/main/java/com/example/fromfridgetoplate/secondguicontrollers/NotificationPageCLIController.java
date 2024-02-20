@@ -5,12 +5,7 @@ import com.example.fromfridgetoplate.logic.bean.NotificationBean;
 
 public class NotificationPageCLIController {
 
-    private RiderHomeCLI riderCLIController;
-
-    /*public NotificationPageCLIController(RiderHomeCLI riderCLIController) {
-        this.riderCLIController = riderCLIController;
-    }*/
-
+    
     public void update(List<NotificationBean> notificationBeans) {
         System.out.println("----- Visualizzazione Notifiche -----");
         for (NotificationBean bean : notificationBeans) {
