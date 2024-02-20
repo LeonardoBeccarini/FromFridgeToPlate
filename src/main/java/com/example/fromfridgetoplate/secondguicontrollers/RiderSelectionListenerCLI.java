@@ -1,7 +1,6 @@
-package com.example.fromfridgetoplate.secondGuicontrollers;
+package com.example.fromfridgetoplate.secondguicontrollers;
 
 import com.example.fromfridgetoplate.guicontrollers.IRiderSelectionListener;
-import com.example.fromfridgetoplate.guicontrollers.RiderSelectionListener;
 import com.example.fromfridgetoplate.logic.bean.RiderBean;
 import com.example.fromfridgetoplate.logic.bean.OrderBean;
 import com.example.fromfridgetoplate.logic.control.NotificationManager;

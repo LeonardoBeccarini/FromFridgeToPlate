@@ -1,4 +1,4 @@
-package com.example.fromfridgetoplate.secondGuicontrollers;
+package com.example.fromfridgetoplate.secondguicontrollers;
 
 import java.io.IOException;
 

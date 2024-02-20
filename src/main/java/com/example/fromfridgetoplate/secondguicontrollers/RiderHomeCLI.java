@@ -1,14 +1,11 @@
-package com.example.fromfridgetoplate.secondGuicontrollers;
+package com.example.fromfridgetoplate.secondguicontrollers;
 
 import com.example.fromfridgetoplate.guicontrollers.NotificationObserver;
-import com.example.fromfridgetoplate.guicontrollers.RiderNotificationPageGraphicController;
 import com.example.fromfridgetoplate.logic.bean.NotificationBean;
 import com.example.fromfridgetoplate.logic.bean.NotificationListBean;
 import com.example.fromfridgetoplate.logic.bean.RiderBean;
 import com.example.fromfridgetoplate.logic.control.RiderHPController;
-import javafx.collections.ObservableList;
 
-import java.io.IOException;
 import java.util.Scanner;
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.example.fromfridgetoplate.secondGuicontrollers;
+package com.example.fromfridgetoplate.secondguicontrollers;
 
 import com.example.fromfridgetoplate.logic.bean.NotificationBean;
 import com.example.fromfridgetoplate.logic.control.MakeOrderControl;
