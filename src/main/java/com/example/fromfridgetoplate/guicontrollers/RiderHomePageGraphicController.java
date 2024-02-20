@@ -103,11 +103,7 @@ public class RiderHomePageGraphicController extends GenericGraphicController imp
 
         riderController.stopNotificationPolling();
 
-
-        System.out.println("Uscita dal servizio effettuata.");
-
     }
-
 
 
 
@@ -147,11 +143,6 @@ public class RiderHomePageGraphicController extends GenericGraphicController imp
 
         riderController.setRiderAvailable(true);
 
-
-        System.out.println("Entra in servizio button clicked");
-
-
-
         serviceBtn.setStyle("-fx-background-color: gold;");
         // Disabilito il pulsante per evitare ulteriori clic
         serviceBtn.setDisable(true);
@@ -173,16 +164,16 @@ public class RiderHomePageGraphicController extends GenericGraphicController imp
         // dopo che sono state
         // mostrate nella gui del rider, queste notifiche verranno marcate come lette, in modo che poi al prossimo retrieving dal db, non
         // vengano riestratte
-        // Aggiorna la vista per riflettere che le notifiche sono state lette
+        // Aggiorniamo poi la vista per riflettere che le notifiche sono state lette
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("riderNotificationPage2.fxml"));
-        Parent root = loader.load();
+        Parent nroot = loader.load();
         notificationPageGController = loader.getController();
         notificationPageGController.setCallback(this);
 
         notificationPageGController.update(FXCollections.observableArrayList(nlb.getNotifications()));
 
-        Scene scene = new Scene(root);
+        Scene scene = new Scene(nroot);
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setScene(scene);
         stage.show();
@@ -194,8 +185,8 @@ public class RiderHomePageGraphicController extends GenericGraphicController imp
 
         try {
             int newNotificationsCount = notificationBeans.size();
-            System.out.println("update riderhomepagegraphiccontroller check");
-            // aggiorna il testo del bottone notificationsButton
+
+            // aggiorno il testo del bottone notificationsButton
             Platform.runLater(() -> {
                 notificationsButton.setText("Notifiche (" + newNotificationsCount + ")");
             });
@@ -211,7 +202,7 @@ public class RiderHomePageGraphicController extends GenericGraphicController imp
     }
 
     private void onUpdateFailed(String reason) {
-        // Gestisci l'errore nell'aggiornamento dell'UI, ad esempio mostrando un messaggio all'utente
+
         Platform.runLater(() -> {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Errore di aggiornamento");
