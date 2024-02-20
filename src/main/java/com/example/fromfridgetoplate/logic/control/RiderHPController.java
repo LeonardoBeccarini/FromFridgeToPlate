@@ -1,17 +1,16 @@
 package com.example.fromfridgetoplate.logic.control;
 
 import com.example.fromfridgetoplate.guicontrollers.RiderHomePageGraphicController;
-import com.example.fromfridgetoplate.logic.bean.NotificationBean;
-import com.example.fromfridgetoplate.logic.bean.NotificationListBean;
-import com.example.fromfridgetoplate.logic.bean.OrderBean;
-import com.example.fromfridgetoplate.logic.bean.RiderBean;
+import com.example.fromfridgetoplate.logic.bean.*;
 import com.example.fromfridgetoplate.logic.dao.NotificationDAO;
 import com.example.fromfridgetoplate.logic.dao.OrderDAO;
 import com.example.fromfridgetoplate.logic.dao.RiderDAO;
 import com.example.fromfridgetoplate.logic.model.Notification;
 import com.example.fromfridgetoplate.logic.model.Order;
+import com.example.fromfridgetoplate.logic.model.OrderList;
 import com.example.fromfridgetoplate.patterns.factory.DAOFactory;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -158,6 +157,35 @@ public class RiderHPController {
         //this.startNotificationPolling(); // ristarto
     }
 
+    public void markNotificationAsRead(NotificationBean notificationToMark) {
+        if (notificationToMark == null) {
+            return;
+        }
+        // Interrompo momentaneamente il polling del db
+        // this.stopNotificationPolling();
+
+        DAOFactory daoFactory = new DAOFactory();
+        NotificationDAO ntfDAO = daoFactory.getNotificationDAO();
+
+        // Marca la notifica specifica come letta, aggiornando il modello e il database
+        ntfDAO.markNotificationAsRead(notificationToMark.getNotificationId());
+
+        // Aggiorna lo stato della notifica nella lista in memoria, se presente
+        for (Notification deliveredNotif : deliveredNotification) {
+            if (deliveredNotif.getNotificationId() == notificationToMark.getNotificationId()) {
+                deliveredNotif.markAsRead();
+                break; // Interrompo il ciclo una volta trovata la notifica corrispondente
+            }
+        }
+
+        // Rimuovo la notifica marcata come letta dalla lista delle notifiche (NotificationListBean)
+        nlb.removeNotification(notificationToMark);
+
+        // Riavvia il polling delle notifiche, se necessario
+        // this.startNotificationPolling();
+    }
+
+
 
 
     public void acceptOrder(NotificationBean notification) {
@@ -171,6 +199,87 @@ public class RiderHPController {
 
         RiderDAO riderDAO = new DAOFactory().getRiderDAO();
         riderDAO.declineOrder(notification.getOrderId(), notification.getRiderId());
+    }
+
+    public OrderListBean getConfirmedDeliveries(RiderBean riderInfo) {
+        RiderDAO riderDAO = new DAOFactory().getRiderDAO();
+        OrderList confirmedOrders = riderDAO.getConfirmedDeliveriesForRider(riderInfo.getId());
+
+        OrderListBean orderListBean = new OrderListBean();
+
+        // creiamo una nuova lista vuota per gli OrderBean
+        List<OrderBean> orderBeans = new ArrayList<>();
+
+        // Ottieniamo la lista degli ordini dall'OrderList
+        List<Order> orders = confirmedOrders.getOrders();
+
+        for (Order order : orders) {
+            OrderBean orderBean = convert_toOrderBean(order);
+            orderBeans.add(orderBean);
+        }
+
+        // setta la lista di OrderBean nel OrderListBean
+        orderListBean.setOrderBeans(orderBeans);
+
+
+        return orderListBean;
+    }
+
+    private OrderBean convert_toOrderBean(Order order) {
+
+        OrderBean orderBean = new OrderBean(order.getOrderId(), order.getCustomerId(), order.getShopId(), order.getStatus(), order.getOrderTime(), order.getRiderId() );
+
+        return orderBean;
+    }
+
+
+    public RiderBean getRiderDetailsFromSession() {
+
+        DAOFactory daoFactory = new DAOFactory();
+        RiderDAO riderDAO = daoFactory.getRiderDAO();
+        return riderDAO.getRiderDetailsFromSession();
+    }
+
+    public boolean checkForOrderInDelivery(RiderBean currentRider) {
+
+        int riderId = currentRider.getId();
+
+        RiderDAO riderDAO = new DAOFactory().getRiderDAO();
+        return riderDAO.checkForOrderInDelivery(riderId);
+    }
+
+    public OrderBean getInDeliveryOrderForRider(RiderBean riderInfo) {
+        // retrieviamo l'ordine 'in consegna' per il rider
+        RiderDAO riderDAO = new DAOFactory().getRiderDAO();
+        Order order = riderDAO.getInDeliveryOrderForRider(riderInfo.getId());
+
+        if (order != null) {
+            return convertToOrderBean(order);
+        }
+        // Se non ci sono ordini 'in consegna', ritorniamo null
+        return null;
+    }
+
+    private OrderBean convertToOrderBean(Order order) {
+        AddressBean address = new AddressBean(
+                order.getShippingStreet(),
+                order.getShippingStreetNumber(),
+                order.getShippingCity(),
+                order.getShippingProvince()
+        );
+
+        return new OrderBean(
+                order.getOrderId(),
+                address
+        );
+    }
+
+    public void confirmDelivery(OrderBean orderBean) {
+        if (orderBean != null) {
+            LocalDateTime deliveryTime = LocalDateTime.now(); // Orario corrente
+            RiderDAO riderDAO = new DAOFactory().getRiderDAO();
+            riderDAO.updateOrderStatusToDelivered(orderBean.getOrderId(), deliveryTime);
+        }
     }
 
 

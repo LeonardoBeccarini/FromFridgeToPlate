@@ -16,12 +16,12 @@ public class OrderListBean {
     public OrderListBean() {
     }
 
-    // Metodo getter per ottenere la lista di OrderBean
+
     public List<OrderBean> getOrderBeans() {
         return orderBeans;
     }
 
-    // Metodo setter per impostare la lista di OrderBean
+
     public void setOrderBeans(List<OrderBean> orderBeans) {
         this.orderBeans = orderBeans;
     }

@@ -45,7 +45,7 @@ public class OrderStatusGraphicController extends GenericGraphicController {
         orderIdColumn.setCellValueFactory(new PropertyValueFactory<>("orderId"));
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
         customerColumn.setCellValueFactory(new PropertyValueFactory<>("customerId"));
-        retailerColumn.setCellValueFactory(new PropertyValueFactory<>("retailerId"));
+        retailerColumn.setCellValueFactory(new PropertyValueFactory<>("shopId"));
         orderTimeColumn.setCellValueFactory(new PropertyValueFactory<>("orderTime"));
         riderColumn.setCellValueFactory(new PropertyValueFactory<>("riderId"));
         shippingCityColumn.setCellValueFactory(new PropertyValueFactory<>("shippingCity"));

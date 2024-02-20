@@ -6,7 +6,7 @@ import com.example.fromfridgetoplate.logic.bean.NotificationBean;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import com.example.fromfridgetoplate.guicontrollers.NotificationPageGraphicController;
+import com.example.fromfridgetoplate.guicontrollers.RiderNotificationPageGraphicController;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,6 +38,14 @@ public class NotificationListBean {
     public void clearNotifications() {
         notifications.clear();
         notifyGraphicController();
+    }
+
+    public void removeNotification(NotificationBean notificationToRemove) {
+        // Rimuove la notifica specificata dalla lista, se presente
+        if (notificationToRemove != null && notifications.contains(notificationToRemove)) {
+            notifications.remove(notificationToRemove);
+            notifyGraphicController(); // Notifica il controller grafico dell'aggiornamento
+        }
     }
 
     public List<NotificationBean> getNotifications() {

@@ -49,6 +49,14 @@ public class Order {
         this.riderId = riderId;
     }
 
+    public Order(int orderId, String shippingStreet, int shippingStreetNumber, String shippingCity, String shippingProvince) {
+        this.orderId = orderId;
+        this.shippingStreet = shippingStreet;
+        this.shippingStreetNumber = shippingStreetNumber;
+        this.shippingCity = shippingCity;
+        this.shippingProvince = shippingProvince;
+    }
+
     public Order(int orderId) {
         this.orderId = orderId;
     }
