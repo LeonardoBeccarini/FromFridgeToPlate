@@ -27,7 +27,7 @@ public class NotificationManager {
         RiderDAO riderDAO = daoFactory.getRiderDAO();
 
         riderDAO.setRiderAvailable(riderBn);
-        System.out.println("Stato di disponibilità aggiornato per Rider ID: " + riderBn.getId());
+        //System.out.println("Stato di disponibilità aggiornato per Rider ID: " + riderBn.getId());
     }
 
     public void notifyRider(RiderBean riderBean, OrderBean orderBean) { // purtroppo da qui il rider, dovrà andarsi a retrievare
@@ -54,9 +54,13 @@ public class NotificationManager {
         }
 
         OrderDAO orderDAO = daoFactory.getOrderDAO();
+        orderDAO.assignRiderToOrder(orderBean.getOrderId(), riderBean.getId());
         orderDAO.setAssignation(orderBean.getOrderId());
 
     }
+
+
+
 
 
 

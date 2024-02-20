@@ -10,6 +10,8 @@ public class RegistrationBean {
     private String address;
     private String VATnumber;
     private String phoneNumber;
+
+    private String city;
     private Role role;
 
     public RegistrationBean(String email, String password, String name, String surname,String address, Role role) {
@@ -21,11 +23,12 @@ public class RegistrationBean {
         this.role = role;
     }
 
-    public RegistrationBean(String email, String password, String name, String surname, Role role) {
+    public RegistrationBean(String email, String password, String name, String surname, Role role, String city) {
         this.email = email;
         this.password = password;
         this.name = name;
         this.surname = surname;
+        this.city = city;
         this.role = role;
 
     }
@@ -70,5 +73,13 @@ public class RegistrationBean {
 
     public String getAddress() {
         return address;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 }

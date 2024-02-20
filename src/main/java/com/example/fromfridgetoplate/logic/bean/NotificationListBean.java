@@ -3,6 +3,7 @@ package com.example.fromfridgetoplate.logic.bean;
 import com.example.fromfridgetoplate.guicontrollers.NotificationObserver;
 import com.example.fromfridgetoplate.guicontrollers.RiderHomePageGraphicController;
 import com.example.fromfridgetoplate.logic.bean.NotificationBean;
+import com.example.fromfridgetoplate.logic.exceptions.NotificationHandlingException;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -40,12 +41,19 @@ public class NotificationListBean {
         notifyGraphicController();
     }
 
-    public void removeNotification(NotificationBean notificationToRemove) {
+    public void removeNotification(NotificationBean notificationToRemove) throws NotificationHandlingException {
         // Rimuove la notifica specificata dalla lista, se presente
         if (notificationToRemove != null && notifications.contains(notificationToRemove)) {
             notifications.remove(notificationToRemove);
-            notifyGraphicController(); // Notifica il controller grafico dell'aggiornamento
+            notifyGraphicController(); //  Notifica il controller grafico dell'aggiornamento
+
+
+        } else {
+
+            throw new NotificationHandlingException("La notifica da rimuovere non è presente nella lista.");
+
         }
+
     }
 
     public List<NotificationBean> getNotifications() {
@@ -55,12 +63,12 @@ public class NotificationListBean {
     private void notifyGraphicController() {
 
         if (graphicController != null) {
-            System.out.println("check");
+            //System.out.println("check");
             graphicController.update(notifications);
 
         }
         else {
-            System.out.println("graphicController è null");
+            //System.out.println("graphicController è null");
         }
 
     }

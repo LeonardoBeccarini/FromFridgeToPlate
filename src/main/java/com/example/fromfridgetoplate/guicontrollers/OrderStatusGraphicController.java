@@ -89,7 +89,7 @@ public class OrderStatusGraphicController extends GenericGraphicController {
 // cioè un'interfaccia che contiene un singolo metodo astratto. In questo caso, Callback ha un metodo astratto call.
 
 //Il metodo call dell'interfaccia Callback per setRowFactory ha un tipo di parametro specifico, che è TableView<S>, dove S
-// è il tipo di oggetto contenuto nelle righe della TableView. In questo contesto, S è OrderBean.
+// è il tipo di oggetto contenuto nelle righe della TableView.Qui abbiamo che S è OrderBean.
 
 // il parametro della lambda (table_view in questo caso) rappresenta automaticamente il parametro del metodo call. Quindi,
 // table_view rappresenta la TableView<OrderBean> passata al metodo call.Anche se poi qui non viene usata

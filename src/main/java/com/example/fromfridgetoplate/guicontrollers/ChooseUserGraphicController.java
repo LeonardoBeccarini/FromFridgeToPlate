@@ -9,15 +9,22 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class ChooseUserGraphicController implements Initializable {
+public class    ChooseUserGraphicController implements Initializable {
+
     @FXML
     private RadioButton clientButton;
+
     @FXML
     private RadioButton ownerButton;
+
     @FXML
     private Button continueButton;
+
     @FXML
     private Button backButton;
+
+    @FXML
+    private RadioButton riderButton;
 
     Navigator navigator = Navigator.getInstance(null);
 
@@ -37,6 +44,13 @@ public class ChooseUserGraphicController implements Initializable {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+            }else if (riderButton.isSelected()){
+                try {
+                    navigator.goTo("riderSignInPage.fxml");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
             }
         });
         backButton.setOnMouseClicked(event ->{

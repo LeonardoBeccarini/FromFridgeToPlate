@@ -27,7 +27,7 @@ import javafx.stage.Stage;
 public class SearchRidersGraphicController extends GenericGraphicController {
 
     private String assignedCity;
-    private RiderSelectionListener riderSelectionListener;
+    private IRiderSelectionListener riderSelectionListener;
 
     private OrderBean orderBean;
 
@@ -91,7 +91,7 @@ public class SearchRidersGraphicController extends GenericGraphicController {
         this.orderBean = searchBean.getSelectedOrderBean(); // ordine che deve assegnato al rider selezionato
 
         List<RiderBean> avRidersBean = pendingOrdersControl.getAvalaibleRiders(searchBean);
-        //List<RiderBean> avRidersBean = pendingOrdersControl.getAvalaibleRiders(assignedCity);
+
 
         for (RiderBean rider : avRidersBean) {
             System.out.println("ID: " + rider.getId() + ", Nome: " + rider.getName() +
@@ -163,7 +163,7 @@ public class SearchRidersGraphicController extends GenericGraphicController {
         this.assignedCity = assignedCity;
     }
 
-    public void setRiderSelectionListener(RiderSelectionListener listener) {
+    public void setRiderSelectionListener(IRiderSelectionListener listener) {
         this.riderSelectionListener = listener;
     }
 

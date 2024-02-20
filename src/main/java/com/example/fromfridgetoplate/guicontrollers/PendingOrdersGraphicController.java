@@ -94,44 +94,20 @@ public class PendingOrdersGraphicController extends GenericGraphicController {
     void search_riders(ActionEvent event) throws IOException {
         OrderBean selectedOrder = ordersTable.getSelectionModel().getSelectedItem();
 
-        System.out.println("Order ID: " + selectedOrder.getOrderId());
-        System.out.println("Customer ID: " + selectedOrder.getCustomerId());
-        System.out.println("Order Time: " + selectedOrder.getOrderTime());
+        //List<CartItem> cartItems = selectedOrder.getCartItems();
 
-        List<CartItem> cartItems = selectedOrder.getCartItems();
-        if (cartItems != null && !cartItems.isEmpty()) {
-            System.out.println("Food Items:");
-            for (CartItem cartItem : cartItems) {
-                System.out.println("   - " + cartItem.toString());
-            }
-        } else {
-            System.out.println("No Food Items.");
-        }
-
-        AddressBean shippingAddress = selectedOrder.getShippingAddress();
-        if (shippingAddress != null) {
-            System.out.println("Shipping Address:");
-            System.out.println("   - Street: " + shippingAddress.getShippingStreet());
-            System.out.println("   - Street Number: " + shippingAddress.getShippingStreetNumber());
-            System.out.println("   - City: " + shippingAddress.getShippingCity());
-            System.out.println("   - Province: " + shippingAddress.getShippingProvince());
-        } else {
-            System.out.println("No Shipping Address.");
-        }
-
-        System.out.println("Shipping City: " + selectedOrder.getShippingCity());
-        System.out.println("Status: " + selectedOrder.getStatus());
-
+        //AddressBean shippingAddress = selectedOrder.getShippingAddress();
 
         if (selectedOrder != null) {
             String shippingCity = selectedOrder.getShippingCity(); // prendiamo un riferimento alla città in cui deve essere consegnato l'ordine,
 
-            System.out.println("city dopo aver cliccatto search riders: " + shippingCity);
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource("searchRiders.fxml"));
             Parent root = loader.load();
 
             SearchRidersGraphicController searchRidersGController = loader.getController();
-            SearchBean sBean = new SearchBean(shippingCity, new RiderSelectionListener(), selectedOrder);
+            IRiderSelectionListener riderSelectionListener = new RiderSelectionListener();
+            SearchBean sBean = new SearchBean(shippingCity, riderSelectionListener, selectedOrder);
 
             //searchRidersGController.setAssignedCity(shippingCity);
             //searchRidersGController.setRiderSelectionListener(new RiderSelectionListener());
@@ -176,13 +152,10 @@ public class PendingOrdersGraphicController extends GenericGraphicController {
         ordersTable.setItems(FXCollections.observableArrayList(order_listBean.getOrderBeans()));// forse questo da rivedere per
         // evitare duplicazione di codice
         //updateUI(pendingOrders); ??
-        System.out.println("check");
+
 
     }
 
-    private void updateUI(List<Order> orders) {
-        // Aggiorna gli elementi della UI (ad esempio, una ListView) con gli ordini
-    }
 
     // modello pull , in cui la view attraverso la bean fa la get sul model, in realtà la bean fa la get sul controller
     // invece che sul model, ma cmq dovrebbe restare il fatto da rispettare che è che: se evolve il model, evolverà solo
@@ -212,10 +185,6 @@ public class PendingOrdersGraphicController extends GenericGraphicController {
 
 
 }
-
-
-
-
 
 
 
@@ -279,27 +248,4 @@ class DetailButtonCell extends TableCell<OrderBean, Void> {
 
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

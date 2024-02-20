@@ -6,9 +6,9 @@ import com.example.fromfridgetoplate.logic.control.NotificationManager;
 import com.example.fromfridgetoplate.logic.model.Order;
 import javafx.scene.control.Alert;
 
-public class RiderSelectionListener {
+public class RiderSelectionListener implements IRiderSelectionListener {
 
-    void onRiderSelected(RiderBean selectedRiderBean, OrderBean orderBean) { // in realtà dovrà mandare una notifica al rider
+    public void onRiderSelected(RiderBean selectedRiderBean, OrderBean orderBean) { // in realtà dovrà mandare una notifica al rider
 
         /* Alert alert = new Alert(Alert.AlertType.INFORMATION);
         System.out.println("L'ordine è stato preso in carico dal rider : " + selectedRiderBean.getName());
@@ -46,12 +46,10 @@ public class RiderSelectionListener {
         //NotificationManager.getInstance().notifyObservers(riderBn.getId(), orderBn);
 
         NotificationManager.getInstance().notifyRider(riderBn, orderBn);
+        // metodo della OrderDAO per impostare per quell'ordine , il riderid del rider scelto:
+
 
     }
-
-
-
-
 
 
 

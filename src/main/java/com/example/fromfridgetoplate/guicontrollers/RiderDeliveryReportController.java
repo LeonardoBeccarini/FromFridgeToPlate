@@ -4,8 +4,10 @@ import com.example.fromfridgetoplate.logic.bean.OrderBean;
 import com.example.fromfridgetoplate.logic.bean.OrderListBean;
 import com.example.fromfridgetoplate.logic.bean.RiderBean;
 import com.example.fromfridgetoplate.logic.control.RiderHPController;
+import com.example.fromfridgetoplate.logic.exceptions.RiderGcException;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -16,7 +18,7 @@ import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
 
-public class DeliveryReportController extends GenericGraphicController{
+public class RiderDeliveryReportController extends GenericGraphicController{
 
 
     @FXML
@@ -36,12 +38,6 @@ public class DeliveryReportController extends GenericGraphicController{
     @FXML
     private TableColumn<OrderBean, Integer> riderIdColumn;
 
-    @FXML
-    private Button homeButton;
-
-    @FXML
-    private Button profileButton;
-
 
 
     @Override
@@ -58,21 +54,38 @@ public class DeliveryReportController extends GenericGraphicController{
     }
 
     private void loadDeliveries() {
-
         RiderHPController riderCtrl = new RiderHPController();
         RiderBean riderBean = riderCtrl.getRiderDetailsFromSession();
-        if (riderBean != null){
-            OrderListBean deliveredOrders = riderCtrl.getConfirmedDeliveries(riderBean);
-            //  Usero poi i dati in deliveredOrdersBean per popolare la TableView
-            deliveriesTable.setItems(FXCollections.observableArrayList(deliveredOrders.getOrderBeans()));
 
+        if (riderBean != null) {
+            try {
+                OrderListBean deliveredOrders = riderCtrl.getConfirmedDeliveries(riderBean);
+                // Usero poi i dati in deliveredOrdersBean per popolare la TableView
+                deliveriesTable.setItems(FXCollections.observableArrayList(deliveredOrders.getOrderBeans()));
+
+                /*for (OrderBean order : deliveriesTable.getItems()) {
+                    System.out.println("shopId: " + order.getShopId());
+                }*/
+            } catch (RiderGcException e) {
+                String errorMessage = e.getMessage();
+
+                // Ottieni il messaggio dall'eccezione originale, se presente
+                Throwable cause = e.getCause();
+                if (cause != null) {
+                    errorMessage += "\nCausa: " + cause.getMessage();
+                }
+
+                // Mostra il messaggio d'errore all'utente, ad esempio usando un Alert in JavaFX
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Errore");
+                alert.setHeaderText("Si è verificato un errore");
+                alert.setContentText(errorMessage);
+                alert.showAndWait();
+            }
         }
-
-
-        for (OrderBean order : deliveriesTable.getItems()) {
-            System.out.println("shopId: " + order.getShopId());
-        }
-
     }
+
+
+
 
 }

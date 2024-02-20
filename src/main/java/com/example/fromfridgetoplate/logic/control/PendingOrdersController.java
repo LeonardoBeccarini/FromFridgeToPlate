@@ -128,6 +128,7 @@ public class PendingOrdersController {
         }
 
         RiderBean riderBean = new RiderBean(
+                rider.getId(),
                 rider.getName(),
                 rider.getSurname(),
                 rider.isAvailable(),
@@ -136,6 +137,8 @@ public class PendingOrdersController {
         riderBean.setId(rider.getId());
         return riderBean;
     }
+
+
 
 
 

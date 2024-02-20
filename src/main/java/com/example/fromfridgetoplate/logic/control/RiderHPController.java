@@ -5,11 +5,13 @@ import com.example.fromfridgetoplate.logic.bean.*;
 import com.example.fromfridgetoplate.logic.dao.NotificationDAO;
 import com.example.fromfridgetoplate.logic.dao.OrderDAO;
 import com.example.fromfridgetoplate.logic.dao.RiderDAO;
+import com.example.fromfridgetoplate.logic.exceptions.*;
 import com.example.fromfridgetoplate.logic.model.Notification;
 import com.example.fromfridgetoplate.logic.model.Order;
 import com.example.fromfridgetoplate.logic.model.OrderList;
 import com.example.fromfridgetoplate.patterns.factory.DAOFactory;
 
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,10 +32,12 @@ public class RiderHPController {
     private NotificationListBean nlb;
 
 
-    public RiderHPController(RiderBean riderBean, NotificationListBean nlb) {
-        this.riderBean = riderBean;
+    public RiderHPController(NotificationListBean nlb) {
+
         this.nlb = nlb;
         this.deliveredNotification = new ArrayList<>();
+        this.riderBean = getRiderDetailsFromSession();// serve per accedere alle informazioni immesse al momento della
+        // registrazione, che mi servono, per popolare il riderbean
 
     }
 
@@ -82,26 +86,26 @@ public class RiderHPController {
         NotificationDAO ntfDAO = daoFactory.getNotificationDAO();
         List<Notification> newNotifications = ntfDAO.getNotificationsForRider(riderBean.getId(), lastNotificationId);
 
-        System.out.println("NewNot size : "+ newNotifications.size() );
+        /*System.out.println("NewNot size : "+ newNotifications.size() );
         for (Notification notification : newNotifications) {
             System.out.println("Notification ID: " + notification.getNotificationId());
             System.out.println("lastNotification ID: " + lastNotificationId);
-        }
+        }*/
 
         if (!newNotifications.isEmpty()) {
             List<NotificationBean> newNotificationBeans = new ArrayList<>();
             for (Notification notification : newNotifications) {
                 if (notification.getNotificationId() > lastNotificationId) {
-                        System.out.println("check");
+                        //System.out.println("check");
 
-                        System.out.println("Rider ID: " + notification.getRiderId());
-                        System.out.println("Order ID: " + notification.getOrderId());
-                        System.out.println("Street: " + notification.getStreet());
-                        System.out.println("Street Number: " + notification.getStreetNumber());
-                        System.out.println("City: " + notification.getCity());
-                        System.out.println("Province: " + notification.getProvince());
-                        System.out.println("Message: " + notification.getMessageText());
-                        System.out.println("------------------------------------");
+                        //System.out.println("Rider ID: " + notification.getRiderId());
+                        //System.out.println("Order ID: " + notification.getOrderId());
+                        //System.out.println("Street: " + notification.getStreet());
+                    //System.out.println("Street Number: " + notification.getStreetNumber());
+                        //System.out.println("City: " + notification.getCity());
+                        //System.out.println("Province: " + notification.getProvince());
+                        //System.out.println("Message: " + notification.getMessageText());
+                        //System.out.println("------------------------------------");
 
                     deliveredNotification.add(notification);
                     NotificationBean notificationBean = convertToNotificationBean(notification);
@@ -111,10 +115,10 @@ public class RiderHPController {
             }
             if (!newNotificationBeans.isEmpty()) {
                 nlb.addNotifications(newNotificationBeans); // Aggiorna la lista nella NotificationListBean
-                System.out.println("Rilevate nuove notifiche, lastNotification id: "+ lastNotificationId);
+                //System.out.println("Rilevate nuove notifiche, lastNotification id: "+ lastNotificationId);
             }
         } else {
-            System.out.println("Non rilevate nuove notifiche, lastNotification id: "+ lastNotificationId);
+            //System.out.println("Non rilevate nuove notifiche, lastNotification id: "+ lastNotificationId);
         }
     }
 
@@ -157,9 +161,9 @@ public class RiderHPController {
         //this.startNotificationPolling(); // ristarto
     }
 
-    public void markNotificationAsRead(NotificationBean notificationToMark) {
+    public void markNotificationAsRead(NotificationBean notificationToMark) throws NotificationProcessingException {
         if (notificationToMark == null) {
-            return;
+            throw new IllegalArgumentException("La notifica da marcare come letta non può essere null.");
         }
         // Interrompo momentaneamente il polling del db
         // this.stopNotificationPolling();
@@ -179,7 +183,12 @@ public class RiderHPController {
         }
 
         // Rimuovo la notifica marcata come letta dalla lista delle notifiche (NotificationListBean)
-        nlb.removeNotification(notificationToMark);
+        try {
+            nlb.removeNotification(notificationToMark);
+        } catch (NotificationHandlingException e) {
+            // wrappo l'eccezione in una nuova eccezione con ulteriore contesto
+            throw new NotificationProcessingException("Errore nella gestione della notifica con ID: " + notificationToMark.getNotificationId(), e);
+        }
 
         // Riavvia il polling delle notifiche, se necessario
         // this.startNotificationPolling();
@@ -201,26 +210,30 @@ public class RiderHPController {
         riderDAO.declineOrder(notification.getOrderId(), notification.getRiderId());
     }
 
-    public OrderListBean getConfirmedDeliveries(RiderBean riderInfo) {
-        RiderDAO riderDAO = new DAOFactory().getRiderDAO();
-        OrderList confirmedOrders = riderDAO.getConfirmedDeliveriesForRider(riderInfo.getId());
+    public OrderListBean getConfirmedDeliveries(RiderBean riderInfo) throws RiderGcException {
 
         OrderListBean orderListBean = new OrderListBean();
+        try {
+            RiderDAO riderDAO = new DAOFactory().getRiderDAO();
+            OrderList confirmedOrders = riderDAO.getConfirmedDeliveriesForRider(riderInfo.getId());
 
-        // creiamo una nuova lista vuota per gli OrderBean
-        List<OrderBean> orderBeans = new ArrayList<>();
 
-        // Ottieniamo la lista degli ordini dall'OrderList
-        List<Order> orders = confirmedOrders.getOrders();
+            // creiamo una nuova lista vuota per gli OrderBean
+            List<OrderBean> orderBeans = new ArrayList<>();
 
-        for (Order order : orders) {
-            OrderBean orderBean = convert_toOrderBean(order);
-            orderBeans.add(orderBean);
+            // Ottieniamo la lista degli ordini dall'OrderList
+            List<Order> orders = confirmedOrders.getOrders();
+            for (Order order : orders) {
+                OrderBean orderBean = convert_toOrderBean(order);
+                orderBeans.add(orderBean);
+            }
+
+
+            orderListBean.setOrderBeans(orderBeans);
+        }catch (DeliveryRetrievalException e) {
+            throw new RiderGcException("Impossibile recuperare le consegne confermate.", e);
         }
-
-        // setta la lista di OrderBean nel OrderListBean
-        orderListBean.setOrderBeans(orderBeans);
-
+        // creiamo una nuova eccezione e passiamo la cause dell'eccezione originale per mantenere un tracciamento completo dello stack di chiamate che ha portato all'errore
 
         return orderListBean;
     }
@@ -248,17 +261,23 @@ public class RiderHPController {
         return riderDAO.checkForOrderInDelivery(riderId);
     }
 
-    public OrderBean getInDeliveryOrderForRider(RiderBean riderInfo) {
-        // retrieviamo l'ordine 'in consegna' per il rider
-        RiderDAO riderDAO = new DAOFactory().getRiderDAO();
-        Order order = riderDAO.getInDeliveryOrderForRider(riderInfo.getId());
 
-        if (order != null) {
+    public OrderBean getInDeliveryOrderForRider(RiderBean riderInfo) throws RiderGcException {
+        try {
+            RiderDAO riderDAO = new DAOFactory().getRiderDAO();
+            Order order = riderDAO.getInDeliveryOrderForRider(riderInfo.getId());
             return convertToOrderBean(order);
+        } catch (OrderNotFoundException e) {
+            throw new RiderGcException("Errore durante il recupero dell'ordine 'in consegna' per il rider con ID: " + riderInfo.getId(), e);
+            // cosi questo errore potrebbe esser sia relativo al fatto che non c'è nessun ordine in consegna da parte
+            // del rider, sia che c'è stato un errore da parte del db, l'nfo sul tipo di errore è contenuta in e
         }
-        // Se non ci sono ordini 'in consegna', ritorniamo null
-        return null;
     }
+
+
+
+
+
 
     private OrderBean convertToOrderBean(Order order) {
         AddressBean address = new AddressBean(

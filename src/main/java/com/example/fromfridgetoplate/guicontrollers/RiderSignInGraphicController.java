@@ -13,17 +13,19 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class ClientSignInGraphicController implements Initializable {
+public class RiderSignInGraphicController implements Initializable {
     @FXML
     private TextField emailText;
     @FXML
     private TextField passwordText;
     @FXML
     private TextField nameText;
+
     @FXML
-    private TextField surnameText;
+    private TextField SurnameText;
     @FXML
-    private TextField addressText;
+    private TextField cityText;
+
     @FXML
     private Button signInButton;
 
@@ -34,16 +36,14 @@ public class ClientSignInGraphicController implements Initializable {
                            ResourceBundle resources) {
         signInButton.setOnMouseClicked(event -> {
             RegistrationBean registrationBean;
-            if (emailText.getText().isEmpty() || passwordText.getText().isEmpty() || nameText.getText().isEmpty() || surnameText.getText().isEmpty() || addressText.getText().isEmpty()) {
+            if (emailText.getText().isEmpty() || passwordText.getText().isEmpty() || nameText.getText().isEmpty() || SurnameText.getText().isEmpty() || cityText.getText().isEmpty()) {
                 Alert alert = new Alert(Alert.AlertType.WARNING, "Complete the field before!");
                 alert.showAndWait();
-                return;
-
             }
             else{
-                registrationBean = new RegistrationBean(emailText.getText(), passwordText.getText(),nameText.getText(), surnameText.getText(),addressText.getText(), Role.CLIENT);
+                registrationBean = new RegistrationBean(emailText.getText(), passwordText.getText(),nameText.getText(),SurnameText.getText(), Role.RIDER, cityText.getText());
                 RegisterController registerController = new RegisterController();
-                if(registerController.register(registrationBean)){
+                if(registerController.register_rider(registrationBean)){
                     try {
                         navigator.goTo("loginPage.fxml");
                     }catch (IOException e){
@@ -54,3 +54,4 @@ public class ClientSignInGraphicController implements Initializable {
         });
     }
 }
+

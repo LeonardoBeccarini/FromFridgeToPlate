@@ -5,6 +5,7 @@ package com.example.fromfridgetoplate.guicontrollers;
 import com.example.fromfridgetoplate.logic.bean.OrderBean;
 import com.example.fromfridgetoplate.logic.bean.RiderBean;
 import com.example.fromfridgetoplate.logic.control.RiderHPController;
+import com.example.fromfridgetoplate.logic.exceptions.RiderGcException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -48,34 +49,40 @@ public class RiderCurrentOrderGraphicController extends GenericGraphicController
 
     public void loadOrderDetails()  {
         System.out.println("check0");
-        RiderHPController riderCtrl = new RiderHPController();
-        RiderBean riderBn = riderCtrl.getRiderDetailsFromSession();
-        this.currentOrderBean = riderCtrl.getInDeliveryOrderForRider(riderBn);
-        if (currentOrderBean != null) {
-            System.out.println("check");
+        try {
+            RiderHPController riderCtrl = new RiderHPController();
+            RiderBean riderBn = riderCtrl.getRiderDetailsFromSession();
+            System.out.println("riderId form loadOrderDetails:" + riderBn.getId());
+            this.currentOrderBean = riderCtrl.getInDeliveryOrderForRider(riderBn);
+            System.out.println("id ordine from loadorderdetails:" + currentOrderBean.getOrderId());
             orderIdLabel.setText("Id dell'ordine: " + currentOrderBean.getOrderId());
             shippingStreetLabel.setText("Via: " + currentOrderBean.getShippingAddress().getShippingStreet());
             shippingCityLabel.setText("Città: " + currentOrderBean.getShippingAddress().getShippingCity());
             shippingProvinceLabel.setText("Provincia: " + currentOrderBean.getShippingAddress().getShippingProvince());
             shippingStreetNumberLabel.setText("Numero civico: " + currentOrderBean.getShippingAddress().getShippingStreetNumber());
-        } else {
 
-            showNoOrderAlert();
-            // return per uscire dal metodo dopo il cambio di scena
-            return;
-
+        }catch(RiderGcException e) {
+            showNoOrderAlert(e);
         }
     }
 
 
-    private void showNoOrderAlert() {
-        Alert alert = new Alert(AlertType.INFORMATION);
+    private void showNoOrderAlert(RiderGcException e) {
+
+        String errorMessage = e.getMessage();
+        Throwable cause = e.getCause();
+        if (cause != null) {
+
+            errorMessage += " Causa: " + cause.getMessage();
+        }
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Nessun ordine in consegna");
         alert.setHeaderText(null);
-        alert.setContentText("Attualmente non hai ordini in consegna. Per favore, accetta un ordine nella sezione Notifiche.");
+        alert.setContentText("Attualmente non hai ordini in consegna. Per favore, accetta un ordine nella sezione Notifiche.\n\nDettagli Errore: " + errorMessage);
         alert.showAndWait();
-
     }
+
 
     @FXML
     private void handleConfirmDelivery(ActionEvent event) throws IOException {

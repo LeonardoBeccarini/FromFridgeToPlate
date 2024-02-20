@@ -1,6 +1,9 @@
 package com.example.fromfridgetoplate.logic.dao;
 
 import com.example.fromfridgetoplate.logic.bean.*;
+import com.example.fromfridgetoplate.logic.exceptions.DeliveryRetrievalException;
+import com.example.fromfridgetoplate.logic.exceptions.OrderNotFoundException;
+import com.example.fromfridgetoplate.logic.exceptions.RiderGcException;
 import com.example.fromfridgetoplate.logic.model.Order;
 import com.example.fromfridgetoplate.logic.model.OrderList;
 import com.example.fromfridgetoplate.logic.model.Rider;
@@ -29,21 +32,26 @@ public class RiderDAO {
             cstmt = connection.prepareCall("{CALL GetAvailableRiders(?)}");// la stored procedure ritornerà un result_set con
             // i riders operanti in quella città(indiciata da pBean.getCity())
             cstmt.setString(1, rpBean.getCity());
+            System.out.println("cityrider:" + rpBean.getCity() );
 
             rs = cstmt.executeQuery();
 
+
+
             while (rs.next()) {
+                int riderId = rs.getInt("Id");
+                System.out.println("riderId:"+ riderId);
                 Rider rider = new Rider(
-                        rs.getInt("Id"),
-                        rs.getString("Email"),
-                        rs.getString("U_Password"),
+                        riderId,
                         rs.getString("Nome"),
-                        rs.getString("Cognome")
+                        rs.getString("Cognome"),
+                        rs.getString("assignedCity")
+
                 );
                 // non sono inizializzati dal costruttore, perchè quando
                 // viene creato un rider, si suppone che quei campi potrebbero ancora non essere decisi al momento della creazione
                 // rider.setAvailable(rs.getBoolean("isAvailable")); // questo sarà sempre true
-                rider.setAssignedCity(rs.getString("assignedCity"));
+                //rider.setAssignedCity(rs.getString("assignedCity"));
                 availableRiders.add(rider);
             }
         } catch (SQLException e) {
@@ -96,7 +104,7 @@ public class RiderDAO {
         //questo contiene le informazione immesse al momento del login, quindi username, pw, e role, poi ne prendo l'email (usernm) cosi
         // da poter accedere alle informazioni immesse al momento della registrazione, che mi servono, per popolare il riderbean,
         // che verrà poi passata dal controlle grafico del rider sia a quello applicativo sia al controller delle notifiche
-        System.out.println("useremail: "+ userEmail);
+        //System.out.println("useremail: "+ userEmail);
         String query = "{CALL GetRiderDetailsByEmail(?)}";
 
         try (CallableStatement cstmt = connection.prepareCall(query)) {
@@ -111,6 +119,7 @@ public class RiderDAO {
                     );
 
                     riderBean.setId(rs.getInt("Id"));
+                    //System.out.println("riderId from details: "+ rs.getInt("Id") );
                     return riderBean;
                 }
             }
@@ -165,7 +174,7 @@ public class RiderDAO {
     }
 
 
-    public OrderList getConfirmedDeliveriesForRider(int riderId) {
+    public OrderList getConfirmedDeliveriesForRider(int riderId) throws DeliveryRetrievalException {
         OrderList confirmedDeliveries = new OrderList();
 
         String call = "{CALL GetConfirmedDeliveriesForRider(?)}";
@@ -193,12 +202,12 @@ public class RiderDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
-            // Gestione dell'eccezione
+            throw new DeliveryRetrievalException("Errore nel recupero delle consegne confermate per il rider con ID: " + riderId, e);
         }
 
         return confirmedDeliveries;
     }
+
 
     public boolean checkForOrderInDelivery(int riderId) {
         String query = "{CALL checkOrderInDeliveryForRider(?, ?)}";
@@ -214,26 +223,32 @@ public class RiderDAO {
         }
     }
 
-    public Order getInDeliveryOrderForRider(int riderId) {
+
+    public Order getInDeliveryOrderForRider(int riderId) throws OrderNotFoundException {
         Order order = null;
         String query = "{CALL GetInDeliveryOrderForRider(?)}";
         try (CallableStatement cstmt = connection.prepareCall(query)) {
             cstmt.setInt(1, riderId);
-            ResultSet rs = cstmt.executeQuery();
-
-            if (rs.next()) {
-                order = new Order(rs.getInt("orderId"), rs.getString("shippingStreet"), rs.getInt("shippingStreetNumber"), rs.getString("shippingCity"), rs.getString("shippingProvince")  );
+            try (ResultSet rs = cstmt.executeQuery()) {
+                if (rs.next()) {
+                    order = new Order(rs.getInt("orderId"), rs.getString("shippingStreet"), rs.getInt("shippingStreetNumber"), rs.getString("shippingCity"), rs.getString("shippingProvince"));
+                } else {
+                    // perchèse il resultSet è vuoto, significa che non è stato trovato alcun ordine 'in consegna' per il rider
+                    throw new OrderNotFoundException("Nessun ordine 'in consegna' trovato");
+                }
             }
-
         } catch (SQLException e) {
-            e.printStackTrace();
+
+            throw new OrderNotFoundException("Errore nel recupero dell'ordine");
         }
         return order;
     }
 
+
     public void updateOrderStatusToDelivered(int orderId, LocalDateTime deliveryTime) {
         String query = "{CALL UpdateOrderToDelivered(?, ?)}";
-        try (CallableStatement cstmt = connection.prepareCall(query)) {
+        try {
+            CallableStatement cstmt = connection.prepareCall(query);
             cstmt.setInt(1, orderId);
             cstmt.setTimestamp(2, Timestamp.valueOf(deliveryTime));
             cstmt.execute();
@@ -242,6 +257,32 @@ public class RiderDAO {
         }
     }
 
+
+    public boolean registerRider(String name, String surname, String email, String password, String city) {
+        try {
+            System.out.println("name"+ name + "pw" + password);
+            CallableStatement stmt = connection.prepareCall("{CALL RegisterRider(?, ?, ?, ?, ?, ?)}");
+
+            stmt.setString(1, name);
+            stmt.setString(2, surname);
+            stmt.setString(3, email);
+            stmt.setString(4, password);
+            stmt.setString(5, city);
+
+
+            stmt.registerOutParameter(6, Types.BOOLEAN);
+
+            stmt.execute();
+
+            // Recupero il risultato dalla sesta posizione, non dalla quinta
+            boolean result = stmt.getBoolean(6);
+
+            return result;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
 
 

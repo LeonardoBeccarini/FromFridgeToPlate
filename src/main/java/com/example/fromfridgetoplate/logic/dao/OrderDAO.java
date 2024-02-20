@@ -196,6 +196,34 @@ public class OrderDAO {
     }
 
 
+    public boolean assignRiderToOrder(int orderId, int riderId) {
+        try {
+            System.out.println("assignordertorider: orderid e riderid :" + orderId + riderId);
+            CallableStatement stmt = connection.prepareCall("{CALL AssignRiderToOrder(?, ?)}");
+            stmt.setInt(1, orderId);
+            stmt.setInt(2, riderId);
+
+
+            stmt.execute();
+            return true; // L'aggiornamento ok
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 // ------------------- BECCA ---------------------- BECCA ---------------------- BECCA ---------------------- //
 
     public Order saveOrder(Order order) throws DbException {

@@ -1,15 +1,16 @@
 package com.example.fromfridgetoplate.logic.bean;
 
+import com.example.fromfridgetoplate.guicontrollers.IRiderSelectionListener;
 import com.example.fromfridgetoplate.guicontrollers.RiderSelectionListener;
 
 public class SearchBean {
 
     private String  shippingCity;
-    private RiderSelectionListener riderSelListener;
+    private IRiderSelectionListener riderSelListener;
 
     private OrderBean selectedOrderBean;
 
-    public SearchBean(String shippingCity, RiderSelectionListener riderSelListener, OrderBean selectedOrderBean) {
+    public SearchBean(String shippingCity, IRiderSelectionListener riderSelListener, OrderBean selectedOrderBean) {
         this.shippingCity = shippingCity;
         this.riderSelListener = riderSelListener;
         this.selectedOrderBean = selectedOrderBean;
@@ -23,11 +24,11 @@ public class SearchBean {
         this.shippingCity = shippingCity;
     }
 
-    public RiderSelectionListener getRiderSelListener() {
+    public IRiderSelectionListener getRiderSelListener() {
         return riderSelListener;
     }
 
-    public void setRiderSelListener(RiderSelectionListener riderSelListener) {
+    public void setRiderSelListener(IRiderSelectionListener riderSelListener) {
         this.riderSelListener = riderSelListener;
     }
 

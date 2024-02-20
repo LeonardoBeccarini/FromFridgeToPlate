@@ -38,7 +38,7 @@ public class LoginCLIController {
                 } else if (loggedUser.getRole() == Role.RIDER) {
                     navigator.goTo("RiderHomeCLI");
                 } else if (loggedUser.getRole() == Role.OWNER) {
-                    navigator.goTo("OwnerHomeCLI");
+                    navigator.goTo("ResellerHomeCLI");
                 }
             } else {
                 System.out.println("Login failed. Please check your credentials.");

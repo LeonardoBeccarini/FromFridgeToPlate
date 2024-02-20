@@ -7,6 +7,7 @@ import com.example.fromfridgetoplate.logic.bean.OrderBean;
 import com.example.fromfridgetoplate.logic.bean.RiderBean;
 import com.example.fromfridgetoplate.logic.control.RiderHPController;
 
+import com.example.fromfridgetoplate.logic.exceptions.NotificationProcessingException;
 import com.example.fromfridgetoplate.logic.model.Session;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -141,9 +142,9 @@ public class RiderHomePageGraphicController extends GenericGraphicController imp
                 alert.showAndWait();
                 return;
             }
-            this.riderController = new RiderHPController(riderBn, nlb);
+            this.riderController = new RiderHPController(nlb);
             nlb.setGraphicController(this);
-            System.out.println("Rider ID: " + riderBn.getId()+ "nome: " + riderBn.getName() + "cognome: " + riderBn.getSurname());
+            //System.out.println("Rider ID: " + riderBn.getId()+ "nome: " + riderBn.getName() + "cognome: " + riderBn.getSurname());
         }
 
 
@@ -200,31 +201,51 @@ public class RiderHomePageGraphicController extends GenericGraphicController imp
 
 
     public void update(List<NotificationBean> notificationBeans) {
-        int newNotificationsCount = notificationBeans.size();
-        System.out.println("update riderhomepagegraphiccontroller check");
-        // aggiorna il testo del bottone notificationsButton
+
+        try {
+            int newNotificationsCount = notificationBeans.size();
+            System.out.println("update riderhomepagegraphiccontroller check");
+            // aggiorna il testo del bottone notificationsButton
+            Platform.runLater(() -> {
+                notificationsButton.setText("Notifiche (" + newNotificationsCount + ")");
+            });
+
+            if (notificationPageGController != null) {
+                notificationPageGController.update(FXCollections.observableArrayList(notificationBeans));
+            } // perchè se è null, significa che ancora non si è cliccato sul bottone delle notifiche, quindi il
+            // notificationPageGController è null, e quindi non serve aggiornare la tableview
+        }catch(Exception e) {
+            onUpdateFailed("Impossibile aggiornare le notifiche: " + e.getMessage());
+        }
+
+    }
+
+    private void onUpdateFailed(String reason) {
+        // Gestisci l'errore nell'aggiornamento dell'UI, ad esempio mostrando un messaggio all'utente
         Platform.runLater(() -> {
-            notificationsButton.setText("Notifiche (" + newNotificationsCount + ")");
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Errore di aggiornamento");
+            alert.setHeaderText(null);
+            alert.setContentText(reason);
+            alert.showAndWait();
         });
-
-        if (notificationPageGController != null){
-            notificationPageGController.update(FXCollections.observableArrayList(notificationBeans));
-        } // perchè se è null, significa che ancora non si è cliccato sul bottone delle notifiche, quindi il
-        // notificationPageGController è null, e quindi non serve aggiornare la tableview
-
     }
 
 
 
-
-    public void SetNotificationsAsRead() {
-        riderController.markNotificationsAsRead();
-
+    public void SetNotificationAsRead(NotificationBean notifBn) {
+        try {
+            riderController.markNotificationAsRead(notifBn);
+        } catch (NotificationProcessingException e) {
+            // Gestione dell'eccezione, ad esempio mostrando un Alert con l'errore
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Errore nella gestione della notifica");
+            alert.setHeaderText("Non è stato possibile marcare la notifica come letta");
+            alert.setContentText("Dettaglio errore: " + e.getMessage() + "\nCausa: " + e.getCause());
+            alert.showAndWait();
+        }
     }
 
-    public void SetNotificationAsRead(NotificationBean notifBn){
-        riderController.markNotificationAsRead(notifBn);
-    }
 
     public Node getRootNode() {
         return root; // 'root' è l'AnchorPane

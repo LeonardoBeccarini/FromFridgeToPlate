@@ -33,6 +33,23 @@ public class Rider extends User{
         this.surname = surname;
     }
 
+
+    public Rider(String email,String name, String surname, String password, String city) {
+        super(email, password);
+        this.name = name;
+        this.surname = surname;
+        this.assignedCity = city;
+    }
+
+    public Rider(int id ,String name, String surname, String city) {
+        this.id = id;
+        this.name = name;
+        this.surname = surname;
+        this.assignedCity = city;
+    }
+
+
+
     public String getName() {
         return name;
     }

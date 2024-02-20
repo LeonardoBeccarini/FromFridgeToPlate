@@ -63,6 +63,7 @@ public class RiderHomeCLI implements NotificationObserver {
             isOnline = true;
 
             // Recupero i dettagli del rider dalla sessione, come nel controller grafico
+            this.riderController = new RiderHPController(nlb);
             RiderBean riderBn = riderController.getRiderDetailsFromSession();
 
             if (riderBn == null) {
@@ -72,12 +73,13 @@ public class RiderHomeCLI implements NotificationObserver {
 
 
 
-            this.riderController = new RiderHPController(riderBn, nlb); // Assumendo che NotificationListBeanCLI sia l'adattamento per CLI
+
             nlb.setGraphicController(this);
             System.out.println("Rider ID: " + riderBn.getId() + " Nome: " + riderBn.getName() + " Cognome: " + riderBn.getSurname());
             System.out.println("Entra in servizio");
 
 
+            riderController.setRiderAvailable(true);
             // Inizio del polling delle notifiche
             riderController.startNotificationPolling();
         } else {
@@ -89,7 +91,7 @@ public class RiderHomeCLI implements NotificationObserver {
     private void goOffline() {
         if (isOnline) {
             isOnline = false;
-
+            riderController.stopNotificationPolling();
             System.out.println("You are now offline.");
         }
     }
