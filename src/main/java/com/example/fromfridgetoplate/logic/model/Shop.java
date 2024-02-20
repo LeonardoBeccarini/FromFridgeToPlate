@@ -4,7 +4,7 @@ public class Shop extends User {
     private String name;
 
     private String address;
-    private String VATnumber;
+    private String vatNumber;
     private String phoneNumber;
 
     public Shop() {
@@ -14,7 +14,7 @@ public class Shop extends User {
         super(email,password);
         this.name = name;
         this.address = address;
-        this.VATnumber = VATnumber;
+        this.vatNumber = VATnumber;
         this.phoneNumber = phoneNumber;
     }
 
@@ -22,7 +22,7 @@ public class Shop extends User {
         super(email);
         this.name = name;
         this.address = address;
-        this.VATnumber = VATnumber;
+        this.vatNumber = VATnumber;
         this.phoneNumber = phoneNumber;
     }
 
@@ -31,7 +31,7 @@ public class Shop extends User {
         this.name = name;
         this.address = address;
         this.phoneNumber = phoneNumber;
-        this.VATnumber = VATnumber;
+        this.vatNumber = VATnumber;
     }
 
     public String getPhoneNumber() {
@@ -43,7 +43,7 @@ public class Shop extends User {
     }
 
     public String getVATnumber() {
-        return VATnumber;
+        return vatNumber;
     }
 
     public String getAddress() {

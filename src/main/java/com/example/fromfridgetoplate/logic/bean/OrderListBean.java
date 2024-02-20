@@ -12,11 +12,6 @@ import java.util.List;
 public class OrderListBean {
     private List<OrderBean> orderBeans = new ArrayList<>(); // la inizializzo per non farmi restituire null, ma la lista vuota, quando la listaè vuota
 
-    // Costruttore
-    public OrderListBean() {
-    }
-
-
     public List<OrderBean> getOrderBeans() {
         return orderBeans;
     }
@@ -33,9 +28,6 @@ public class OrderListBean {
         this.setOrderBeans(updatedOrderList.getOrderBeans());
     }
 
-
-        // Eventuali altri metodi utili per la gestione della lista di ordini,
-        // come metodi per aggiungere o rimuovere ordini, ecc.
 
 
 

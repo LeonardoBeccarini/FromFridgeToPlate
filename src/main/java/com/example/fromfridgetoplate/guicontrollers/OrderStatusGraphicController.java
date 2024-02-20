@@ -1,10 +1,10 @@
 package com.example.fromfridgetoplate.guicontrollers;
 
-import com.example.fromfridgetoplate.logic.bean.AddressBean;
+
 import com.example.fromfridgetoplate.logic.bean.OrderBean;
 import com.example.fromfridgetoplate.logic.bean.OrderListBean;
 import com.example.fromfridgetoplate.logic.control.PendingOrdersController;
-//import com.example.fromfridgetoplate.logic.model.Food_item;
+
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
@@ -14,7 +14,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.net.URL;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.ResourceBundle;
 
 
@@ -39,6 +38,7 @@ public class OrderStatusGraphicController extends GenericGraphicController {
     private TableColumn<OrderBean, String> shippingCityColumn;
 
 
+    @Override
     public void initialize(URL location, ResourceBundle resources) {
 
         super.initialize(location, resources);
@@ -51,7 +51,7 @@ public class OrderStatusGraphicController extends GenericGraphicController {
         shippingCityColumn.setCellValueFactory(new PropertyValueFactory<>("shippingCity"));
 
 
-        assignedOrdersTable.setRowFactory(table_view -> new TableRow<OrderBean>() {
+        assignedOrdersTable.setRowFactory(tableview -> new TableRow<OrderBean>() {
             @Override
             protected void updateItem(OrderBean item, boolean empty) {
                 super.updateItem(item, empty);
