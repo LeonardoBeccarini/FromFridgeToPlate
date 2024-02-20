@@ -258,9 +258,10 @@ public class RiderDAO {
 
 
     public boolean registerRider(String name, String surname, String email, String password, String city) {
+        CallableStatement stmt = null;
         try {
             System.out.println("name"+ name + "pw" + password);
-            CallableStatement stmt = connection.prepareCall("{CALL RegisterRider(?, ?, ?, ?, ?, ?)}");
+            stmt = connection.prepareCall("{CALL RegisterRider(?, ?, ?, ?, ?, ?)}");
 
             stmt.setString(1, name);
             stmt.setString(2, surname);
@@ -273,13 +274,21 @@ public class RiderDAO {
 
             stmt.execute();
 
-            // Recupero il risultato dalla sesta posizione, non dalla quinta
             boolean result = stmt.getBoolean(6);
 
             return result;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
+        }finally {
+            // Chiudi le risorse JDBC in modo sicuro
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 

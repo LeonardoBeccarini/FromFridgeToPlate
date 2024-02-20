@@ -56,8 +56,8 @@ public class RiderHomePageCLIController implements NotificationObserver {
 
                 case 6:
                     System.out.println("Uscita dal sistema...");
-                    //System.exit(0);
-                    //break;
+                    System.exit(0);
+                    break;
                 default:
                     System.out.println("Opzione non valida, riprova.");
             }
