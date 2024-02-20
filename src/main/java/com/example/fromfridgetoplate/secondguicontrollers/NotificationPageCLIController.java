@@ -17,9 +17,7 @@ public class NotificationPageCLIController {
         }
     }
 
-    public void setCallback(RiderHomeCLI riderCLIController) {
-        this.riderCLIController = riderCLIController;
-    }
+
 
 
 }

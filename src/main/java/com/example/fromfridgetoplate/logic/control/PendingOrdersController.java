@@ -3,7 +3,6 @@ package com.example.fromfridgetoplate.logic.control;
 import com.example.fromfridgetoplate.logic.bean.*;
 import com.example.fromfridgetoplate.logic.dao.OrderDAO;
 import com.example.fromfridgetoplate.logic.dao.RiderDAO;
-import com.example.fromfridgetoplate.logic.dao.ShopDAO;
 import com.example.fromfridgetoplate.logic.model.Order;
 import com.example.fromfridgetoplate.logic.model.OrderList;
 import com.example.fromfridgetoplate.logic.model.Rider;
@@ -21,12 +20,8 @@ public class PendingOrdersController {
         // Chiamata al DAO per ottenere la lista di ordini pendenti
         DAOFactory daoFactory = new DAOFactory();
 
-        OrderDAO order_dao = daoFactory.getOrderDAO();
-        OrderList orderList = order_dao.getPendingOrders();
-
-        //BaseDAO<Void, OrderList> order_dao = daoFactory.getOrderDAO();
-        //OrderList orderList = order_dao.get(null);
-
+        OrderDAO orderDao = daoFactory.getOrderDAO();
+        OrderList orderList = orderDao.getPendingOrders();
 
         OrderListBean orderListBean = new OrderListBean();
 
@@ -63,16 +58,6 @@ public class PendingOrdersController {
         return orderListBean;
     }
 
-    // da aggiungere qui, ed eliminare l'altro controller SessionController
-    /*public RiderBean getResellerDetailsFromSession() {
-
-        DAOFactory daoFactory = new DAOFactory();
-        ShopDAO shopDAO = daoFactory.getShopDAO();
-        return riderDAO.getRiderDetailsFromSession();
-    }*/
-
-
-
 
     private OrderBean convertToOrderBean(Order order) {
         OrderBean orderBean = new OrderBean();
@@ -98,10 +83,10 @@ public class PendingOrdersController {
      * dei dati tra la logica di business e la parte grafica (Bean OrderBean).
      **/
 
-    public void update_orderStatus (OrderBean order_bean){
+    public void updateOrderStatus (OrderBean orderBean){
         DAOFactory daoFactory = new DAOFactory();
-        OrderDAO order_dao = daoFactory.getOrderDAO();
-        order_dao.update_availability(order_bean);
+        OrderDAO orderDao = daoFactory.getOrderDAO();
+        orderDao.updateAvailability(orderBean);
     }
 
     public List<RiderBean> getAvalaibleRiders(SearchBean searchBean) {
@@ -139,53 +124,6 @@ public class PendingOrdersController {
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-
-    // main per provare se i dati sono giusti prima di passarli alla view
-    public static void main(String[] args) {
-        PendingOrdersController controller = new PendingOrdersController();
-        OrderListBean orderListBean = controller.getPendingOrderListBean();
-
-        for (OrderBean orderBean : orderListBean.getOrderBeans()) {
-
-            System.out.println("Order ID: " + orderBean.getOrderId());
-            System.out.println("Customer ID: " + orderBean.getCustomerId());
-            System.out.println("Order Time: " + orderBean.getOrderTime());
-
-            // Stampa gli food_items per l'ordine
-            System.out.println("Food Items per l'ordine con order_id " + orderBean.getOrderId() + " :");
-            for (FoodItem item : orderBean.getFoodItems()) {
-                System.out.println(" - Name: " + item.getName() + ", Quantity: " + item.getQuantity());
-            }
-            System.out.println("-------------------------------------");
-        }
-
-        RiderPrefBean rpb = new RiderPrefBean("New York");
-        List<RiderBean> avRidersBean = controller.getAvalaibleRiders(rpb);
-
-        for (RiderBean rider_bean : avRidersBean) {
-            System.out.println("Rider ID: " + rider_bean.getId() +
-                    ", Name: " + rider_bean.getName() +
-                    ", Surname: " + rider_bean.getSurname() +
-                    ", Assigned City: " + rider_bean.getAssignedCity());
-        }
-
-
-
-    }
-*/
 }
 
 

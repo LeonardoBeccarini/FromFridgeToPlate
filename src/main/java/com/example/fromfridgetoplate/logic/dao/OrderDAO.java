@@ -25,7 +25,7 @@ public class OrderDAO {
         OrderList orderList = new OrderList();
         CallableStatement cstmt = null;
         ResultSet rs = null;
-        int order_id;
+        int orderId;
 
         try {
             cstmt = connection.prepareCall("{CALL GetPendingOrders()}");
@@ -33,10 +33,10 @@ public class OrderDAO {
 
             while (rs.next()) {
 
-                order_id = rs.getInt("orderId");
+                orderId = rs.getInt("orderId");
 
                 Order order = new Order(
-                        order_id,
+                        orderId,
                         rs.getString("CustomerId"),
                         rs.getString("NegozioId"),
                         "pronto",
@@ -54,12 +54,12 @@ public class OrderDAO {
                 // Impostare altri campi x futuro se serve
 
                 // Carica gli ingredienti per l'ordine
-                loadOrderItems(order_id, order);
+                loadOrderItems(orderId, order);
                 orderList.addOrder(order);
             }
         } catch (SQLException e) {
 
-            System.err.println("Si è verificato un errore: " + e.getMessage());
+            e.printStackTrace();
 
         } finally {
 
@@ -104,7 +104,7 @@ public class OrderDAO {
     }
 
 
-    public void update_availability(OrderBean orderBean) {
+    public void updateAvailability(OrderBean orderBean) {
         CallableStatement cstmt = null;
 
         try {
@@ -116,27 +116,6 @@ public class OrderDAO {
             // Gestione delle eccezioni
         } finally {
             closeQuietly(cstmt);
-        }
-    }
-
-
-    // Metodo per stampare le informazioni dell'ordine a schermo, solo per vedere se le retrieva corretly
-    public void printOrders(OrderList orderList) {
-        for (Order order : orderList.getOrders()) {
-            System.out.println("OrderId: " + order.getOrderId() +
-                    ", RivenditaId: " + order.getShopId() +
-                    ", CustomerId: " + order.getCustomerId() +
-                    ", Status: " + order.getStatus() +
-                    ", OrderTime: " + order.getOrderTime() +
-                    ", DeliveryTime: " + order.getDeliveryTime() +
-                    ", IsAcceptedByRider: " + order.isAcceptedByRider());
-
-            // Stampa gli ingredienti alimentari per l'ordine
-            System.out.println("Food Items:");
-            for (CartItem item : order.getItems()) {
-                System.out.println(" - Name: " + item.getName() + ", Quantity: " + item.getQuantity());
-            }
-            System.out.println("-------------------------------------");
         }
     }
 
@@ -184,7 +163,6 @@ public class OrderDAO {
                     );
                     String city = rs.getString("shippingCity");
                     order.setShippingCity(city);
-                    System.out.println("shipping city: "+ city );
                     orderList.addOrder(order);
                 }
             }
@@ -253,7 +231,7 @@ public class OrderDAO {
             cs.executeQuery();
             orderID = cs.getInt(7);
         for(CartItem cartItem: cartItemList){
-            System.out.println(orderID);    //  DEBUG CASALINGO
+
             try(CallableStatement cs2 = connection.prepareCall("{CALL addIngredientToOrder(?,?,?)}")){
                 cs2.setInt(1, orderID);
                 cs2.setString(2, cartItem.getName());

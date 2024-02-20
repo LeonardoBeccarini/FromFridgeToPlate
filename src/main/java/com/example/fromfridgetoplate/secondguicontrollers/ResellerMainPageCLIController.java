@@ -11,15 +11,13 @@ import java.util.Scanner;
 
 public class ResellerMainPageCLIController {
 
-    private NavigatorCLI navigator;
     private List<NotificationBean> notificationBeanList;
 
     public ResellerMainPageCLIController() {
-
-        this.navigator = NavigatorCLI.getInstance();
         MakeOrderControl makeOrderControl = new MakeOrderControl();
         notificationBeanList = makeOrderControl.loadNotification();
     }
+
 
     public void showMenu() {
         Scanner scanner = new Scanner(System.in);
@@ -49,7 +47,7 @@ public class ResellerMainPageCLIController {
                     break;
                 case 3:
                     // Logic to view notifications -----> BECCA
-                    //new ResellerNotificationCLIController(notificationBeanList).showNotifications();
+
                     break;
                 case 4:
                     System.exit(0);
