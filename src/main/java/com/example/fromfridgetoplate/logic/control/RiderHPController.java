@@ -48,7 +48,7 @@ public class RiderHPController {
     public void setRiderAvailable(boolean available) {
         riderBean.setAvailable(available);
 
-        NotificationManager ntfManager = NotificationManager.getInstance();
+        NotificationManager ntfManager = new NotificationManager();
         ntfManager.registerRiderAvailability(riderBean);
 
 

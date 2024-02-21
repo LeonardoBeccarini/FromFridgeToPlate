@@ -10,16 +10,7 @@ import com.example.fromfridgetoplate.patterns.factory.DAOFactory;
 
 public class NotificationManager {
 
-    private NotificationManager() {}
-
-    private static class LazyHolder {
-        static final NotificationManager INSTANCE = new NotificationManager();
-    }
-
-    public static NotificationManager getInstance() {
-        return LazyHolder.INSTANCE;
-    }
-
+    public NotificationManager() {}
 
     public void registerRiderAvailability(RiderBean riderBn) {
 

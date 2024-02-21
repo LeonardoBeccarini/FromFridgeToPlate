@@ -20,7 +20,8 @@ public class RiderSelectionListenerCLI implements IRiderSelectionListener {
 
         System.out.println("L'ordine ID: " + orderBean.getOrderId() + " è stato assegnato al rider ID: " + riderBean.getId());
 
-        NotificationManager.getInstance().notifyRider(riderBean, orderBean);
+        NotificationManager notManager = new NotificationManager();
+        notManager.notifyRider(riderBean, orderBean);
     }
 }
 

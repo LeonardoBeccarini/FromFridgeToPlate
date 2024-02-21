@@ -29,7 +29,8 @@ public class RiderSelectionListener implements IRiderSelectionListener {
     // questa impl nel controller applicativo
     private void assignOrderToRider(OrderBean orderBn, RiderBean riderBn) {
 
-        NotificationManager.getInstance().notifyRider(riderBn, orderBn);
+        NotificationManager notManager = new NotificationManager();
+        notManager.notifyRider(riderBn, orderBn);
 
     }
 
