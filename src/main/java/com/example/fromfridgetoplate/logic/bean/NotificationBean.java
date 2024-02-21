@@ -1,8 +1,5 @@
 package com.example.fromfridgetoplate.logic.bean;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class NotificationBean {
 
     private int notificationId;

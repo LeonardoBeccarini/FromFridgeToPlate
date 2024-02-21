@@ -1,6 +1,5 @@
 package com.example.fromfridgetoplate.logic.control;
 
-import com.example.fromfridgetoplate.guicontrollers.RiderHomePageGraphicController;
 import com.example.fromfridgetoplate.logic.bean.*;
 import com.example.fromfridgetoplate.logic.dao.NotificationDAO;
 import com.example.fromfridgetoplate.logic.dao.RiderDAO;
@@ -99,26 +98,24 @@ public class RiderHPController {
                 }
             }
         }
+
+
+        private NotificationBean convertToNotificationBean(Notification notification) {
+            NotificationBean ntfBean = new NotificationBean(
+                    notification.getRiderId(),
+                    notification.getOrderId(),
+                    notification.getStreet(),
+                    notification.getStreetNumber(),
+                    notification.getCity(),
+                    notification.getProvince(),
+                    notification.getMessageText()
+            );
+            ntfBean.setNotificationId(notification.getNotificationId());
+            return ntfBean;
+        }
+
+
     }
-
-
-
-
-
-    private NotificationBean convertToNotificationBean(Notification notification) {
-        NotificationBean ntfBean = new NotificationBean(
-                notification.getRiderId(),
-                notification.getOrderId(),
-                notification.getStreet(),
-                notification.getStreetNumber(),
-                notification.getCity(),
-                notification.getProvince(),
-                notification.getMessageText()
-        );
-        ntfBean.setNotificationId(notification.getNotificationId());
-        return ntfBean;
-    }
-
 
 
     public void markNotificationsAsRead() {

@@ -8,7 +8,7 @@ public class RegistrationBean {
     private String name;    /* nel caso dello shop diventa lo shopName */
     private String surname;
     private String address;
-    private String VATnumber;
+    private String vatNumber;
     private String phoneNumber;
 
     private String city;
@@ -33,18 +33,18 @@ public class RegistrationBean {
 
     }
 
-    public RegistrationBean(String email, String password, String name, String address, String VATnumber, String phoneNumber, Role role) {
+    public RegistrationBean(String email, String password, String name, String address, String vatNumber, String phoneNumber, Role role) {
         this.email = email;
         this.password = password;
         this.name = name;
         this.address = address;
-        this.VATnumber = VATnumber;
+        this.vatNumber = vatNumber;
         this.phoneNumber = phoneNumber;
         this.role = role;
     }
 
     public String getVATnumber() {
-        return VATnumber;
+        return vatNumber;
     }
 
     public String getPhoneNumber() {

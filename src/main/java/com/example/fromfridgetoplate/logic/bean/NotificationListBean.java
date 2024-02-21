@@ -62,15 +62,7 @@ public class NotificationListBean {
 
     private void notifyGraphicController() {
 
-        if (graphicController != null) {
-            //System.out.println("check");
-            graphicController.update(notifications);
-
-        }
-        else {
-            //System.out.println("graphicController è null");
-        }
-
+        graphicController.update(notifications);
     }
 
 

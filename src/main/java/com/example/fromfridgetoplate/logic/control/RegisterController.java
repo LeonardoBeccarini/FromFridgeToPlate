@@ -2,7 +2,7 @@ package com.example.fromfridgetoplate.logic.control;
 
 import com.example.fromfridgetoplate.logic.bean.RegistrationBean;
 
-import com.example.fromfridgetoplate.logic.bean.RiderBean;
+
 import com.example.fromfridgetoplate.logic.dao.ClientDAO;
 import com.example.fromfridgetoplate.logic.dao.RiderDAO;
 import com.example.fromfridgetoplate.logic.dao.ShopDAO;
@@ -35,7 +35,7 @@ public class RegisterController {
         return false;
     }
 
-    public boolean register_rider(RegistrationBean registrationBean) {
+    public boolean registerRider(RegistrationBean registrationBean) {
         UserFactory userFactory = new UserFactory();
         RiderDAO riderDAO = new DAOFactory().getRiderDAO();
 

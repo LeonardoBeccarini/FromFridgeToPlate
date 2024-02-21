@@ -43,7 +43,7 @@ public class RiderSignInGraphicController implements Initializable {
             else{
                 registrationBean = new RegistrationBean(emailText.getText(), passwordText.getText(),nameText.getText(),SurnameText.getText(), Role.RIDER, cityText.getText());
                 RegisterController registerController = new RegisterController();
-                if(registerController.register_rider(registrationBean)){
+                if(registerController.registerRider(registrationBean)){
                     try {
                         navigator.goTo("loginPage.fxml");
                     }catch (IOException e){
