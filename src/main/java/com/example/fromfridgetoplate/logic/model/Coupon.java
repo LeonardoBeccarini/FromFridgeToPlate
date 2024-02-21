@@ -32,5 +32,5 @@ public abstract class Coupon implements Discountable {
         this.disocuntable = disocuntable;
     }
 
-    public abstract Double getPrice();
+
 }

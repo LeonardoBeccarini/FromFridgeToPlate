@@ -3,8 +3,6 @@ package com.example.fromfridgetoplate.logic.model;
 import com.example.fromfridgetoplate.logic.exceptions.NegativePriceException;
 import com.example.fromfridgetoplate.patterns.decorator.Discountable;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class CouponApplier {
     Discountable originalPrice;
