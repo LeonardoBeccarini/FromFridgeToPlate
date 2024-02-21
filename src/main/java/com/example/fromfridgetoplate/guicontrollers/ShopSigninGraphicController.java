@@ -24,7 +24,7 @@ public class ShopSigninGraphicController implements Initializable {
     @FXML
     private TextField addressText;
     @FXML
-    private TextField VTAnumberText;
+    private TextField vatNumberText;
     @FXML
     private TextField phoneText;
     @FXML
@@ -37,12 +37,12 @@ public class ShopSigninGraphicController implements Initializable {
                            ResourceBundle resources) {
         signInButton.setOnMouseClicked(event -> {
             RegistrationBean registrationBean;
-            if (emailText.getText().isEmpty() || passwordText.getText().isEmpty() || nameText.getText().isEmpty() || addressText.getText().isEmpty() || VTAnumberText.getText().isEmpty()|| phoneText.getText().isEmpty()) {
+            if (emailText.getText().isEmpty() || passwordText.getText().isEmpty() || nameText.getText().isEmpty() || addressText.getText().isEmpty() || vatNumberText.getText().isEmpty()|| phoneText.getText().isEmpty()) {
                 Alert alert = new Alert(Alert.AlertType.WARNING, "Complete the field before!");
                 alert.showAndWait();
             }
             else{
-                registrationBean = new RegistrationBean(emailText.getText(), passwordText.getText(),nameText.getText(),addressText.getText(), VTAnumberText.getText(), phoneText.getText(), Role.OWNER);
+                registrationBean = new RegistrationBean(emailText.getText(), passwordText.getText(),nameText.getText(),addressText.getText(), vatNumberText.getText(), phoneText.getText(), Role.OWNER);
                 RegisterController registerController = new RegisterController();
                 if(registerController.register(registrationBean)){
                     try {

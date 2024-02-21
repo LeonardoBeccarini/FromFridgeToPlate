@@ -63,9 +63,6 @@ public class RiderDeliveryReportController extends GenericGraphicController{
                 // Usero poi i dati in deliveredOrdersBean per popolare la TableView
                 deliveriesTable.setItems(FXCollections.observableArrayList(deliveredOrders.getOrderBeans()));
 
-                /*for (OrderBean order : deliveriesTable.getItems()) {
-                    System.out.println("shopId: " + order.getShopId());
-                }*/
             } catch (RiderGcException e) {
                 String errorMessage = e.getMessage();
 

@@ -22,7 +22,7 @@ public class RiderSignInGraphicController implements Initializable {
     private TextField nameText;
 
     @FXML
-    private TextField SurnameText;
+    private TextField surnameText;
     @FXML
     private TextField cityText;
 
@@ -36,12 +36,12 @@ public class RiderSignInGraphicController implements Initializable {
                            ResourceBundle resources) {
         signInButton.setOnMouseClicked(event -> {
             RegistrationBean registrationBean;
-            if (emailText.getText().isEmpty() || passwordText.getText().isEmpty() || nameText.getText().isEmpty() || SurnameText.getText().isEmpty() || cityText.getText().isEmpty()) {
+            if (emailText.getText().isEmpty() || passwordText.getText().isEmpty() || nameText.getText().isEmpty() || surnameText.getText().isEmpty() || cityText.getText().isEmpty()) {
                 Alert alert = new Alert(Alert.AlertType.WARNING, "Complete the field before!");
                 alert.showAndWait();
             }
             else{
-                registrationBean = new RegistrationBean(emailText.getText(), passwordText.getText(),nameText.getText(),SurnameText.getText(), Role.RIDER, cityText.getText());
+                registrationBean = new RegistrationBean(emailText.getText(), passwordText.getText(),nameText.getText(),surnameText.getText(), Role.RIDER, cityText.getText());
                 RegisterController registerController = new RegisterController();
                 if(registerController.registerRider(registrationBean)){
                     try {

@@ -77,7 +77,7 @@ public class BuyProductGraphicController extends GenericGraphicController{
         }
         else if(sourceNode == addButton){
             FoodItemBean selectedFoodItemBean = productListView.getSelectionModel().getSelectedItem();
-            System.out.println(selectedFoodItemBean.getName()); // debug casalingo
+
             makeOrderControl.addToCart(selectedFoodItemBean);
         }
         else if(sourceNode == goToCartButton){
