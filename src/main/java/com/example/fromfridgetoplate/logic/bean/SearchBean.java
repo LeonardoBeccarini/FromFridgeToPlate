@@ -1,7 +1,6 @@
 package com.example.fromfridgetoplate.logic.bean;
 
 import com.example.fromfridgetoplate.guicontrollers.IRiderSelectionListener;
-import com.example.fromfridgetoplate.guicontrollers.RiderSelectionListener;
 
 public class SearchBean {
 

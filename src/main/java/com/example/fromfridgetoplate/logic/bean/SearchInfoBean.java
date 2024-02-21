@@ -1,13 +1,13 @@
 package com.example.fromfridgetoplate.logic.bean;
 
 public class SearchInfoBean {
-    private String Name;
+    private String name;
 
     public SearchInfoBean(String name) {
-        Name = name;
+        this.name = name;
     }
 
     public String getName() {
-        return Name;
+        return name;
     }
 }

@@ -1,5 +1,8 @@
 package com.example.fromfridgetoplate.guicontrollers;
 
 public class DummyPaymentGraphicController {
-    // sistema
+    public void pay(){
+        // sistema
+
+    }
 }
