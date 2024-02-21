@@ -10,8 +10,6 @@ import com.example.fromfridgetoplate.patterns.factory.DAOFactory;
 
 public class NotificationManager {
 
-    public NotificationManager() {}
-
     public void registerRiderAvailability(RiderBean riderBn) {
 
         DAOFactory daoFactory = new DAOFactory();
