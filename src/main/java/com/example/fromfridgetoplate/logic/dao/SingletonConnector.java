@@ -1,5 +1,7 @@
 package com.example.fromfridgetoplate.logic.dao;
 
+import com.example.fromfridgetoplate.logic.exceptions.DatabaseConnectionInitializationException;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,7 +24,7 @@ public class SingletonConnector {
 
             connection = DriverManager.getConnection(dbUrlConfig, userConfig, passConfig);
         } catch (IOException | SQLException e) {
-            throw new RuntimeException("Error initializing database connection", e);
+            throw new DatabaseConnectionInitializationException("Error initializing database connection", e);
         }
     }
 
