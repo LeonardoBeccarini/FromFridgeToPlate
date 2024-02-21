@@ -12,7 +12,7 @@ public class UserFactory {
         else if(registrationBean.getRole() == Role.OWNER){
             return new Shop(registrationBean.getEmail(), registrationBean.getPassword(), registrationBean.getName(), registrationBean.getAddress(), registrationBean.getVATnumber(), registrationBean.getPhoneNumber());    /* qui andrebbe if il ruolo è rider o owner creo le altre due entity, questo è un placeholder per evitare errori del compilatore*/
         }
-        //return new Rider(registrationBean.getEmail(), registrationBean.getPassword(), registrationBean.getName(), registrationBean.getSurname());
+
         return null;
     }
 }
