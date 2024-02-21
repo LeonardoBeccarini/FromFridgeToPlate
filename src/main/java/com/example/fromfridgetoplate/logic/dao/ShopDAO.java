@@ -31,9 +31,9 @@ public class ShopDAO {
         return true; /*potrei farlo meglio, non sono neanche sicurissimo sia corretto far tornare un booleano*/
     }
     public Shop retrieveShopByEmail(String email){
-        Connection connection = SingletonConnector.getInstance().getConnection();
+        Connection conn = SingletonConnector.getInstance().getConnection();
         Shop shop = null;
-        try(CallableStatement cs = connection.prepareCall("{call retrieveShopByEmail(?)}")){
+        try(CallableStatement cs = conn.prepareCall("{call retrieveShopByEmail(?)}")){
             cs.setString(1, email);
             cs.execute();
             ResultSet rs = cs.getResultSet();
@@ -46,9 +46,9 @@ public class ShopDAO {
         return shop;
     }
     public List<Shop> retrieveShopByName(String name){
-        Connection connection = SingletonConnector.getInstance().getConnection();
+        Connection connect = SingletonConnector.getInstance().getConnection();
         List<Shop> shopList = new ArrayList<>();
-        try(CallableStatement cs = connection.prepareCall("{call retrieveShopByName(?)}")){
+        try(CallableStatement cs = connect.prepareCall("{call retrieveShopByName(?)}")){
             cs.setString(1, name);
             cs.execute();
             ResultSet rs = cs.getResultSet();

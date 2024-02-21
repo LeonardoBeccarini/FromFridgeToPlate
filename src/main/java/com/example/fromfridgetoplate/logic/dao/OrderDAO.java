@@ -19,7 +19,6 @@ public class OrderDAO {
         this.connection = connection;
     }
 
-    //public void set(Void p) {};
 
     public OrderList getPendingOrders() {
         OrderList orderList = new OrderList();

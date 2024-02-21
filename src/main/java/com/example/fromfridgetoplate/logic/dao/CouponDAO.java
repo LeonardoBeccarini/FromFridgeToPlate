@@ -10,7 +10,7 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Objects;
+
 
 public class CouponDAO {
     public Coupon retrieveCoupon(String vatNumber, int code) throws CouponNotFoundException, DbException{
