@@ -65,16 +65,12 @@ Ysrc/main/java/com/example/fromfridgetoplate/guicontrollers/MainPageGraphicContr
 Zsrc/main/java/com/example/fromfridgetoplate/logic/exceptions/NotExistentUserException.java,c\3\c33ad547216c6b0670087c31d7ea450907492dc1
 x
 Hsrc/main/java/com/example/fromfridgetoplate/logic/bean/FoodItemBean.java,6\a\6ad6dcbd3df0b6d01675f8677993329497887b0b
-z
-Jsrc/main/java/com/example/fromfridgetoplate/guicontrollers/EntryPoint.java,2\8\285c31c2bd914a746c79b281402eca7653f5b616
 u
 Esrc/main/java/com/example/fromfridgetoplate/logic/dao/CatalogDAO.java,c\3\c32023618ed6f00bdd2c2df09552f1fc16565ed9
 |
 Lsrc/main/java/com/example/fromfridgetoplate/logic/bean/FoodItemListBean.java,0\7\07e50b42614ed8de2126032508f4540a4be87a20
 ˆ
 Xsrc/main/java/com/example/fromfridgetoplate/guicontrollers/GenericGraphicController.java,5\1\518a12a2a26e3dbd65779fda671b3bab3055e40b
-†
-Vsrc/main/java/com/example/fromfridgetoplate/logic/control/ManageCatalogController.java,a\0\a0aaee678c0e315b98dc575f26de6f16ef630140
 N
 src/main/java/module-info.java,1\c\1c89a5491fbfda3fb050196d6a239f20200296e7
 Ž

@@ -42,10 +42,38 @@ public class NavigatorCLI {
               OrderStatusCLIController orderStatusCLICtrl = new OrderStatusCLIController();
               orderStatusCLICtrl.displayAssignedOrders();
                 break;
+            case "ClientHomeCLI":
+                ClientHomeCLIcontroller clientHomeCLIcontroller = new ClientHomeCLIcontroller();
+                clientHomeCLIcontroller.displayMenu();
+                break;
+
+            case "MarketListCLI":
+                MarketListCLIcontroller marketListCLIcontroller = new MarketListCLIcontroller();
+                marketListCLIcontroller.searchShop();
+                break;
+
             // Aggiungi altri case qui per le nuove pagine CLI
             default:
                 System.out.println("Unrecognized command. Please try again.");
                 break;
         }
     }
+    public void goToWithCOntroller(String cliPage, Object controller){
+        switch(cliPage){
+            case "ProductListCLI":
+                ProductListCLIcontroller productListCLIcontroller = (ProductListCLIcontroller) controller;
+                productListCLIcontroller.addToCart();
+                break ;
+            case "CartCLI" :
+                CartCLIcontroller cartCLIcontroller = (CartCLIcontroller) controller;
+                cartCLIcontroller.prova();
+                break;
+            default:
+                System.out.println("Unrecognized command. Please try again.");
+                break;
+        }
+    }
+
 }
+
+
