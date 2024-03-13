@@ -1,10 +1,12 @@
 package com.example.fromfridgetoplate.logic.control;
 
 import com.example.fromfridgetoplate.logic.bean.*;
+import com.example.fromfridgetoplate.logic.boundary.DummyPaymentBoundary;
 import com.example.fromfridgetoplate.logic.dao.*;
 import com.example.fromfridgetoplate.logic.exceptions.CouponNotFoundException;
 import com.example.fromfridgetoplate.logic.exceptions.DbException;
 import com.example.fromfridgetoplate.logic.exceptions.NegativePriceException;
+import com.example.fromfridgetoplate.logic.exceptions.PaymentFailedException;
 import com.example.fromfridgetoplate.logic.model.*;
 import com.example.fromfridgetoplate.patterns.factory.DAOFactory;
 
@@ -97,7 +99,7 @@ public class MakeOrderControl {
     }
 
     // metodo per salvare l'ordine sul db e notificare lo shop owner, e per chiamare l'API del pagamento?
-    public void completeOrder(OrderBean orderBean) throws DbException {
+    public void completeOrder(OrderBean orderBean) throws DbException, PaymentFailedException {
         DAOFactory daoFactory = new DAOFactory();
         OrderDAO orderDAO = daoFactory.getOrderDAO();
         NotificationDAO notificationDAO = daoFactory.getNotificationDAO();
@@ -112,11 +114,19 @@ public class MakeOrderControl {
         AddressBean addressBean = orderBean.getShippingAddress();
         String customerId = Session.getSession().getUser().getEmail();
 
-        Order newOrder = new Order(orderBean.getShopId(), customerId, addressBean.getShippingStreet(), addressBean.getShippingStreetNumber(),  addressBean.getShippingCity(), addressBean.getShippingProvince() );
-        newOrder.setItems(cart.getItemList());
-        Order savedOrder = orderDAO.saveOrder(newOrder);
+        DummyPaymentBoundary dummyPaymentBoundary = new DummyPaymentBoundary();
+        TotalPriceBean totalPriceBean = new TotalPriceBean(couponApplier.getFinalPrice().getPrice());
+        if(dummyPaymentBoundary.pay(totalPriceBean)){
+            Order newOrder = new Order(orderBean.getShopId(), customerId, addressBean.getShippingStreet(), addressBean.getShippingStreetNumber(),  addressBean.getShippingCity(), addressBean.getShippingProvince() );
+            newOrder.setItems(cart.getItemList());
+            Order savedOrder = orderDAO.saveOrder(newOrder);
+            notificationDAO.insertNotificationRes(savedOrder, "nuovo ordine ricevuto!");
+        }
+        else{
+            throw new PaymentFailedException("pagamento non andato a buon fine");
+        }
 
-        notificationDAO.insertNotificationRes(savedOrder, "nuovo ordine ricevuto!");
+
 
     }
     public List<NotificationBean> loadNotification(){

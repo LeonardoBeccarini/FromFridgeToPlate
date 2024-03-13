@@ -6,12 +6,14 @@ import com.example.fromfridgetoplate.logic.control.MakeOrderControl;
 import com.example.fromfridgetoplate.logic.exceptions.CouponNotFoundException;
 import com.example.fromfridgetoplate.logic.exceptions.DbException;
 import com.example.fromfridgetoplate.logic.exceptions.NegativePriceException;
+import com.example.fromfridgetoplate.logic.exceptions.PaymentFailedException;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -73,9 +75,17 @@ public class CompleteOrderGraphicController extends GenericGraphicController{
             OrderBean orderBean = new OrderBean(shopBean.getVatNumber(), addressBean);
             try {
                 makeOrderControl.completeOrder(orderBean);
-            } catch (DbException e) {
+            } catch (DbException | PaymentFailedException e) {
                 Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage()) ;     // non so se devo fare il catch qui o nel controller applicativo
                 alert.showAndWait();
+            }
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Ordine salvato con successo");
+            alert.showAndWait();
+            try {
+                navigator.goTo("clientHomePage.fxml");
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
 

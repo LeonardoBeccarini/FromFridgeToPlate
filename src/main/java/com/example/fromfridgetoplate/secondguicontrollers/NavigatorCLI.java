@@ -68,6 +68,10 @@ public class NavigatorCLI {
                 CartCLIcontroller cartCLIcontroller = (CartCLIcontroller) controller;
                 cartCLIcontroller.prova();
                 break;
+            case "CompleteOrderCLI":
+                CompleteOrderCLIcontroller completeOrderCLIcontroller = (CompleteOrderCLIcontroller) controller;
+                completeOrderCLIcontroller.showMenu();
+                break ;
             default:
                 System.out.println("Unrecognized command. Please try again.");
                 break;

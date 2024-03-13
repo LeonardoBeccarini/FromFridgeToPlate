@@ -12,4 +12,7 @@ public class CartBean {
     public List<CartItemBean> getItemBeanList() {
         return itemBeanList;
     }
+    public CartItemBean getByIndex(int index){
+        return itemBeanList.get(index);
+    }
 }

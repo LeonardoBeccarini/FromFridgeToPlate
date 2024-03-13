@@ -12,6 +12,10 @@ public class TotalPriceBean {
         this.couponBeanList = couponBeanList;
     }
 
+    public TotalPriceBean(Double totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
     public Double getTotalPrice() {
         return totalPrice;
     }

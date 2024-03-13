@@ -24,6 +24,7 @@ public class MarketListCLIcontroller {
             shopName = bufferedReader.readLine();
             MakeOrderControl makeOrderControl = new MakeOrderControl();
             shopBeanList = makeOrderControl.loadShop(new SearchInfoBean(shopName));
+
             int i = 1;
             for (ShopBean shopBean : shopBeanList) {
                 String vatNumber = shopBean.getVatNumber();
@@ -36,7 +37,7 @@ public class MarketListCLIcontroller {
             System.out.println("Type index of the desired shop: \n");
             int selectedIndex = scanner.nextInt()-1;
             ShopBean shopBean = shopBeanList.get(selectedIndex);
-            System.out.println(shopBean.getVatNumber()); // DEBUG CASALINGO
+
             ProductListCLIcontroller productListCLIcontroller = new ProductListCLIcontroller(shopBean);
             navigatorCLI.goToWithCOntroller("ProductListCLI", productListCLIcontroller);
 
