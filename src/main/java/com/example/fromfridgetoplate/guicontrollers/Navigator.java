@@ -3,9 +3,6 @@ package com.example.fromfridgetoplate.guicontrollers;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -25,8 +22,9 @@ public class Navigator {
     }
     public void goTo(String fxmlString) throws IOException {
         Parent fxmlLoader = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(fxmlString)));
-        Scene scene = new Scene(fxmlLoader, 850, 800);
+        Scene scene = new Scene(fxmlLoader, 900, 750);
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.show();
     }
 
@@ -35,13 +33,13 @@ public class Navigator {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlString));
         loader.setController(controller); // Imposto il controller esistente
         Parent root = loader.load();
-        stage.setScene(new Scene(root, 850, 800));
+        stage.setScene(new Scene(root, 900, 750));
         stage.show();
     }
 
     public void setMainPage(String fxmlString) throws IOException{
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxmlString));
-        Scene scene = new Scene(fxmlLoader.load(), 850, 800);
+        Scene scene = new Scene(fxmlLoader.load(), 900, 750);
         stage.setTitle("From Fridge To Plate");
         stage.setScene(scene);
         stage.show();

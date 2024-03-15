@@ -2,7 +2,6 @@ package com.example.fromfridgetoplate.guicontrollers;
 
 import com.example.fromfridgetoplate.logic.bean.NotificationBean;
 import com.example.fromfridgetoplate.logic.control.MakeOrderControl;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;

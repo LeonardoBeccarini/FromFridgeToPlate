@@ -1,13 +1,8 @@
 package com.example.fromfridgetoplate.logic.bean;
 
 import com.example.fromfridgetoplate.guicontrollers.NotificationObserver;
-import com.example.fromfridgetoplate.guicontrollers.RiderHomePageGraphicController;
-import com.example.fromfridgetoplate.logic.bean.NotificationBean;
 import com.example.fromfridgetoplate.logic.exceptions.NotificationHandlingException;
-import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import com.example.fromfridgetoplate.guicontrollers.RiderNotificationPageGraphicController;
+
 import java.util.ArrayList;
 import java.util.List;
 

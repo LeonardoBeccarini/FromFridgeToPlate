@@ -1,21 +1,20 @@
 package com.example.fromfridgetoplate.secondguicontrollers;
 
-import com.example.fromfridgetoplate.logic.bean.CouponBean;
-import com.example.fromfridgetoplate.logic.bean.ShopBean;
-import com.example.fromfridgetoplate.logic.bean.TotalPriceBean;
+import com.example.fromfridgetoplate.logic.bean.*;
 import com.example.fromfridgetoplate.logic.control.MakeOrderControl;
 import com.example.fromfridgetoplate.logic.exceptions.CouponNotFoundException;
 import com.example.fromfridgetoplate.logic.exceptions.DbException;
 import com.example.fromfridgetoplate.logic.exceptions.NegativePriceException;
-import javafx.collections.FXCollections;
-import javafx.scene.control.Alert;
+import com.example.fromfridgetoplate.logic.exceptions.PaymentFailedException;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Scanner;
 
 public class CompleteOrderCLIcontroller {
-    private ShopBean shopBean;
-    private MakeOrderControl makeOrderControl = new MakeOrderControl();
+    private final ShopBean shopBean;
+    private final MakeOrderControl makeOrderControl = new MakeOrderControl();
     public CompleteOrderCLIcontroller(ShopBean shopBean){
         this.shopBean = shopBean;
     }
@@ -29,15 +28,12 @@ public class CompleteOrderCLIcontroller {
 
             int choice = scanner.nextInt();
             switch (choice) {
-                case 1:
-                    applyCoupon();
-                    break;
-                case 2:
+                case 1 -> applyCoupon();
+                case 2 -> {
                     pay();
                     running = false;
-                    break;
-                default:
-                    System.out.println("Invalid option. Please try again.");
+                }
+                default -> System.out.println("Invalid option. Please try again.");
             }
         }
     }
@@ -58,6 +54,44 @@ public class CompleteOrderCLIcontroller {
     }
 
     private void pay() {
-        System.out.println("da fare");
+        NavigatorCLI navigatorCLI = NavigatorCLI.getInstance();
+        AddressBean addressBean = getAddressBean();
+        //verifico se l'utente ha messo i dati
+        if(addressBean.getShippingStreet() == null || addressBean.getShippingStreetNumber() == 0||addressBean.getShippingCity() == null ||addressBean.getShippingProvince() == null ){
+            System.out.println("Inserire i dati di consegna!!");
+            addressBean = getAddressBean();
+        }
+        OrderBean orderBean = new OrderBean(shopBean.getVatNumber(), addressBean);
+        try {
+            makeOrderControl.completeOrder(orderBean);
+        } catch (DbException | PaymentFailedException e) {
+            System.out.println("il completamento dell'ordine non è andato a buon fine: " +e.getMessage());
+        }
+        try {
+            navigatorCLI.goTo("ClientHomeCLI");
+        } catch (IOException e) {
+           e.printStackTrace();
+        }
+    }
+    private AddressBean getAddressBean(){
+        String street = null;
+        int streetNumber = 0;
+        String city = null;
+        String province = null;
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+        try{
+            System.out.println("Inserisci la via della consegna: ");
+            street = bufferedReader.readLine();
+            System.out.println("Inserisci il numero civico: ");
+            streetNumber = scanner.nextInt();
+            System.out.println("Inserisci la città: ");
+            city = bufferedReader.readLine();
+            System.out.println("Inserisci la provincia: ");
+            province = bufferedReader.readLine();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+
+        return new AddressBean(street, streetNumber, city ,  province);
     }
 }

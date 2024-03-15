@@ -36,6 +36,7 @@ public class ResellerNotificationGraphicController extends GenericGraphicControl
         NotificationDAO notificationDAO = daoFactory.getNotificationDAO();
         populateListView();
         for(NotificationBean notificationBean: notificationBeanList){
+            System.out.println("sono nel loop" + " " + "id della notifica: " + " " + notificationBean.getNotificationId()); // debug casalingo
             notificationDAO.markNotificationAsRead(notificationBean.getNotificationId());
         }
         super.initialize(location, resources);
@@ -43,6 +44,7 @@ public class ResellerNotificationGraphicController extends GenericGraphicControl
 
     private void populateListView() {
         for (NotificationBean notificationBean : notificationBeanList) {
+            System.out.println("sono nel loop per popolare la listview" + " " + "id della notifica: " + " " + notificationBean.getNotificationId()); // debug casalingo
             label = new Label();
             label.setText(notificationBean.getMessageText() + ":" + "\n" +
                     "Customer: " + notificationBean.getCustomer() + "\n" +

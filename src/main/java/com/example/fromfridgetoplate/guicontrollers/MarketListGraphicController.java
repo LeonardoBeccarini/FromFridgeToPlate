@@ -8,10 +8,7 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 
 import java.io.IOException;
 import java.net.URL;
@@ -41,7 +38,7 @@ public class MarketListGraphicController extends GenericGraphicController {
 
         marketListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             nameLabel.setText((newValue == null) ? "" : newValue.getName());
-            addressLabel.setText((newValue == null) ? "" : "€" + newValue.getAddress());
+            addressLabel.setText((newValue == null) ? "" :newValue.getAddress());
             phoneLabel.setText((newValue == null) ? "" : newValue.getPhoneNumber());
 
         });
@@ -56,8 +53,14 @@ public class MarketListGraphicController extends GenericGraphicController {
         if(node == searchButton) {
             List<ShopBean> shopBeanList;
             MakeOrderControl makeOrderControl = new MakeOrderControl();
-            shopBeanList = makeOrderControl.loadShop(new SearchInfoBean(nameTextField.getText()));
-            marketListView.setItems(FXCollections.observableList(shopBeanList));
+            if(nameTextField.getText().isEmpty()) {
+                Alert alert = new Alert(Alert.AlertType.WARNING, "Complete the field before!");
+                alert.showAndWait();
+            }
+            else{
+                shopBeanList = makeOrderControl.loadShop(new SearchInfoBean(nameTextField.getText()));
+                marketListView.setItems(FXCollections.observableList(shopBeanList));
+            }
         }
         else if(node == selectButton){
             ShopBean selectedShop = marketListView.getSelectionModel().getSelectedItem();

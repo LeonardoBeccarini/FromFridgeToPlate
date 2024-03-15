@@ -3,7 +3,6 @@ package com.example.fromfridgetoplate.guicontrollers;
 import com.example.fromfridgetoplate.logic.bean.UserBean;
 import com.example.fromfridgetoplate.logic.control.LoginController;
 import com.example.fromfridgetoplate.logic.model.Role;
-import com.example.fromfridgetoplate.logic.model.Session;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
