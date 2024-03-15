@@ -112,7 +112,6 @@ public class NotificationDAO {
                             rs.getString("message")
                     );
                     notification.setNotificationId(rs.getInt("notificationId"));
-                    Utils.print("dal db id della notifica" + " " + notification.getNotificationId());
                     notifications.add(notification);
                 }
             }
@@ -127,7 +126,6 @@ public class NotificationDAO {
         String query = "{CALL SetNotificationAsRead(?)}";
         try (CallableStatement cstmt = connection.prepareCall(query)) {
             cstmt.setInt(1, notificationId);
-            Utils.print("sono dentro al blocco try di markNotificationAsRead" + notificationId);
            cstmt.executeQuery();
 
         } catch (SQLException e) {
