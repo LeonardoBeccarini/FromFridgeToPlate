@@ -1,5 +1,6 @@
 package com.example.fromfridgetoplate.secondguicontrollers;
 
+import com.example.fromfridgetoplate.Utils;
 import com.example.fromfridgetoplate.logic.bean.SearchInfoBean;
 import com.example.fromfridgetoplate.logic.bean.ShopBean;
 import com.example.fromfridgetoplate.logic.control.MakeOrderControl;
@@ -19,7 +20,7 @@ public class MarketListCLIcontroller {
         String shopName;
         List<ShopBean> shopBeanList;
 
-        System.out.println("Type the name of the shop: \n");
+        Utils.print("Type the name of the shop: \n");
         try {
             shopName = bufferedReader.readLine();
             MakeOrderControl makeOrderControl = new MakeOrderControl();
@@ -31,10 +32,10 @@ public class MarketListCLIcontroller {
                 String name = shopBean.getName();
                 String address = shopBean.getAddress();
                 String phone = shopBean.getPhoneNumber();
-                System.out.println(i+" "+vatNumber+" "+name+" "+address+" "+phone +"\n");
+                Utils.print(i+" "+vatNumber+" "+name+" "+address+" "+phone +"\n");
                 i++;
             }
-            System.out.println("Type index of the desired shop: \n");
+            Utils.print("Type index of the desired shop: \n");
             int selectedIndex = scanner.nextInt()-1;
             ShopBean shopBean = shopBeanList.get(selectedIndex);
 

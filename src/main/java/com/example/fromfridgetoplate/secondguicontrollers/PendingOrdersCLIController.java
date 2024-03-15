@@ -1,5 +1,6 @@
 package com.example.fromfridgetoplate.secondguicontrollers;
 
+import com.example.fromfridgetoplate.Utils;
 import com.example.fromfridgetoplate.guicontrollers.IRiderSelectionListener;
 import com.example.fromfridgetoplate.logic.bean.OrderBean;
 import com.example.fromfridgetoplate.logic.bean.OrderListBean;
@@ -89,12 +90,12 @@ public class PendingOrdersCLIController {
             if (selectedOrder != null) {
                 searchingRiders = true;
             } else {
-                System.out.println("ID ordine non trovato.");
+                Utils.print("ID ordine non trovato.");
             }
         } else if ("r".equals(input)) {
             exit = true;
         } else {
-            System.out.println("Comando non riconosciuto.");
+            Utils.print("Comando non riconosciuto.");
         }
     }
 
@@ -110,21 +111,21 @@ public class PendingOrdersCLIController {
 
 
     private void loadAndDisplayOrders() {
-        System.out.println("\nAggiornamento degli ordini pendenti, l'aggiornamento avverà ogni 20 secondi, attendere...");
+        Utils.print("\nAggiornamento degli ordini pendenti, l'aggiornamento avverà ogni 20 secondi, attendere...");
 
         PendingOrdersController pendingOrdersControl = new PendingOrdersController();
         OrderListBean orderListBean = pendingOrdersControl.getPendingOrderListBean();
         orders = orderListBean.getOrderBeans();
 
         if (orders.isEmpty()) {
-            System.out.println("Non ci sono ordini in sospeso al momento.");
+            Utils.print("Non ci sono ordini in sospeso al momento.");
         } else {
-            System.out.println("Ordini in sospeso:");
+            Utils.print("Ordini in sospeso:");
             for (OrderBean order : orders) {
-                System.out.println("ID Ordine: " + order.getOrderId() + ", Cliente ID: " + order.getCustomerId()
+                Utils.print("ID Ordine: " + order.getOrderId() + ", Cliente ID: " + order.getCustomerId()
                         + ", Data Ordine: " + order.getOrderTime() + ", Città Spedizione: " + order.getShippingCity());
             }
-            System.out.println("Premi 'd' seguito da ID ordine per i dettagli, 'r' per tornare indietro.");
+            Utils.print("Premi 'd' seguito da ID ordine per i dettagli, 'r' per tornare indietro.");
         }
     }
 
@@ -133,7 +134,7 @@ public class PendingOrdersCLIController {
 
     private void searchRidersCLI(OrderBean selectedOrder) {
         if (selectedOrder == null) {
-            System.out.println("Ordine non specificato. Riprova.");
+            Utils.print("Ordine non specificato. Riprova.");
             return;
         }
 
@@ -157,11 +158,11 @@ public class PendingOrdersCLIController {
     }
 
     private void displayAvailableRiders(List<RiderBean> availableRiders, String shippingCity) {
-        System.out.println("Rider disponibili in " + shippingCity + ":");
+        Utils.print("Rider disponibili in " + shippingCity + ":");
         for (RiderBean rider : availableRiders) {
-            System.out.println("ID: " + rider.getId() + ", Nome: " + rider.getName() + ", Cognome: " + rider.getSurname());
+            Utils.print("ID: " + rider.getId() + ", Nome: " + rider.getName() + ", Cognome: " + rider.getSurname());
         }
-        System.out.println("Inserisci l'ID del rider per assegnare l'ordine, o premi 'r' per tornare indietro.");
+        Utils.print("Inserisci l'ID del rider per assegnare l'ordine, o premi 'r' per tornare indietro.");
     }
 
     private void processRiderSelection(String input, List<RiderBean> availableRiders, OrderBean selectedOrder) {
@@ -171,10 +172,10 @@ public class PendingOrdersCLIController {
             if (selectedRider != null) {
                 new RiderSelectionListenerCLI().onRiderSelected(selectedRider, selectedOrder);
             } else {
-                System.out.println("ID rider non trovato. Riprova.");
+                Utils.print("ID rider non trovato. Riprova.");
             }
         } catch (NumberFormatException e) {
-            System.out.println("Input non valido. Riprova.");
+            Utils.print("Input non valido. Riprova.");
         }
     }
 

@@ -1,6 +1,7 @@
 package com.example.fromfridgetoplate.secondguicontrollers;
 
 
+import com.example.fromfridgetoplate.Utils;
 import com.example.fromfridgetoplate.guicontrollers.NotificationObserver;
 import com.example.fromfridgetoplate.logic.bean.NotificationBean;
 import com.example.fromfridgetoplate.logic.bean.NotificationListBean;
@@ -23,13 +24,13 @@ public class RiderHomePageCLIController implements NotificationObserver {
     public void mainMenu() {
         boolean isRunning = true;
         while (isRunning) {
-            System.out.println("\n*** Menu Principale Rider ***");
-            System.out.println("1. Vai Online");
-            System.out.println("2. Vai Offline");
-            System.out.println("3. Sezione Notifiche");
-            System.out.println("4. Accedi al tuo report delle consegne");
-            System.out.println("5. Visualizza l'ordine che devi consegnare");
-            System.out.println("6. Esci");
+            Utils.print("\n*** Menu Principale Rider ***");
+            Utils.print("1. Vai Online");
+            Utils.print("2. Vai Offline");
+            Utils.print("3. Sezione Notifiche");
+            Utils.print("4. Accedi al tuo report delle consegne");
+            Utils.print("5. Visualizza l'ordine che devi consegnare");
+            Utils.print("6. Esci");
             System.out.print("Seleziona un'opzione: ");
             int choice = scanner.nextInt();
 
@@ -57,11 +58,11 @@ public class RiderHomePageCLIController implements NotificationObserver {
                     break;
 
                 case 6:
-                    System.out.println("Uscita dal sistema...");
+                    Utils.print("Uscita dal sistema...");
                     isRunning = false;
                     break;
                 default:
-                    System.out.println("Opzione non valida, riprova.");
+                    Utils.print("Opzione non valida, riprova.");
             }
         }
     }
@@ -71,14 +72,14 @@ public class RiderHomePageCLIController implements NotificationObserver {
             isOnline = true;
             this.riderController = new RiderHPController(nlb);
 
-            System.out.println("Sei entrato in servizio");
+            Utils.print("Sei entrato in servizio");
 
 
             riderController.setRiderAvailable(true);
             riderController.startNotificationPolling();
-            System.out.println("Sei ora online e disponibile per le consegne.");
+            Utils.print("Sei ora online e disponibile per le consegne.");
         } else {
-            System.out.println("Sei già online.");
+            Utils.print("Sei già online.");
         }
     }
 
@@ -86,46 +87,46 @@ public class RiderHomePageCLIController implements NotificationObserver {
         if (isOnline) {
             isOnline = false;
             riderController.stopNotificationPolling(); // Simula la disattivazione del polling delle notifiche
-            System.out.println("Sei ora offline e non disponibile per le consegne.");
+            Utils.print("Sei ora offline e non disponibile per le consegne.");
         } else {
-            System.out.println("Sei già offline.");
+            Utils.print("Sei già offline.");
         }
     }
 
     private void viewNotifications() {
         if (!isOnline) {
-            System.out.println("Devi essere online per visualizzare le notifiche.");
+            Utils.print("Devi essere online per visualizzare le notifiche.");
             return;
         }
 
         List<NotificationBean> notificationBeans = nlb.getNotifications();
         if (notificationBeans.isEmpty()) {
-            System.out.println("Non ci sono nuove notifiche.");
+            Utils.print("Non ci sono nuove notifiche.");
             return;
         }
 
-        System.out.println("----- Visualizzazione Notifiche -----");
+        Utils.print("----- Visualizzazione Notifiche -----");
         for (NotificationBean bean : notificationBeans) {
-            System.out.println("Ordine ID: " + bean.getOrderId());
-            System.out.println("Via: " + bean.getStreet() + ", N°: " + bean.getStreetNumber());
-            System.out.println("Città: " + bean.getCity() + ", Provincia: " + bean.getProvince());
-            System.out.println("Messaggio: " + bean.getMessageText());
-            System.out.println("------------------------------------");
+            Utils.print("Ordine ID: " + bean.getOrderId());
+            Utils.print("Via: " + bean.getStreet() + ", N°: " + bean.getStreetNumber());
+            Utils.print("Città: " + bean.getCity() + ", Provincia: " + bean.getProvince());
+            Utils.print("Messaggio: " + bean.getMessageText());
+            Utils.print("------------------------------------");
         }
 
         handleNotification(notificationBeans);
     }
 
     private void handleNotification(List<NotificationBean> notifications) {
-        System.out.println("\nSeleziona la notifica da gestire o 0 per tornare indietro:");
+        Utils.print("\nSeleziona la notifica da gestire o 0 per tornare indietro:");
         int choice = scanner.nextInt();
 
         if (choice > 0 && choice <= notifications.size()) {
             NotificationBean selectedNotification = notifications.get(choice - 1);
             System.out.printf("Hai selezionato la notifica per l'ordine ID: %d%n", selectedNotification.getOrderId());
 
-            System.out.println("1. Accetta Notifica");
-            System.out.println("2. Rifiuta Notifica");
+            Utils.print("1. Accetta Notifica");
+            Utils.print("2. Rifiuta Notifica");
             System.out.print("Seleziona un'azione: ");
             int action = scanner.nextInt();
 
@@ -137,10 +138,10 @@ public class RiderHomePageCLIController implements NotificationObserver {
                     declineNotification(selectedNotification);
                     break;
                 default:
-                    System.out.println("Azione non valida.");
+                    Utils.print("Azione non valida.");
             }
         } else if (choice != 0) {
-            System.out.println("Selezione non valida.");
+            Utils.print("Selezione non valida.");
         }
     }
 
@@ -151,14 +152,14 @@ public class RiderHomePageCLIController implements NotificationObserver {
         boolean hasOrderInDelivery = riderController.checkForOrderInDelivery(currentRider);
 
         if (hasOrderInDelivery) {
-            System.out.println("Consegna in corso: Hai già un ordine in consegna. Devi completare la consegna corrente prima di accettarne un'altra.");
+            Utils.print("Consegna in corso: Hai già un ordine in consegna. Devi completare la consegna corrente prima di accettarne un'altra.");
         } else {
             try {
                 riderController.acceptOrder(notification);
                 riderController.markNotificationAsRead(notification); // Qui si suppone che il metodo markNotificationAsRead simuli l'accettazione dell'ordine
                 System.out.printf("Hai accettato l'ordine con ID: %d%n", notification.getOrderId());
             } catch (Exception e) {
-                System.out.println("Errore nell'accettazione dell'ordine: " + e.getMessage());
+                Utils.print("Errore nell'accettazione dell'ordine: " + e.getMessage());
             }
         }
     }
@@ -170,13 +171,13 @@ public class RiderHomePageCLIController implements NotificationObserver {
             riderController.markNotificationAsRead(notification);
             System.out.printf("Hai rifiutato la notifica per l'ordine ID: %d%n", notification.getOrderId());
         } catch (Exception e) {
-            System.out.println("Errore nel rifiuto della notifica: " + e.getMessage());
+            Utils.print("Errore nel rifiuto della notifica: " + e.getMessage());
         }
     }
 
     @Override
     public void update(List<NotificationBean> notifications) {
-        System.out.println("I tuoi incarichi sono stati aggiornati. Potresti avere nuove notifiche. Seleziona 'Visualizza Notifiche' dal menu principale per vederle.");
+        Utils.print("I tuoi incarichi sono stati aggiornati. Potresti avere nuove notifiche. Seleziona 'Visualizza Notifiche' dal menu principale per vederle.");
     }
 
     public static void main(String[] args) {

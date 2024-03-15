@@ -1,5 +1,6 @@
 package com.example.fromfridgetoplate.secondguicontrollers;
 
+import com.example.fromfridgetoplate.Utils;
 import com.example.fromfridgetoplate.logic.bean.FoodItemBean;
 import com.example.fromfridgetoplate.logic.bean.FoodItemListBean;
 import com.example.fromfridgetoplate.logic.bean.ShopBean;
@@ -26,13 +27,13 @@ public class ProductListCLIcontroller {
             String name = foodItemBean.getName();
             float price = foodItemBean.getPrice();
 
-            System.out.println(i+" "+name+" "+price+"€" + "\n");
+            Utils.print(i+" "+name+" "+price+"€" + "\n");
             i++;
         }
         boolean running = true;
         while(running){
-            System.out.println("1. addToCart");
-            System.out.println("2. goToCart");
+            Utils.print("1. addToCart");
+            Utils.print("2. goToCart");
 
             System.out.print("Choose an option: ");
 
@@ -40,7 +41,7 @@ public class ProductListCLIcontroller {
 
             switch (choice) {
                 case 1 -> {
-                    System.out.println("Type index of the item to add: \n");
+                    Utils.print("Type index of the item to add: \n");
                     int selectedIndex = scanner.nextInt();
                     makeOrderControl.addToCart(foodItemBeanList.getList().get(selectedIndex - 1));
 
@@ -50,7 +51,7 @@ public class ProductListCLIcontroller {
                     navigator.goToWithCOntroller("CartCLI", cartCLIcontroller);
                     running = false;
                 }
-                default -> System.out.println("Invalid option. Please try again.");
+                default -> Utils.print("Invalid option. Please try again.");
             }
 
         }

@@ -1,5 +1,6 @@
 package com.example.fromfridgetoplate.secondguicontrollers;
 
+import com.example.fromfridgetoplate.Utils;
 import com.example.fromfridgetoplate.logic.bean.UserBean;
 import com.example.fromfridgetoplate.logic.control.LoginController;
 import com.example.fromfridgetoplate.logic.model.Role;
@@ -16,14 +17,14 @@ public class LoginCLIController {
     }
 
     public void displayLogin() {
-        System.out.println("----- Login -----");
+        Utils.print("----- Login -----");
         System.out.print("Enter email: ");
         String email = scanner.nextLine();
         System.out.print("Enter password: ");
         String password = scanner.nextLine();
 
         if (email.isEmpty() || password.isEmpty()) {
-            System.out.println("Both email and password are required.");
+            Utils.print("Both email and password are required.");
             return;
         }
 
@@ -41,7 +42,7 @@ public class LoginCLIController {
                     navigator.goTo("ResellerHomeCLI");
                 }
             } else {
-                System.out.println("Login failed. Please check your credentials.");
+                Utils.print("Login failed. Please check your credentials.");
             }
         } catch (IOException e) {
             e.printStackTrace();

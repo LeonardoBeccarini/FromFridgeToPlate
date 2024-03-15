@@ -1,6 +1,7 @@
 package com.example.fromfridgetoplate.secondguicontrollers;
 
 
+import com.example.fromfridgetoplate.Utils;
 import com.example.fromfridgetoplate.logic.bean.OrderBean;
 import com.example.fromfridgetoplate.logic.bean.OrderListBean;
 import com.example.fromfridgetoplate.logic.control.PendingOrdersController;
@@ -18,9 +19,9 @@ public class OrderStatusCLIController {
         List<OrderBean> orders = assignedOrdersBean.getOrderBeans();
 
 
-        System.out.println("Ordini Assegnati:");
+        Utils.print("Ordini Assegnati:");
         for (OrderBean order : orders) {
-            System.out.println(formatOrder(order));
+            Utils.print(formatOrder(order));
         }
 
 
@@ -36,12 +37,12 @@ public class OrderStatusCLIController {
     private void handleUserInput() {
 
         Scanner scanner = new Scanner(System.in);
-        System.out.println("\nPremi 'r' per aggiornare la lista degli ordini, qualsiasi altra chiave per uscire.");
+        Utils.print("\nPremi 'r' per aggiornare la lista degli ordini, qualsiasi altra chiave per uscire.");
         String input = scanner.nextLine().trim();
         if ("r".equals(input)) {
             displayAssignedOrders(); // Refresh della lista degli ordini, cosi simulo un loop
         } else {
-            System.out.println("Uscita dallo stato degli ordini.");
+            Utils.print("Uscita dallo stato degli ordini.");
         }
     }
 

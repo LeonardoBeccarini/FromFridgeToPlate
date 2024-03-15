@@ -1,5 +1,6 @@
 package com.example.fromfridgetoplate.secondguicontrollers;
 
+import com.example.fromfridgetoplate.Utils;
 import com.example.fromfridgetoplate.logic.bean.NotificationBean;
 import com.example.fromfridgetoplate.logic.control.MakeOrderControl;
 
@@ -22,14 +23,14 @@ public class ResellerMainPageCLIController {
     public void showMenu() {
         Scanner scanner = new Scanner(System.in);
         NavigatorCLI navigator = NavigatorCLI.getInstance();
-        System.out.println("\n----- Reseller Main Page -----");
-        System.out.println("1. View Pending Orders");
-        System.out.println("2. View Order Status");
-        System.out.println("3. View Notifications (" + notificationBeanList.size() + ")");
+        Utils.print("\n----- Reseller Main Page -----");
+        Utils.print("1. View Pending Orders");
+        Utils.print("2. View Order Status");
+        Utils.print("3. View Notifications (" + notificationBeanList.size() + ")");
         if (!notificationBeanList.isEmpty()) {
-            System.out.println("You have new notifications!");
+            Utils.print("You have new notifications!");
         }
-        System.out.println("4. Exit");
+        Utils.print("4. Exit");
         System.out.print("Choose an option: ");
 
         int choice = scanner.nextInt();
@@ -53,11 +54,11 @@ public class ResellerMainPageCLIController {
                     System.exit(0);
                     break;
                 default:
-                    System.out.println("Invalid option. Please try again.");
+                    Utils.print("Invalid option. Please try again.");
                     break;
             }
         } catch (IOException e) {
-            System.out.println("An error occurred. Please try again.");
+            Utils.print("An error occurred. Please try again.");
             e.printStackTrace();
         }
 

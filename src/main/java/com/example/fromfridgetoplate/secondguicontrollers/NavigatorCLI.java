@@ -1,5 +1,7 @@
 package com.example.fromfridgetoplate.secondguicontrollers;
 
+import com.example.fromfridgetoplate.Utils;
+
 import java.io.IOException;
 
 public class NavigatorCLI {
@@ -54,7 +56,7 @@ public class NavigatorCLI {
 
             // Aggiungi altri case qui per le nuove pagine CLI
             default:
-                System.out.println("Unrecognized command. Please try again.");
+                Utils.print("Unrecognized command. Please try again.");
                 break;
         }
     }
@@ -73,7 +75,7 @@ public class NavigatorCLI {
                 completeOrderCLIcontroller.showMenu();
                 break ;
             default:
-                System.out.println("Unrecognized command. Please try again.");
+                Utils.print("Unrecognized command. Please try again.");
                 break;
         }
     }
