@@ -10,9 +10,6 @@ public class DummyPaymentBoundary {
     public boolean pay(TotalPriceBean totalPriceBean){
         Alert alert = new Alert(Alert.AlertType.INFORMATION, "Vuoi pagare: " + totalPriceBean.getTotalPrice()+ "€");
         Optional<ButtonType> result = alert.showAndWait();
-        if(result.isPresent() && result.get() == ButtonType.OK){
-            return true;
-        }
-        else return false;
+        return result.isPresent() && result.get() == ButtonType.OK;
     }
 }
