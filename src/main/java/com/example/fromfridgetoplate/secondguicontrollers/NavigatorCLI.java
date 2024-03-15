@@ -72,6 +72,10 @@ public class NavigatorCLI {
                 CompleteOrderCLIcontroller completeOrderCLIcontroller = (CompleteOrderCLIcontroller) controller;
                 completeOrderCLIcontroller.showMenu();
                 break ;
+            case "ResellerNotificationCLI":
+                ResellerNotificationCLIcontroller resellerNotificationCLIcontroller = (ResellerNotificationCLIcontroller) controller;
+                resellerNotificationCLIcontroller.showNotification();
+                break ;
             default:
                 Utils.print("Unrecognized command. Please try again.");
                 break;

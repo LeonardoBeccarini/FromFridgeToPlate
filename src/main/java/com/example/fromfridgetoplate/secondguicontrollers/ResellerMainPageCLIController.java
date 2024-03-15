@@ -53,7 +53,7 @@ public class ResellerMainPageCLIController {
                     navigator.goTo("OrderStatusCLI");
                     break;
                 case 3:
-                    // Logic to view notifications -----> BECCA
+                    navigator.goToWithCOntroller("ResellerNotificationCLI", new ResellerNotificationCLIcontroller(notificationBeanList));
 
                     break;
                 case 4:
@@ -65,7 +65,6 @@ public class ResellerMainPageCLIController {
             }
         } catch (IOException e) {
             Utils.print("An error occurred. Please try again.");
-            e.printStackTrace();
         }
 
         // Display the menu again after an option has been executed
