@@ -39,6 +39,8 @@ public class MakeOrderControl {
 
         return listShopBean;
     }
+
+
     public FoodItemListBean loadProducts(){
         FoodItemListBean foodItemListBean = new FoodItemListBean();
         for(FoodItem foodItem : catalog.getItems() ){
@@ -47,6 +49,7 @@ public class MakeOrderControl {
         }
         return foodItemListBean;
     }
+
 
     public FoodItemListBean searchProduct(FoodItemBean foodItemBean){
         List<FoodItem> filteredList = catalog.filterByName(foodItemBean.getName());

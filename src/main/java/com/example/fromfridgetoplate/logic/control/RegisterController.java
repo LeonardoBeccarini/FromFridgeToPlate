@@ -38,7 +38,6 @@ public class RegisterController {
     public boolean registerRider(RegistrationBean registrationBean) {
         UserFactory userFactory = new UserFactory();
         RiderDAO riderDAO = new DAOFactory().getRiderDAO();
-
         Rider newRider = (Rider) userFactory.createUser(registrationBean); // casto il padre
 
         return riderDAO.registerRider(newRider.getName(), newRider.getSurname(), newRider.getEmail(), newRider.getPassword(), newRider.getAssignedCity());

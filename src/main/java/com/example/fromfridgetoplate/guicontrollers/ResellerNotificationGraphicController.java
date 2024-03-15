@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class ResellerNotificationGraphicController extends GenericGraphicController{
+
     private List<NotificationBean> notificationBeanList;
 
     @FXML

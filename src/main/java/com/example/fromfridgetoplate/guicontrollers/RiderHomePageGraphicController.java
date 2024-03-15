@@ -3,15 +3,13 @@ package com.example.fromfridgetoplate.guicontrollers;
 
 import com.example.fromfridgetoplate.logic.bean.NotificationBean;
 import com.example.fromfridgetoplate.logic.bean.NotificationListBean;
-import com.example.fromfridgetoplate.logic.bean.OrderBean;
 import com.example.fromfridgetoplate.logic.bean.RiderBean;
 import com.example.fromfridgetoplate.logic.control.RiderHPController;
 
 import com.example.fromfridgetoplate.logic.exceptions.NotificationProcessingException;
-import com.example.fromfridgetoplate.logic.model.Session;
+import com.example.fromfridgetoplate.patterns.state.RiderStateContext;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -28,7 +26,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -70,10 +67,11 @@ public class RiderHomePageGraphicController extends GenericGraphicController imp
     @FXML
     private  Button offlineButton;
 
-    private RiderHPController riderController;
+    private RiderHPController riderController;// è necessario mantenere un riferimento allo stesso controller applicativo , senno si avvierebbero piu timer , ecc.
     private RiderNotificationPageGraphicController notificationPageGController;
     private NotificationListBean nlb = new NotificationListBean();
-    private boolean isOnline = false;
+
+    private RiderStateContext stateContext;
 
 
     @Override
@@ -89,11 +87,74 @@ public class RiderHomePageGraphicController extends GenericGraphicController imp
         assert stackpaneId2 != null : "fx:id=\"stackpaneId2\" was not injected: check your FXML file 'riderMainPage.fxml'.";
         assert stackpaneId3 != null : "fx:id=\"stackpaneId3\" was not injected: check your FXML file 'riderMainPage.fxml'.";
 
-        processOnline();
+        this.stateContext = new RiderStateContext(this);
+
+        SetOnlineStatus();
+        goOnline(null);
+
 
     }
 
+
+
+    private void SetOnlineStatus() {
+        // quando andro online chiamero il notificationmanager per segnalare la mia entrata in servizio
+        // in qualche modo il controller grafico di login dovrà passare in caso di successo di login, il rispettivo riderBean, a quest'altro
+        // controller grafico.
+
+
+        RiderHPController riderCtrl = new RiderHPController();
+        RiderBean riderBn = riderCtrl.getRiderDetailsFromSession();// serve per accedere alle informazioni immesse al momento della
+        // registrazione, che mi servono, per popolare il riderbean
+
+        if (riderBn == null) {
+            // Mostra un messaggio di errore se non sono disponibili dettagli del rider
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Errore di Login");
+            alert.setHeaderText("Dettagli Rider Non Trovati");
+            alert.setContentText("Impossibile trovare i dettagli del rider. Assicurati di essere loggato correttamente.");
+            alert.showAndWait();
+            return;
+        }
+        this.riderController = new RiderHPController(nlb);
+        //nlb.setGraphicController(this);
+        nlb.attach(this);
+
+    }
+
+
     @FXML
+    void goOffline(ActionEvent event) {
+        System.out.println("goOffline");
+        stateContext.goOffline();
+    }
+
+    @FXML
+    void goOnline(ActionEvent event) {
+        System.out.println("goOnline");
+        stateContext.goOnline();
+    }
+
+    public void showAlreadyOnlineAlert(){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Attenzione");
+        alert.setHeaderText("Sei già in servizio!");
+        alert.setContentText("Attendi di ricevere degli incarichi.");
+        alert.showAndWait();
+    }
+
+    public void showAlreadyOfflineAlert(){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Attenzione");
+        alert.setHeaderText("Sei già fuori servizio!");
+        alert.setContentText("Torna online per ricevere nuovi incarichi.");
+        alert.showAndWait();
+
+    }
+
+
+    /*
+     @FXML
     void goOffline(ActionEvent event) {
 
         offlineButton.setStyle("-fx-background-color: gold;");
@@ -136,7 +197,8 @@ public class RiderHomePageGraphicController extends GenericGraphicController imp
                 return;
             }
             this.riderController = new RiderHPController(nlb);
-            nlb.setGraphicController(this);
+            //nlb.setGraphicController(this);
+            nlb.attach(this);
 
         }
 
@@ -151,7 +213,7 @@ public class RiderHomePageGraphicController extends GenericGraphicController imp
         riderController.startNotificationPolling();
 
 
-    }
+    } */
 
 
 
@@ -179,11 +241,33 @@ public class RiderHomePageGraphicController extends GenericGraphicController imp
         stage.show();
     }
 
+    public void updateUIForOnlineState() {
+
+        riderController.setRiderAvailable(true);
+
+        serviceBtn.setStyle("-fx-background-color: gold;");
+        // Disabilito il pulsante per evitare ulteriori clic
+        //serviceBtn.setDisable(true);
+        offlineButton.setStyle("-fx-background-color: originalColor;");
+        //offlineButton.setDisable(false);
+        riderController.startNotificationPolling();
+
+    }
+
+    public void updateUIForOfflineState() {
+        offlineButton.setStyle("-fx-background-color: gold;");
+        //offlineButton.setDisable(true);
+        serviceBtn.setStyle("-fx-background-color: originalColor;");
+        //serviceBtn.setDisable(false);
+        riderController.stopNotificationPolling();
+
+    }
 
 
-    public void update(List<NotificationBean> notificationBeans) {
+    public void update() {
 
         try {
+            List<NotificationBean> notificationBeans = nlb.getNotifications();
             int newNotificationsCount = notificationBeans.size();
 
             // aggiorno il testo del bottone notificationsButton
@@ -203,13 +287,13 @@ public class RiderHomePageGraphicController extends GenericGraphicController imp
 
     private void onUpdateFailed(String reason) {
 
-        Platform.runLater(() -> {
+
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Errore di aggiornamento");
             alert.setHeaderText(null);
             alert.setContentText(reason);
             alert.showAndWait();
-        });
+
     }
 
 

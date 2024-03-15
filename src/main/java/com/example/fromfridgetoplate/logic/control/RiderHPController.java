@@ -42,6 +42,11 @@ public class RiderHPController {
     // 2o costruttore
     public RiderHPController() {
 
+        this.deliveredNotification = new ArrayList<>();
+        this.riderBean = getRiderDetailsFromSession();// serve per accedere alle informazioni immesse al momento della
+        // registrazione, che mi servono, per popolare il riderbean
+
+
     }
 
 
@@ -277,9 +282,12 @@ public class RiderHPController {
     }
 
 
+    public void setNlb (NotificationListBean nlb){
+        this.nlb = nlb;
+    }
 
-
-
-
+    public RiderBean getRiderBean() {
+        return riderBean;
+    }
 }
 

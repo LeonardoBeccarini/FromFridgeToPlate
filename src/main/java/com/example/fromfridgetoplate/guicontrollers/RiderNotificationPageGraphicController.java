@@ -19,7 +19,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 // -----------------------------------------notification page per il RIDER----------------------------------------------
-public class RiderNotificationPageGraphicController extends GenericGraphicController  {
+public class RiderNotificationPageGraphicController {
 
 
 
@@ -81,13 +81,15 @@ public class RiderNotificationPageGraphicController extends GenericGraphicContro
     }
 
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
 
-        super.initialize(location, resources);
+
+    public void initialize() {
+
+
         assert notTable != null : "fx:id=\"notTable\" was not injected: check your FXML file 'Untitled'.";
         assert orderColumn != null : "fx:id=\"orderColumn\" was not injected: check your FXML file 'Untitled'.";
         assert streetColumn != null : "fx:id=\"streetColumn\" was not injected: check your FXML file 'Untitled'.";
+
 
         orderColumn.setCellValueFactory(new PropertyValueFactory<>("orderId"));
         streetColumn.setCellValueFactory(new PropertyValueFactory<>("street"));

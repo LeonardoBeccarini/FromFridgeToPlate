@@ -10,8 +10,14 @@ public class UserFactory {
             return new Client(registrationBean.getEmail(), registrationBean.getPassword(), registrationBean.getName(), registrationBean.getSurname(), registrationBean.getAddress());
         }
         else if(registrationBean.getRole() == Role.OWNER){
-            return new Shop(registrationBean.getEmail(), registrationBean.getPassword(), registrationBean.getName(), registrationBean.getAddress(), registrationBean.getVATnumber(), registrationBean.getPhoneNumber());    /* qui andrebbe if il ruolo è rider o owner creo le altre due entity, questo è un placeholder per evitare errori del compilatore*/
+            return new Shop(registrationBean.getEmail(), registrationBean.getPassword(), registrationBean.getName(), registrationBean.getAddress(), registrationBean.getVATnumber(), registrationBean.getPhoneNumber());
         }
+        //return new Rider(registrationBean.getEmail(), registrationBean.getPassword(), registrationBean.getName(), registrationBean.getSurname());
+
+        else if(registrationBean.getRole() == Role.RIDER){
+            return new Rider(registrationBean.getEmail(), registrationBean.getName(), registrationBean.getSurname(), registrationBean.getPassword(), registrationBean.getCity() );    /* qui andrebbe if il ruolo è rider o owner creo le altre due entity, questo è un placeholder per evitare errori del compilatore*/
+        }
+
 
         return null;
     }

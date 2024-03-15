@@ -8,5 +8,5 @@ import java.util.List;
 public interface NotificationObserver {
 
 
-    void update(List<NotificationBean> nbl);
+    void update();
 }

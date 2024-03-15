@@ -17,7 +17,8 @@ public class RiderHomePageCLIController implements NotificationObserver {
     private boolean isOnline = false;
 
     public RiderHomePageCLIController() {
-        nlb.setGraphicController(this);
+        //nlb.setGraphicController(this);
+        nlb.attach(this);
     }
 
     public void mainMenu() {
@@ -175,7 +176,7 @@ public class RiderHomePageCLIController implements NotificationObserver {
     }
 
     @Override
-    public void update(List<NotificationBean> notifications) {
+    public void update() {
         System.out.println("I tuoi incarichi sono stati aggiornati. Potresti avere nuove notifiche. Seleziona 'Visualizza Notifiche' dal menu principale per vederle.");
     }
 

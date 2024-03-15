@@ -14,7 +14,7 @@ public class GenericGraphicController implements Initializable {
     @FXML
     private Button profileButton;
     @FXML
-    private Button homeButton;
+    protected Button homeButton;
 
     Navigator navigator = Navigator.getInstance(null);
 
