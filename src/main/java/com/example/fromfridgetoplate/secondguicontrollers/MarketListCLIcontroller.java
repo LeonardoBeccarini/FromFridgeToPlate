@@ -20,7 +20,7 @@ public class MarketListCLIcontroller {
         String shopName;
         List<ShopBean> shopBeanList;
 
-        Utils.print("Type the name of the shop: \n");
+        Printer.print("Type the name of the shop: \n");
         try {
             shopName = bufferedReader.readLine();
             MakeOrderControl makeOrderControl = new MakeOrderControl();
@@ -32,10 +32,10 @@ public class MarketListCLIcontroller {
                 String name = shopBean.getName();
                 String address = shopBean.getAddress();
                 String phone = shopBean.getPhoneNumber();
-                Utils.print(i+" "+vatNumber+" "+name+" "+address+" "+phone +"\n");
+                Printer.print(i+" "+vatNumber+" "+name+" "+address+" "+phone +"\n");
                 i++;
             }
-            Utils.print("Type index of the desired shop: \n");
+            Printer.print("Type index of the desired shop: \n");
             int selectedIndex = scanner.nextInt()-1;
             ShopBean shopBean = shopBeanList.get(selectedIndex);
 
@@ -43,7 +43,7 @@ public class MarketListCLIcontroller {
             navigatorCLI.goToWithCOntroller("ProductListCLI", productListCLIcontroller);
 
         } catch (IOException | DbException e) {
-            Utils.print(e.getMessage());
+            Printer.print(e.getMessage());
         }
 
     }

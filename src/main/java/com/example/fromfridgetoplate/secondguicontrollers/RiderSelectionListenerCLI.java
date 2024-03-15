@@ -12,13 +12,13 @@ public class RiderSelectionListenerCLI implements IRiderSelectionListener {
     public void onRiderSelected(RiderBean selectedRiderBean, OrderBean orderBean) {
         assignOrderToRiderCLI(orderBean, selectedRiderBean);
 
-        Utils.print("Notifica inviata al rider " + selectedRiderBean.getName() + " " + selectedRiderBean.getSurname() +
+        Printer.print("Notifica inviata al rider " + selectedRiderBean.getName() + " " + selectedRiderBean.getSurname() +
                 " per l'ordine ID: " + orderBean.getOrderId() + " in " + selectedRiderBean.getAssignedCity());
     }
 
     private void assignOrderToRiderCLI(OrderBean orderBean, RiderBean riderBean) {
 
-        Utils.print("L'ordine ID: " + orderBean.getOrderId() + " è stato assegnato al rider ID: " + riderBean.getId());
+        Printer.print("L'ordine ID: " + orderBean.getOrderId() + " è stato assegnato al rider ID: " + riderBean.getId());
 
         NotificationManager notManager = new NotificationManager();
         notManager.notifyRider(riderBean, orderBean);

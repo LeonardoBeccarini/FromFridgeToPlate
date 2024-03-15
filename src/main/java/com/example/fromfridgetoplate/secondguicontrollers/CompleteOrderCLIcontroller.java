@@ -22,9 +22,9 @@ public class CompleteOrderCLIcontroller {
     public void showMenu(){
         boolean running = true;
         while(running){
-            Utils.print("1. Apply coupon");
-            Utils.print("2. Pay");
-            Utils.print("Choose an option: ");
+            Printer.print("1. Apply coupon");
+            Printer.print("2. Pay");
+            Printer.print("Choose an option: ");
 
             int choice = scanner.nextInt();
             switch (choice) {
@@ -33,22 +33,22 @@ public class CompleteOrderCLIcontroller {
                     pay();
                     running = false;
                 }
-                default -> Utils.print("Invalid option. Please try again.");
+                default -> Printer.print("Invalid option. Please try again.");
             }
         }
     }
     private void applyCoupon() {
-        Utils.print("Inserisci il codice del coupon: ");
+        Printer.print("Inserisci il codice del coupon: ");
         int code = scanner.nextInt();
         CouponBean couponBean = new CouponBean(code, shopBean.getVatNumber());
 
         try {
             TotalPriceBean totalPriceBean = makeOrderControl.applyCoupon(couponBean);
 
-            Utils.print("Il nuovo prezzo dell'ordine è : " + totalPriceBean.getTotalPrice());
+            Printer.print("Il nuovo prezzo dell'ordine è : " + totalPriceBean.getTotalPrice());
 
         } catch (CouponNotFoundException | NegativePriceException | DbException e) {
-            Utils.print(e.getMessage());
+            Printer.print(e.getMessage());
 
         }
     }
@@ -58,14 +58,14 @@ public class CompleteOrderCLIcontroller {
         AddressBean addressBean = getAddressBean();
         //verifico se l'utente ha messo i dati
         if(addressBean.getShippingStreet() == null || addressBean.getShippingStreetNumber() == 0||addressBean.getShippingCity() == null ||addressBean.getShippingProvince() == null ){
-            Utils.print("Inserire i dati di consegna!!");
+            Printer.print("Inserire i dati di consegna!!");
             addressBean = getAddressBean();
         }
         OrderBean orderBean = new OrderBean(shopBean.getVatNumber(), addressBean);
         try {
             makeOrderControl.completeOrder(orderBean);
         } catch (DbException | PaymentFailedException e) {
-            Utils.print("il completamento dell'ordine non è andato a buon fine: " +e.getMessage());
+            Printer.print("il completamento dell'ordine non è andato a buon fine: " +e.getMessage());
         }
         try {
             navigatorCLI.goTo("ClientHomeCLI");
@@ -80,13 +80,13 @@ public class CompleteOrderCLIcontroller {
         String province = null;
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
         try{
-            Utils.print("Inserisci la via della consegna: ");
+            Printer.print("Inserisci la via della consegna: ");
             street = bufferedReader.readLine();
-            Utils.print("Inserisci il numero civico: ");
+            Printer.print("Inserisci il numero civico: ");
             streetNumber = scanner.nextInt();
-            Utils.print("Inserisci la città: ");
+            Printer.print("Inserisci la città: ");
             city = bufferedReader.readLine();
-            Utils.print("Inserisci la provincia: ");
+            Printer.print("Inserisci la provincia: ");
             province = bufferedReader.readLine();
         }catch (IOException e){
             e.printStackTrace();

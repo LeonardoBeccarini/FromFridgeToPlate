@@ -54,7 +54,7 @@ public class NavigatorCLI {
 
             // Aggiungi altri case qui per le nuove pagine CLI
             default:
-                Utils.print("Unrecognized command. Please try again.");
+                Printer.print("Unrecognized command. Please try again.");
                 break;
         }
     }
@@ -77,7 +77,7 @@ public class NavigatorCLI {
                 resellerNotificationCLIcontroller.showNotification();
                 break ;
             default:
-                Utils.print("Unrecognized command. Please try again.");
+                Printer.print("Unrecognized command. Please try again.");
                 break;
         }
     }

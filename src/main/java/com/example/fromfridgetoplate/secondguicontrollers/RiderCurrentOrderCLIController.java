@@ -17,41 +17,41 @@ public class RiderCurrentOrderCLIController {
             OrderBean currentOrderBean = riderController.getInDeliveryOrderForRider(riderBean);
 
             if (currentOrderBean != null) {
-                Utils.print("\n*** Dettagli dell'Ordine Corrente ***");
-                Utils.print("Id dell'ordine: " + currentOrderBean.getOrderId());
-                Utils.print("Via: " + currentOrderBean.getShippingAddress().getShippingStreet());
-                Utils.print("Città: " + currentOrderBean.getShippingAddress().getShippingCity());
-                Utils.print("Provincia: " + currentOrderBean.getShippingAddress().getShippingProvince());
-                Utils.print("Numero civico: " + currentOrderBean.getShippingAddress().getShippingStreetNumber());
+                Printer.print("\n*** Dettagli dell'Ordine Corrente ***");
+                Printer.print("Id dell'ordine: " + currentOrderBean.getOrderId());
+                Printer.print("Via: " + currentOrderBean.getShippingAddress().getShippingStreet());
+                Printer.print("Città: " + currentOrderBean.getShippingAddress().getShippingCity());
+                Printer.print("Provincia: " + currentOrderBean.getShippingAddress().getShippingProvince());
+                Printer.print("Numero civico: " + currentOrderBean.getShippingAddress().getShippingStreetNumber());
 
                 confirmDelivery(riderController, currentOrderBean);
             } else {
-                Utils.print("Attualmente non hai ordini in consegna. Per favore, accetta un ordine nella sezione Notifiche.");
+                Printer.print("Attualmente non hai ordini in consegna. Per favore, accetta un ordine nella sezione Notifiche.");
             }
         } catch (RiderGcException e) {
-            Utils.print("Errore: " + e.getMessage());
+            Printer.print("Errore: " + e.getMessage());
             Throwable cause = e.getCause();
             if (cause != null) {
-                Utils.print("Causa: " + cause.getMessage());
+                Printer.print("Causa: " + cause.getMessage());
             }
         }
     }
 
     private void confirmDelivery(RiderHPController riderController, OrderBean currentOrderBean) {
-        Utils.print("\nVuoi confermare la consegna di questo ordine? (sì/no):");
+        Printer.print("\nVuoi confermare la consegna di questo ordine? (sì/no):");
         Scanner scanner = new Scanner(System.in);
         String input = scanner.nextLine().trim().toLowerCase();
 
         if ("sì".equals(input) || "si".equals(input)) {
             try {
                 riderController.confirmDelivery(currentOrderBean);
-                Utils.print("Complimenti. Hai completato la consegna!");
-                Utils.print("Controlla le tue notifiche, per verificare se ci sono nuovi ordini per te!");
+                Printer.print("Complimenti. Hai completato la consegna!");
+                Printer.print("Controlla le tue notifiche, per verificare se ci sono nuovi ordini per te!");
             } catch (Exception e) {
-                Utils.print("Errore nella conferma della consegna: " + e.getMessage());
+                Printer.print("Errore nella conferma della consegna: " + e.getMessage());
             }
         } else {
-            Utils.print("Consegna non confermata. Puoi confermare la consegna in qualsiasi momento.");
+            Printer.print("Consegna non confermata. Puoi confermare la consegna in qualsiasi momento.");
         }
     }
 

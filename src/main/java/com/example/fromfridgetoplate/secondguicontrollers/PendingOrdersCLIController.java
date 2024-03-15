@@ -89,12 +89,12 @@ public class PendingOrdersCLIController {
             if (selectedOrder != null) {
                 searchingRiders = true;
             } else {
-                Utils.print("ID ordine non trovato.");
+                Printer.print("ID ordine non trovato.");
             }
         } else if ("r".equals(input)) {
             exit = true;
         } else {
-            Utils.print("Comando non riconosciuto.");
+            Printer.print("Comando non riconosciuto.");
         }
     }
 
@@ -110,21 +110,21 @@ public class PendingOrdersCLIController {
 
 
     private void loadAndDisplayOrders() {
-        Utils.print("\nAggiornamento degli ordini pendenti, l'aggiornamento avverà ogni 20 secondi, attendere...");
+        Printer.print("\nAggiornamento degli ordini pendenti, l'aggiornamento avverà ogni 20 secondi, attendere...");
 
         PendingOrdersController pendingOrdersControl = new PendingOrdersController();
         OrderListBean orderListBean = pendingOrdersControl.getPendingOrderListBean();
         orders = orderListBean.getOrderBeans();
 
         if (orders.isEmpty()) {
-            Utils.print("Non ci sono ordini in sospeso al momento.");
+            Printer.print("Non ci sono ordini in sospeso al momento.");
         } else {
-            Utils.print("Ordini in sospeso:");
+            Printer.print("Ordini in sospeso:");
             for (OrderBean order : orders) {
-                Utils.print("ID Ordine: " + order.getOrderId() + ", Cliente ID: " + order.getCustomerId()
+                Printer.print("ID Ordine: " + order.getOrderId() + ", Cliente ID: " + order.getCustomerId()
                         + ", Data Ordine: " + order.getOrderTime() + ", Città Spedizione: " + order.getShippingCity());
             }
-            Utils.print("Premi 'd' seguito da ID ordine per i dettagli, 'r' per tornare indietro.");
+            Printer.print("Premi 'd' seguito da ID ordine per i dettagli, 'r' per tornare indietro.");
         }
     }
 
@@ -133,7 +133,7 @@ public class PendingOrdersCLIController {
 
     private void searchRidersCLI(OrderBean selectedOrder) {
         if (selectedOrder == null) {
-            Utils.print("Ordine non specificato. Riprova.");
+            Printer.print("Ordine non specificato. Riprova.");
             return;
         }
 
@@ -157,11 +157,11 @@ public class PendingOrdersCLIController {
     }
 
     private void displayAvailableRiders(List<RiderBean> availableRiders, String shippingCity) {
-        Utils.print("Rider disponibili in " + shippingCity + ":");
+        Printer.print("Rider disponibili in " + shippingCity + ":");
         for (RiderBean rider : availableRiders) {
-            Utils.print("ID: " + rider.getId() + ", Nome: " + rider.getName() + ", Cognome: " + rider.getSurname());
+            Printer.print("ID: " + rider.getId() + ", Nome: " + rider.getName() + ", Cognome: " + rider.getSurname());
         }
-        Utils.print("Inserisci l'ID del rider per assegnare l'ordine, o premi 'r' per tornare indietro.");
+        Printer.print("Inserisci l'ID del rider per assegnare l'ordine, o premi 'r' per tornare indietro.");
     }
 
     private void processRiderSelection(String input, List<RiderBean> availableRiders, OrderBean selectedOrder) {
@@ -171,10 +171,10 @@ public class PendingOrdersCLIController {
             if (selectedRider != null) {
                 new RiderSelectionListenerCLI().onRiderSelected(selectedRider, selectedOrder);
             } else {
-                Utils.print("ID rider non trovato. Riprova.");
+                Printer.print("ID rider non trovato. Riprova.");
             }
         } catch (NumberFormatException e) {
-            Utils.print("Input non valido. Riprova.");
+            Printer.print("Input non valido. Riprova.");
         }
     }
 

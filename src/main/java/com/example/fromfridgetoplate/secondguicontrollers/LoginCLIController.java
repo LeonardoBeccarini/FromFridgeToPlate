@@ -16,14 +16,14 @@ public class LoginCLIController {
     }
 
     public void displayLogin() {
-        Utils.print("----- Login -----");
-        Utils.print("Enter email: ");
+        Printer.print("----- Login -----");
+        Printer.print("Enter email: ");
         String email = scanner.nextLine();
-        Utils.print("Enter password: ");
+        Printer.print("Enter password: ");
         String password = scanner.nextLine();
 
         if (email.isEmpty() || password.isEmpty()) {
-            Utils.print("Both email and password are required.");
+            Printer.print("Both email and password are required.");
             return;
         }
 
@@ -41,7 +41,7 @@ public class LoginCLIController {
                     navigator.goTo("ResellerHomeCLI");
                 }
             } else {
-                Utils.print("Login failed. Please check your credentials.");
+                Printer.print("Login failed. Please check your credentials.");
             }
         } catch (IOException e) {
             e.printStackTrace();

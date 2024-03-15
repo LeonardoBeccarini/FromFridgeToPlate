@@ -18,7 +18,7 @@ public class ProductListCLIcontroller {
         try {
             makeOrderControl = new MakeOrderControl(shopBean);
         } catch (DbException e) {
-            Utils.print(e.getMessage());
+            Printer.print(e.getMessage());
         }
     }
 
@@ -31,21 +31,21 @@ public class ProductListCLIcontroller {
             String name = foodItemBean.getName();
             float price = foodItemBean.getPrice();
 
-            Utils.print(i+" "+name+" "+price+"€" + "\n");
+            Printer.print(i+" "+name+" "+price+"€" + "\n");
             i++;
         }
         boolean running = true;
         while(running){
-            Utils.print("1. addToCart");
-            Utils.print("2. goToCart");
+            Printer.print("1. addToCart");
+            Printer.print("2. goToCart");
 
-            Utils.print("Choose an option: ");
+            Printer.print("Choose an option: ");
 
             int choice = scanner.nextInt();
 
             switch (choice) {
                 case 1 -> {
-                    Utils.print("Type index of the item to add: \n");
+                    Printer.print("Type index of the item to add: \n");
                     int selectedIndex = scanner.nextInt();
                     makeOrderControl.addToCart(foodItemBeanList.getList().get(selectedIndex - 1));
 
@@ -55,7 +55,7 @@ public class ProductListCLIcontroller {
                     navigator.goToWithCOntroller("CartCLI", cartCLIcontroller);
                     running = false;
                 }
-                default -> Utils.print("Invalid option. Please try again.");
+                default -> Printer.print("Invalid option. Please try again.");
             }
 
         }

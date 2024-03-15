@@ -18,9 +18,9 @@ public class OrderStatusCLIController {
         List<OrderBean> orders = assignedOrdersBean.getOrderBeans();
 
 
-        Utils.print("Ordini Assegnati:");
+        Printer.print("Ordini Assegnati:");
         for (OrderBean order : orders) {
-            Utils.print(formatOrder(order));
+            Printer.print(formatOrder(order));
         }
 
 
@@ -36,12 +36,12 @@ public class OrderStatusCLIController {
     private void handleUserInput() {
 
         Scanner scanner = new Scanner(System.in);
-        Utils.print("\nPremi 'r' per aggiornare la lista degli ordini, qualsiasi altra chiave per uscire.");
+        Printer.print("\nPremi 'r' per aggiornare la lista degli ordini, qualsiasi altra chiave per uscire.");
         String input = scanner.nextLine().trim();
         if ("r".equals(input)) {
             displayAssignedOrders(); // Refresh della lista degli ordini, cosi simulo un loop
         } else {
-            Utils.print("Uscita dallo stato degli ordini.");
+            Printer.print("Uscita dallo stato degli ordini.");
         }
     }
 

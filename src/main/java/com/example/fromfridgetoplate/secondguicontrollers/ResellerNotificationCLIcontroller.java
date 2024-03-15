@@ -24,23 +24,23 @@ public class ResellerNotificationCLIcontroller {
         for(NotificationBean notificationBean: notificationBeanList){
             notificationDAO.markNotificationAsRead(notificationBean.getNotificationId());
         }
-        Utils.print("-------------------------------");
-        Utils.print("1. Back");
+        Printer.print("-------------------------------");
+        Printer.print("1. Back");
         int choice = scanner.nextInt();
         try{
             if (choice == 1) {
                 navigatorCLI.goTo("ResellerHomeCLI");
             } else {
-                Utils.print("Invalid option. Please try again.");
+                Printer.print("Invalid option. Please try again.");
             }
         }catch (IOException e){
-            Utils.print(e.getMessage());
+            Printer.print(e.getMessage());
         }
     }
 
     private void printList(){
         for (NotificationBean notificationBean : notificationBeanList) {
-            Utils.print(notificationBean.getMessageText() + ":" + "\n" +
+            Printer.print(notificationBean.getMessageText() + ":" + "\n" +
                     "Customer: " + notificationBean.getCustomer() + "\n" +
                     "Address: " + notificationBean.getStreet() + notificationBean.getStreetNumber() +
                     notificationBean.getCity() + notificationBean.getProvince());

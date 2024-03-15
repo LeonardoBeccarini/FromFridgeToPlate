@@ -29,15 +29,15 @@ public class ResellerMainPageCLIController {
     public void showMenu() {
         Scanner scanner = new Scanner(System.in);
         NavigatorCLI navigator = NavigatorCLI.getInstance();
-        Utils.print("\n----- Reseller Main Page -----");
-        Utils.print("1. View Pending Orders");
-        Utils.print("2. View Order Status");
-        Utils.print("3. View Notifications (" + notificationBeanList.size() + ")");
+        Printer.print("\n----- Reseller Main Page -----");
+        Printer.print("1. View Pending Orders");
+        Printer.print("2. View Order Status");
+        Printer.print("3. View Notifications (" + notificationBeanList.size() + ")");
         if (!notificationBeanList.isEmpty()) {
-            Utils.print("You have new notifications!");
+            Printer.print("You have new notifications!");
         }
-        Utils.print("4. Exit");
-        Utils.print("Choose an option: ");
+        Printer.print("4. Exit");
+        Printer.print("Choose an option: ");
 
         int choice = scanner.nextInt();
         scanner.nextLine(); // consume newline
@@ -60,11 +60,11 @@ public class ResellerMainPageCLIController {
                     System.exit(0);
                     break;
                 default:
-                    Utils.print("Invalid option. Please try again.");
+                    Printer.print("Invalid option. Please try again.");
                     break;
             }
         } catch (IOException e) {
-            Utils.print("An error occurred. Please try again.");
+            Printer.print("An error occurred. Please try again.");
         }
 
         // Display the menu again after an option has been executed

@@ -8,13 +8,13 @@ public class NotificationPageCLIController {
 
     
     public void update(List<NotificationBean> notificationBeans) {
-        Utils.print("----- Visualizzazione Notifiche -----");
+        Printer.print("----- Visualizzazione Notifiche -----");
         for (NotificationBean bean : notificationBeans) {
-            Utils.print("Ordine ID: " + bean.getOrderId());
-            Utils.print("Via: " + bean.getStreet() + ", N°: " + bean.getStreetNumber());
-            Utils.print("Città: " + bean.getCity() + ", Provincia: " + bean.getProvince());
-            Utils.print("Messaggio: " + bean.getMessageText());
-            Utils.print("------------------------------------");
+            Printer.print("Ordine ID: " + bean.getOrderId());
+            Printer.print("Via: " + bean.getStreet() + ", N°: " + bean.getStreetNumber());
+            Printer.print("Città: " + bean.getCity() + ", Provincia: " + bean.getProvince());
+            Printer.print("Messaggio: " + bean.getMessageText());
+            Printer.print("------------------------------------");
         }
     }
 
