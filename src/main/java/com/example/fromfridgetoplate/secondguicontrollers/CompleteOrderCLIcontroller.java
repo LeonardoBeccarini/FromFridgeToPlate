@@ -24,7 +24,7 @@ public class CompleteOrderCLIcontroller {
         while(running){
             Utils.print("1. Apply coupon");
             Utils.print("2. Pay");
-            System.out.print("Choose an option: ");
+            Utils.print("Choose an option: ");
 
             int choice = scanner.nextInt();
             switch (choice) {
