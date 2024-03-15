@@ -1,6 +1,5 @@
 package com.example.fromfridgetoplate.secondguicontrollers;
 
-import com.example.fromfridgetoplate.Utils;
 import com.example.fromfridgetoplate.logic.bean.FoodItemBean;
 import com.example.fromfridgetoplate.logic.bean.FoodItemListBean;
 import com.example.fromfridgetoplate.logic.bean.ShopBean;
@@ -35,7 +34,7 @@ public class ProductListCLIcontroller {
             Utils.print("1. addToCart");
             Utils.print("2. goToCart");
 
-            System.out.print("Choose an option: ");
+            Utils.print("Choose an option: ");
 
             int choice = scanner.nextInt();
 

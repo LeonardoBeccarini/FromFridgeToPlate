@@ -1,6 +1,5 @@
 package com.example.fromfridgetoplate.secondguicontrollers;
 
-import com.example.fromfridgetoplate.Utils;
 import com.example.fromfridgetoplate.logic.bean.SearchInfoBean;
 import com.example.fromfridgetoplate.logic.bean.ShopBean;
 import com.example.fromfridgetoplate.logic.control.MakeOrderControl;

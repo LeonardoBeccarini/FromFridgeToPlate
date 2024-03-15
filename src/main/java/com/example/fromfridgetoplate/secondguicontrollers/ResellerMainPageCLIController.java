@@ -1,6 +1,5 @@
 package com.example.fromfridgetoplate.secondguicontrollers;
 
-import com.example.fromfridgetoplate.Utils;
 import com.example.fromfridgetoplate.logic.bean.NotificationBean;
 import com.example.fromfridgetoplate.logic.control.MakeOrderControl;
 
@@ -31,7 +30,7 @@ public class ResellerMainPageCLIController {
             Utils.print("You have new notifications!");
         }
         Utils.print("4. Exit");
-        System.out.print("Choose an option: ");
+        Utils.print("Choose an option: ");
 
         int choice = scanner.nextInt();
         scanner.nextLine(); // consume newline

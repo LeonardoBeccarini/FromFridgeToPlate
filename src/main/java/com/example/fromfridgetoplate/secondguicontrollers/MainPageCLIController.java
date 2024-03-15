@@ -1,7 +1,5 @@
 package com.example.fromfridgetoplate.secondguicontrollers;
 
-import com.example.fromfridgetoplate.Utils;
-
 import java.io.IOException;
 import java.util.Scanner;
 
@@ -21,7 +19,7 @@ public class MainPageCLIController {
         Utils.print("1. Login");
         Utils.print("2. Sign In");
         Utils.print("3. Exit");
-        System.out.print("Choose an option: ");
+        Utils.print("Choose an option: ");
 
         int choice = scanner.nextInt();
         try {

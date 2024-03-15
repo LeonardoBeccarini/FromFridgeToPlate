@@ -1,7 +1,5 @@
 package com.example.fromfridgetoplate.secondguicontrollers;
 
-import com.example.fromfridgetoplate.Utils;
-
 import java.io.IOException;
 import java.util.Scanner;
 
@@ -19,7 +17,7 @@ public class ClientHomeCLIcontroller {
             Utils.print("1. Make order");
             Utils.print("2. View Order Status");
             Utils.print("3. Exit");
-            System.out.print("Choose an option: ");
+            Utils.print("Choose an option: ");
 
             int choice = scanner.nextInt();
             switch (choice) {

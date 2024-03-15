@@ -1,7 +1,5 @@
 package com.example.fromfridgetoplate.secondguicontrollers;
 
-import com.example.fromfridgetoplate.Utils;
-
 import java.io.IOException;
 
 public class NavigatorCLI {

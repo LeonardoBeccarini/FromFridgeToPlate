@@ -1,4 +1,4 @@
-package com.example.fromfridgetoplate;
+package com.example.fromfridgetoplate.secondguicontrollers;
 
 public class Utils {
     public static void print(String s){

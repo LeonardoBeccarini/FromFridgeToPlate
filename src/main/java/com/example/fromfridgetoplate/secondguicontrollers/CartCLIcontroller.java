@@ -1,6 +1,5 @@
 package com.example.fromfridgetoplate.secondguicontrollers;
 
-import com.example.fromfridgetoplate.Utils;
 import com.example.fromfridgetoplate.logic.bean.CartBean;
 import com.example.fromfridgetoplate.logic.bean.CartItemBean;
 import com.example.fromfridgetoplate.logic.bean.ShopBean;
@@ -25,7 +24,7 @@ public class CartCLIcontroller {
             Utils.print("2. remove");
             Utils.print("3. complete");
 
-            System.out.print("Choose an option: ");
+            Utils.print("Choose an option: ");
 
             int choice = scanner.nextInt();
             switch (choice){

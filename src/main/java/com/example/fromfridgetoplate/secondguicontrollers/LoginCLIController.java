@@ -1,6 +1,5 @@
 package com.example.fromfridgetoplate.secondguicontrollers;
 
-import com.example.fromfridgetoplate.Utils;
 import com.example.fromfridgetoplate.logic.bean.UserBean;
 import com.example.fromfridgetoplate.logic.control.LoginController;
 import com.example.fromfridgetoplate.logic.model.Role;
@@ -18,9 +17,9 @@ public class LoginCLIController {
 
     public void displayLogin() {
         Utils.print("----- Login -----");
-        System.out.print("Enter email: ");
+        Utils.print("Enter email: ");
         String email = scanner.nextLine();
-        System.out.print("Enter password: ");
+        Utils.print("Enter password: ");
         String password = scanner.nextLine();
 
         if (email.isEmpty() || password.isEmpty()) {

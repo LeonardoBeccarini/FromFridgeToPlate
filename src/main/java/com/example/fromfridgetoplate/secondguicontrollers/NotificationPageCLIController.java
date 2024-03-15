@@ -2,7 +2,6 @@ package com.example.fromfridgetoplate.secondguicontrollers;
 
 import java.util.List;
 
-import com.example.fromfridgetoplate.Utils;
 import com.example.fromfridgetoplate.logic.bean.NotificationBean;
 
 public class NotificationPageCLIController {
