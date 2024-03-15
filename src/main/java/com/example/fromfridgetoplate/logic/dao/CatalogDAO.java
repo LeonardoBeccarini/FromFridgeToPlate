@@ -1,5 +1,6 @@
 package com.example.fromfridgetoplate.logic.dao;
 
+import com.example.fromfridgetoplate.logic.exceptions.DbException;
 import com.example.fromfridgetoplate.logic.model.Catalog;
 import com.example.fromfridgetoplate.logic.model.FoodItem;
 
@@ -9,7 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class CatalogDAO {
-    public Catalog retrieveCatalog(String vatNumber){
+    public Catalog retrieveCatalog(String vatNumber) throws DbException {
         Catalog catalog = new Catalog();
         Connection connection = SingletonConnector.getInstance().getConnection();
         try(CallableStatement cs = connection.prepareCall("{call retrieveCatalog(?)}")){
@@ -21,11 +22,11 @@ public class CatalogDAO {
                 catalog.addIngredient(foodItem);
             }
         }catch(SQLException e){
-            e.printStackTrace();
+            throw new DbException("errore database" + e.getMessage());
         }
         return catalog;
     }
-    public void addItem(String name, float price, String shopName){
+    public void addItem(String name, float price, String shopName) throws DbException {
         Connection connection = SingletonConnector.getInstance().getConnection();
         try (CallableStatement cs = connection.prepareCall("{call addToCatalogo(?,?,?)}")) {
             cs.setString(1, name);
@@ -34,7 +35,7 @@ public class CatalogDAO {
             cs.executeQuery();
 
         }catch (SQLException e) {
-           e.printStackTrace();
+            throw new DbException("errore database" + e.getMessage());
         }
     }
 }

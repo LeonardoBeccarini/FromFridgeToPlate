@@ -2,9 +2,10 @@ package com.example.fromfridgetoplate.guicontrollers;
 
 import com.example.fromfridgetoplate.logic.bean.NotificationBean;
 import com.example.fromfridgetoplate.logic.control.MakeOrderControl;
-import javafx.event.ActionEvent;
+import com.example.fromfridgetoplate.logic.exceptions.DbException;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -36,7 +37,12 @@ public class ResellerMainPageGraphicController extends GenericGraphicController 
     public void initialize(URL location, ResourceBundle resources) {
         int counter;
         MakeOrderControl makeOrderControl = new MakeOrderControl();
-        notificationBeanList = makeOrderControl.loadNotification();
+        try {
+            notificationBeanList = makeOrderControl.loadNotification();
+        } catch (DbException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
+            alert.showAndWait();
+        }
 
         counter = notificationBeanList.size();
         notificationButton.setText("Notification" + " " + "(" + counter + ")");

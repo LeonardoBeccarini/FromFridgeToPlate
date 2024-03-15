@@ -3,6 +3,7 @@ package com.example.fromfridgetoplate.secondguicontrollers;
 import com.example.fromfridgetoplate.logic.bean.SearchInfoBean;
 import com.example.fromfridgetoplate.logic.bean.ShopBean;
 import com.example.fromfridgetoplate.logic.control.MakeOrderControl;
+import com.example.fromfridgetoplate.logic.exceptions.DbException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -19,7 +20,7 @@ public class MarketListCLIcontroller {
         String shopName;
         List<ShopBean> shopBeanList;
 
-        System.out.println("Type the name of the shop: \n");
+        Printer.print("Type the name of the shop: \n");
         try {
             shopName = bufferedReader.readLine();
             MakeOrderControl makeOrderControl = new MakeOrderControl();
@@ -31,18 +32,18 @@ public class MarketListCLIcontroller {
                 String name = shopBean.getName();
                 String address = shopBean.getAddress();
                 String phone = shopBean.getPhoneNumber();
-                System.out.println(i+" "+vatNumber+" "+name+" "+address+" "+phone +"\n");
+                Printer.print(i+" "+vatNumber+" "+name+" "+address+" "+phone +"\n");
                 i++;
             }
-            System.out.println("Type index of the desired shop: \n");
+            Printer.print("Type index of the desired shop: \n");
             int selectedIndex = scanner.nextInt()-1;
             ShopBean shopBean = shopBeanList.get(selectedIndex);
 
             ProductListCLIcontroller productListCLIcontroller = new ProductListCLIcontroller(shopBean);
             navigatorCLI.goToWithCOntroller("ProductListCLI", productListCLIcontroller);
 
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException | DbException e) {
+            Printer.print(e.getMessage());
         }
 
     }

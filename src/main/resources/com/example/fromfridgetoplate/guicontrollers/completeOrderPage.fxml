@@ -9,7 +9,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="900.0" style="-fx-background-color: #4f4f4f;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="900.0" style="-fx-background-color: #4f4f4f;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <BorderPane prefHeight="750.0" prefWidth="900.0">
          <center>
@@ -21,12 +21,32 @@
                         <Button fx:id="payButton" layoutX="367.0" layoutY="479.0" mnemonicParsing="false" onAction="#onButtonClicked" prefHeight="28.0" prefWidth="80.0" style="-fx-background-color: white;" text="Pay" />
                         <TextField fx:id="couponNumberText" layoutX="549.0" layoutY="91.0" text="Coupon" />
                         <Button fx:id="applyButton" layoutX="594.0" layoutY="125.0" mnemonicParsing="false" onAction="#onButtonClicked" prefHeight="28.0" prefWidth="58.0" style="-fx-background-color: white;" text="Apply" />
-                        <TextField fx:id="streetText" layoutX="173.0" layoutY="190.0" text="Street" />
-                        <TextField fx:id="numberText" layoutX="173.0" layoutY="234.0" text="Number" />
-                        <TextField fx:id="provinceText" layoutX="173.0" layoutY="326.0" text="Province" />
+                        <TextField fx:id="streetText" layoutX="173.0" layoutY="190.0" />
+                        <TextField fx:id="numberText" layoutX="173.0" layoutY="234.0" />
+                        <TextField fx:id="provinceText" layoutX="173.0" layoutY="326.0" />
                         <Label layoutX="535.0" layoutY="398.0" text="Total price:" />
                         <Label fx:id="totalPriceLabel" layoutX="638.0" layoutY="398.0" prefHeight="17.0" prefWidth="40.0" />
-                        <TextField fx:id="cityText" layoutX="173.0" layoutY="280.0" text="City" />
+                        <TextField fx:id="cityText" layoutX="173.0" layoutY="280.0" />
+                        <Label layoutX="86.0" layoutY="194.0" text="Street:">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="86.0" layoutY="284.0" text="City:">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="86.0" layoutY="330.0" text="Province:">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="88.0" layoutY="238.0" text="Number:">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
                      </children>
                   </AnchorPane>
                </children>

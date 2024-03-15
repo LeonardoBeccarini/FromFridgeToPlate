@@ -4,6 +4,7 @@ import com.example.fromfridgetoplate.logic.bean.FoodItemBean;
 import com.example.fromfridgetoplate.logic.bean.FoodItemListBean;
 import com.example.fromfridgetoplate.logic.bean.ShopBean;
 import com.example.fromfridgetoplate.logic.control.MakeOrderControl;
+import com.example.fromfridgetoplate.logic.exceptions.DbException;
 
 import java.util.Scanner;
 
@@ -11,10 +12,14 @@ public class ProductListCLIcontroller {
     private final ShopBean selectedShopBean;
     private final Scanner scanner = new Scanner(System.in);
     private final NavigatorCLI navigator = NavigatorCLI.getInstance();
-    private final MakeOrderControl makeOrderControl;
+    private  MakeOrderControl makeOrderControl = null;
     public ProductListCLIcontroller(ShopBean shopBean){
         this.selectedShopBean = shopBean;
-        makeOrderControl = new MakeOrderControl(shopBean);
+        try {
+            makeOrderControl = new MakeOrderControl(shopBean);
+        } catch (DbException e) {
+            Printer.print(e.getMessage());
+        }
     }
 
     public void addToCart(){
@@ -26,21 +31,21 @@ public class ProductListCLIcontroller {
             String name = foodItemBean.getName();
             float price = foodItemBean.getPrice();
 
-            System.out.println(i+" "+name+" "+price+"€" + "\n");
+            Printer.print(i+" "+name+" "+price+"€" + "\n");
             i++;
         }
         boolean running = true;
         while(running){
-            System.out.println("1. addToCart");
-            System.out.println("2. goToCart");
+            Printer.print("1. addToCart");
+            Printer.print("2. goToCart");
 
-            System.out.print("Choose an option: ");
+            Printer.print("Choose an option: ");
 
             int choice = scanner.nextInt();
 
             switch (choice) {
                 case 1 -> {
-                    System.out.println("Type index of the item to add: \n");
+                    Printer.print("Type index of the item to add: \n");
                     int selectedIndex = scanner.nextInt();
                     makeOrderControl.addToCart(foodItemBeanList.getList().get(selectedIndex - 1));
 
@@ -50,7 +55,7 @@ public class ProductListCLIcontroller {
                     navigator.goToWithCOntroller("CartCLI", cartCLIcontroller);
                     running = false;
                 }
-                default -> System.out.println("Invalid option. Please try again.");
+                default -> Printer.print("Invalid option. Please try again.");
             }
 
         }

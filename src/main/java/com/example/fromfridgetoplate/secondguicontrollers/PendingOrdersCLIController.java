@@ -89,12 +89,12 @@ public class PendingOrdersCLIController {
             if (selectedOrder != null) {
                 searchingRiders = true;
             } else {
-                System.out.println("ID ordine non trovato.");
+                Printer.print("ID ordine non trovato.");
             }
         } else if ("r".equals(input)) {
             exit = true;
         } else {
-            System.out.println("Comando non riconosciuto.");
+            Printer.print("Comando non riconosciuto.");
         }
     }
 
@@ -110,21 +110,21 @@ public class PendingOrdersCLIController {
 
 
     private void loadAndDisplayOrders() {
-        System.out.println("\nAggiornamento degli ordini pendenti, l'aggiornamento avverà ogni 20 secondi, attendere...");
+        Printer.print("\nAggiornamento degli ordini pendenti, l'aggiornamento avverà ogni 20 secondi, attendere...");
 
         PendingOrdersController pendingOrdersControl = new PendingOrdersController();
         OrderListBean orderListBean = pendingOrdersControl.getPendingOrderListBean();
         orders = orderListBean.getOrderBeans();
 
         if (orders.isEmpty()) {
-            System.out.println("Non ci sono ordini in sospeso al momento.");
+            Printer.print("Non ci sono ordini in sospeso al momento.");
         } else {
-            System.out.println("Ordini in sospeso:");
+            Printer.print("Ordini in sospeso:");
             for (OrderBean order : orders) {
-                System.out.println("ID Ordine: " + order.getOrderId() + ", Cliente ID: " + order.getCustomerId()
+                Printer.print("ID Ordine: " + order.getOrderId() + ", Cliente ID: " + order.getCustomerId()
                         + ", Data Ordine: " + order.getOrderTime() + ", Città Spedizione: " + order.getShippingCity());
             }
-            System.out.println("Premi 'd' seguito da ID ordine per i dettagli, 'r' per tornare indietro.");
+            Printer.print("Premi 'd' seguito da ID ordine per i dettagli, 'r' per tornare indietro.");
         }
     }
 
@@ -133,7 +133,7 @@ public class PendingOrdersCLIController {
 
     private void searchRidersCLI(OrderBean selectedOrder) {
         if (selectedOrder == null) {
-            System.out.println("Ordine non specificato. Riprova.");
+            Printer.print("Ordine non specificato. Riprova.");
             return;
         }
 
@@ -157,11 +157,11 @@ public class PendingOrdersCLIController {
     }
 
     private void displayAvailableRiders(List<RiderBean> availableRiders, String shippingCity) {
-        System.out.println("Rider disponibili in " + shippingCity + ":");
+        Printer.print("Rider disponibili in " + shippingCity + ":");
         for (RiderBean rider : availableRiders) {
-            System.out.println("ID: " + rider.getId() + ", Nome: " + rider.getName() + ", Cognome: " + rider.getSurname());
+            Printer.print("ID: " + rider.getId() + ", Nome: " + rider.getName() + ", Cognome: " + rider.getSurname());
         }
-        System.out.println("Inserisci l'ID del rider per assegnare l'ordine, o premi 'r' per tornare indietro.");
+        Printer.print("Inserisci l'ID del rider per assegnare l'ordine, o premi 'r' per tornare indietro.");
     }
 
     private void processRiderSelection(String input, List<RiderBean> availableRiders, OrderBean selectedOrder) {
@@ -171,10 +171,10 @@ public class PendingOrdersCLIController {
             if (selectedRider != null) {
                 new RiderSelectionListenerCLI().onRiderSelected(selectedRider, selectedOrder);
             } else {
-                System.out.println("ID rider non trovato. Riprova.");
+                Printer.print("ID rider non trovato. Riprova.");
             }
         } catch (NumberFormatException e) {
-            System.out.println("Input non valido. Riprova.");
+            Printer.print("Input non valido. Riprova.");
         }
     }
 

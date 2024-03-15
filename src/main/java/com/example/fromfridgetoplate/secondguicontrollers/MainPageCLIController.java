@@ -16,10 +16,10 @@ public class MainPageCLIController {
     }
 
     public void displayMenu() {
-        System.out.println("1. Login");
-        System.out.println("2. Sign In");
-        System.out.println("3. Exit");
-        System.out.print("Choose an option: ");
+        Printer.print("1. Login");
+        Printer.print("2. Sign In");
+        Printer.print("3. Exit");
+        Printer.print("Choose an option: ");
 
         int choice = scanner.nextInt();
         try {
@@ -34,7 +34,7 @@ public class MainPageCLIController {
                     System.exit(0);
                     break;
                 default:
-                    System.out.println("Invalid option. Please try again.");
+                    Printer.print("Invalid option. Please try again.");
             }
         } catch (IOException e) {
             e.printStackTrace();

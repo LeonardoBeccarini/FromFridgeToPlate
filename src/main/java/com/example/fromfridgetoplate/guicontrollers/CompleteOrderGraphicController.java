@@ -40,8 +40,8 @@ public class CompleteOrderGraphicController extends GenericGraphicController{
     private Label totalPriceLabel;
 
 
-    private MakeOrderControl makeOrderControl = new MakeOrderControl();
-    private ShopBean shopBean;
+    MakeOrderControl makeOrderControl = new MakeOrderControl(); //questo dovrebbe essere un attributo o na local variable della classe?
+    private final ShopBean shopBean;
 
     public CompleteOrderGraphicController(ShopBean shopBean){
         this.shopBean = shopBean;
@@ -71,23 +71,31 @@ public class CompleteOrderGraphicController extends GenericGraphicController{
             }
         }
         else if(sourceNode == payButton){
-            AddressBean addressBean = new AddressBean(streetText.getText(), Integer.parseInt(numberText.getText()), cityText.getText(), provinceText.getText());
-            OrderBean orderBean = new OrderBean(shopBean.getVatNumber(), addressBean);
-            try {
-                makeOrderControl.completeOrder(orderBean);
-            } catch (DbException | PaymentFailedException e) {
-                Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage()) ;     // non so se devo fare il catch qui o nel controller applicativo
+
+            if(streetText.getText().isEmpty()||numberText.getText().isEmpty()||cityText.getText().isEmpty()||provinceText.getText().isEmpty()){
+                Alert alert = new Alert(Alert.AlertType.WARNING, "complete all fields before||");
                 alert.showAndWait();
             }
+            else{
+                AddressBean addressBean = new AddressBean(streetText.getText(), Integer.parseInt(numberText.getText()), cityText.getText(), provinceText.getText());
+                OrderBean orderBean = new OrderBean(shopBean.getVatNumber(), addressBean);
 
-            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Ordine salvato con successo");
-            alert.showAndWait();
-            try {
-                navigator.goTo("clientHomePage.fxml");
-            } catch (IOException e) {
-                e.printStackTrace();
+                try {
+                    makeOrderControl.completeOrder(orderBean);
+                } catch (DbException | PaymentFailedException e) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage()) ;
+                    alert.showAndWait();
+                }
+
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, "Ordine salvato con successo");
+                alert.showAndWait();
+                try {
+                    navigator.goTo("clientHomePage.fxml");
+                } catch (IOException e) {
+                    Alert alert2 = new Alert(Alert.AlertType.ERROR, e.getMessage());
+                    alert2.showAndWait();
+                }
             }
         }
-
     }
 }

@@ -2,13 +2,16 @@ package com.example.fromfridgetoplate.guicontrollers;
 
 import com.example.fromfridgetoplate.logic.bean.ShopBean;
 import com.example.fromfridgetoplate.logic.control.ShopProfileController;
+import com.example.fromfridgetoplate.logic.exceptions.DbException;
 import com.example.fromfridgetoplate.logic.model.Session;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class ShopProfileGraphicController extends GenericGraphicController {
@@ -28,8 +31,14 @@ public class ShopProfileGraphicController extends GenericGraphicController {
                            ResourceBundle resources) {
 
             ShopProfileController shopProfileController = new ShopProfileController();
-            ShopBean shopBean = shopProfileController.getShopByEmail(new ShopBean(Session.getSession().getUser().getEmail()));
-            textName.setText(shopBean.getName());
+        ShopBean shopBean = null;
+        try {
+            shopBean = shopProfileController.getShopByEmail(new ShopBean(Session.getSession().getUser().getEmail()));
+        } catch (DbException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
+            alert.showAndWait();
+        }
+            textName.setText(Objects.requireNonNull(shopBean).getName());
             textAddress.setText(shopBean.getAddress());
             textPhone.setText(shopBean.getPhoneNumber());
             textVAT.setText(shopBean.getVatNumber());

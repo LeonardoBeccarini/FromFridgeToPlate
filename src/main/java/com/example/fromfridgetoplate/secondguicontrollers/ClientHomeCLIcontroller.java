@@ -13,11 +13,11 @@ public class ClientHomeCLIcontroller {
 
     public void displayMenu() {
         while (true) {
-            System.out.println("----- Client Home Page -----");
-            System.out.println("1. Make order");
-            System.out.println("2. View Order Status");
-            System.out.println("3. Exit");
-            System.out.print("Choose an option: ");
+            Printer.print("----- Client Home Page -----");
+            Printer.print("1. Make order");
+            Printer.print("2. View Order Status");
+            Printer.print("3. Exit");
+            Printer.print("Choose an option: ");
 
             int choice = scanner.nextInt();
             switch (choice) {
@@ -28,10 +28,10 @@ public class ClientHomeCLIcontroller {
                     // viewOrderStatus()
                     break;
                 case 3:
-                    System.out.println("Exiting Client Home Page.");
+                    Printer.print("Exiting Client Home Page.");
                     return;
                 default:
-                    System.out.println("Invalid option. Please try again.");
+                    Printer.print("Invalid option. Please try again.");
             }
         }
 

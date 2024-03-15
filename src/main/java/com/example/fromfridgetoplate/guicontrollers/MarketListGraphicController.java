@@ -4,18 +4,17 @@ import com.example.fromfridgetoplate.guicontrollers.list_cell_factories.MarketLi
 import com.example.fromfridgetoplate.logic.bean.SearchInfoBean;
 import com.example.fromfridgetoplate.logic.bean.ShopBean;
 import com.example.fromfridgetoplate.logic.control.MakeOrderControl;
+import com.example.fromfridgetoplate.logic.exceptions.DbException;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 
@@ -41,7 +40,7 @@ public class MarketListGraphicController extends GenericGraphicController {
 
         marketListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             nameLabel.setText((newValue == null) ? "" : newValue.getName());
-            addressLabel.setText((newValue == null) ? "" : "€" + newValue.getAddress());
+            addressLabel.setText((newValue == null) ? "" :newValue.getAddress());
             phoneLabel.setText((newValue == null) ? "" : newValue.getPhoneNumber());
 
         });
@@ -54,10 +53,21 @@ public class MarketListGraphicController extends GenericGraphicController {
     void onButtonClicked(ActionEvent event){
         Node node = (Node) event.getSource();
         if(node == searchButton) {
-            List<ShopBean> shopBeanList;
+            List<ShopBean> shopBeanList = null;
             MakeOrderControl makeOrderControl = new MakeOrderControl();
-            shopBeanList = makeOrderControl.loadShop(new SearchInfoBean(nameTextField.getText()));
-            marketListView.setItems(FXCollections.observableList(shopBeanList));
+            if(nameTextField.getText().isEmpty()) {
+                Alert alert = new Alert(Alert.AlertType.WARNING, "Complete the field before!");
+                alert.showAndWait();
+            }
+            else{
+                try {
+                    shopBeanList = makeOrderControl.loadShop(new SearchInfoBean(nameTextField.getText()));
+                } catch (DbException e) {
+                    Alert alert = new Alert(Alert.AlertType.WARNING, e.getMessage());
+                    alert.showAndWait();
+                }
+                marketListView.setItems(FXCollections.observableList(Objects.requireNonNull(shopBeanList)));
+            }
         }
         else if(node == selectButton){
             ShopBean selectedShop = marketListView.getSelectionModel().getSelectedItem();
@@ -65,7 +75,8 @@ public class MarketListGraphicController extends GenericGraphicController {
             try {
                 navigator.goToWithController("buyProductPage.fxml", buyProductGraphicController);
             } catch (IOException e) {
-                e.printStackTrace();
+                Alert alert = new Alert(Alert.AlertType.WARNING, e.getMessage());
+                alert.showAndWait();
             }
 
         }

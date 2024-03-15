@@ -5,22 +5,21 @@ import com.example.fromfridgetoplate.logic.bean.FoodItemBean;
 import com.example.fromfridgetoplate.logic.bean.FoodItemListBean;
 import com.example.fromfridgetoplate.logic.bean.ShopBean;
 import com.example.fromfridgetoplate.logic.control.MakeOrderControl;
+import com.example.fromfridgetoplate.logic.exceptions.DbException;
+import com.example.fromfridgetoplate.logic.model.Session;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class BuyProductGraphicController extends GenericGraphicController{
-    private  ShopBean shopBean;
-    private MakeOrderControl makeOrderControl;
+    private final ShopBean shopBean;
+    private MakeOrderControl makeOrderControl = null;
     @FXML
     private Button addButton;
 
@@ -44,7 +43,12 @@ public class BuyProductGraphicController extends GenericGraphicController{
     public BuyProductGraphicController(ShopBean shopBean) {
 
         this.shopBean = shopBean;
-        this.makeOrderControl = new MakeOrderControl(shopBean);
+        try {
+            this.makeOrderControl = new MakeOrderControl(shopBean);
+        } catch (DbException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
+            alert.showAndWait();
+        }
     }
 
     @Override
@@ -70,22 +74,41 @@ public class BuyProductGraphicController extends GenericGraphicController{
     void onButtonClicked(ActionEvent event){
         Node sourceNode = (Node) event.getSource();
         if(sourceNode == searchButton){
-            FoodItemBean foodItemBean = new FoodItemBean(nameTextField.getText());
-            FoodItemListBean filteredListBean = makeOrderControl.searchProduct(foodItemBean);
-            productListView.setItems(FXCollections.observableList(filteredListBean.getList()));
-
+            if(nameTextField.getText().isEmpty()){
+                Alert alert = new Alert(Alert.AlertType.WARNING, "complete the field before!!");
+                alert.showAndWait();
+            }
+            else{
+                FoodItemBean foodItemBean = new FoodItemBean(nameTextField.getText());
+                FoodItemListBean filteredListBean = makeOrderControl.searchProduct(foodItemBean);
+                productListView.setItems(FXCollections.observableList(filteredListBean.getList()));
+            }
         }
         else if(sourceNode == addButton){
             FoodItemBean selectedFoodItemBean = productListView.getSelectionModel().getSelectedItem();
+            if(selectedFoodItemBean == null){
+                Alert alert = new Alert(Alert.AlertType.WARNING, "first select a product to add!!");
+                alert.showAndWait();
+            }
+            else makeOrderControl.addToCart(selectedFoodItemBean);
+            //per resettare la lista di prodotti nel caso sia stata usata la barra di ricerca
+            FoodItemListBean foodItemListBean = loadFoodItems();
+            productListView.setItems(FXCollections.observableList(foodItemListBean.getList()));
 
-            makeOrderControl.addToCart(selectedFoodItemBean);
         }
         else if(sourceNode == goToCartButton){
-            try {
-                navigator.goToWithController("cartPage.fxml", new CartGraphicController(shopBean));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+           if(Session.getSession().getCart().isEmpty()){
+               Alert alert = new Alert(Alert.AlertType.WARNING, "First select at least one product!");
+               alert.showAndWait();
+           }
+           else{
+               try {
+                   navigator.goToWithController("cartPage.fxml", new CartGraphicController(shopBean));
+               } catch (IOException e) {
+                   Alert alert = new Alert(Alert.AlertType.WARNING, e.getMessage());
+                   alert.showAndWait();
+               }
+           }
         }
     }
 

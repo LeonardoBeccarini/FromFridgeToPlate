@@ -20,22 +20,22 @@ public class CartCLIcontroller {
        CartBean cartBean = showCart();
         boolean running = true;
         while(running){
-            System.out.println("1. add");
-            System.out.println("2. remove");
-            System.out.println("3. complete");
+            Printer.print("1. add");
+            Printer.print("2. remove");
+            Printer.print("3. complete");
 
-            System.out.print("Choose an option: ");
+            Printer.print("Choose an option: ");
 
             int choice = scanner.nextInt();
             switch (choice){
                 case 1 -> {
-                    System.out.println("Type index of the item to add: \n");
+                    Printer.print("Type index of the item to add: \n");
                     int selectedIndex = scanner.nextInt()-1;
                     makeOrderControl.changeQuantity(cartBean.getByIndex(selectedIndex), true);
                     showCart();
                 }
                 case 2 -> {
-                    System.out.println("Type index of the item to remove: \n");
+                    Printer.print("Type index of the item to remove: \n");
                     int selectedIndex = scanner.nextInt()-1;
                     makeOrderControl.changeQuantity(cartBean.getByIndex(selectedIndex), false);
                     showCart();
@@ -47,7 +47,7 @@ public class CartCLIcontroller {
                     );
                     running = false;        //perchè qui break non funziona?
                 }
-                default -> System.out.println("Invalid option. Please try again.");
+                default -> Printer.print("Invalid option. Please try again.");
             }
         }
 
@@ -61,7 +61,7 @@ public class CartCLIcontroller {
             float price = cartItemBean.getPrice();
             double quantity = cartItemBean.getQuantity();
 
-            System.out.println(i+" "+name+" "+price+"€" + " "+ quantity+ "\n");
+            Printer.print(i+" "+name+" "+price+"€" + " "+ quantity+ "\n");
             i++;
         }
         return cartBean;

@@ -30,19 +30,18 @@ public class CouponDAO {
            if(retrievedCoupon == null) throw new CouponNotFoundException("coupon not found!!");
 
         }catch(SQLException e){
-            e.printStackTrace();
-           throw new DbException(e.getMessage());
+            throw new DbException("errore database" + e.getMessage());
         }
         return retrievedCoupon;
     }
-    public void deleteCoupon(String vatNumber, int code){
+    public void deleteCoupon(String vatNumber, int code) throws DbException {
         Connection connection = SingletonConnector.getInstance().getConnection();
         try(CallableStatement cs = connection.prepareCall("{call deleteCoupon(?, ?)}")) {
             cs.setString(1, vatNumber);
             cs.setInt(2, code);
             cs.execute();
         }catch (SQLException e){
-            e.printStackTrace();
+            throw new DbException("errore database" + e.getMessage());
         }
     }
 }

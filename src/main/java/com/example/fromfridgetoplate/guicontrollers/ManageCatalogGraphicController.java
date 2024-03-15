@@ -4,10 +4,12 @@ import com.example.fromfridgetoplate.guicontrollers.list_cell_factories.Ingredie
 import com.example.fromfridgetoplate.logic.bean.FoodItemBean;
 import com.example.fromfridgetoplate.logic.bean.FoodItemListBean;
 import com.example.fromfridgetoplate.logic.control.ManageCatalogController;
+import com.example.fromfridgetoplate.logic.exceptions.DbException;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
@@ -41,8 +43,15 @@ public class ManageCatalogGraphicController extends GenericGraphicController{
         super.initialize(location, resources);
     }
     public FoodItemListBean loadData(){
+        FoodItemListBean foodItemListBean = null;
         ManageCatalogController manageCatalogController = new ManageCatalogController();
-        return manageCatalogController.getIngredients();
+        try {
+            foodItemListBean = manageCatalogController.getIngredients();
+        } catch (DbException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
+            alert.showAndWait();
+        }
+        return foodItemListBean;
     }
 
     @FXML
@@ -56,7 +65,12 @@ public class ManageCatalogGraphicController extends GenericGraphicController{
         if(sourceNode == addButton){
             ManageCatalogController manageCatalogController = new ManageCatalogController();
             FoodItemBean foodItemBean = new FoodItemBean(nameText.getText(), Float.parseFloat(priceText.getText()));
-            manageCatalogController.addIngredient(foodItemBean);
+            try {
+                manageCatalogController.addIngredient(foodItemBean);
+            } catch (DbException e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
+                alert.showAndWait();
+            }
             nameText.clear();
             priceText.clear();
         }

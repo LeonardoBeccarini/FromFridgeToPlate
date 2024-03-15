@@ -2,6 +2,7 @@ package com.example.fromfridgetoplate.guicontrollers;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 
@@ -32,32 +33,28 @@ public class    ChooseUserGraphicController implements Initializable {
     public void initialize(URL location,
                            ResourceBundle resources) {
         continueButton.setOnMouseClicked(event ->{
-            if(clientButton.isSelected()){
-                try {
-                    navigator.goTo("clientSigninPage.fxml");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            } else if (ownerButton.isSelected()) {
-                try {
-                    navigator.goTo("shopOwnerSigninPage.fxml");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }else if (riderButton.isSelected()){
-                try {
-                    navigator.goTo("riderSignInPage.fxml");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+            try {
+                if(clientButton.isSelected()){
 
+                    navigator.goTo("clientSigninPage.fxml");
+
+                } else if (ownerButton.isSelected()) {
+                    navigator.goTo("shopOwnerSigninPage.fxml");
+
+                }else if (riderButton.isSelected()){
+                    navigator.goTo("riderSignInPage.fxml");
+                }
+            } catch (IOException e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
+                alert.showAndWait();
             }
         });
         backButton.setOnMouseClicked(event ->{
             try {
                 navigator.goTo("mainPage6.fxml");
             } catch (IOException e) {
-                e.printStackTrace();
+                Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
+                alert.showAndWait();
             }
         });
     }

@@ -8,7 +8,7 @@ import java.util.Objects;
 
 public class Cart implements Discountable {
 
-    private List<CartItem> itemList;
+    private final List<CartItem> itemList;
 
     public Cart() {
         itemList = new ArrayList<>();
@@ -45,7 +45,6 @@ public class Cart implements Discountable {
         }
         return null;
     }
-
     public Double getPrice(){
         double price = 0.0;
         for(CartItem cartItem : itemList){
@@ -53,5 +52,8 @@ public class Cart implements Discountable {
             price = price+temp;
         }
         return price;
+    }
+    public boolean isEmpty(){
+        return itemList.isEmpty();
     }
 }

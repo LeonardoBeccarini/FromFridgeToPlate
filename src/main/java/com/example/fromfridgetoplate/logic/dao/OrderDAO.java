@@ -240,7 +240,7 @@ public class OrderDAO {
         }
 
         }catch(SQLException e){
-            throw new DbException(e.getMessage());
+            throw new DbException("errore database" + e.getMessage());
         }
        order.setOrderId(orderID);
         return order;

@@ -20,7 +20,7 @@ public class MakeOrderControl {
     private final Cart cart = Session.getSession().getCart();
     private final CouponApplier couponApplier = new CouponApplier(cart);
 
-    public MakeOrderControl(ShopBean shopBean){
+    public MakeOrderControl(ShopBean shopBean) throws DbException {
         CatalogDAO catalogDAO = new CatalogDAO();
         this.catalog = catalogDAO.retrieveCatalog(shopBean.getVatNumber());
     }
@@ -29,7 +29,7 @@ public class MakeOrderControl {
         this.catalog = null;
     }
 
-    public List<ShopBean> loadShop(SearchInfoBean searchInfoBean){
+    public List<ShopBean> loadShop(SearchInfoBean searchInfoBean) throws DbException {
         List<ShopBean> listShopBean = new ArrayList<>();
         ShopDAO shopDAO = new ShopDAO();
         for(Shop shop: shopDAO.retrieveShopByName(searchInfoBean.getName())){
@@ -132,7 +132,7 @@ public class MakeOrderControl {
 
 
     }
-    public List<NotificationBean> loadNotification(){
+    public List<NotificationBean> loadNotification() throws DbException {
         DAOFactory daoFactory = new DAOFactory();
         NotificationDAO notificationDAO = daoFactory.getNotificationDAO();
 
@@ -142,11 +142,10 @@ public class MakeOrderControl {
         List<Notification> notificationList = notificationDAO.getNotificationsForOwner(shop.getVATnumber());
         List<NotificationBean> notificationBeanList = new ArrayList<>();
         for(Notification notification : notificationList){
-            notificationBeanList.add(new NotificationBean(notification.getCustomer(), notification.getOrderId(), notification.getStreet(),
-                    notification.getStreetNumber(), notification.getCity(), notification.getProvince(), notification.getMessageText()));
-
-
-
+            NotificationBean notificationBean = new NotificationBean(notification.getCustomer(), notification.getOrderId(), notification.getStreet(),
+                    notification.getStreetNumber(), notification.getCity(), notification.getProvince(), notification.getMessageText());
+            notificationBean.setNotificationId(notification.getNotificationId());
+            notificationBeanList.add(notificationBean);
         }
         return notificationBeanList;
     }

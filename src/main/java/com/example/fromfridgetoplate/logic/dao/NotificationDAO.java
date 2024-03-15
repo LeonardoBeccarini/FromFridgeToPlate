@@ -126,7 +126,8 @@ public class NotificationDAO {
         String query = "{CALL SetNotificationAsRead(?)}";
         try (CallableStatement cstmt = connection.prepareCall(query)) {
             cstmt.setInt(1, notificationId);
-            cstmt.executeUpdate();
+           cstmt.executeQuery();
+
         } catch (SQLException e) {
             e.printStackTrace();
 
