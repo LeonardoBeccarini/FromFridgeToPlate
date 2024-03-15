@@ -2,6 +2,8 @@ package com.example.fromfridgetoplate.secondguicontrollers;
 
 import com.example.fromfridgetoplate.logic.bean.NotificationBean;
 import com.example.fromfridgetoplate.logic.control.MakeOrderControl;
+import com.example.fromfridgetoplate.logic.exceptions.DbException;
+import javafx.scene.control.Alert;
 
 import java.io.IOException;
 import java.util.List;
@@ -15,7 +17,12 @@ public class ResellerMainPageCLIController {
 
     public ResellerMainPageCLIController() {
         MakeOrderControl makeOrderControl = new MakeOrderControl();
-        notificationBeanList = makeOrderControl.loadNotification();
+        try {
+            notificationBeanList = makeOrderControl.loadNotification();
+        } catch (DbException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
+            alert.showAndWait();
+        }
     }
 
 

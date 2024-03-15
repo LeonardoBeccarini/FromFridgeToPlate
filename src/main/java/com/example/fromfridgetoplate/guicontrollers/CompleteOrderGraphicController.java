@@ -92,7 +92,8 @@ public class CompleteOrderGraphicController extends GenericGraphicController{
                 try {
                     navigator.goTo("clientHomePage.fxml");
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    Alert alert2 = new Alert(Alert.AlertType.ERROR, e.getMessage());
+                    alert2.showAndWait();
                 }
             }
         }

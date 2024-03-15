@@ -4,6 +4,7 @@ import com.example.fromfridgetoplate.logic.bean.FoodItemBean;
 import com.example.fromfridgetoplate.logic.bean.FoodItemListBean;
 import com.example.fromfridgetoplate.logic.bean.ShopBean;
 import com.example.fromfridgetoplate.logic.control.MakeOrderControl;
+import com.example.fromfridgetoplate.logic.exceptions.DbException;
 
 import java.util.Scanner;
 
@@ -11,10 +12,14 @@ public class ProductListCLIcontroller {
     private final ShopBean selectedShopBean;
     private final Scanner scanner = new Scanner(System.in);
     private final NavigatorCLI navigator = NavigatorCLI.getInstance();
-    private final MakeOrderControl makeOrderControl;
+    private  MakeOrderControl makeOrderControl = null;
     public ProductListCLIcontroller(ShopBean shopBean){
         this.selectedShopBean = shopBean;
-        makeOrderControl = new MakeOrderControl(shopBean);
+        try {
+            makeOrderControl = new MakeOrderControl(shopBean);
+        } catch (DbException e) {
+            Utils.print(e.getMessage());
+        }
     }
 
     public void addToCart(){

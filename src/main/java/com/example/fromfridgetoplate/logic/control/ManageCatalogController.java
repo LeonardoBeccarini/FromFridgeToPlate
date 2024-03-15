@@ -4,13 +4,14 @@ import com.example.fromfridgetoplate.logic.bean.FoodItemBean;
 import com.example.fromfridgetoplate.logic.bean.FoodItemListBean;
 import com.example.fromfridgetoplate.logic.dao.CatalogDAO;
 import com.example.fromfridgetoplate.logic.dao.ShopDAO;
+import com.example.fromfridgetoplate.logic.exceptions.DbException;
 import com.example.fromfridgetoplate.logic.model.Catalog;
 import com.example.fromfridgetoplate.logic.model.FoodItem;
 import com.example.fromfridgetoplate.logic.model.Session;
 import com.example.fromfridgetoplate.logic.model.Shop;
 
 public class ManageCatalogController {
-    public FoodItemListBean getIngredients(){
+    public FoodItemListBean getIngredients() throws DbException {
         CatalogDAO catalogDAO = new CatalogDAO();
         ShopDAO shopDAO = new ShopDAO();
        FoodItemListBean foodList = new FoodItemListBean();
@@ -21,7 +22,7 @@ public class ManageCatalogController {
         return foodList;
     }
 
-    public void addIngredient(FoodItemBean foodItemBean){
+    public void addIngredient(FoodItemBean foodItemBean) throws DbException {
         CatalogDAO catalogDAO = new CatalogDAO();
         ShopDAO shopDAO = new ShopDAO();
         Shop shop = shopDAO.retrieveShopByEmail(Session.getSession().getUser().getEmail());

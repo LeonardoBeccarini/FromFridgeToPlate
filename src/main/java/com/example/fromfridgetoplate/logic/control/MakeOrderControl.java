@@ -20,7 +20,7 @@ public class MakeOrderControl {
     private final Cart cart = Session.getSession().getCart();
     private final CouponApplier couponApplier = new CouponApplier(cart);
 
-    public MakeOrderControl(ShopBean shopBean){
+    public MakeOrderControl(ShopBean shopBean) throws DbException {
         CatalogDAO catalogDAO = new CatalogDAO();
         this.catalog = catalogDAO.retrieveCatalog(shopBean.getVatNumber());
     }
@@ -29,7 +29,7 @@ public class MakeOrderControl {
         this.catalog = null;
     }
 
-    public List<ShopBean> loadShop(SearchInfoBean searchInfoBean){
+    public List<ShopBean> loadShop(SearchInfoBean searchInfoBean) throws DbException {
         List<ShopBean> listShopBean = new ArrayList<>();
         ShopDAO shopDAO = new ShopDAO();
         for(Shop shop: shopDAO.retrieveShopByName(searchInfoBean.getName())){
@@ -129,7 +129,7 @@ public class MakeOrderControl {
 
 
     }
-    public List<NotificationBean> loadNotification(){
+    public List<NotificationBean> loadNotification() throws DbException {
         DAOFactory daoFactory = new DAOFactory();
         NotificationDAO notificationDAO = daoFactory.getNotificationDAO();
 

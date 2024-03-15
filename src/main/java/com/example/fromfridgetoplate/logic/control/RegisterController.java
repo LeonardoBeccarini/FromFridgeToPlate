@@ -6,6 +6,7 @@ import com.example.fromfridgetoplate.logic.bean.RegistrationBean;
 import com.example.fromfridgetoplate.logic.dao.ClientDAO;
 import com.example.fromfridgetoplate.logic.dao.RiderDAO;
 import com.example.fromfridgetoplate.logic.dao.ShopDAO;
+import com.example.fromfridgetoplate.logic.exceptions.DbException;
 import com.example.fromfridgetoplate.logic.model.Client;
 import com.example.fromfridgetoplate.logic.model.Rider;
 import com.example.fromfridgetoplate.logic.model.Role;
@@ -15,7 +16,7 @@ import com.example.fromfridgetoplate.patterns.factory.UserFactory;
 
 
 public class RegisterController {
-    public boolean register(RegistrationBean registrationBean){
+    public boolean register(RegistrationBean registrationBean) throws DbException {
 
         UserFactory userFactory = new UserFactory();
         Role role = registrationBean.getRole();

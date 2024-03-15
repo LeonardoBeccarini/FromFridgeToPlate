@@ -5,6 +5,7 @@ import com.example.fromfridgetoplate.logic.bean.FoodItemBean;
 import com.example.fromfridgetoplate.logic.bean.FoodItemListBean;
 import com.example.fromfridgetoplate.logic.bean.ShopBean;
 import com.example.fromfridgetoplate.logic.control.MakeOrderControl;
+import com.example.fromfridgetoplate.logic.exceptions.DbException;
 import com.example.fromfridgetoplate.logic.model.Session;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -18,7 +19,7 @@ import java.util.ResourceBundle;
 
 public class BuyProductGraphicController extends GenericGraphicController{
     private final ShopBean shopBean;
-    private final MakeOrderControl makeOrderControl;
+    private MakeOrderControl makeOrderControl = null;
     @FXML
     private Button addButton;
 
@@ -42,7 +43,12 @@ public class BuyProductGraphicController extends GenericGraphicController{
     public BuyProductGraphicController(ShopBean shopBean) {
 
         this.shopBean = shopBean;
-        this.makeOrderControl = new MakeOrderControl(shopBean);
+        try {
+            this.makeOrderControl = new MakeOrderControl(shopBean);
+        } catch (DbException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
+            alert.showAndWait();
+        }
     }
 
     @Override
@@ -99,7 +105,8 @@ public class BuyProductGraphicController extends GenericGraphicController{
                try {
                    navigator.goToWithController("cartPage.fxml", new CartGraphicController(shopBean));
                } catch (IOException e) {
-                   e.printStackTrace();
+                   Alert alert = new Alert(Alert.AlertType.WARNING, e.getMessage());
+                   alert.showAndWait();
                }
            }
         }
