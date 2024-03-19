@@ -8,7 +8,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="900.0" style="-fx-background-color: #4f4f4f;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="900.0" style="-fx-background-color: #4f4f4f;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <BorderPane prefHeight="750.0" prefWidth="900.0">
          <center>
@@ -27,11 +27,11 @@
             </AnchorPane>
          </center>
          <top>
-            <AnchorPane prefHeight="69.0" prefWidth="900.0" style="-fx-background-color: FFECB3;" BorderPane.alignment="CENTER">
+            <AnchorPane prefHeight="69.0" prefWidth="900.0" style="-fx-background-color: gold;" BorderPane.alignment="CENTER">
                <children>
-                  <Button fx:id="homeButton" layoutX="702.0" layoutY="14.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="66.0" style="-fx-background-color: white;" text="Home" />
-                  <Button fx:id="profileButton" layoutX="802.0" layoutY="16.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="55.0" style="-fx-background-color: white;" text="Profile" />
-                  <Text layoutX="45.0" layoutY="44.0" opacity="0.58" strokeType="OUTSIDE" strokeWidth="0.0" text="Notifications">
+                  <Button fx:id="homeButton" layoutX="721.0" layoutY="14.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="66.0" style="-fx-background-color: white;" text="Home" />
+                  <Button fx:id="profileButton" layoutX="814.0" layoutY="14.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="66.0" style="-fx-background-color: white;" text="Profile" AnchorPane.bottomAnchor="13.333333333333329" AnchorPane.rightAnchor="23.0" AnchorPane.topAnchor="14.0" />
+                  <Text layoutX="20.0" layoutY="43.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Notifications" textAlignment="CENTER" wrappingWidth="144.15898895263672">
                      <font>
                         <Font size="24.0" />
                      </font>
