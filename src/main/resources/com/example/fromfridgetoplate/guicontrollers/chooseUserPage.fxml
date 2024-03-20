@@ -9,38 +9,51 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.fromfridgetoplate.guicontrollers.ChooseUserGraphicController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="900.0" style="-fx-background-color: #4f4f4f;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.fromfridgetoplate.guicontrollers.ChooseUserGraphicController">
    <children>
-      <BorderPane layoutX="-6.0" prefHeight="400.0" prefWidth="611.0" style="-fx-background-color: fccd8d;">
+      <BorderPane prefHeight="800.0" prefWidth="900.0" style="-fx-background-color: #4f4f4f;">
          <center>
-            <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <AnchorPane prefHeight="478.0" prefWidth="652.0" BorderPane.alignment="CENTER">
                <children>
-                  <AnchorPane layoutX="153.0" layoutY="47.0" prefHeight="306.0" prefWidth="305.0" style="-fx-background-color: fa9c1b;">
+                  <AnchorPane layoutX="370.0" layoutY="71.0" prefHeight="487.0" prefWidth="456.0" style="-fx-background-color: ffecb3;" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="70.0" AnchorPane.rightAnchor="70.0" AnchorPane.topAnchor="70.0">
                      <children>
-                        <Text fill="WHITE" layoutX="73.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Choose user type" wrappingWidth="158.4700927734375">
+                        <Text layoutX="291.0" layoutY="74.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Choose user type" wrappingWidth="195.13677978515625">
                            <font>
-                              <Font size="20.0" />
+                              <Font size="24.0" />
                            </font>
                         </Text>
-                        <VBox layoutX="102.0" layoutY="65.0" prefHeight="137.0" prefWidth="100.0" spacing="45.0">
+                        <VBox layoutX="342.0" layoutY="144.0" prefHeight="137.0" prefWidth="199.0" spacing="45.0">
                            <children>
-                              <RadioButton fx:id="clientButton" mnemonicParsing="false" text="Client" />
-                              <RadioButton fx:id="ownerButton" mnemonicParsing="false" text="Shop Owner" />
+                              <RadioButton fx:id="clientButton" mnemonicParsing="false" text="Client">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </RadioButton>
+                              <RadioButton fx:id="ownerButton" mnemonicParsing="false" text="Shop Owner">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </RadioButton>
                               <RadioButton fx:id="riderButton" mnemonicParsing="false" text="Rider">
                                  <padding>
                                     <Insets right="2.0" />
                                  </padding>
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
                               </RadioButton>
                            </children>
                         </VBox>
-                        <Button fx:id="continueButton" layoutX="224.0" layoutY="257.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="70.0" text="Continue">
+                        <Button fx:id="continueButton" layoutX="559.0" layoutY="494.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="70.0" text="Continue">
                            <font>
                               <Font name="Helvetica" size="12.0" />
-                           </font></Button>
-                        <Button fx:id="backButton" layoutX="14.0" layoutY="257.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="70.0" text="Back">
+                           </font>
+                        </Button>
+                        <Button fx:id="backButton" layoutX="160.0" layoutY="494.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="70.0" text="Back">
                            <font>
                               <Font name="Helvetica" size="12.0" />
-                           </font></Button>
+                           </font>
+                        </Button>
                      </children>
                   </AnchorPane>
                </children>
