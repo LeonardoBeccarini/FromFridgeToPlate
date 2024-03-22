@@ -36,8 +36,10 @@
                         <TextField fx:id="nameText" layoutX="165.0" layoutY="163.0" />
                         <TextField fx:id="typeText" layoutX="165.0" layoutY="204.0" />
                         <TextField fx:id="priceText" layoutX="165.0" layoutY="240.0" />
-                        <Button fx:id="addButton" layoutX="212.0" layoutY="294.0" mnemonicParsing="false" onAction="#onButtonClicked" prefHeight="28.0" prefWidth="56.0" style="-fx-background-color: white;" text="Add" />
-                        <Button fx:id="refreshButton" layoutX="567.0" layoutY="491.0" mnemonicParsing="false" onAction="#onButtonClicked" prefHeight="28.0" prefWidth="56.0" style="-fx-background-color: white;" text="Refresh" />
+                        <Button fx:id="addButton" layoutX="165.0" layoutY="296.0" mnemonicParsing="false" onAction="#onButtonClicked" prefHeight="28.0" prefWidth="56.0" style="-fx-background-color: white;" text="Add" />
+                        <Button fx:id="refreshButton" layoutX="526.0" layoutY="491.0" mnemonicParsing="false" onAction="#onButtonClicked" prefHeight="28.0" prefWidth="56.0" style="-fx-background-color: white;" text="Refresh" />
+                        <Button fx:id="addFileButton" layoutX="248.0" layoutY="296.0" mnemonicParsing="false" onAction="#onButtonClicked" prefHeight="28.0" prefWidth="83.0" style="-fx-background-color: white;" text="Add on file" />
+                        <Button fx:id="refreshFileButton" layoutX="607.0" layoutY="491.0" mnemonicParsing="false" onAction="#onButtonClicked" prefHeight="28.0" prefWidth="113.0" style="-fx-background-color: white;" text="Refresh from file" />
                      </children>
                   </AnchorPane>
                </children>

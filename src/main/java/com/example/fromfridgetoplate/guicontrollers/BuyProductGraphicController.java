@@ -5,7 +5,9 @@ import com.example.fromfridgetoplate.logic.bean.FoodItemBean;
 import com.example.fromfridgetoplate.logic.bean.FoodItemListBean;
 import com.example.fromfridgetoplate.logic.bean.ShopBean;
 import com.example.fromfridgetoplate.logic.control.MakeOrderControl;
+import com.example.fromfridgetoplate.logic.exceptions.CatalogDAOFactoryError;
 import com.example.fromfridgetoplate.logic.exceptions.DbException;
+import com.example.fromfridgetoplate.logic.exceptions.EmptyCatalogException;
 import com.example.fromfridgetoplate.logic.model.Session;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -15,6 +17,7 @@ import javafx.scene.control.*;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class BuyProductGraphicController extends GenericGraphicController{
@@ -45,9 +48,21 @@ public class BuyProductGraphicController extends GenericGraphicController{
         this.shopBean = shopBean;
         try {
             this.makeOrderControl = new MakeOrderControl(shopBean);
-        } catch (DbException e) {
+        } catch (DbException | IOException | CatalogDAOFactoryError e) {
             Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
             alert.showAndWait();
+        }catch (EmptyCatalogException e){
+            Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
+            Optional<ButtonType> result = alert.showAndWait();
+            // se il catalogo del negozio è vuoto torno alla schermata di ricerca di quest'ultimo
+            if(result.isPresent() && result.get() == ButtonType.OK){
+                try {
+                    navigator.goTo("marketListPage");
+                } catch (IOException ex) {
+                    Alert alert2 = new Alert(Alert.AlertType.ERROR, e.getMessage());
+                    alert2.showAndWait();
+                }
+            }
         }
     }
 

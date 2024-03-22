@@ -3,13 +3,12 @@ package com.example.fromfridgetoplate.logic.control;
 import com.example.fromfridgetoplate.logic.bean.*;
 import com.example.fromfridgetoplate.logic.boundary.DummyPaymentBoundary;
 import com.example.fromfridgetoplate.logic.dao.*;
-import com.example.fromfridgetoplate.logic.exceptions.CouponNotFoundException;
-import com.example.fromfridgetoplate.logic.exceptions.DbException;
-import com.example.fromfridgetoplate.logic.exceptions.NegativePriceException;
-import com.example.fromfridgetoplate.logic.exceptions.PaymentFailedException;
+import com.example.fromfridgetoplate.logic.exceptions.*;
 import com.example.fromfridgetoplate.logic.model.*;
+import com.example.fromfridgetoplate.patterns.factory.CatalogDAOFactory;
 import com.example.fromfridgetoplate.patterns.factory.DAOFactory;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -20,9 +19,19 @@ public class MakeOrderControl {
     private final Cart cart = Session.getSession().getCart();
     private final CouponApplier couponApplier = new CouponApplier(cart);
 
-    public MakeOrderControl(ShopBean shopBean) throws DbException {
-        CatalogDAO catalogDAO = new CatalogDAO();
-        this.catalog = catalogDAO.retrieveCatalog(shopBean.getVatNumber());
+    public MakeOrderControl(ShopBean shopBean) throws DbException, IOException, CatalogDAOFactoryError, EmptyCatalogException {
+        Catalog catalog1;
+        CatalogDAOFactory catalogDAOFactory = new CatalogDAOFactory();
+        //provo a prendere il catalogo sia da file sia da db
+        CatalogDAO catalogDAO = catalogDAOFactory.createCatalogDAO(PersistenceType.JDBC);
+        CatalogDAO catalogDAO1 = catalogDAOFactory.createCatalogDAO(PersistenceType.FILE_SYSTEM);
+        if((catalog1 = catalogDAO.retrieveCatalog(shopBean.getVatNumber())) != null) {
+            this.catalog = catalog1;
+        }
+       else if((catalog1 = catalogDAO1.retrieveCatalog(shopBean.getVatNumber())) != null){
+           this.catalog = catalog1;
+        }
+       else throw new EmptyCatalogException("il catologo del negozio selezionato è vuoto!");
     }
 
     public MakeOrderControl() {

@@ -3,16 +3,28 @@ package com.example.fromfridgetoplate.logic.control;
 import com.example.fromfridgetoplate.logic.bean.FoodItemBean;
 import com.example.fromfridgetoplate.logic.bean.FoodItemListBean;
 import com.example.fromfridgetoplate.logic.dao.CatalogDAO;
+import com.example.fromfridgetoplate.logic.dao.PersistenceType;
 import com.example.fromfridgetoplate.logic.dao.ShopDAO;
+import com.example.fromfridgetoplate.logic.exceptions.CatalogDAOFactoryError;
 import com.example.fromfridgetoplate.logic.exceptions.DbException;
 import com.example.fromfridgetoplate.logic.model.Catalog;
 import com.example.fromfridgetoplate.logic.model.FoodItem;
 import com.example.fromfridgetoplate.logic.model.Session;
 import com.example.fromfridgetoplate.logic.model.Shop;
+import com.example.fromfridgetoplate.patterns.factory.CatalogDAOFactory;
+
+import java.io.IOException;
 
 public class ManageCatalogController {
-    public FoodItemListBean getIngredients() throws DbException {
-        CatalogDAO catalogDAO = new CatalogDAO();
+    private PersistenceType persistenceType;
+
+    public ManageCatalogController(PersistenceType persistenceType) {
+        this.persistenceType = persistenceType;
+    }
+
+    public FoodItemListBean getIngredients() throws DbException, IOException, CatalogDAOFactoryError {
+        CatalogDAOFactory catalogDAOFactory = new CatalogDAOFactory();
+        CatalogDAO catalogDAO = catalogDAOFactory.createCatalogDAO(persistenceType);
         ShopDAO shopDAO = new ShopDAO();
        FoodItemListBean foodList = new FoodItemListBean();
         Shop shop = shopDAO.retrieveShopByEmail(Session.getSession().getUser().getEmail());
@@ -22,10 +34,12 @@ public class ManageCatalogController {
         return foodList;
     }
 
-    public void addIngredient(FoodItemBean foodItemBean) throws DbException {
-        CatalogDAO catalogDAO = new CatalogDAO();
+    public void addIngredient(FoodItemBean foodItemBean) throws DbException, IOException, CatalogDAOFactoryError {
+        CatalogDAOFactory catalogDAOFactory = new CatalogDAOFactory();
+        CatalogDAO catalogDAO = catalogDAOFactory.createCatalogDAO(persistenceType);
         ShopDAO shopDAO = new ShopDAO();
         Shop shop = shopDAO.retrieveShopByEmail(Session.getSession().getUser().getEmail());
         catalogDAO.addItem(foodItemBean.getName(), foodItemBean.getPrice(), shop.getVATnumber());
     }
+
 }

@@ -23,13 +23,13 @@ public class RegisterController {
         if(role == Role.OWNER){
             ShopDAO shopDAO = new ShopDAO();
             Shop newShop = (Shop) userFactory.createUser(registrationBean);
-            return shopDAO.saveShop(newShop.getEmail(), newShop.getPassword(), newShop.getName(), newShop.getVATnumber(), newShop.getAddress(), newShop.getPhoneNumber());
+            return shopDAO.saveShop(newShop);
 
         }
         else if(role == Role.CLIENT){
             ClientDAO clientDAO = new ClientDAO();
             Client newClient = (Client) userFactory.createUser(registrationBean);
-            return clientDAO.saveClient(newClient.getEmail(), newClient.getPassword(), newClient.getName(), newClient.getSurname(), newClient.getAddress());
+            return clientDAO.saveClient(newClient);
 
         }
 
