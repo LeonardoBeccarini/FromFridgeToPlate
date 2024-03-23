@@ -20,16 +20,21 @@ public class MakeOrderControl {
     private final CouponApplier couponApplier = new CouponApplier(cart);
 
     public MakeOrderControl(ShopBean shopBean) throws DbException, IOException, CatalogDAOFactoryError, EmptyCatalogException {
-        Catalog catalog1;
+        Catalog catalogJDBC;
+        Catalog catalogFile;
         CatalogDAOFactory catalogDAOFactory = new CatalogDAOFactory();
         //provo a prendere il catalogo sia da file sia da db
-        CatalogDAO catalogDAO = catalogDAOFactory.createCatalogDAO(PersistenceType.JDBC);
+        CatalogDAO catalogDAO = catalogDAOFactory.createCatalogDAO(PersistenceType.JDBC);       //qui invece di fare questa porcheria potrei salvare, quando un reseller aggiunge un nuovo catalogo
+        catalogJDBC = catalogDAO.retrieveCatalog(shopBean.getVatNumber());                      // il tipo di persistenza da lui scelto, poi così invece di prendermi il catalogo
+                                                                                                // da tutte e due qui facccio una query al db per sapere iìquale livello di persistenaz usare
         CatalogDAO catalogDAO1 = catalogDAOFactory.createCatalogDAO(PersistenceType.FILE_SYSTEM);
-        if((catalog1 = catalogDAO.retrieveCatalog(shopBean.getVatNumber())) != null) {
-            this.catalog = catalog1;
+        catalogFile = catalogDAO1.retrieveCatalog(shopBean.getVatNumber());
+
+        if(!catalogJDBC.getItems().isEmpty()) {
+            this.catalog = catalogJDBC;
         }
-       else if((catalog1 = catalogDAO1.retrieveCatalog(shopBean.getVatNumber())) != null){
-           this.catalog = catalog1;
+       else if(!catalogFile.getItems().isEmpty()){
+           this.catalog = catalogFile;
         }
        else throw new EmptyCatalogException("il catologo del negozio selezionato è vuoto!");
     }

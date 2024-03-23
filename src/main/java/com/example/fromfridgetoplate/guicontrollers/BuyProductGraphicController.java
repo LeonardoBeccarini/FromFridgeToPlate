@@ -54,6 +54,7 @@ public class BuyProductGraphicController extends GenericGraphicController{
         }catch (EmptyCatalogException e){
             Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
             Optional<ButtonType> result = alert.showAndWait();
+
             // se il catalogo del negozio è vuoto torno alla schermata di ricerca di quest'ultimo
             if(result.isPresent() && result.get() == ButtonType.OK){
                 try {
@@ -121,6 +122,7 @@ public class BuyProductGraphicController extends GenericGraphicController{
                    navigator.goToWithController("cartPage.fxml", new CartGraphicController(shopBean));
                } catch (IOException e) {
                    Alert alert = new Alert(Alert.AlertType.WARNING, e.getMessage());
+                   e.printStackTrace();
                    alert.showAndWait();
                }
            }

@@ -31,8 +31,6 @@ v
 Fsrc/main/java/com/example/fromfridgetoplate/logic/model/OrderList.java,9\1\91a822bffe8a1a0914ad1c864c04174d8d737884
 y
 Isrc/main/java/com/example/fromfridgetoplate/logic/bean/OrderListBean.java,b\f\bf3280e6fd7e18d2e0629415a9001fc288f13698
-t
-Dsrc/main/java/com/example/fromfridgetoplate/logic/model/Catalog.java,9\3\93f453e0f0174cb75cff850691bb52bb66acb112
 é
 ^src/main/java/com/example/fromfridgetoplate/guicontrollers/PendingOrdersGraphicController.java,5\f\5fe2abcca6447f98d25afc1d16fd4eaf2d9926ef
 â
@@ -41,8 +39,6 @@ Ysrc/main/java/com/example/fromfridgetoplate/guicontrollers/MainPageGraphicContr
 Zsrc/main/java/com/example/fromfridgetoplate/logic/exceptions/NotExistentUserException.java,c\3\c33ad547216c6b0670087c31d7ea450907492dc1
 x
 Hsrc/main/java/com/example/fromfridgetoplate/logic/bean/FoodItemBean.java,6\a\6ad6dcbd3df0b6d01675f8677993329497887b0b
-|
-Lsrc/main/java/com/example/fromfridgetoplate/logic/bean/FoodItemListBean.java,0\7\07e50b42614ed8de2126032508f4540a4be87a20
 t
 Dsrc/main/java/com/example/fromfridgetoplate/logic/bean/ShopBean.java,a\e\aeb5faa7ebe87736c054ae639f9d8f2838d3bd7d
 z
@@ -83,16 +79,12 @@ Vsrc/main/java/com/example/fromfridgetoplate/guicontrollers/LoginGraphicControll
 Psrc/main/java/com/example/fromfridgetoplate/logic/bean/NotificationListBean.java,4\e\4e5b5edb2b2073e7570e4c6911ac53d6021990b3
 }
 Msrc/main/java/com/example/fromfridgetoplate/logic/exceptions/DbException.java,e\7\e764a100e82ce418e796d87300aa25e025cfe01d
-Ö
-Usrc/main/java/com/example/fromfridgetoplate/guicontrollers/CartGraphicController.java,f\4\f422c58511fa1acf42b7af6126b2674d867f1a5c
 è
 _src/main/java/com/example/fromfridgetoplate/guicontrollers/ClientHomePageGraphicController.java,b\6\b6b14c6523b2efdec165b705b6c49e45e63cdc75
 ã
 [src/main/java/com/example/fromfridgetoplate/guicontrollers/ChooseUserGraphicController.java,8\3\832d6aa726096467722ba51ee59a3093f97aa9a9
 ç
 ]src/main/java/com/example/fromfridgetoplate/guicontrollers/ClientSignInGraphicController.java,5\1\51b71f183b84a13f86b1b1e73391f27133e31e80
-ã
-[src/main/java/com/example/fromfridgetoplate/guicontrollers/MarketListGraphicController.java,1\c\1c25367239d8d5c31c4cecbf7c6dad31021f6d8e
 Ñ
 Tsrc/main/java/com/example/fromfridgetoplate/logic/control/ShopProfileController.java,6\3\6382a51400c8bdd5237a9c312360274b95543933
 å
@@ -141,8 +133,6 @@ t
 Dsrc/main/java/com/example/fromfridgetoplate/logic/dao/CouponDAO.java,a\b\ab9863bd0763ef606d528c64f0aca7306f4ab3e2
 r
 Bsrc/main/java/com/example/fromfridgetoplate/logic/dao/UserDAO.java,7\2\72e646bb793bea16d2945b5956cba225cad513a5
-s
-Csrc/main/java/com/example/fromfridgetoplate/logic/dao/OrderDAO.java,f\8\f8662ef77a40357d7f891c4313706eaa78469354
 z
 Jsrc/main/java/com/example/fromfridgetoplate/logic/dao/NotificationDAO.java,6\6\664beb4c4b70e51b2391d37f90573ae838a467f8
 s
@@ -157,13 +147,9 @@ N
 src/main/java/module-info.java,1\c\1c89a5491fbfda3fb050196d6a239f20200296e7
 à
 Xsrc/main/java/com/example/fromfridgetoplate/guicontrollers/GenericGraphicController.java,5\1\518a12a2a26e3dbd65779fda671b3bab3055e40b
-Ñ
-Tsrc/main/java/com/example/fromfridgetoplate/logic/boundary/DummyPaymentBoundary.java,3\1\314133f9df2f97a008b776a26a7600dc2241adbf
 ç
 ]src/main/java/com/example/fromfridgetoplate/secondguicontrollers/MarketListCLIcontroller.java,2\3\2327217a96da4a74f17e31c7c3791cdb2cccc2cb
 ã
 [src/main/java/com/example/fromfridgetoplate/secondguicontrollers/MainPageCLIController.java,a\6\a66acf4f55448fee2e716989c90d013fe9845ca5
 Ç
 Rsrc/main/java/com/example/fromfridgetoplate/secondguicontrollers/NavigatorCLI.java,8\8\884181bbbfae8f4f935451029fdde437d9877fb5
-é
-^src/main/java/com/example/fromfridgetoplate/guicontrollers/CompleteOrderGraphicController.java,e\f\efbe9c0eb97df0fad715f4ba40621f71e4a7bfba

@@ -203,17 +203,6 @@ public class OrderDAO {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 // ------------------- BECCA ---------------------- BECCA ---------------------- BECCA ---------------------- //
 
     public Order saveOrder(Order order) throws DbException {
@@ -240,7 +229,8 @@ public class OrderDAO {
         }
 
         }catch(SQLException e){
-            throw new DbException("errore database" + e.getMessage());
+            e.printStackTrace();
+            throw new DbException("errore database:"+" " + e.getMessage());
         }
        order.setOrderId(orderID);
         return order;

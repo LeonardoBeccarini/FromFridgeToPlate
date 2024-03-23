@@ -46,14 +46,15 @@ public class ManageCatalogGraphicController extends GenericGraphicController{
         FoodItemListBean foodItemListBean;
         // qui volevo fare se ho già un catalogo salvato sul db disattivcavo il bottone in modo da non creare un secondo catalogo su file,
         // è commentato perchè mi entrava sempre nel primo if
-        if((foodItemListBean = loadData(PersistenceType.JDBC)) != null){
-          //  addFileButton.setDisable(true);
-            //refreshFileButton.setDisable(true);
+        foodItemListBean = loadData(PersistenceType.JDBC);
+        if(!foodItemListBean.getList().isEmpty()){
+            addFileButton.setDisable(true);
+            refreshFileButton.setDisable(true);
             setListView(foodItemListBean);
         }
-        else if((foodItemListBean = loadData(PersistenceType.FILE_SYSTEM))!=null){
-        //    addButton.setDisable(true);
-          //  refreshButton.setDisable(true);
+        else {
+            addButton.setDisable(true);
+            refreshButton.setDisable(true);
             setListView(foodItemListBean);
         }
 
@@ -82,7 +83,6 @@ public class ManageCatalogGraphicController extends GenericGraphicController{
            setListView(foodItemListBean);
         }
         if(sourceNode == refreshFileButton){
-            System.out.println("Cliccato bottone refresh file");        // debug casalingo
             FoodItemListBean foodItemListBean = loadData(PersistenceType.FILE_SYSTEM);
             setListView(foodItemListBean);
         }
@@ -108,6 +108,8 @@ public class ManageCatalogGraphicController extends GenericGraphicController{
                 Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
                 alert.showAndWait();
             }
+            nameText.clear();
+            priceText.clear();
         }
     }
 }
