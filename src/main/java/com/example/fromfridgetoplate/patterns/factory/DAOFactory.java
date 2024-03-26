@@ -20,7 +20,7 @@ public class DAOFactory { // rappresenta la factory della struttura nelle slide
 
         public NotificationDAO getNotificationDAO() {return new NotificationDAO(getConnection());}
 
-        public ShopDAO getShopDAO() {return new ShopDAO(getConnection());}
+
 
 
 

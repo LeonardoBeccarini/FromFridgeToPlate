@@ -229,7 +229,6 @@ public class OrderDAO {
         }
 
         }catch(SQLException e){
-            e.printStackTrace();
             throw new DbException("errore database:"+" " + e.getMessage());
         }
        order.setOrderId(orderID);

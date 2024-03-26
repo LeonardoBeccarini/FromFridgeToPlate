@@ -13,11 +13,10 @@ import java.util.Objects;
 
 public class ShopDAO {
     private static final  String ERROREDATABASE = "errore database";
-    private Connection connection;
-    public ShopDAO(Connection conn) {this.connection = conn;}
-    public ShopDAO(){} // questo dovresti eliminarlo quando hai adattato il resto del tuo codice (becca) a usare la DAOfactory
-    public boolean saveShop(Shop shop) throws DbException {
 
+    public ShopDAO(){/*default constructor*/}
+    public boolean saveShop(Shop shop) throws DbException {
+        Connection connection = SingletonConnector.getInstance().getConnection();
         try(CallableStatement cs = connection.prepareCall("{call registerShop(?,?,?,?,?,?)}")){
             cs.setString(1,shop.getEmail());
             cs.setString(2,shop.getPassword());
