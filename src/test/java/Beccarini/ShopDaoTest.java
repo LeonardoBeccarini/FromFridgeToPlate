@@ -12,8 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Objects;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ShopDaoTest {
     @Test
@@ -24,6 +23,19 @@ public class ShopDaoTest {
         ShopDAO shopDAO = new ShopDAO();
         try {
             assertTrue( shopDAO.saveShop(shop));
+        } catch (DbException e) {
+            //don't care handling exceptions
+        }
+    }
+
+    @Test
+    public void saveAlreadyPresentShop(){
+        Shop shop = new Shop(
+                "quircio@gmail.com", "quircioreseller", "Pippi",
+                "Via pippo 23, RM", "12345678945", "3456798334");
+        ShopDAO shopDAO = new ShopDAO();
+        try {
+            assertFalse( shopDAO.saveShop(shop));
         } catch (DbException e) {
             //don't care handling exceptions
         }
