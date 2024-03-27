@@ -8,6 +8,7 @@ import com.example.fromfridgetoplate.logic.control.RiderHPController;
 
 import com.example.fromfridgetoplate.logic.exceptions.NotificationProcessingException;
 import com.example.fromfridgetoplate.patterns.state.RiderStateContext;
+import com.example.fromfridgetoplate.secondguicontrollers.Printer;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -25,6 +26,7 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.io.PrintStream;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -34,8 +36,6 @@ public class RiderHomePageGraphicController extends GenericGraphicController imp
     @FXML
     private AnchorPane root;
 
-    @FXML
-    private Button homeButton;
 
     @FXML
     private ImageView msgImage;
@@ -89,15 +89,15 @@ public class RiderHomePageGraphicController extends GenericGraphicController imp
 
         this.stateContext = new RiderStateContext(this);
 
-        SetOnlineStatus();
+        setOnlineStatus();
         goOnline(null);
 
-
+        super.initialize(location,resources);
     }
 
 
 
-    private void SetOnlineStatus() {
+    private void setOnlineStatus() {
         // quando andro online chiamero il notificationmanager per segnalare la mia entrata in servizio
         // in qualche modo il controller grafico di login dovrà passare in caso di successo di login, il rispettivo riderBean, a quest'altro
         // controller grafico.
@@ -125,13 +125,13 @@ public class RiderHomePageGraphicController extends GenericGraphicController imp
 
     @FXML
     void goOffline(ActionEvent event) {
-        System.out.println("goOffline");
+        Printer.print("goOffline");
         stateContext.goOffline();
     }
 
     @FXML
     void goOnline(ActionEvent event) {
-        System.out.println("goOnline");
+        Printer.print("goOnline");
         stateContext.goOnline();
     }
 

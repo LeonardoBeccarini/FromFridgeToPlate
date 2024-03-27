@@ -97,10 +97,6 @@ csrc/main/java/com/example/fromfridgetoplate/secondguicontrollers/NotificationPa
 `src/main/java/com/example/fromfridgetoplate/secondguicontrollers/PendingOrdersCLIController.java,0\c\0cb047de5190d68b54421f45b15313a8637fb9d8
 î
 dsrc/main/java/com/example/fromfridgetoplate/secondguicontrollers/RiderCurrentOrderCLIController.java,d\8\d8dc37e3bdfbd0cb1636dbdcd26ad1a297735e7b
-ñ
-fsrc/main/java/com/example/fromfridgetoplate/secondguicontrollers/RiderDeliveryReportCLIController.java,4\b\4be44872c7eb3adf30340ea95e3205db4f66e29c
-ê
-`src/main/java/com/example/fromfridgetoplate/secondguicontrollers/RiderHomePageCLIController.java,4\9\49efaaed769c98689ddd95226330d7a899ef2eff
 è
 _src/main/java/com/example/fromfridgetoplate/secondguicontrollers/RiderSelectionListenerCLI.java,c\f\cf5341d5ce3b8ec45b0c1c60486afd80fa37a90d
 }
@@ -155,7 +151,5 @@ Lsrc/main/java/com/example/fromfridgetoplate/logic/bean/FoodItemListBean.java,0
 Tsrc/main/java/com/example/fromfridgetoplate/logic/boundary/DummyPaymentBoundary.java,3\1\314133f9df2f97a008b776a26a7600dc2241adbf
 Ö
 Usrc/main/java/com/example/fromfridgetoplate/guicontrollers/CartGraphicController.java,f\4\f422c58511fa1acf42b7af6126b2674d867f1a5c
-z
-Jsrc/main/java/com/example/fromfridgetoplate/guicontrollers/EntryPoint.java,2\8\285c31c2bd914a746c79b281402eca7653f5b616
 7
 pom.xml,4\4\442292b8a7efeabbe4cc176709b833b1792140ec
