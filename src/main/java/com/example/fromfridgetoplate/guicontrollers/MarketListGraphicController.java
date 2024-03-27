@@ -75,7 +75,7 @@ public class MarketListGraphicController extends GenericGraphicController {
             try {
                 navigator.goToWithController("buyProductPage.fxml", buyProductGraphicController);
             } catch (IOException e) {
-                Alert alert = new Alert(Alert.AlertType.WARNING, e.getMessage());
+                Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
                 alert.showAndWait();
             }
 

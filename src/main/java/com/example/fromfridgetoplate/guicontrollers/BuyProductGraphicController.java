@@ -60,7 +60,7 @@ public class BuyProductGraphicController extends GenericGraphicController{
                 try {
                     navigator.goTo("marketListPage");
                 } catch (IOException ex) {
-                    Alert alert2 = new Alert(Alert.AlertType.ERROR, e.getMessage());
+                    Alert alert2 = new Alert(Alert.AlertType.WARNING, e.getMessage());
                     alert2.showAndWait();
                 }
             }
@@ -121,8 +121,7 @@ public class BuyProductGraphicController extends GenericGraphicController{
                try {
                    navigator.goToWithController("cartPage.fxml", new CartGraphicController(shopBean));
                } catch (IOException e) {
-                   Alert alert = new Alert(Alert.AlertType.WARNING, e.getMessage());
-                   e.printStackTrace();
+                   Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
                    alert.showAndWait();
                }
            }

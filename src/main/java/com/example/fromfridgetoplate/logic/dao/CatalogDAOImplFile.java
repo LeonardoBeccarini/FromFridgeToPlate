@@ -8,13 +8,16 @@ import java.util.Objects;
 
 public class CatalogDAOImplFile implements CatalogDAO{
     private static final String FILE_NAME = "catalog.txt";
+    private boolean outcome;
 
     public void addItem(String name, float price, String shopName) throws IOException {
         try( BufferedWriter fileWriter = new BufferedWriter(new FileWriter(FILE_NAME,true))){
             String catalogTxt = shopName + " " + name + " " + price;
             fileWriter.write(catalogTxt);
             fileWriter.newLine();
+            outcome = true;
         }catch (IOException e){
+            outcome = false;
             throw new IOException("errore IO");
         }
     }
@@ -34,5 +37,8 @@ public class CatalogDAOImplFile implements CatalogDAO{
             throw new IOException("errore IO");
         }
         return catalog;
+    }
+    public boolean getOutcome(){
+        return this.outcome;
     }
 }

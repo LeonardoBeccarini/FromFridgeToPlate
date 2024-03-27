@@ -1,4 +1,4 @@
-package Beccarini;
+package beccarini;
 
 import com.example.fromfridgetoplate.logic.dao.ShopDAO;
 import com.example.fromfridgetoplate.logic.dao.SingletonConnector;
