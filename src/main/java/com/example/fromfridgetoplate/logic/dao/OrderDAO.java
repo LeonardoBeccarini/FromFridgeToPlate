@@ -223,8 +223,9 @@ public class OrderDAO {
                 for(CartItem cartItem: cartItemList){
                     cs2.setString(2, cartItem.getName());
                     cs2.setDouble(3, cartItem.getQuantity());
-                cs2.executeQuery();
+                    cs2.addBatch();
             }
+                cs2.executeBatch();
         }
 
         }catch(SQLException e){

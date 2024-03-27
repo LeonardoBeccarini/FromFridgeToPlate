@@ -7,8 +7,6 @@ r
 Bsrc/main/java/com/example/fromfridgetoplate/logic/model/Rider.java,f\4\f4b46ef6961384dac46afbd88a70f0cb8e3ee7f8
 u
 Esrc/main/java/com/example/fromfridgetoplate/logic/bean/OrderBean.java,2\1\21fb4f6de11f9796af88629aa6d6712bb22fe318
-}
-Msrc/main/java/com/example/fromfridgetoplate/logic/dao/SingletonConnector.java,b\9\b97ce51f93cb3870a9a954eabe45ed6aa38b930c
 †
 Vsrc/main/java/com/example/fromfridgetoplate/logic/control/PendingOrdersController.java,6\9\6969e07a97a7a544805b8de61577509e9877e5ae
 |

@@ -13,7 +13,7 @@ import java.util.Properties;
 public class SingletonConnector {
 
     private final Connection connection;
-
+    private static SingletonConnector instance;
     private SingletonConnector() {
         try (InputStream is = new FileInputStream("src/main/resources/com/example/Properties/db_config.properties")) {
             Properties prop = new Properties();
@@ -29,12 +29,13 @@ public class SingletonConnector {
         }
     }
 
-    private static class SingletonHelper {
-        private static final SingletonConnector INSTANCE = new SingletonConnector();
-    }
+    public static synchronized SingletonConnector getInstance() {
 
-    public static SingletonConnector getInstance() {
-        return SingletonHelper.INSTANCE;
+       if(instance == null){
+           instance = new SingletonConnector();
+           return instance;
+       }
+       return instance;
     }
 
     public Connection getConnection() {
