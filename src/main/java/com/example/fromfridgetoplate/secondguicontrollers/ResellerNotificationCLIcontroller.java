@@ -2,6 +2,7 @@ package com.example.fromfridgetoplate.secondguicontrollers;
 
 import com.example.fromfridgetoplate.logic.bean.NotificationBean;
 import com.example.fromfridgetoplate.logic.dao.NotificationDAO;
+import com.example.fromfridgetoplate.logic.dao.SingletonConnector;
 import com.example.fromfridgetoplate.patterns.factory.DAOFactory;
 
 import java.io.IOException;
@@ -18,8 +19,8 @@ public class ResellerNotificationCLIcontroller {
         Scanner scanner = new Scanner(System.in);
         NavigatorCLI navigatorCLI = NavigatorCLI.getInstance();
 
-        DAOFactory daoFactory = new DAOFactory();
-        NotificationDAO notificationDAO = daoFactory.getNotificationDAO();
+
+        NotificationDAO notificationDAO = new NotificationDAO(SingletonConnector.getInstance().getConnection());
         printList();
         for(NotificationBean notificationBean: notificationBeanList){
             notificationDAO.markNotificationAsRead(notificationBean.getNotificationId());

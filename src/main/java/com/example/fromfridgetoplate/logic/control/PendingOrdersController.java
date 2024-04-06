@@ -1,13 +1,16 @@
 package com.example.fromfridgetoplate.logic.control;
 
 import com.example.fromfridgetoplate.logic.bean.*;
-import com.example.fromfridgetoplate.logic.dao.OrderDAO;
-import com.example.fromfridgetoplate.logic.dao.RiderDAO;
+import com.example.fromfridgetoplate.logic.dao.DbResellerDAO;
+import com.example.fromfridgetoplate.logic.dao.ResellerDAO;
 import com.example.fromfridgetoplate.logic.model.Order;
 import com.example.fromfridgetoplate.logic.model.OrderList;
 import com.example.fromfridgetoplate.logic.model.Rider;
 import com.example.fromfridgetoplate.logic.model.Session;
+import com.example.fromfridgetoplate.patterns.abstractFactory.DAOAbsFactory;
 import com.example.fromfridgetoplate.patterns.factory.DAOFactory;
+import com.example.fromfridgetoplate.patterns.factory.DbDAOFactory;
+import com.example.fromfridgetoplate.patterns.factory.FileDAOFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,10 +21,14 @@ public class PendingOrdersController {
     // Metodo per ottenere un OrderListBean con gli ordini pendenti
     public OrderListBean getPendingOrderListBean() {
         // Chiamata al DAO per ottenere la lista di ordini pendenti
-        DAOFactory daoFactory = new DAOFactory();
 
-        OrderDAO orderDao = daoFactory.getOrderDAO();
-        OrderList orderList = orderDao.getPendingOrders();
+        //DAOFactory daoFactory = new DAOFactory();
+        //DAOAbsFactory absFactory = new DbDAOFactory(); // basta cambiare new DbDAOFactory(); con new FileDAOFactory per avere la versione basata su file, e lasciare tutto il resto del codice uguale
+        DAOAbsFactory absFactory = new FileDAOFactory();
+
+        //DbResellerDAO resellerDao = daoFactory.getResellerDAO();
+        ResellerDAO resellerDao = absFactory.createResellerDAO();
+        OrderList orderList = resellerDao.getPendingOrders();
 
         OrderListBean orderListBean = new OrderListBean();
 
@@ -45,9 +52,12 @@ public class PendingOrdersController {
     }
 
     public OrderListBean getAssignedOrdersBean() {
-        OrderDAO orderDAO = new DAOFactory().getOrderDAO();
+
+        //DbResellerDAO resellerDAO = new DAOFactory().getResellerDAO();
+        DAOAbsFactory daoAbsFactory = new FileDAOFactory();
+        ResellerDAO resellerDAO = daoAbsFactory.createResellerDAO();
         String resellerEmail = Session.getSession().getUser().getEmail();
-        OrderList assignedOrders = orderDAO.getAssignedOrders(resellerEmail);
+        OrderList assignedOrders = resellerDAO.getAssignedOrders(resellerEmail);
 
         OrderListBean orderListBean = new OrderListBean();
         for (Order order : assignedOrders.getOrders()) {
@@ -83,18 +93,14 @@ public class PendingOrdersController {
      * dei dati tra la logica di business e la parte grafica (Bean OrderBean).
      **/
 
-    public void updateOrderStatus (OrderBean orderBean){
-        DAOFactory daoFactory = new DAOFactory();
-        OrderDAO orderDao = daoFactory.getOrderDAO();
-        orderDao.updateAvailability(orderBean);
-    }
 
     public List<RiderBean> getAvalaibleRiders(SearchBean searchBean) {
 
         // Chiamata al DAO per ottenere la lista di ordini pendenti
-        DAOFactory daoFactory = new DAOFactory();
-        RiderDAO riderDao = daoFactory.getRiderDAO();
-        List<Rider> availableRiders = riderDao.getAvailableRiders(searchBean);
+        //DAOFactory daoFactory = new DAOFactory();
+        DAOAbsFactory daoAbsFactory = new FileDAOFactory();
+        ResellerDAO resellerDAO = daoAbsFactory.createResellerDAO();
+        List<Rider> availableRiders = resellerDAO.getAvailableRiders(searchBean);
         List<RiderBean> avRidersBean = new ArrayList<>();
         // bisogna convertire  List <Rider> in List <RiderBean>
         for (Rider rider : availableRiders) {

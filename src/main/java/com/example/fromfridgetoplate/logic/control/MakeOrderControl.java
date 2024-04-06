@@ -5,8 +5,10 @@ import com.example.fromfridgetoplate.logic.boundary.DummyPaymentBoundary;
 import com.example.fromfridgetoplate.logic.dao.*;
 import com.example.fromfridgetoplate.logic.exceptions.*;
 import com.example.fromfridgetoplate.logic.model.*;
+import com.example.fromfridgetoplate.patterns.abstractFactory.DAOAbsFactory;
 import com.example.fromfridgetoplate.patterns.factory.CatalogDAOFactory;
 import com.example.fromfridgetoplate.patterns.factory.DAOFactory;
+import com.example.fromfridgetoplate.patterns.factory.FileDAOFactory;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -45,7 +47,9 @@ public class MakeOrderControl {
 
     public List<ShopBean> loadShop(SearchInfoBean searchInfoBean) throws DbException {
         List<ShopBean> listShopBean = new ArrayList<>();
-        ShopDAO shopDAO = new ShopDAO();
+        //DbShopDAO shopDAO = new DbShopDAO();
+        DAOAbsFactory daoAbsFactory = new FileDAOFactory();
+        ShopDAO shopDAO = daoAbsFactory.createShopDAO();
         for(Shop shop: shopDAO.retrieveShopByName(searchInfoBean.getName())){
             ShopBean shopBean = new ShopBean(shop.getName(), shop.getAddress(), shop.getPhoneNumber(), shop.getVATnumber());
             listShopBean.add(shopBean);
@@ -117,9 +121,10 @@ public class MakeOrderControl {
 
     // metodo per salvare l'ordine sul db e notificare lo shop owner, e per chiamare l'API del pagamento?
     public void completeOrder(OrderBean orderBean) throws DbException, PaymentFailedException {
-        DAOFactory daoFactory = new DAOFactory();
-        OrderDAO orderDAO = daoFactory.getOrderDAO();
-        NotificationDAO notificationDAO = daoFactory.getNotificationDAO();
+
+        DAOAbsFactory daoAbsFactory = new FileDAOFactory();
+        ResellerDAO resellerDAO = daoAbsFactory.createResellerDAO();
+        NotificationDAO notificationDAO = new NotificationDAO(SingletonConnector.getInstance().getConnection());
         CouponDAO couponDAO = new CouponDAO();
 
         // elimino i coupon usati che stanno nella couponList del couponApplier
@@ -136,7 +141,7 @@ public class MakeOrderControl {
         if(dummyPaymentBoundary.pay(totalPriceBean)){
             Order newOrder = new Order(orderBean.getShopId(), customerId, addressBean.getShippingStreet(), addressBean.getShippingStreetNumber(),  addressBean.getShippingCity(), addressBean.getShippingProvince() );
             newOrder.setItems(cart.getItemList());
-            Order savedOrder = orderDAO.saveOrder(newOrder);
+            Order savedOrder = resellerDAO.saveOrder(newOrder);
             notificationDAO.insertNotificationRes(savedOrder, "nuovo ordine ricevuto!");
         }
         else{
@@ -144,13 +149,15 @@ public class MakeOrderControl {
         }
 
 
-
     }
-    public List<NotificationBean> loadNotification() throws DbException {
-        DAOFactory daoFactory = new DAOFactory();
-        NotificationDAO notificationDAO = daoFactory.getNotificationDAO();
 
-        ShopDAO shopDAO = new ShopDAO();
+    public List<NotificationBean> loadNotification() throws DbException {
+
+        NotificationDAO notificationDAO = new NotificationDAO(SingletonConnector.getInstance().getConnection());
+
+        DAOAbsFactory daoAbsFactory = new FileDAOFactory();
+        ShopDAO shopDAO = daoAbsFactory.createShopDAO();
+        //DbShopDAO shopDAO = new DbShopDAO();
         Shop shop = shopDAO.retrieveShopByEmail(Session.getSession().getUser().getEmail());
 
         List<Notification> notificationList = notificationDAO.getNotificationsForOwner(shop.getVATnumber());

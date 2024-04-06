@@ -5,13 +5,15 @@ import com.example.fromfridgetoplate.logic.bean.RegistrationBean;
 
 import com.example.fromfridgetoplate.logic.dao.ClientDAO;
 import com.example.fromfridgetoplate.logic.dao.RiderDAO;
+import com.example.fromfridgetoplate.logic.dao.DbShopDAO;
 import com.example.fromfridgetoplate.logic.dao.ShopDAO;
 import com.example.fromfridgetoplate.logic.exceptions.DbException;
 import com.example.fromfridgetoplate.logic.model.Client;
 import com.example.fromfridgetoplate.logic.model.Rider;
 import com.example.fromfridgetoplate.logic.model.Role;
 import com.example.fromfridgetoplate.logic.model.Shop;
-import com.example.fromfridgetoplate.patterns.factory.DAOFactory;
+import com.example.fromfridgetoplate.patterns.abstractFactory.DAOAbsFactory;
+import com.example.fromfridgetoplate.patterns.factory.FileDAOFactory;
 import com.example.fromfridgetoplate.patterns.factory.UserFactory;
 
 
@@ -20,10 +22,14 @@ public class RegisterController {
 
         UserFactory userFactory = new UserFactory();
         Role role = registrationBean.getRole();
+        DAOAbsFactory daoAbsFactory = new FileDAOFactory();
+
         if(role == Role.OWNER){
-            ShopDAO shopDAO = new ShopDAO();
+            //DbShopDAO shopDAO = new DbShopDAO();
             Shop newShop = (Shop) userFactory.createUser(registrationBean);
+            ShopDAO shopDAO = daoAbsFactory.createShopDAO();
             return shopDAO.saveShop(newShop);
+
 
         }
         else if(role == Role.CLIENT){
@@ -36,12 +42,20 @@ public class RegisterController {
         return false;
     }
 
+
     public boolean registerRider(RegistrationBean registrationBean) {
         UserFactory userFactory = new UserFactory();
-        RiderDAO riderDAO = new DAOFactory().getRiderDAO();
+        //DbRiderDAO riderDAO = new DAOFactory().getRiderDAO();
         Rider newRider = (Rider) userFactory.createUser(registrationBean); // casto il padre
 
-        return riderDAO.registerRider(newRider.getName(), newRider.getSurname(), newRider.getEmail(), newRider.getPassword(), newRider.getAssignedCity());
+        DAOAbsFactory daoAbsFactory = new FileDAOFactory(); // cambiare qui per lo switch
+        RiderDAO riderDAO = daoAbsFactory.createRiderDAO();
+
+        System.out.println("register rider ok");
+        return riderDAO.registerRider(newRider);
+
     }
+
+
 
 }

@@ -1,10 +1,12 @@
 package com.example.fromfridgetoplate.logic.model;
 
-public class Shop extends User {
+import java.io.Serializable;
+
+public class Shop extends User implements Serializable {
     private String name;
 
     private String address;
-    private String vatNumber;
+    private String vatNumber; // corrisponde a shopid su db
     private String phoneNumber;
 
     public Shop() {

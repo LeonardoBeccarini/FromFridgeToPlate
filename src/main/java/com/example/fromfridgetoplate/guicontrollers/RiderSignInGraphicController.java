@@ -44,11 +44,14 @@ public class RiderSignInGraphicController implements Initializable {
                 registrationBean = new RegistrationBean(emailText.getText(), passwordText.getText(),nameText.getText(),surnameText.getText(), Role.RIDER, cityText.getText());
                 RegisterController registerController = new RegisterController();
                 if(registerController.registerRider(registrationBean)){
-                    try {
-                        navigator.goTo("loginPage.fxml");
-                    }catch (IOException e){
-                        e.printStackTrace();
-                    }
+                    Alert alert = new Alert(Alert.AlertType.WARNING, "Sei già registrato!");
+
+                }
+
+                try {
+                    navigator.goTo("loginPage.fxml");
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
                 }
             }
         });

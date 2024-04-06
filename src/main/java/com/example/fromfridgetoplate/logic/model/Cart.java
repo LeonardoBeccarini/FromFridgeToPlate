@@ -2,11 +2,12 @@ package com.example.fromfridgetoplate.logic.model;
 
 import com.example.fromfridgetoplate.patterns.decorator.Discountable;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Cart implements Discountable {
+public class Cart implements Discountable, Serializable {
 
     private final List<CartItem> itemList;
 

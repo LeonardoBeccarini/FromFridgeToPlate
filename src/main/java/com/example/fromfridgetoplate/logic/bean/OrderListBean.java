@@ -1,10 +1,6 @@
 package com.example.fromfridgetoplate.logic.bean;
 
 import com.example.fromfridgetoplate.logic.control.PendingOrdersController;
-import com.example.fromfridgetoplate.logic.dao.OrderDAO;
-import com.example.fromfridgetoplate.logic.model.OrderList;
-import com.example.fromfridgetoplate.patterns.factory.DAOFactory;
-import javafx.application.Platform;
 
 import java.util.ArrayList;
 import java.util.List;

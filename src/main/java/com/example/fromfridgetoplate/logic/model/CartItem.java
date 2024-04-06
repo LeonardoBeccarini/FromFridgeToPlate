@@ -1,6 +1,10 @@
+
+
 package com.example.fromfridgetoplate.logic.model;
 
-public class CartItem {
+import java.io.Serializable;
+
+public class CartItem implements Serializable {
     private String name;
     private float price;
     private double quantity;

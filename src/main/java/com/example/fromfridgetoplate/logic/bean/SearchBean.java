@@ -15,6 +15,11 @@ public class SearchBean {
         this.selectedOrderBean = selectedOrderBean;
     }
 
+    public SearchBean(String città, OrderBean ordBean) {
+        this.shippingCity = città;
+        this.selectedOrderBean = ordBean;
+    }
+
     public String getCity() {
         return shippingCity;
     }

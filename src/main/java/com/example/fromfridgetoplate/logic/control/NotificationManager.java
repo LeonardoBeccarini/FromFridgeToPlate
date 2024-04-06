@@ -1,19 +1,20 @@
 package com.example.fromfridgetoplate.logic.control;
 
 import com.example.fromfridgetoplate.logic.bean.OrderBean;
+import com.example.fromfridgetoplate.logic.dao.*;
 import com.example.fromfridgetoplate.logic.model.Order;
 import com.example.fromfridgetoplate.logic.bean.RiderBean;
-import com.example.fromfridgetoplate.logic.dao.NotificationDAO;
-import com.example.fromfridgetoplate.logic.dao.OrderDAO;
-import com.example.fromfridgetoplate.logic.dao.RiderDAO;
+import com.example.fromfridgetoplate.patterns.abstractFactory.DAOAbsFactory;
 import com.example.fromfridgetoplate.patterns.factory.DAOFactory;
+import com.example.fromfridgetoplate.patterns.factory.FileDAOFactory;
 
 public class NotificationManager {
 
     public void registerRiderAvailability(RiderBean riderBn) {
 
-        DAOFactory daoFactory = new DAOFactory();
-        RiderDAO riderDAO = daoFactory.getRiderDAO();
+        //DAOFactory daoFactory = new DAOFactory();
+        DAOAbsFactory daoAbsFactory = new FileDAOFactory();
+        RiderDAO riderDAO = daoAbsFactory.createRiderDAO();
 
         riderDAO.setRiderAvailable(riderBn);
 
@@ -23,12 +24,15 @@ public class NotificationManager {
         // da solo le notifiche dalla tabella nel databse, dall'istanza di applicazione del rivenditore, non c'è modo di
         // contattare il rider in un'altra istanza di applicazione
 
-        DAOFactory daoFactory = new DAOFactory();
-        RiderDAO riderDAO = daoFactory.getRiderDAO();
-        NotificationDAO ntfDAO = daoFactory.getNotificationDAO();
+        NotificationDAO ntfDAO = new NotificationDAO(SingletonConnector.getInstance().getConnection());
+        //DbResellerDAO resellerDAO = daoFactory.getResellerDAO();
+        DAOAbsFactory daoAbsFactory = new FileDAOFactory(); // qui avviene lo switch, il resto del codice rimane uguale
+        ResellerDAO resellerDAO = daoAbsFactory.createResellerDAO();
 
-        boolean isAvailable = riderDAO.isRiderAvailable(riderBean);
+        System.out.println("check notify rider");
+        boolean isAvailable = resellerDAO.isRiderAvailable(riderBean);
         if (isAvailable) {
+            System.out.println("rider available");
             // Crea una notifica nel database per il rider
             Order order = new Order(orderBean.getOrderId(), orderBean.getCustomerId(), orderBean.getShopId(), orderBean.getStatus(), orderBean.getOrderTime(), orderBean.getRiderId());
             order.setShippingCity(orderBean.getShippingAddress().getShippingCity());
@@ -39,10 +43,10 @@ public class NotificationManager {
             ntfDAO.insertNotification(riderBean.getId(), order, "Nuovo ordine assegnato");
 
         }
+        System.out.println("available ?" + isAvailable);
 
-        OrderDAO orderDAO = daoFactory.getOrderDAO();
-        orderDAO.assignRiderToOrder(orderBean.getOrderId(), riderBean.getId());
-        orderDAO.setAssignation(orderBean.getOrderId());
+        resellerDAO.assignRiderToOrder(orderBean.getOrderId(), riderBean.getId());
+        resellerDAO.setAssignation(orderBean.getOrderId());
 
     }
 

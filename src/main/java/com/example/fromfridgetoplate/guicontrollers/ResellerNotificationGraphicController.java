@@ -31,6 +31,7 @@ public class ResellerNotificationGraphicController extends GenericGraphicControl
 
     }
 
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         DAOFactory daoFactory = new DAOFactory();

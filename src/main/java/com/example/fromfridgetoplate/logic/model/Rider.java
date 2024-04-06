@@ -1,9 +1,9 @@
 package com.example.fromfridgetoplate.logic.model;
 
 
+import java.io.Serializable;
 
-
-public class Rider extends User{
+public class Rider extends User implements Serializable {
 
     int id;
     private String name;

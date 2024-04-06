@@ -1,15 +1,17 @@
 package com.example.fromfridgetoplate.logic.control;
 
 import com.example.fromfridgetoplate.logic.bean.*;
-import com.example.fromfridgetoplate.logic.dao.NotificationDAO;
-import com.example.fromfridgetoplate.logic.dao.RiderDAO;
+import com.example.fromfridgetoplate.logic.dao.*;
 import com.example.fromfridgetoplate.logic.exceptions.*;
 import com.example.fromfridgetoplate.logic.model.Notification;
 import com.example.fromfridgetoplate.logic.model.Order;
 import com.example.fromfridgetoplate.logic.model.OrderList;
+import com.example.fromfridgetoplate.patterns.abstractFactory.DAOAbsFactory;
 import com.example.fromfridgetoplate.patterns.factory.DAOFactory;
+import com.example.fromfridgetoplate.patterns.factory.FileDAOFactory;
 
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -83,8 +85,7 @@ public class RiderHPController {
         }
 
         private void pollForNotifications() {
-            DAOFactory daoFactory = new DAOFactory();
-            NotificationDAO ntfDAO = daoFactory.getNotificationDAO();
+            NotificationDAO ntfDAO = new NotificationDAO(SingletonConnector.getInstance().getConnection());
             List<Notification> newNotifications = ntfDAO.getNotificationsForRider(riderBean.getId(), lastNotificationId);
 
 
@@ -127,8 +128,8 @@ public class RiderHPController {
 
         //this.stopNotificationPolling(); // interrompo momentaneamente il polling del db
 
-        DAOFactory daoFactory = new DAOFactory();
-        NotificationDAO ntfDAO = daoFactory.getNotificationDAO();
+
+        NotificationDAO ntfDAO = new NotificationDAO(SingletonConnector.getInstance().getConnection());
         for (NotificationBean notificationBn : nlb.getNotifications()) {
             ntfDAO.markNotificationAsRead(notificationBn.getNotificationId()); // marca le notifiche come lette , aggiornando il model e il db
             // Aggiorna la lista deliveredNotification
@@ -150,8 +151,7 @@ public class RiderHPController {
             throw new IllegalArgumentException("La notifica da marcare come letta non può essere null.");
         }
 
-        DAOFactory daoFactory = new DAOFactory();
-        NotificationDAO ntfDAO = daoFactory.getNotificationDAO();
+        NotificationDAO ntfDAO = new NotificationDAO(SingletonConnector.getInstance().getConnection());
 
         // Marca la notifica specifica come letta, aggiornando il modello e il database
         ntfDAO.markNotificationAsRead(notificationToMark.getNotificationId());
@@ -179,23 +179,27 @@ public class RiderHPController {
 
     public void acceptOrder(NotificationBean notification) {
 
-
-        RiderDAO riderDAO = new DAOFactory().getRiderDAO();
-        riderDAO.acceptOrder(notification.getOrderId(), notification.getRiderId());
+        DAOAbsFactory daoAbsFactory = new FileDAOFactory();
+        OrderDAO orderDAO = daoAbsFactory.createOrderDAO();
+        //DbOrderDAO orderDAO = new DAOFactory().getOrderDAO();
+        orderDAO.acceptOrder(notification.getOrderId(), notification.getRiderId());
     }
 
-    public void declineOrder(NotificationBean notification) {
-
-        RiderDAO riderDAO = new DAOFactory().getRiderDAO();
-        riderDAO.declineOrder(notification.getOrderId(), notification.getRiderId());
+    public void declineOrder(NotificationBean notification) throws IOException {
+        DAOAbsFactory daoAbsFactory = new FileDAOFactory();
+        OrderDAO orderDAO = daoAbsFactory.createOrderDAO();
+        //DbOrderDAO orderDAO = new DAOFactory().getOrderDAO();
+        orderDAO.declineOrder(notification.getOrderId(), notification.getRiderId());
     }
 
     public OrderListBean getConfirmedDeliveries(RiderBean riderInfo) throws RiderGcException {
 
         OrderListBean orderListBean = new OrderListBean();
         try {
-            RiderDAO riderDAO = new DAOFactory().getRiderDAO();
-            OrderList confirmedOrders = riderDAO.getConfirmedDeliveriesForRider(riderInfo.getId());
+            //DbOrderDAO orderDAO = new DAOFactory().getOrderDAO();
+            DAOAbsFactory daoAbsFactory = new FileDAOFactory();
+            OrderDAO orderDAO = daoAbsFactory.createOrderDAO();
+            OrderList confirmedOrders = orderDAO.getConfirmedDeliveriesForRider(riderInfo.getId());
 
 
             // creiamo una nuova lista vuota per gli OrderBean
@@ -228,8 +232,10 @@ public class RiderHPController {
 
     public RiderBean getRiderDetailsFromSession() {
 
-        DAOFactory daoFactory = new DAOFactory();
-        RiderDAO riderDAO = daoFactory.getRiderDAO();
+        //DAOFactory daoFactory = new DAOFactory();
+        DAOAbsFactory daoAbsFactory = new FileDAOFactory();
+        RiderDAO riderDAO = daoAbsFactory.createRiderDAO();
+        //DbRiderDAO riderDAO = daoFactory.getRiderDAO();
         return riderDAO.getRiderDetailsFromSession();
     }
 
@@ -237,15 +243,19 @@ public class RiderHPController {
 
         int riderId = currentRider.getId();
 
-        RiderDAO riderDAO = new DAOFactory().getRiderDAO();
-        return riderDAO.checkForOrderInDelivery(riderId);
+        //DbOrderDAO orderDAO = new DAOFactory().getOrderDAO();
+        DAOAbsFactory daoAbsFactory = new FileDAOFactory();
+        OrderDAO orderDAO = daoAbsFactory.createOrderDAO();
+        return orderDAO.checkForOrderInDelivery(riderId);
     }
 
 
     public OrderBean getInDeliveryOrderForRider(RiderBean riderInfo) throws RiderGcException {
         try {
-            RiderDAO riderDAO = new DAOFactory().getRiderDAO();
-            Order order = riderDAO.getInDeliveryOrderForRider(riderInfo.getId());
+            //DbOrderDAO orderDAO = new DAOFactory().getOrderDAO();
+            DAOAbsFactory daoAbsFactory = new FileDAOFactory();
+            OrderDAO orderDAO = daoAbsFactory.createOrderDAO();
+            Order order = orderDAO.getInDeliveryOrderForRider(riderInfo.getId());
             return convertToOrderBean(order);
         } catch (OrderNotFoundException e) {
             throw new RiderGcException("Errore durante il recupero dell'ordine 'in consegna' per il rider con ID: " + riderInfo.getId(), e);
@@ -276,8 +286,10 @@ public class RiderHPController {
     public void confirmDelivery(OrderBean orderBean) {
         if (orderBean != null) {
             LocalDateTime deliveryTime = LocalDateTime.now(); // Orario corrente
-            RiderDAO riderDAO = new DAOFactory().getRiderDAO();
-            riderDAO.updateOrderStatusToDelivered(orderBean.getOrderId(), deliveryTime);
+            //DbOrderDAO orderDAO = new DAOFactory().getOrderDAO();
+            DAOAbsFactory daoAbsFactory = new FileDAOFactory();
+            OrderDAO orderDAO = daoAbsFactory.createOrderDAO();
+            orderDAO.updateOrderStatusToDelivered(orderBean.getOrderId(), deliveryTime);
         }
     }
 
