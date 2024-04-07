@@ -2,6 +2,7 @@ package com.example.fromfridgetoplate.guicontrollers;
 
 import com.example.fromfridgetoplate.logic.bean.RegistrationBean;
 import com.example.fromfridgetoplate.logic.control.RegisterController;
+import com.example.fromfridgetoplate.logic.exceptions.DbException;
 import com.example.fromfridgetoplate.logic.model.Role;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -32,8 +33,7 @@ public class RiderSignInGraphicController implements Initializable {
     Navigator navigator = Navigator.getInstance(null);
 
     @Override
-    public void initialize(URL location,
-                           ResourceBundle resources) {
+    public void initialize(URL location, ResourceBundle resources) {
         signInButton.setOnMouseClicked(event -> {
             RegistrationBean registrationBean;
             if (emailText.getText().isEmpty() || passwordText.getText().isEmpty() || nameText.getText().isEmpty() || surnameText.getText().isEmpty() || cityText.getText().isEmpty()) {
@@ -43,15 +43,13 @@ public class RiderSignInGraphicController implements Initializable {
             else{
                 registrationBean = new RegistrationBean(emailText.getText(), passwordText.getText(),nameText.getText(),surnameText.getText(), Role.RIDER, cityText.getText());
                 RegisterController registerController = new RegisterController();
-                if(registerController.registerRider(registrationBean)){
-                    Alert alert = new Alert(Alert.AlertType.WARNING, "Sei già registrato!");
-
-                }
-
                 try {
-                    navigator.goTo("loginPage.fxml");
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
+                    if(registerController.register(registrationBean)){
+                        navigator.goTo("loginPage.fxml");
+                    }
+                } catch (DbException | IOException e) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
+                    alert.showAndWait();
                 }
             }
         });

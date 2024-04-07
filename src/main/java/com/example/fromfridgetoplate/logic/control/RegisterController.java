@@ -13,6 +13,7 @@ import com.example.fromfridgetoplate.logic.model.Rider;
 import com.example.fromfridgetoplate.logic.model.Role;
 import com.example.fromfridgetoplate.logic.model.Shop;
 import com.example.fromfridgetoplate.patterns.abstractFactory.DAOAbsFactory;
+import com.example.fromfridgetoplate.patterns.abstractFactory.DAOFactoryProvider;
 import com.example.fromfridgetoplate.patterns.factory.FileDAOFactory;
 import com.example.fromfridgetoplate.patterns.factory.UserFactory;
 
@@ -22,7 +23,7 @@ public class RegisterController {
 
         UserFactory userFactory = new UserFactory();
         Role role = registrationBean.getRole();
-        DAOAbsFactory daoAbsFactory = new FileDAOFactory();
+        DAOAbsFactory daoAbsFactory = DAOFactoryProvider.getInstance().getDaoFactory();
 
         if(role == Role.OWNER){
             //DbShopDAO shopDAO = new DbShopDAO();
@@ -39,22 +40,18 @@ public class RegisterController {
 
         }
 
+        else if(role == Role.RIDER){
+            Rider newRider = (Rider) userFactory.createUser(registrationBean); // casto il padre
+            RiderDAO riderDAO = daoAbsFactory.createRiderDAO();
+            return riderDAO.registerRider(newRider);
+
+        }
+
         return false;
     }
 
 
-    public boolean registerRider(RegistrationBean registrationBean) {
-        UserFactory userFactory = new UserFactory();
-        //DbRiderDAO riderDAO = new DAOFactory().getRiderDAO();
-        Rider newRider = (Rider) userFactory.createUser(registrationBean); // casto il padre
 
-        DAOAbsFactory daoAbsFactory = new FileDAOFactory(); // cambiare qui per lo switch
-        RiderDAO riderDAO = daoAbsFactory.createRiderDAO();
-
-        System.out.println("register rider ok");
-        return riderDAO.registerRider(newRider);
-
-    }
 
 
 

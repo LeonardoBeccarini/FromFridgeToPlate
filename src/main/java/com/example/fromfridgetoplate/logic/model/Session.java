@@ -3,6 +3,7 @@ package com.example.fromfridgetoplate.logic.model;
 import com.example.fromfridgetoplate.logic.bean.UserBean;
 
 public class Session {
+
     private final User user;
     private static Session session = null;
     private Cart cart;

@@ -4,10 +4,7 @@ import com.example.fromfridgetoplate.logic.bean.OrderBean;
 import com.example.fromfridgetoplate.logic.bean.RiderBean;
 import com.example.fromfridgetoplate.logic.bean.SearchBean;
 import com.example.fromfridgetoplate.logic.exceptions.DbException;
-import com.example.fromfridgetoplate.logic.model.CartItem;
-import com.example.fromfridgetoplate.logic.model.Order;
-import com.example.fromfridgetoplate.logic.model.OrderList;
-import com.example.fromfridgetoplate.logic.model.Rider;
+import com.example.fromfridgetoplate.logic.model.*;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -23,14 +20,15 @@ public class DbResellerDAO implements ResellerDAO{
     }
 
 
-    public OrderList getPendingOrders() {
+    public OrderList getPendingOrders(String loggedEmail) {  // passo l'email del reseller attualmente loggato
         OrderList orderList = new OrderList();
         CallableStatement cstmt = null;
         ResultSet rs = null;
         int orderId;
 
         try {
-            cstmt = connection.prepareCall("{CALL GetPendingOrders()}");
+            cstmt = connection.prepareCall("{CALL GetPendingOrders(?)}");
+            cstmt.setString(1, loggedEmail);
             rs = cstmt.executeQuery();
 
             while (rs.next()) {

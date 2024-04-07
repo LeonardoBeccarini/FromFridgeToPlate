@@ -8,6 +8,7 @@ import com.example.fromfridgetoplate.logic.model.OrderList;
 import com.example.fromfridgetoplate.logic.model.Rider;
 import com.example.fromfridgetoplate.logic.model.Session;
 import com.example.fromfridgetoplate.patterns.abstractFactory.DAOAbsFactory;
+import com.example.fromfridgetoplate.patterns.abstractFactory.DAOFactoryProvider;
 import com.example.fromfridgetoplate.patterns.factory.DAOFactory;
 import com.example.fromfridgetoplate.patterns.factory.DbDAOFactory;
 import com.example.fromfridgetoplate.patterns.factory.FileDAOFactory;
@@ -22,29 +23,24 @@ public class PendingOrdersController {
     public OrderListBean getPendingOrderListBean() {
         // Chiamata al DAO per ottenere la lista di ordini pendenti
 
-        //DAOFactory daoFactory = new DAOFactory();
-        //DAOAbsFactory absFactory = new DbDAOFactory(); // basta cambiare new DbDAOFactory(); con new FileDAOFactory per avere la versione basata su file, e lasciare tutto il resto del codice uguale
-        DAOAbsFactory absFactory = new FileDAOFactory();
+        DAOAbsFactory absFactory = DAOFactoryProvider.getInstance().getDaoFactory();
 
-        //DbResellerDAO resellerDao = daoFactory.getResellerDAO();
         ResellerDAO resellerDao = absFactory.createResellerDAO();
-        OrderList orderList = resellerDao.getPendingOrders();
-
+        String loggedEmail = Session.getSession().getUser().getEmail();
+        OrderList orderList = resellerDao.getPendingOrders(loggedEmail);
         OrderListBean orderListBean = new OrderListBean();
 
         // Creazione di una nuova lista vuota per gli OrderBean
         List<OrderBean> orderBeans = new ArrayList<>();
-
         // Ottieniamo la lista degli ordini dall'OrderList
         List<Order> orders = orderList.getOrders();
-
 
         for (Order order : orders) {
             OrderBean orderBean = convertToOrderBean(order);
             orderBeans.add(orderBean);
         }
 
-        // setta la lista di OrderBean nel OrderListBean
+        // setta la lista di OrderBean nell' OrderListBean
         orderListBean.setOrderBeans(orderBeans);
 
 
@@ -54,7 +50,7 @@ public class PendingOrdersController {
     public OrderListBean getAssignedOrdersBean() {
 
         //DbResellerDAO resellerDAO = new DAOFactory().getResellerDAO();
-        DAOAbsFactory daoAbsFactory = new FileDAOFactory();
+        DAOAbsFactory daoAbsFactory = DAOFactoryProvider.getInstance().getDaoFactory();
         ResellerDAO resellerDAO = daoAbsFactory.createResellerDAO();
         String resellerEmail = Session.getSession().getUser().getEmail();
         OrderList assignedOrders = resellerDAO.getAssignedOrders(resellerEmail);
@@ -98,7 +94,7 @@ public class PendingOrdersController {
 
         // Chiamata al DAO per ottenere la lista di ordini pendenti
         //DAOFactory daoFactory = new DAOFactory();
-        DAOAbsFactory daoAbsFactory = new FileDAOFactory();
+        DAOAbsFactory daoAbsFactory = DAOFactoryProvider.getInstance().getDaoFactory();
         ResellerDAO resellerDAO = daoAbsFactory.createResellerDAO();
         List<Rider> availableRiders = resellerDAO.getAvailableRiders(searchBean);
         List<RiderBean> avRidersBean = new ArrayList<>();

@@ -1,7 +1,6 @@
 package com.example.fromfridgetoplate.logic.dao;
 
 
-
 import com.example.fromfridgetoplate.logic.exceptions.DbException;
 import com.example.fromfridgetoplate.logic.model.Role;
 import com.example.fromfridgetoplate.logic.model.Shop;
@@ -81,7 +80,7 @@ public class FileShopDAO extends FileDAOBase implements ShopDAO {
         }
     }
 
-    // Helper method to write shops to file
+
     private void writeShopsToFile(List<Shop> shops) throws DbException {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(shopsFilePath))) {
             oos.writeObject(shops);
@@ -96,7 +95,7 @@ public class FileShopDAO extends FileDAOBase implements ShopDAO {
         FileShopDAO dao = new FileShopDAO();
 
         // Crea un nuovo negozio di esempio
-        Shop newShop = new Shop("quircio@gmail.com", "qr", "quircioresellero", "Via dei pantani", "VAT123456789", "1234567890");
+        Shop newShop = new Shop("quircio5@gmail.com", "qr", "quircioresellero", "Via dei pantani", "VAT123456781", "1234567890");
 
         boolean registrationResult = false;
         try {
@@ -115,7 +114,7 @@ public class FileShopDAO extends FileDAOBase implements ShopDAO {
         System.out.println("\nElenco dei negozi registrati:");
         try {
             for (Shop shop : dao.readShopsFromFile()) {
-                System.out.println("Email: " + shop.getEmail() + ", Nome: " + shop.getName());
+                System.out.println("Email: " + shop.getEmail() + ", Nome: " + shop.getName() + " vat: " + shop.getVATnumber());
             }
         } catch (DbException e) {
             e.printStackTrace();

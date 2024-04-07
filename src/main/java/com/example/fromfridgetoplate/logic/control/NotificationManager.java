@@ -5,6 +5,7 @@ import com.example.fromfridgetoplate.logic.dao.*;
 import com.example.fromfridgetoplate.logic.model.Order;
 import com.example.fromfridgetoplate.logic.bean.RiderBean;
 import com.example.fromfridgetoplate.patterns.abstractFactory.DAOAbsFactory;
+import com.example.fromfridgetoplate.patterns.abstractFactory.DAOFactoryProvider;
 import com.example.fromfridgetoplate.patterns.factory.DAOFactory;
 import com.example.fromfridgetoplate.patterns.factory.FileDAOFactory;
 
@@ -13,7 +14,7 @@ public class NotificationManager {
     public void registerRiderAvailability(RiderBean riderBn) {
 
         //DAOFactory daoFactory = new DAOFactory();
-        DAOAbsFactory daoAbsFactory = new FileDAOFactory();
+        DAOAbsFactory daoAbsFactory = DAOFactoryProvider.getInstance().getDaoFactory();;
         RiderDAO riderDAO = daoAbsFactory.createRiderDAO();
 
         riderDAO.setRiderAvailable(riderBn);
@@ -26,7 +27,7 @@ public class NotificationManager {
 
         NotificationDAO ntfDAO = new NotificationDAO(SingletonConnector.getInstance().getConnection());
         //DbResellerDAO resellerDAO = daoFactory.getResellerDAO();
-        DAOAbsFactory daoAbsFactory = new FileDAOFactory(); // qui avviene lo switch, il resto del codice rimane uguale
+        DAOAbsFactory daoAbsFactory = DAOFactoryProvider.getInstance().getDaoFactory(); // qui avviene lo switch, il resto del codice rimane uguale
         ResellerDAO resellerDAO = daoAbsFactory.createResellerDAO();
 
         System.out.println("check notify rider");

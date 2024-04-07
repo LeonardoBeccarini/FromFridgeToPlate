@@ -13,7 +13,7 @@ import java.util.List;
 
 public interface ResellerDAO {
 
-    OrderList getPendingOrders();
+    OrderList getPendingOrders(String email);
 
     void updateAvailability(OrderBean orderBean) ;
 

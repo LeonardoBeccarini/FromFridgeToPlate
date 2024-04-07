@@ -6,7 +6,9 @@ public class Shop extends User implements Serializable {
     private String name;
 
     private String address;
+
     private String vatNumber; // corrisponde a shopid su db
+
     private String phoneNumber;
 
     public Shop() {

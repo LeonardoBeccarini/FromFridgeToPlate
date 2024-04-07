@@ -6,6 +6,7 @@ import com.example.fromfridgetoplate.logic.dao.*;
 import com.example.fromfridgetoplate.logic.exceptions.*;
 import com.example.fromfridgetoplate.logic.model.*;
 import com.example.fromfridgetoplate.patterns.abstractFactory.DAOAbsFactory;
+import com.example.fromfridgetoplate.patterns.abstractFactory.DAOFactoryProvider;
 import com.example.fromfridgetoplate.patterns.factory.CatalogDAOFactory;
 import com.example.fromfridgetoplate.patterns.factory.DAOFactory;
 import com.example.fromfridgetoplate.patterns.factory.FileDAOFactory;
@@ -47,8 +48,8 @@ public class MakeOrderControl {
 
     public List<ShopBean> loadShop(SearchInfoBean searchInfoBean) throws DbException {
         List<ShopBean> listShopBean = new ArrayList<>();
-        //DbShopDAO shopDAO = new DbShopDAO();
-        DAOAbsFactory daoAbsFactory = new FileDAOFactory();
+
+        DAOAbsFactory daoAbsFactory = DAOFactoryProvider.getInstance().getDaoFactory();
         ShopDAO shopDAO = daoAbsFactory.createShopDAO();
         for(Shop shop: shopDAO.retrieveShopByName(searchInfoBean.getName())){
             ShopBean shopBean = new ShopBean(shop.getName(), shop.getAddress(), shop.getPhoneNumber(), shop.getVATnumber());
@@ -122,7 +123,7 @@ public class MakeOrderControl {
     // metodo per salvare l'ordine sul db e notificare lo shop owner, e per chiamare l'API del pagamento?
     public void completeOrder(OrderBean orderBean) throws DbException, PaymentFailedException {
 
-        DAOAbsFactory daoAbsFactory = new FileDAOFactory();
+        DAOAbsFactory daoAbsFactory = DAOFactoryProvider.getInstance().getDaoFactory();
         ResellerDAO resellerDAO = daoAbsFactory.createResellerDAO();
         NotificationDAO notificationDAO = new NotificationDAO(SingletonConnector.getInstance().getConnection());
         CouponDAO couponDAO = new CouponDAO();
@@ -155,9 +156,8 @@ public class MakeOrderControl {
 
         NotificationDAO notificationDAO = new NotificationDAO(SingletonConnector.getInstance().getConnection());
 
-        DAOAbsFactory daoAbsFactory = new FileDAOFactory();
+        DAOAbsFactory daoAbsFactory = DAOFactoryProvider.getInstance().getDaoFactory(); // restituirà un 'istanza di DbDAOFactory o FileDAOFactory a seconda della scelta fatta nel factoryProvider
         ShopDAO shopDAO = daoAbsFactory.createShopDAO();
-        //DbShopDAO shopDAO = new DbShopDAO();
         Shop shop = shopDAO.retrieveShopByEmail(Session.getSession().getUser().getEmail());
 
         List<Notification> notificationList = notificationDAO.getNotificationsForOwner(shop.getVATnumber());

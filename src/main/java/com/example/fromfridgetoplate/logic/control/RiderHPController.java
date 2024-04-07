@@ -7,6 +7,7 @@ import com.example.fromfridgetoplate.logic.model.Notification;
 import com.example.fromfridgetoplate.logic.model.Order;
 import com.example.fromfridgetoplate.logic.model.OrderList;
 import com.example.fromfridgetoplate.patterns.abstractFactory.DAOAbsFactory;
+import com.example.fromfridgetoplate.patterns.abstractFactory.DAOFactoryProvider;
 import com.example.fromfridgetoplate.patterns.factory.DAOFactory;
 import com.example.fromfridgetoplate.patterns.factory.FileDAOFactory;
 
@@ -179,14 +180,14 @@ public class RiderHPController {
 
     public void acceptOrder(NotificationBean notification) {
 
-        DAOAbsFactory daoAbsFactory = new FileDAOFactory();
+        DAOAbsFactory daoAbsFactory = DAOFactoryProvider.getInstance().getDaoFactory();;
         OrderDAO orderDAO = daoAbsFactory.createOrderDAO();
         //DbOrderDAO orderDAO = new DAOFactory().getOrderDAO();
         orderDAO.acceptOrder(notification.getOrderId(), notification.getRiderId());
     }
 
     public void declineOrder(NotificationBean notification) throws IOException {
-        DAOAbsFactory daoAbsFactory = new FileDAOFactory();
+        DAOAbsFactory daoAbsFactory = DAOFactoryProvider.getInstance().getDaoFactory();
         OrderDAO orderDAO = daoAbsFactory.createOrderDAO();
         //DbOrderDAO orderDAO = new DAOFactory().getOrderDAO();
         orderDAO.declineOrder(notification.getOrderId(), notification.getRiderId());
@@ -196,8 +197,8 @@ public class RiderHPController {
 
         OrderListBean orderListBean = new OrderListBean();
         try {
-            //DbOrderDAO orderDAO = new DAOFactory().getOrderDAO();
-            DAOAbsFactory daoAbsFactory = new FileDAOFactory();
+
+            DAOAbsFactory daoAbsFactory = DAOFactoryProvider.getInstance().getDaoFactory();
             OrderDAO orderDAO = daoAbsFactory.createOrderDAO();
             OrderList confirmedOrders = orderDAO.getConfirmedDeliveriesForRider(riderInfo.getId());
 
@@ -232,10 +233,9 @@ public class RiderHPController {
 
     public RiderBean getRiderDetailsFromSession() {
 
-        //DAOFactory daoFactory = new DAOFactory();
-        DAOAbsFactory daoAbsFactory = new FileDAOFactory();
+        DAOAbsFactory daoAbsFactory = DAOFactoryProvider.getInstance().getDaoFactory();
         RiderDAO riderDAO = daoAbsFactory.createRiderDAO();
-        //DbRiderDAO riderDAO = daoFactory.getRiderDAO();
+
         return riderDAO.getRiderDetailsFromSession();
     }
 
@@ -243,8 +243,7 @@ public class RiderHPController {
 
         int riderId = currentRider.getId();
 
-        //DbOrderDAO orderDAO = new DAOFactory().getOrderDAO();
-        DAOAbsFactory daoAbsFactory = new FileDAOFactory();
+        DAOAbsFactory daoAbsFactory = DAOFactoryProvider.getInstance().getDaoFactory();
         OrderDAO orderDAO = daoAbsFactory.createOrderDAO();
         return orderDAO.checkForOrderInDelivery(riderId);
     }
@@ -252,8 +251,8 @@ public class RiderHPController {
 
     public OrderBean getInDeliveryOrderForRider(RiderBean riderInfo) throws RiderGcException {
         try {
-            //DbOrderDAO orderDAO = new DAOFactory().getOrderDAO();
-            DAOAbsFactory daoAbsFactory = new FileDAOFactory();
+
+            DAOAbsFactory daoAbsFactory = DAOFactoryProvider.getInstance().getDaoFactory();
             OrderDAO orderDAO = daoAbsFactory.createOrderDAO();
             Order order = orderDAO.getInDeliveryOrderForRider(riderInfo.getId());
             return convertToOrderBean(order);
@@ -286,8 +285,8 @@ public class RiderHPController {
     public void confirmDelivery(OrderBean orderBean) {
         if (orderBean != null) {
             LocalDateTime deliveryTime = LocalDateTime.now(); // Orario corrente
-            //DbOrderDAO orderDAO = new DAOFactory().getOrderDAO();
-            DAOAbsFactory daoAbsFactory = new FileDAOFactory();
+
+            DAOAbsFactory daoAbsFactory = DAOFactoryProvider.getInstance().getDaoFactory();
             OrderDAO orderDAO = daoAbsFactory.createOrderDAO();
             orderDAO.updateOrderStatusToDelivered(orderBean.getOrderId(), deliveryTime);
         }

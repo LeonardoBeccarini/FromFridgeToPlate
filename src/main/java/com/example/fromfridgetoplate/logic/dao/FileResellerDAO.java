@@ -17,27 +17,42 @@ import java.util.Map;
 public class FileResellerDAO extends FileDAOBase implements ResellerDAO {
 
 
-
     public FileResellerDAO() {
         super();
 
     }
 
+    public OrderList getPendingOrders(String loggedEmail) {
+        // Prima recupera tutti i negozi per trovare il VATnumber corrispondente all'email del reseller
+        List<Shop> shops = getAllShops();
 
+        String shopVATnumber = null;
+        for (Shop shop : shops) {
+            if (shop.getEmail().equals(loggedEmail)) {
+                shopVATnumber = shop.getVATnumber();
+                break;
+            }
+        }
 
-    public OrderList getPendingOrders() {
-        List<Order> allOrders = getAllOrders(); // Legge tutti gli ordini dal file
+        if (shopVATnumber == null) {
+            System.out.println("Negozio non trovato per l'email: " + loggedEmail);
+            return new OrderList(); // Nessun negozio trovato, quindi nessun ordine da restituire.
+        }
+
+        // Ora filtra gli ordini per lo status "pronto" e il VATnumber del negozio
+        List<Order> allOrders = getAllOrders(); // Assumi che questo metodo legga gli ordini da un file
         OrderList pendingOrders = new OrderList();
 
         for (Order order : allOrders) {
-            if ("pronto".equals(order.getStatus())) {
+            if ("pronto".equals(order.getStatus()) && shopVATnumber.equals(order.getShopId())) {
                 pendingOrders.addOrder(order);
             }
         }
-        System.out.println("getPendingOrders called");
 
+        System.out.println("getPendingOrders called for shop VAT: " + shopVATnumber);
         return pendingOrders;
     }
+
 
     public void updateAvailability(OrderBean orderBean)  {
         List<Order> orders = getAllOrders();
@@ -302,11 +317,13 @@ public class FileResellerDAO extends FileDAOBase implements ResellerDAO {
 
 
         // Test getPendingOrders
-        OrderList pendingOrders = dao.getPendingOrders();
+            // qui cambi mettendo quircio4@gmail.com o quircio5@gmail.com, devi cambiare anche sopra il vat del nuovo ordine se vuoi aggiungerne un nuovo ordine per quel dato shop pero
+        OrderList pendingOrders = dao.getPendingOrders("quircio4@gmail.com");
         System.out.println("Ordini in sospeso: ");
         for (Order order : pendingOrders.getOrders()) {
-            System.out.println("ID Ordine: " + order.getOrderId() + ", Stato: " + order.getStatus());
+            System.out.println("ID Ordine: " + order.getOrderId() + ", Stato: " + order.getStatus() + "shopId:" + order.getShopId());
         }
+
 
         // Assumendo che abbiamo almeno un ordine in sospeso da aggiornare
        /* if (!pendingOrders.getOrders().isEmpty()) {

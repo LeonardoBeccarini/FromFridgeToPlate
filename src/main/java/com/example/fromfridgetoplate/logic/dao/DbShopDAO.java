@@ -13,12 +13,12 @@ import java.util.Objects;
 
 public class DbShopDAO implements ShopDAO {
     private static final  String ERROREDATABASE = "errore database";
-    private Connection connection;
-    public DbShopDAO(Connection conn) {this.connection = conn;}
-    public DbShopDAO(){} // questo dovresti eliminarlo quando hai adattato il resto del tuo codice (becca) a usare la DAOfactory
+    private Connection conn;
+    public DbShopDAO(Connection conn) {this.conn = conn;}
+    public DbShopDAO(){ this.conn = SingletonConnector.getInstance().getConnection();} // questo dovresti eliminarlo quando hai adattato il resto del tuo codice (becca) a usare la DAOfactory
     public boolean saveShop(Shop shop) throws DbException {
 
-        try(CallableStatement cs = connection.prepareCall("{call registerShop(?,?,?,?,?,?)}")){
+        try(CallableStatement cs = conn.prepareCall("{call registerShop(?,?,?,?,?,?)}")){
             cs.setString(1,shop.getEmail());
             cs.setString(2,shop.getPassword());
             cs.setString(3,shop.getName());
@@ -32,7 +32,6 @@ public class DbShopDAO implements ShopDAO {
         return true; /*potrei farlo meglio, non sono neanche sicurissimo sia corretto far tornare un booleano*/
     }
     public Shop retrieveShopByEmail(String email) throws DbException {
-        Connection conn = SingletonConnector.getInstance().getConnection();
         Shop shop = null;
         try(CallableStatement cs = conn.prepareCall("{call retrieveShopByEmail(?)}")){
             cs.setString(1, email);
