@@ -13,7 +13,7 @@ public abstract class NotificationList {
     protected List<NotificationBean> notifications;
 
     public void attach(NotificationObserver obs){
-        ntfObservers.add(obs);
+        ntfObservers.add(obs);  // controllerJavaFx o controllerCLI, questi 2 controller grafici implementano la stessa interfaccia NotificationObserver
     }
     public void detach(NotificationObserver obs){
         ntfObservers.remove(obs);

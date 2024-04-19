@@ -3,6 +3,8 @@ package com.example.fromfridgetoplate.patterns.factory;
 import com.example.fromfridgetoplate.logic.dao.*;
 import com.example.fromfridgetoplate.patterns.abstractFactory.DAOAbsFactory;
 
+
+
 public class FileDAOFactory implements DAOAbsFactory {
 
 

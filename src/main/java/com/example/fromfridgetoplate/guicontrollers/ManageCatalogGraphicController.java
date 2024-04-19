@@ -83,7 +83,7 @@ public class ManageCatalogGraphicController extends GenericGraphicController{
            setListView(foodItemListBean);
         }
         if(sourceNode == refreshFileButton){
-            FoodItemListBean foodItemListBean = loadData(PersistenceType.FILE_SYSTEM);
+            FoodItemListBean foodItemListBean = loadData(PersistenceType.JDBC);
             setListView(foodItemListBean);
         }
         if(sourceNode == addButton){
