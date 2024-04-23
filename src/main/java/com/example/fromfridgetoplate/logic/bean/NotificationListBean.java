@@ -14,17 +14,14 @@ import java.util.List;
 
 
 public class NotificationListBean extends NotificationList {
-    //private List<NotificationBean> notifications;
 
-    private NotificationObserver graphicController; // controllerJavaFx o controllerCLI
+    // private NotificationObserver graphicController; // controllerJavaFx o controllerCLI
 
     public NotificationListBean() {
         this.notifications = new ArrayList<>();
     }// subjectstate
 
-    public void setGraphicController(NotificationObserver controller) {
-        this.graphicController = controller;
-    } // attach
+
 
     public void addNotifications(List<NotificationBean> newNotifications) { // questo sarebbbe setstate
         // Aggiunge solo le notifiche nuove e non duplicate

@@ -98,9 +98,10 @@ public class PendingOrdersGraphicController extends GenericGraphicController {
             Parent root = loader.load();
 
             SearchRidersGraphicController searchRidersGController = loader.getController();
-            IRiderSelectionListener riderSelectionListener = new RiderSelectionListener();
-            SearchBean sBean = new SearchBean(shippingCity, riderSelectionListener, selectedOrder);
+            //IRiderSelectionListener riderSelectionListener = new RiderSelectionListener();
+            SearchBean sBean = new SearchBean(shippingCity, selectedOrder);
             searchRidersGController.loadData(sBean); // Carica i dati nella TableView relativa alla scelta del rider
+
 
             Stage currentStage = (Stage) ordersTable.getScene().getWindow();
             currentStage.setScene(new Scene(root));

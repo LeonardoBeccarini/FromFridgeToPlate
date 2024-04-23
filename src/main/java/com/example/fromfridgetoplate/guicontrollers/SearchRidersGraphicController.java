@@ -85,7 +85,8 @@ public class SearchRidersGraphicController extends GenericGraphicController {
         PendingOrdersController pendingOrdersControl = new PendingOrdersController();
 
         this.setAssignedCity(searchBean.getCity());
-        this.setRiderSelectionListener(searchBean.getRiderSelListener());
+        IRiderSelectionListener riderSelectionListener = new RiderSelectionListener();
+        this.setRiderSelectionListener(riderSelectionListener);
         this.orderBean = searchBean.getSelectedOrderBean(); // ordine che deve assegnato al rider selezionato
 
         List<RiderBean> avRidersBean = pendingOrdersControl.getAvalaibleRiders(searchBean);
@@ -127,9 +128,6 @@ public class SearchRidersGraphicController extends GenericGraphicController {
                 throw new IllegalStateException("Il RiderSelectionListener non è impostato.");
             } //IllegalStateException è una sottoclasse di RuntimeException, che a sua volta è una sottoclasse di Exception.
         } catch (Exception e) {
-
-            e.printStackTrace();
-
 
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Errore di Selezione");

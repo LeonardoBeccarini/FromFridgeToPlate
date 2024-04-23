@@ -150,8 +150,8 @@ public class PendingOrdersCLIController {
     }
 
     private List<RiderBean> getAvailableRiders(String shippingCity, OrderBean selectedOrder) {
-        IRiderSelectionListener riderSelectionListenerCLI = new RiderSelectionListenerCLI();
-        SearchBean searchBean = new SearchBean(shippingCity, riderSelectionListenerCLI, selectedOrder);
+
+        SearchBean searchBean = new SearchBean(shippingCity, selectedOrder);
         PendingOrdersController pendingOrdersControl = new PendingOrdersController();
         return pendingOrdersControl.getAvalaibleRiders(searchBean);
     }

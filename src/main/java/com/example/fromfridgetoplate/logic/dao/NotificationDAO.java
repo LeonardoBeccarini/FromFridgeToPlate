@@ -24,7 +24,7 @@ public class NotificationDAO {
 
     public void insertNotification(int riderId, Order order, String message )
     {
-        String query = "{CALL insertNotification(?, ?, ?, ?, ?, ?, ?,?,?)}";
+        String query = "{CALL insertNotification(?, ?, ?, ?, ?, ?, ?, ?, ?)}";
 
         try (CallableStatement cstmt = connection.prepareCall(query)) {
             cstmt.setInt(1, riderId);
@@ -44,9 +44,10 @@ public class NotificationDAO {
 
         }
     }
+
     public void insertNotificationRes(Order order, String message){
         String query = "{CALL insertNotification(?, ?, ?, ?, ?, ?, ?, ?, ?)}";
-        System.out.println(order.getCustomerId());
+
         try (CallableStatement cstmt = connection.prepareCall(query)) {
             cstmt.setInt(1, 0);
             cstmt.setInt(2, order.getOrderId());
