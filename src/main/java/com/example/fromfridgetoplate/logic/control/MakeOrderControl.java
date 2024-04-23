@@ -7,9 +7,6 @@ import com.example.fromfridgetoplate.logic.exceptions.*;
 import com.example.fromfridgetoplate.logic.model.*;
 import com.example.fromfridgetoplate.patterns.abstractFactory.DAOAbsFactory;
 import com.example.fromfridgetoplate.patterns.abstractFactory.DAOFactoryProvider;
-import com.example.fromfridgetoplate.patterns.factory.CatalogDAOFactory;
-import com.example.fromfridgetoplate.patterns.factory.DAOFactory;
-import com.example.fromfridgetoplate.patterns.factory.FileDAOFactory;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -22,24 +19,16 @@ public class MakeOrderControl {
     private final Cart cart = Session.getSession().getCart();
     private final CouponApplier couponApplier = new CouponApplier(cart);
 
-    public MakeOrderControl(ShopBean shopBean) throws DbException, IOException, CatalogDAOFactoryError, EmptyCatalogException {
-        Catalog catalogJDBC;
-        Catalog catalogFile;
-        CatalogDAOFactory catalogDAOFactory = new CatalogDAOFactory();
-        //provo a prendere il catalogo sia da file sia da db
-        CatalogDAO catalogDAO = catalogDAOFactory.createCatalogDAO(PersistenceType.JDBC);       //qui invece di fare questa porcheria potrei salvare, quando un reseller aggiunge un nuovo catalogo
-        catalogJDBC = catalogDAO.retrieveCatalog(shopBean.getVatNumber());                      // il tipo di persistenza da lui scelto, poi così invece di prendermi il catalogo
-                                                                                                // da tutte e due qui facccio una query al db per sapere iìquale livello di persistenaz usare
-        CatalogDAO catalogDAO1 = catalogDAOFactory.createCatalogDAO(PersistenceType.FILE_SYSTEM);
-        catalogFile = catalogDAO1.retrieveCatalog(shopBean.getVatNumber());
+    public MakeOrderControl(ShopBean shopBean) throws DbException, IOException, EmptyCatalogException {
+        DAOAbsFactory daoAbsFactory = DAOFactoryProvider.getInstance().getDaoFactory();
+        CatalogDAO catalogDAO = daoAbsFactory.createCatalogDAO();
 
-        if(!catalogJDBC.getItems().isEmpty()) {
-            this.catalog = catalogJDBC;
-        }
-       else if(!catalogFile.getItems().isEmpty()){
-           this.catalog = catalogFile;
-        }
-       else throw new EmptyCatalogException("il catologo del negozio selezionato è vuoto!");
+        Catalog catalogTemp = catalogDAO.retrieveCatalog(shopBean.getVatNumber());
+
+       if(catalogTemp != null){
+           this.catalog = catalogTemp;
+       }
+       else throw new EmptyCatalogException("Empty catalog for the selected shop!");
     }
 
     public MakeOrderControl() {
@@ -111,6 +100,10 @@ public class MakeOrderControl {
 
     }
 
+    public TotalPriceBean getOriginalPrice() {
+        return new TotalPriceBean(couponApplier.getFinalPrice().getPrice());
+    }
+
     private List<CouponBean> convertToCouponBean(CouponList couponList){
         List<CouponBean> couponBeanList= new ArrayList<>();
         for (Coupon coupon : couponList.getCouponList()){
@@ -120,7 +113,6 @@ public class MakeOrderControl {
         return  couponBeanList;
     }
 
-    // metodo per salvare l'ordine sul db e notificare lo shop owner, e per chiamare l'API del pagamento?
     public void completeOrder(OrderBean orderBean) throws DbException, PaymentFailedException {
 
         DAOAbsFactory daoAbsFactory = DAOFactoryProvider.getInstance().getDaoFactory();
@@ -133,17 +125,18 @@ public class MakeOrderControl {
         for(Coupon coupon: couponList.getCouponList()){
             couponDAO.deleteCoupon(orderBean.getShopId(), coupon.getCode());
         }
-
         AddressBean addressBean = orderBean.getShippingAddress();
         String customerId = Session.getSession().getUser().getEmail();
-
         DummyPaymentBoundary dummyPaymentBoundary = new DummyPaymentBoundary();
         TotalPriceBean totalPriceBean = new TotalPriceBean(couponApplier.getFinalPrice().getPrice());
         if(dummyPaymentBoundary.pay(totalPriceBean)){
+            //se paga salvo l'ordine sul db, invio la notifica al client e svuoto il carrello
+
             Order newOrder = new Order(orderBean.getShopId(), customerId, addressBean.getShippingStreet(), addressBean.getShippingStreetNumber(),  addressBean.getShippingCity(), addressBean.getShippingProvince() );
             newOrder.setItems(cart.getItemList());
             Order savedOrder = resellerDAO.saveOrder(newOrder);
             notificationDAO.insertNotificationRes(savedOrder, "nuovo ordine ricevuto!");
+            Session.getSession().flushSessionCart();
         }
         else{
             throw new PaymentFailedException("pagamento non andato a buon fine");

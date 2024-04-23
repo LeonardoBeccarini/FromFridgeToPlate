@@ -16,6 +16,7 @@ public class CouponListCellFactory extends ListCell<CouponBean>{
         @FXML
         private Label codeLabel;
 
+
         @Override
         protected void updateItem(CouponBean item, boolean empty) {
             super.updateItem(item, empty);

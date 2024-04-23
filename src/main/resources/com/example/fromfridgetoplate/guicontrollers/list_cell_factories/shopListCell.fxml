@@ -2,7 +2,6 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -11,11 +10,6 @@
    <children>
       <HBox alignment="CENTER" prefHeight="136.0" prefWidth="375.0" spacing="10.0">
          <children>
-            <ImageView fx:id="productImageView" fitHeight="125.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
-               <HBox.margin>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </HBox.margin>
-            </ImageView>
             <VBox alignment="CENTER" prefHeight="136.0" prefWidth="243.0" spacing="10.0">
                <children>
                   <Label fx:id="shopNameLabel" alignment="TOP_CENTER" text="Nome negozio">

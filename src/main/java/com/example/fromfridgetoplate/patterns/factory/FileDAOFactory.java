@@ -27,4 +27,6 @@ public class FileDAOFactory implements DAOAbsFactory {
     @Override
     public ShopDAO createShopDAO() {return new FileShopDAO();}
 
+    @Override
+    public CatalogDAO createCatalogDAO(){return new CatalogDAOImplFile();}
 }

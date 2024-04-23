@@ -17,12 +17,12 @@ public class DAOFactoryProvider {
     private static DAOFactoryProvider instance;
     private DAOAbsFactory daoFactory;
 
-
+    private PersistenceType type = PersistenceType.JDBC;
     private DAOFactoryProvider() {
 
         // basta cambiare new DbDAOFactory(); con new FileDAOFactory per avere la versione basata su file, e lasciare
         // tutto il resto del codice uguale
-        PersistenceType type = PersistenceType.FILE_SYSTEM; // o PersistenceType.JDBC, questo poi potrebbe essere letto da un file
+         // o PersistenceType.JDBC, questo poi potrebbe essere letto da un file
         // di config oppure potrebbe essere scelto inizialmente dall' utente sulla gui
 
         if (type == PersistenceType.FILE_SYSTEM) {
@@ -43,6 +43,9 @@ public class DAOFactoryProvider {
         return instance;
     }
 
+    public PersistenceType getType() {
+        return type;
+    }
 
     public DAOAbsFactory getDaoFactory() {
         return daoFactory;

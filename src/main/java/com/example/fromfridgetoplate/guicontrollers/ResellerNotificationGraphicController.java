@@ -48,7 +48,8 @@ public class ResellerNotificationGraphicController extends GenericGraphicControl
             label = new Label();
             label.setText(notificationBean.getMessageText() + ":" + "\n" +
                     "Customer: " + notificationBean.getCustomer() + "\n" +
-                    "Address: " + notificationBean.getStreet() + notificationBean.getStreetNumber() + notificationBean.getCity() + notificationBean.getProvince());
+                    "OrderId: " + notificationBean.getOrderId() + "\n" +
+                    "Address: " + notificationBean.getStreet() +" "+ notificationBean.getStreetNumber()+" " + notificationBean.getCity()+", " + notificationBean.getProvince());
             notificationListView.getItems().add(label);
         }
     }

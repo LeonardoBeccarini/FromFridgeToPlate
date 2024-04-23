@@ -48,7 +48,7 @@ public class BuyProductGraphicController extends GenericGraphicController{
         this.shopBean = shopBean;
         try {
             this.makeOrderControl = new MakeOrderControl(shopBean);
-        } catch (DbException | IOException | CatalogDAOFactoryError e) {
+        } catch (DbException | IOException  e) {
             Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
             alert.showAndWait();
         }catch (EmptyCatalogException e){

@@ -38,4 +38,8 @@ public class Session {
         return cart;
     }
 
+    public void flushSessionCart(){
+        cart.deleteItemList();
+    }
+
 }

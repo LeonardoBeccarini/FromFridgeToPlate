@@ -6,7 +6,6 @@ import com.example.fromfridgetoplate.logic.bean.ShopBean;
 import com.example.fromfridgetoplate.logic.bean.UserBean;
 import com.example.fromfridgetoplate.logic.control.LoginController;
 import com.example.fromfridgetoplate.logic.control.MakeOrderControl;
-import com.example.fromfridgetoplate.logic.exceptions.CatalogDAOFactoryError;
 import com.example.fromfridgetoplate.logic.exceptions.DbException;
 import com.example.fromfridgetoplate.logic.exceptions.EmptyCatalogException;
 import org.junit.Test;
@@ -30,7 +29,7 @@ public class MakeOrderControlSearchProductTest {
             FoodItemListBean filteredItemList = makeOrderControl.searchProduct(searchInfo);
             assertEquals("lattuga", filteredItemList.getList().get(0).getName());
             assertEquals(8.99, filteredItemList.getList().get(0).getPrice(), 0.001);
-        } catch (IOException | DbException |  CatalogDAOFactoryError |EmptyCatalogException e) {
+        } catch (IOException | DbException |EmptyCatalogException e) {
             //don't care
         }
     }

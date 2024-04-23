@@ -17,10 +17,11 @@ public class TotalPriceBean {
     }
 
     public Double getTotalPrice() {
-        return totalPrice;
+        return (double) Math.round(totalPrice*100)/100; // in modo da restituire all'utente un valore arrotondato
     }
 
     public List<CouponBean> getCouponBeanList() {
         return couponBeanList;
     }
+
 }

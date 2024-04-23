@@ -1,5 +1,6 @@
 package com.example.fromfridgetoplate.logic.dao;
 
+import com.example.fromfridgetoplate.logic.model.FoodItem;
 import com.example.fromfridgetoplate.logic.model.Order;
 import com.example.fromfridgetoplate.logic.model.Rider;
 import com.example.fromfridgetoplate.logic.model.User;
@@ -19,6 +20,7 @@ public abstract class FileDAOBase {
     protected String shopsFilePath;
 
     protected String usersFilePath;
+    protected String catalogFilePath;
 
     public FileDAOBase() {
         loadProperties();
@@ -27,6 +29,7 @@ public abstract class FileDAOBase {
         this.assignedOrdersFilePath = properties.getProperty("assignedOrdersFilePath");
         this.shopsFilePath = properties.getProperty("shopsFilePath");
         this.usersFilePath = properties.getProperty("usersFilePath");
+        this.catalogFilePath = properties.getProperty("catalogFilePath");
     }
 
     private void loadProperties() {
@@ -78,6 +81,7 @@ public abstract class FileDAOBase {
     }
 
 
+
     protected List<Order> getAllAssignedOrders() {
 
         List<Order> assignedOrders = readFromFile(assignedOrdersFilePath);
@@ -111,7 +115,7 @@ public abstract class FileDAOBase {
     protected List<User> readUsersFromFile() {
         // Usa il metodo readFromFile della superclasse, fornendo il percorso del file e il tipo atteso
         List<User> users = readFromFile(usersFilePath);
-        // Verifico che  tipo degli elementi sia corretto
+        // Verifico che tipo degli elementi sia corretto
         if (!users.isEmpty() && users.get(0) != null) {
             return users;
         } else {

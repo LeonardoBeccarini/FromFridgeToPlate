@@ -38,6 +38,10 @@ public class Cart implements Discountable, Serializable {
             }
         }
     }
+
+    public void deleteItemList(){
+       itemList.clear();
+    }
     public CartItem verifyPresence(String name){
         for(CartItem item : itemList){
             if(Objects.equals(item.getName(), name)){

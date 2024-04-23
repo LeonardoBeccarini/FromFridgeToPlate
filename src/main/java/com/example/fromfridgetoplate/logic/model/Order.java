@@ -14,7 +14,7 @@ public class Order implements Serializable {
 
     private int riderId;
 
-    private String status; // "Pending", "Accepted", "Delivered"........altri? dovrebbe essere un enum
+    private String status;
 
     private List<CartItem> cartItems; // Una lista degli ingredienti alimentari ordinati
 

@@ -24,7 +24,7 @@ public class NotificationDAO {
 
     public void insertNotification(int riderId, Order order, String message )
     {
-        String query = "{CALL insertNotification(?, ?, ?, ?, ?, ?, ?)}";
+        String query = "{CALL insertNotification(?, ?, ?, ?, ?, ?, ?,?,?)}";
 
         try (CallableStatement cstmt = connection.prepareCall(query)) {
             cstmt.setInt(1, riderId);
@@ -32,12 +32,12 @@ public class NotificationDAO {
             cstmt.setString(3,null);        // perchè ho aggiunto customerId alla notifica
             // bastava mettere dentro a notification un'istanza dell'entità order
             cstmt.setString(4,null);        // perchè ho aggiunto shopId alla notifica
-            cstmt.setString(3, order.getShippingStreet());
+            cstmt.setString(5, order.getShippingStreet());
 
-            cstmt.setInt(4, order.getShippingStreetNumber());
-            cstmt.setString(5, order.getShippingCity());
-            cstmt.setString(6, order.getShippingProvince());
-            cstmt.setString(7, message);
+            cstmt.setInt(6, order.getShippingStreetNumber());
+            cstmt.setString(7, order.getShippingCity());
+            cstmt.setString(8, order.getShippingProvince());
+            cstmt.setString(9, message);
             cstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -46,7 +46,7 @@ public class NotificationDAO {
     }
     public void insertNotificationRes(Order order, String message){
         String query = "{CALL insertNotification(?, ?, ?, ?, ?, ?, ?, ?, ?)}";
-
+        System.out.println(order.getCustomerId());
         try (CallableStatement cstmt = connection.prepareCall(query)) {
             cstmt.setInt(1, 0);
             cstmt.setInt(2, order.getOrderId());

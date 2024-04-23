@@ -50,6 +50,8 @@ public class CompleteOrderGraphicController extends GenericGraphicController{
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         couponListView.setCellFactory(param -> new CouponListCellFactory());
+        TotalPriceBean totalPriceBean = makeOrderControl.getOriginalPrice();
+        totalPriceLabel.setText(String.valueOf(totalPriceBean.getTotalPrice()));
         super.initialize(location, resources);
     }
 

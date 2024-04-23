@@ -5,8 +5,8 @@ import com.example.fromfridgetoplate.logic.bean.FoodItemBean;
 import com.example.fromfridgetoplate.logic.bean.FoodItemListBean;
 import com.example.fromfridgetoplate.logic.control.ManageCatalogController;
 import com.example.fromfridgetoplate.logic.dao.PersistenceType;
-import com.example.fromfridgetoplate.logic.exceptions.CatalogDAOFactoryError;
 import com.example.fromfridgetoplate.logic.exceptions.DbException;
+import com.example.fromfridgetoplate.patterns.abstractFactory.DAOFactoryProvider;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -44,10 +44,9 @@ public class ManageCatalogGraphicController extends GenericGraphicController{
     @Override
     public void initialize(URL location, ResourceBundle resources){
         FoodItemListBean foodItemListBean;
-        // qui volevo fare se ho già un catalogo salvato sul db disattivcavo il bottone in modo da non creare un secondo catalogo su file,
-        // è commentato perchè mi entrava sempre nel primo if
-        foodItemListBean = loadData(PersistenceType.JDBC);
-        if(!foodItemListBean.getList().isEmpty()){
+        foodItemListBean = loadData();
+
+        if(DAOFactoryProvider.getInstance().getType().equals(PersistenceType.JDBC)){
             addFileButton.setDisable(true);
             refreshFileButton.setDisable(true);
             setListView(foodItemListBean);
@@ -60,14 +59,15 @@ public class ManageCatalogGraphicController extends GenericGraphicController{
 
         super.initialize(location, resources);
     }
-    public FoodItemListBean loadData(PersistenceType persistenceType){
+    public FoodItemListBean loadData(){
         FoodItemListBean foodItemListBean = null;
-        ManageCatalogController manageCatalogController = new ManageCatalogController(persistenceType);
+        ManageCatalogController manageCatalogController = new ManageCatalogController();
         try {
             foodItemListBean = manageCatalogController.getIngredients();
-        } catch (DbException | IOException | CatalogDAOFactoryError e) {
+        } catch (DbException | IOException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
             alert.showAndWait();
+            e.printStackTrace();
         }
         return foodItemListBean;
     }
@@ -79,20 +79,20 @@ public class ManageCatalogGraphicController extends GenericGraphicController{
     void onButtonClicked(ActionEvent event){
         Node sourceNode = (Node) event.getSource();
         if(sourceNode == refreshButton){
-            FoodItemListBean foodItemListBean = loadData(PersistenceType.JDBC);
+            FoodItemListBean foodItemListBean = loadData();
            setListView(foodItemListBean);
         }
         if(sourceNode == refreshFileButton){
-            FoodItemListBean foodItemListBean = loadData(PersistenceType.FILE_SYSTEM);
+            FoodItemListBean foodItemListBean = loadData();
             setListView(foodItemListBean);
         }
         if(sourceNode == addButton){
-            ManageCatalogController manageCatalogController = new ManageCatalogController(PersistenceType.JDBC);
+            ManageCatalogController manageCatalogController = new ManageCatalogController();
             FoodItemBean foodItemBean = new FoodItemBean(nameText.getText(), Float.parseFloat(priceText.getText()));
             try {
                 manageCatalogController.addIngredient(foodItemBean);
                 refreshFileButton.setDisable(true);
-            } catch (DbException | IOException | CatalogDAOFactoryError e) {
+            } catch (DbException | IOException e) {
                 Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
                 alert.showAndWait();
             }
@@ -100,11 +100,11 @@ public class ManageCatalogGraphicController extends GenericGraphicController{
             priceText.clear();
         }
         if(sourceNode == addFileButton){
-            ManageCatalogController manageCatalogController = new ManageCatalogController(PersistenceType.FILE_SYSTEM);
+            ManageCatalogController manageCatalogController = new ManageCatalogController();
             try{
                 manageCatalogController.addIngredient(new FoodItemBean(nameText.getText(), Float.parseFloat(priceText.getText())));
                 refreshButton.setDisable(true);
-            }catch (DbException | IOException | CatalogDAOFactoryError e){
+            }catch (DbException | IOException e){
                 Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
                 alert.showAndWait();
             }

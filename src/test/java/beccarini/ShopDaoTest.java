@@ -1,5 +1,6 @@
 package beccarini;
 
+import com.example.fromfridgetoplate.logic.dao.DbShopDAO;
 import com.example.fromfridgetoplate.logic.dao.ShopDAO;
 import com.example.fromfridgetoplate.logic.dao.SingletonConnector;
 import com.example.fromfridgetoplate.logic.exceptions.DbException;
@@ -20,7 +21,7 @@ public class ShopDaoTest {
         Shop shop = new Shop(
                 "pluto@gmail.com", "pippo12", "CheNeSo",
                 "Via paperino 44, RM", "12345678912", "3976542336");
-        ShopDAO shopDAO = new ShopDAO();
+        ShopDAO shopDAO = new DbShopDAO();
         try {
             assertTrue( shopDAO.saveShop(shop));
         } catch (DbException e) {
@@ -33,7 +34,7 @@ public class ShopDaoTest {
         Shop shop = new Shop(
                 "quircio@gmail.com", "quircioreseller", "Pippi",
                 "Via pippo 23, RM", "12345678945", "3456798334");
-        ShopDAO shopDAO = new ShopDAO();
+        ShopDAO shopDAO = new DbShopDAO();
         try {
             assertFalse( shopDAO.saveShop(shop));
         } catch (DbException e) {
@@ -45,7 +46,7 @@ public class ShopDaoTest {
         Shop shop = new Shop(
                 "quircio@gmail.com", "Pippi", "Via pippo 23, RM",
                 "12345678945", "3456798334");
-        ShopDAO shopDAO = new ShopDAO();
+        ShopDAO shopDAO = new DbShopDAO();
         Shop ouptutShop = null;
         try {
             ouptutShop = shopDAO.retrieveShopByEmail("quircio@gmail.com");
