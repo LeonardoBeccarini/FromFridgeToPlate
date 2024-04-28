@@ -27,5 +27,5 @@ public interface ResellerDAO {
 
     List<Rider> getAvailableRiders(SearchBean rpBean);
 
-    Order saveOrder(Order order) throws DbException;
+
 }
