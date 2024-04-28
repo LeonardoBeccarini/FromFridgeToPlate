@@ -1,9 +1,9 @@
 package com.example.fromfridgetoplate.logic.dao;
 
-import com.example.fromfridgetoplate.logic.model.FoodItem;
 import com.example.fromfridgetoplate.logic.model.Order;
 import com.example.fromfridgetoplate.logic.model.Rider;
 import com.example.fromfridgetoplate.logic.model.User;
+import com.example.fromfridgetoplate.logic.utility.MyObjectOutputStream;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -14,6 +14,7 @@ public abstract class FileDAOBase {
     protected Properties properties = new Properties();
 
     protected String ordersFilePath;
+    protected String clientsFilePath;
     protected String ridersFilePath;
 
     protected String assignedOrdersFilePath;
@@ -30,6 +31,7 @@ public abstract class FileDAOBase {
         this.shopsFilePath = properties.getProperty("shopsFilePath");
         this.usersFilePath = properties.getProperty("usersFilePath");
         this.catalogFilePath = properties.getProperty("catalogFilePath");
+        this.clientsFilePath = properties.getProperty("clientsFilePath");
     }
 
     private void loadProperties() {
@@ -141,16 +143,5 @@ public abstract class FileDAOBase {
         writeToFile(users, usersFilePath);
         return true;
     }
-
-
-
-
-
-
-
-
-
-
-
 
 }

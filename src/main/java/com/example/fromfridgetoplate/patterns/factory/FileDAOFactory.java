@@ -31,4 +31,7 @@ public class FileDAOFactory implements DAOAbsFactory {
 
     @Override
     public CatalogDAO createCatalogDAO(){return new CatalogDAOImplFile();}
+
+    @Override
+    public ClientDAO createClientDAO(){return new FileClientDAO();}
 }
