@@ -1,6 +1,8 @@
 package com.example.fromfridgetoplate.secondguicontrollers;
 
+import com.example.fromfridgetoplate.logic.bean.AddressBean;
 import com.example.fromfridgetoplate.logic.bean.NotificationBean;
+import com.example.fromfridgetoplate.logic.bean.OrderBean;
 import com.example.fromfridgetoplate.logic.dao.NotificationDAO;
 import com.example.fromfridgetoplate.logic.dao.SingletonConnector;
 import com.example.fromfridgetoplate.patterns.factory.DAOFactory;
@@ -41,10 +43,13 @@ public class ResellerNotificationCLIcontroller {
 
     private void printList(){
         for (NotificationBean notificationBean : notificationBeanList) {
+            OrderBean orderBean = notificationBean.getOrderBean();
+            AddressBean addressBean = orderBean.getShippingAddress();
+
             Printer.print(notificationBean.getMessageText() + ":" + "\n" +
-                    "Customer: " + notificationBean.getCustomer() + "\n" +
-                    "Address: " + notificationBean.getStreet() + notificationBean.getStreetNumber() +
-                    notificationBean.getCity() + notificationBean.getProvince());
+                    "Customer: " + orderBean.getCustomerId() + "\n" +
+                    "Address: " + addressBean.getShippingStreet() + addressBean.getShippingStreetNumber() +
+                    addressBean.getShippingCity() + addressBean.getShippingProvince());
 
         }
     }

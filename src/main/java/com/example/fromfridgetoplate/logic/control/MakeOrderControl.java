@@ -156,8 +156,12 @@ public class MakeOrderControl {
         List<Notification> notificationList = notificationDAO.getNotificationsForOwner(shop.getVATnumber());
         List<NotificationBean> notificationBeanList = new ArrayList<>();
         for(Notification notification : notificationList){
-            NotificationBean notificationBean = new NotificationBean(notification.getCustomer(), notification.getOrderId(), notification.getStreet(),
-                    notification.getStreetNumber(), notification.getCity(), notification.getProvince(), notification.getMessageText());
+
+            Order notifiedOrder = notification.getOrder();
+            AddressBean addressBean = new AddressBean(notifiedOrder.getShippingStreet(), notifiedOrder.getShippingStreetNumber(), notifiedOrder.getShippingCity(), notifiedOrder.getShippingProvince());
+            OrderBean orderBean = new OrderBean(notifiedOrder.getCustomerId(), notifiedOrder.getOrderId(), addressBean);
+
+            NotificationBean notificationBean = new NotificationBean(orderBean, notification.getMessageText());
             notificationBean.setNotificationId(notification.getNotificationId());
             notificationBeanList.add(notificationBean);
         }

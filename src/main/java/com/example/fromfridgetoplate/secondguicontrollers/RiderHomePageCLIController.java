@@ -2,9 +2,7 @@ package com.example.fromfridgetoplate.secondguicontrollers;
 
 
 import com.example.fromfridgetoplate.guicontrollers.NotificationObserver;
-import com.example.fromfridgetoplate.logic.bean.NotificationBean;
-import com.example.fromfridgetoplate.logic.bean.NotificationListBean;
-import com.example.fromfridgetoplate.logic.bean.RiderBean;
+import com.example.fromfridgetoplate.logic.bean.*;
 import com.example.fromfridgetoplate.logic.control.RiderHPController;
 import java.util.List;
 import java.util.Scanner;
@@ -107,9 +105,12 @@ public class RiderHomePageCLIController implements NotificationObserver {
 
         Printer.print("----- Visualizzazione Notifiche -----");
         for (NotificationBean bean : notificationBeans) {
-            Printer.print("Ordine ID: " + bean.getOrderId());
-            Printer.print("Via: " + bean.getStreet() + ", N°: " + bean.getStreetNumber());
-            Printer.print("Città: " + bean.getCity() + ", Provincia: " + bean.getProvince());
+            OrderBean orderBean = bean.getOrderBean();
+            AddressBean addressBean = orderBean.getShippingAddress();
+
+            Printer.print("Ordine ID: " + orderBean.getOrderId());
+            Printer.print("Via: " + addressBean.getShippingStreet() + ", N°: " + addressBean.getShippingStreetNumber());
+            Printer.print("Città: " + addressBean.getShippingCity() + ", Provincia: " + addressBean.getShippingProvince());
             Printer.print("Messaggio: " + bean.getMessageText());
             Printer.print("------------------------------------");
         }
@@ -123,7 +124,7 @@ public class RiderHomePageCLIController implements NotificationObserver {
 
         if (choice > 0 && choice <= notifications.size()) {
             NotificationBean selectedNotification = notifications.get(choice - 1);
-            Printer.print("Hai selezionato la notifica per l'ordine ID: " + selectedNotification.getOrderId() +"\n");
+            Printer.print("Hai selezionato la notifica per l'ordine ID: " + selectedNotification.getOrderBean().getOrderId() +"\n");
 
             Printer.print("1. Accetta Notifica");
             Printer.print("2. Rifiuta Notifica");
@@ -157,7 +158,7 @@ public class RiderHomePageCLIController implements NotificationObserver {
             try {
                 riderController.acceptOrder(notification);
                 riderController.markNotificationAsRead(notification); // Qui si suppone che il metodo markNotificationAsRead simuli l'accettazione dell'ordine
-                Printer.print("Hai accettato l'ordine con ID:" + notification.getOrderId()+"\n");
+                Printer.print("Hai accettato l'ordine con ID:" + notification.getOrderBean().getOrderId()+"\n");
             } catch (Exception e) {
                 Printer.print("Errore nell'accettazione dell'ordine: " + e.getMessage());
             }
@@ -169,7 +170,7 @@ public class RiderHomePageCLIController implements NotificationObserver {
         try {
             riderController.declineOrder(notification);
             riderController.markNotificationAsRead(notification);
-            Printer.print("Hai rifiutato la notifica per l'ordine ID: " + notification.getOrderId()+"\n");
+            Printer.print("Hai rifiutato la notifica per l'ordine ID: " + notification.getOrderBean().getOrderId()+"\n");
         } catch (Exception e) {
             Printer.print("Errore nel rifiuto della notifica: " + e.getMessage());
         }

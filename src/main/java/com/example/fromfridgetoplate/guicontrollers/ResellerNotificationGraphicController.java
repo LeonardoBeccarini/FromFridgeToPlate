@@ -1,6 +1,8 @@
 package com.example.fromfridgetoplate.guicontrollers;
 
+import com.example.fromfridgetoplate.logic.bean.AddressBean;
 import com.example.fromfridgetoplate.logic.bean.NotificationBean;
+import com.example.fromfridgetoplate.logic.bean.OrderBean;
 import com.example.fromfridgetoplate.logic.dao.NotificationDAO;
 import com.example.fromfridgetoplate.patterns.factory.DAOFactory;
 import javafx.fxml.FXML;
@@ -46,10 +48,12 @@ public class ResellerNotificationGraphicController extends GenericGraphicControl
     private void populateListView() {
         for (NotificationBean notificationBean : notificationBeanList) {
             label = new Label();
+            OrderBean orderBean = notificationBean.getOrderBean();
+            AddressBean addressBean = orderBean.getShippingAddress();
             label.setText(notificationBean.getMessageText() + ":" + "\n" +
-                    "Customer: " + notificationBean.getCustomer() + "\n" +
-                    "OrderId: " + notificationBean.getOrderId() + "\n" +
-                    "Address: " + notificationBean.getStreet() +" "+ notificationBean.getStreetNumber()+" " + notificationBean.getCity()+", " + notificationBean.getProvince());
+                    "Customer: " + orderBean.getCustomerId() + "\n" +
+                    "OrderId: " + orderBean.getOrderId() + "\n" +
+                    "Address: " + addressBean.getShippingStreet() +" "+ addressBean.getShippingStreetNumber()+" " + addressBean.getShippingCity()+", " + addressBean.getShippingProvince());
             notificationListView.getItems().add(label);
         }
     }

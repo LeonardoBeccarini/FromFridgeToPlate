@@ -15,9 +15,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
 // -----------------------------------------notification page per il RIDER----------------------------------------------
 public class RiderNotificationPageGraphicController {
 
@@ -123,7 +120,7 @@ public class RiderNotificationPageGraphicController {
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle("Consegna accettata");
                     alert.setHeaderText("Hai preso in carico l'ordine");
-                    alert.setContentText("con orderId: " + selectedNotification.getOrderId());
+                    alert.setContentText("con orderId: " + selectedNotification.getOrderBean().getOrderId());
                     alert.showAndWait();
                 }
             } catch (Exception e) {
@@ -151,7 +148,7 @@ public class RiderNotificationPageGraphicController {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Ordine rifiutato");
                 alert.setHeaderText(null);
-                alert.setContentText("Hai rifiutato l'ordine con orderId: " + selectedNotification.getOrderId());
+                alert.setContentText("Hai rifiutato l'ordine con orderId: " + selectedNotification.getOrderBean().getOrderId());
                 alert.showAndWait();
 
             } catch (Exception e) {

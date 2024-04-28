@@ -32,6 +32,18 @@ public class OrderBean {
         this.status = status;
     }
 
+    public OrderBean( String customerId, int orderId, AddressBean shippingAddress) {
+        this.customerId = customerId;
+        this.orderId = orderId;
+       this.shippingAddress = shippingAddress;
+    }
+    public OrderBean( int riderId, int orderId, AddressBean shippingAddress) {
+        this.riderId = riderId;
+        this.orderId = orderId;
+        this.shippingAddress = shippingAddress;
+    }
+
+
     public OrderBean(int orderId, String customerId, String shopId, String status, LocalDateTime orderTime, int riderId) {
         this.orderId = orderId;
         this.customerId = customerId;

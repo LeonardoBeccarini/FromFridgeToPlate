@@ -76,13 +76,15 @@ public class NotificationDAO {
 
             try (ResultSet rs = cstmt.executeQuery()) {
                 while (rs.next()) {
-                    Notification notification = new Notification(
+                    Order order = new Order(
                             rs.getInt("riderId"),
                             rs.getInt("orderId"),
                             rs.getString("shippingStreet"),
                             rs.getInt("shippingStreetNumber"),
                             rs.getString("shippingCity"),
-                            rs.getString("shippingProvince"),
+                            rs.getString("shippingProvince")
+                    );
+                    Notification notification = new Notification(order,
                             rs.getString("message")
                     );
                     notification.setNotificationId(rs.getInt("notificationId"));
@@ -103,15 +105,14 @@ public class NotificationDAO {
             cstmt.setString(1, vatNumber);
             try (ResultSet rs = cstmt.executeQuery()) {
                 while (rs.next()) {
-                    Notification notification = new Notification(
-                            rs.getString("customerId"),
+                    Order order =  new Order( rs.getString("customerId"),
                             rs.getInt("orderId"),
                             rs.getString("shippingStreet"),
                             rs.getInt("shippingStreetNumber"),
                             rs.getString("shippingCity"),
-                            rs.getString("shippingProvince"),
-                            rs.getString("message")
-                    );
+                            rs.getString("shippingProvince"));
+                    Notification notification = new Notification(order,
+                            rs.getString("message"));
                     notification.setNotificationId(rs.getInt("notificationId"));
                     notifications.add(notification);
                 }

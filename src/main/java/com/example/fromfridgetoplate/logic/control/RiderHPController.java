@@ -108,13 +108,14 @@ public class RiderHPController {
 
 
         private NotificationBean convertToNotificationBean(Notification notification) {
+
+
+            Order order = notification.getOrder();
+            AddressBean addressBean = new AddressBean(order.getShippingStreet(), order.getShippingStreetNumber(), order.getShippingCity(), order.getShippingProvince());
+            OrderBean orderBean = new OrderBean(order.getRiderId(), order.getOrderId(), addressBean);
+
             NotificationBean ntfBean = new NotificationBean(
-                    notification.getRiderId(),
-                    notification.getOrderId(),
-                    notification.getStreet(),
-                    notification.getStreetNumber(),
-                    notification.getCity(),
-                    notification.getProvince(),
+                    orderBean,
                     notification.getMessageText()
             );
             ntfBean.setNotificationId(notification.getNotificationId());
@@ -183,14 +184,18 @@ public class RiderHPController {
         DAOAbsFactory daoAbsFactory = DAOFactoryProvider.getInstance().getDaoFactory();;
         OrderDAO orderDAO = daoAbsFactory.createOrderDAO();
         //DbOrderDAO orderDAO = new DAOFactory().getOrderDAO();
-        orderDAO.acceptOrder(notification.getOrderId(), notification.getRiderId());
+
+        OrderBean notifiedOrder = notification.getOrderBean();
+        orderDAO.acceptOrder(notifiedOrder.getOrderId(), notifiedOrder.getRiderId());
     }
 
     public void declineOrder(NotificationBean notification) throws IOException {
         DAOAbsFactory daoAbsFactory = DAOFactoryProvider.getInstance().getDaoFactory();
         OrderDAO orderDAO = daoAbsFactory.createOrderDAO();
         //DbOrderDAO orderDAO = new DAOFactory().getOrderDAO();
-        orderDAO.declineOrder(notification.getOrderId(), notification.getRiderId());
+
+        OrderBean notifiedOrder = notification.getOrderBean();
+        orderDAO.declineOrder(notifiedOrder.getOrderId(), notifiedOrder.getRiderId());
     }
 
     public OrderListBean getConfirmedDeliveries(RiderBean riderInfo) throws RiderGcException {

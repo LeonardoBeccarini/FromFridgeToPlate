@@ -58,6 +58,23 @@ public class Order implements Serializable {
         this.shippingProvince = shippingProvince;
     }
 
+    public Order( String customerId, int orderId, String shippingStreet, int shippingStreetNumber, String shippingCity, String shippingProvince) {
+        this.customerId = customerId;
+        this.orderId = orderId;
+        this.shippingStreet = shippingStreet;
+        this.shippingStreetNumber = shippingStreetNumber;
+        this.shippingCity = shippingCity;
+        this.shippingProvince = shippingProvince;
+    }
+    public Order( int riderId, int orderId, String shippingStreet, int shippingStreetNumber, String shippingCity, String shippingProvince) {
+        this.riderId = riderId;
+        this.orderId = orderId;
+        this.shippingStreet = shippingStreet;
+        this.shippingStreetNumber = shippingStreetNumber;
+        this.shippingCity = shippingCity;
+        this.shippingProvince = shippingProvince;
+    }
+
     public Order(int orderId) {
         this.orderId = orderId;
     }
