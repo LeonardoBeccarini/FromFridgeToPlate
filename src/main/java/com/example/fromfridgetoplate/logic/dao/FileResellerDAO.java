@@ -70,63 +70,6 @@ public class FileResellerDAO extends FileDAOBase implements ResellerDAO {
     }
 
 
-    public Order saveOrder(Order order)  {
-        // Recupera tutti gli ordini esistenti e la mappa degli item associati
-        List<Order> orders = getAllOrders();
-        Map<Integer, List<CartItem>> orderItemsMap = getAllOrderItems();
-
-
-        // Assegno un id univoco all'ordine
-        int maxOrderId = 0; // Inizializzo l'ID massimo a 0
-
-        for (Order existingOrder : orders) {
-            if (existingOrder.getOrderId() > maxOrderId) {
-                maxOrderId = existingOrder.getOrderId(); // Aggiorno l'ID massimo se trova un ordine con ID maggiore
-                System.out.println("orderId: "+ maxOrderId + " status: " + existingOrder.getStatus());
-            }
-        }
-        order.setOrderId(maxOrderId + 1); // Assegna al nuovo ordine l'ID successivo all'ID massimo trovato
-
-        orders.add(order); // Aggiungo il nuovo ordine alla lista
-
-        // Aggiungo gli item dell'ordine alla mappa
-        orderItemsMap.put(order.getOrderId(), order.getItems());
-
-        // Aggiorno il file degli ordini e la mappa degli item
-        writeOrdersToFile(orders);
-        try {
-            writeOrderItemsMapToFile(orderItemsMap);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        return order;
-    }
-
-    private void writeOrderItemsMapToFile(Map<Integer, List<CartItem>> orderItemsMap) throws IOException {
-
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(properties.getProperty("orderItemsMapFilePath")))) {
-            oos.writeObject(orderItemsMap);
-        }
-    }
-
-    public Map<Integer, List<CartItem>> getAllOrderItems() {
-        String itemsMapFileName = properties.getProperty("orderItemsMapFilePath");
-        File file = new File(itemsMapFileName);
-        if (!file.exists()) return new HashMap<>();
-
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
-            return (Map<Integer, List<CartItem>>) ois.readObject();
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-            return new HashMap<>();
-        }
-    }
-
-
-
-
-
     public void setAssignation(int orderId) {
         List<Order> orders = getAllOrders();
         boolean orderFound = false;
@@ -288,7 +231,7 @@ public class FileResellerDAO extends FileDAOBase implements ResellerDAO {
         );*/
 
         // Test saveOrder
-
+/*
         //  CartItem per il test
         CartItem item1 = new CartItem("Pane", 2);
         CartItem item2 = new CartItem("Latte", 4);
@@ -314,7 +257,7 @@ public class FileResellerDAO extends FileDAOBase implements ResellerDAO {
             items.forEach(item -> System.out.println(" - " + item.getName() + ", Quantità: " + item.getQuantity()));
         });
 
-
+*/
 
         // Test getPendingOrders
             // qui cambi mettendo quircio4@gmail.com o quircio5@gmail.com, devi cambiare anche sopra il vat del nuovo ordine se vuoi aggiungerne un nuovo ordine per quel dato shop pero

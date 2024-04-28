@@ -117,7 +117,7 @@ public class MakeOrderControl {
     public void completeOrder(OrderBean orderBean) throws DbException, PaymentFailedException {
 
         DAOAbsFactory daoAbsFactory = DAOFactoryProvider.getInstance().getDaoFactory();
-        ResellerDAO resellerDAO = daoAbsFactory.createResellerDAO();
+        OrderDAO orderDAO = daoAbsFactory.createOrderDAO();
         NotificationDAO notificationDAO = new NotificationDAO(SingletonConnector.getInstance().getConnection());
         CouponDAO couponDAO = new CouponDAO();
 
@@ -136,7 +136,7 @@ public class MakeOrderControl {
             Order newOrder = new Order(orderBean.getShopId(), customerId, addressBean.getShippingStreet(), addressBean.getShippingStreetNumber(),  addressBean.getShippingCity(), addressBean.getShippingProvince(), "pronto" );
             newOrder.setOrderTime(LocalDateTime.now());
             newOrder.setItems(cart.getItemList());
-            Order savedOrder = resellerDAO.saveOrder(newOrder);
+            Order savedOrder = orderDAO.saveOrder(newOrder);
             notificationDAO.insertNotificationRes(savedOrder, "nuovo ordine ricevuto!");
             Session.getSession().flushSessionCart();
         }

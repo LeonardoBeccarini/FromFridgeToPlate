@@ -1,5 +1,6 @@
 package com.example.fromfridgetoplate.logic.dao;
 
+import com.example.fromfridgetoplate.logic.exceptions.DbException;
 import com.example.fromfridgetoplate.logic.exceptions.DeliveryRetrievalException;
 import com.example.fromfridgetoplate.logic.exceptions.OrderNotFoundException;
 import com.example.fromfridgetoplate.logic.model.Order;
@@ -21,4 +22,5 @@ public interface OrderDAO {
     Order getInDeliveryOrderForRider(int riderId) throws OrderNotFoundException;
 
     void updateOrderStatusToDelivered(int orderId, LocalDateTime deliveryTime);
+    Order saveOrder(Order order) throws DbException;
 }

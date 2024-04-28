@@ -1,6 +1,5 @@
 package com.example.fromfridgetoplate.patterns.abstractFactory;
 
-
 import com.example.fromfridgetoplate.logic.dao.*;
 
 public interface DAOAbsFactory {

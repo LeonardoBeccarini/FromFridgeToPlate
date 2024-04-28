@@ -1,13 +1,16 @@
 package com.example.fromfridgetoplate.logic.dao;
 
 import com.example.fromfridgetoplate.logic.exceptions.OrderNotFoundException;
+import com.example.fromfridgetoplate.logic.model.CartItem;
 import com.example.fromfridgetoplate.logic.model.Order;
 import com.example.fromfridgetoplate.logic.model.OrderList;
 
 import java.io.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class FileOrderDAO extends FileDAOBase implements OrderDAO {
@@ -103,11 +106,6 @@ public class FileOrderDAO extends FileDAOBase implements OrderDAO {
     }
 
 
-
-
-
-
-
     public OrderList getConfirmedDeliveriesForRider(int riderId) {
         List<Order> allOrders = getAllAssignedOrders(); // Assume getAllOrders() deserializzi gli ordini da un file
         OrderList confirmedDeliveries = new OrderList();
@@ -176,11 +174,56 @@ public class FileOrderDAO extends FileDAOBase implements OrderDAO {
         }
     }
 
+    public Order saveOrder(Order order)  {
+        // Recupera tutti gli ordini esistenti e la mappa degli item associati
+        List<Order> orders = getAllOrders();
+        Map<Integer, List<CartItem>> orderItemsMap = getAllOrderItems();
 
 
+        // Assegno un id univoco all'ordine
+        int maxOrderId = 0; // Inizializzo l'ID massimo a 0
 
+        for (Order existingOrder : orders) {
+            if (existingOrder.getOrderId() > maxOrderId) {
+                maxOrderId = existingOrder.getOrderId(); // Aggiorno l'ID massimo se trova un ordine con ID maggiore
+                System.out.println("orderId: "+ maxOrderId + " status: " + existingOrder.getStatus());
+            }
+        }
+        order.setOrderId(maxOrderId + 1); // Assegna al nuovo ordine l'ID successivo all'ID massimo trovato
 
+        orders.add(order); // Aggiungo il nuovo ordine alla lista
 
+        // Aggiungo gli item dell'ordine alla mappa
+        orderItemsMap.put(order.getOrderId(), order.getItems());
+
+        // Aggiorno il file degli ordini e la mappa degli item
+        writeOrdersToFile(orders);
+        try {
+            writeOrderItemsMapToFile(orderItemsMap);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        return order;
+    }
+    public Map<Integer, List<CartItem>> getAllOrderItems() {
+        String itemsMapFileName = properties.getProperty("orderItemsMapFilePath");
+        File file = new File(itemsMapFileName);
+        if (!file.exists()) return new HashMap<>();
+
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
+            return (Map<Integer, List<CartItem>>) ois.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+            return new HashMap<>();
+        }
+    }
+    private void writeOrderItemsMapToFile(Map<Integer, List<CartItem>> orderItemsMap) throws IOException {
+
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(properties.getProperty("orderItemsMapFilePath")))) {
+            oos.writeObject(orderItemsMap);
+        }
+    }
 
 
 }

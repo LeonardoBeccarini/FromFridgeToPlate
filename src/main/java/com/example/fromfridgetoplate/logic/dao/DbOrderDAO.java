@@ -1,12 +1,15 @@
 package com.example.fromfridgetoplate.logic.dao;
 
+import com.example.fromfridgetoplate.logic.exceptions.DbException;
 import com.example.fromfridgetoplate.logic.exceptions.DeliveryRetrievalException;
 import com.example.fromfridgetoplate.logic.exceptions.OrderNotFoundException;
+import com.example.fromfridgetoplate.logic.model.CartItem;
 import com.example.fromfridgetoplate.logic.model.Order;
 import com.example.fromfridgetoplate.logic.model.OrderList;
 
 import java.sql.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class DbOrderDAO implements OrderDAO {
 
@@ -137,5 +140,39 @@ public class DbOrderDAO implements OrderDAO {
                 }
             }
         }
+    }
+
+    // ------------------- BECCA ---------------------- BECCA ---------------------- BECCA ---------------------- //
+
+
+    public Order saveOrder(Order order) throws DbException {
+        int orderID;
+        List<CartItem> cartItemList= order.getItems();
+        try(CallableStatement cs = connection.prepareCall("{CALL saveOrder(?,?,?,?,?,?,?)}")){
+            cs.setString(1, order.getShopId());
+            cs.setString(2, order.getCustomerId());
+            cs.setString(3, order.getShippingStreet());
+            cs.setInt(4, order.getShippingStreetNumber());
+            cs.setString(5, order.getShippingCity());
+            cs.setString(6, order.getShippingProvince());
+            cs.registerOutParameter(7, Types.NUMERIC);
+            cs.executeQuery();
+            orderID = cs.getInt(7);
+            for(CartItem cartItem: cartItemList){
+
+                try(CallableStatement cs2 = connection.prepareCall("{CALL addIngredientToOrder(?,?,?)}")){
+                    cs2.setInt(1, orderID);
+                    cs2.setString(2, cartItem.getName());
+                    cs2.setDouble(3, cartItem.getQuantity());
+                    cs2.executeQuery();
+                }
+            }
+
+        }catch(SQLException e){
+            e.printStackTrace();
+            throw new DbException("errore database:"+" " + e.getMessage());
+        }
+        order.setOrderId(orderID);
+        return order;
     }
 }
