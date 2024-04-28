@@ -5,7 +5,6 @@ import com.example.fromfridgetoplate.logic.exceptions.DbException;
 import com.example.fromfridgetoplate.logic.model.Role;
 import com.example.fromfridgetoplate.logic.model.Shop;
 import com.example.fromfridgetoplate.logic.model.User;
-import com.example.fromfridgetoplate.logic.utility.MyObjectOutputStream;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -70,20 +69,21 @@ public class FileShopDAO extends FileDAOBase implements ShopDAO {
     // Helper method to read shops from file
     private List<Shop> readShopsFromFile() throws DbException {
         File file = new File(shopsFilePath);
-        if (!file.exists()) {
+        if (!file.exists() || file.length()==0) {
             return new ArrayList<>();
         }
 
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
             return (List<Shop>) ois.readObject();
         } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace(); //debug
             throw new DbException("Errore durante la lettura dal file: " + e.getMessage());
         }
     }
 
 
     private void writeShopsToFile(List<Shop> shops) throws DbException {
-        try (MyObjectOutputStream oos = new MyObjectOutputStream(new FileOutputStream(shopsFilePath))) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(shopsFilePath))) {
             oos.writeObject(shops);
         } catch (IOException e) {
             throw new DbException("Errore durante la scrittura sul file: " + e.getMessage());

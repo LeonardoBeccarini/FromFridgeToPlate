@@ -1,8 +1,9 @@
 package com.example.fromfridgetoplate.logic.model;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public enum Role {
+public enum Role implements Serializable {
     RIDER(1),
     OWNER(2),
     CLIENT(3);
