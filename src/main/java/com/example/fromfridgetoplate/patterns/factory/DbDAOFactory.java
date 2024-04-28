@@ -38,4 +38,7 @@ public class DbDAOFactory implements DAOAbsFactory {
 
     @Override
     public CatalogDAO createCatalogDAO(){return new CatalogDAOImplJDBC();}
+
+    @Override
+    public ClientDAO createClientDAO(){return new DbClientDAO();}
 }

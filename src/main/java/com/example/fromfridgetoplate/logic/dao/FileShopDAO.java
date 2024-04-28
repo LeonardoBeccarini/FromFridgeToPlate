@@ -5,6 +5,7 @@ import com.example.fromfridgetoplate.logic.exceptions.DbException;
 import com.example.fromfridgetoplate.logic.model.Role;
 import com.example.fromfridgetoplate.logic.model.Shop;
 import com.example.fromfridgetoplate.logic.model.User;
+import com.example.fromfridgetoplate.logic.utility.MyObjectOutputStream;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ import java.util.List;
 public class FileShopDAO extends FileDAOBase implements ShopDAO {
 
 // x becca: dovresti cambiare nome e messaggio di errore alla DbException, in tipo PersistenceException in modo
-// che non sia relativa solo al db ma anche ai file
+// che non sia relativa solo al db ma anche a i file
     public FileShopDAO() {}
 
     @Override
@@ -82,7 +83,7 @@ public class FileShopDAO extends FileDAOBase implements ShopDAO {
 
 
     private void writeShopsToFile(List<Shop> shops) throws DbException {
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(shopsFilePath))) {
+        try (MyObjectOutputStream oos = new MyObjectOutputStream(new FileOutputStream(shopsFilePath))) {
             oos.writeObject(shops);
         } catch (IOException e) {
             throw new DbException("Errore durante la scrittura sul file: " + e.getMessage());
@@ -95,7 +96,7 @@ public class FileShopDAO extends FileDAOBase implements ShopDAO {
         FileShopDAO dao = new FileShopDAO();
 
         // Crea un nuovo negozio di esempio
-        Shop newShop = new Shop("quircio5@gmail.com", "qr", "quircioresellero", "Via dei pantani", "VAT123456781", "1234567890");
+        Shop newShop = new Shop("quircio5@gmail.com", "qr", "quircioresellero", "Via dei pantani", "12345678123", "1234567890");
 
         boolean registrationResult = false;
         try {
