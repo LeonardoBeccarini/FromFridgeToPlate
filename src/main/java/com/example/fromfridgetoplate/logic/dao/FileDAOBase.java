@@ -47,7 +47,7 @@ public abstract class FileDAOBase {
             return new ArrayList<>();
         }
 
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filePath))) {
             Object readObject = ois.readObject();
             if (readObject instanceof List) {
                 return (List<T>) readObject;
@@ -56,7 +56,7 @@ public abstract class FileDAOBase {
                 return new ArrayList<>();
             }
         } catch (EOFException e) {
-            // Log this exception and possibly alert the user or take recovery action
+
             System.err.println("eof raggiunta" + e.getMessage());
             return new ArrayList<>();
         } catch (IOException | ClassNotFoundException e) {

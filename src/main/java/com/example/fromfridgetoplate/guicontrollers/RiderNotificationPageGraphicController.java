@@ -88,6 +88,7 @@ public class RiderNotificationPageGraphicController {
         assert streetColumn != null : "fx:id=\"streetColumn\" was not injected: check your FXML file 'Untitled'.";
 
 
+
         orderColumn.setCellValueFactory(new PropertyValueFactory<>("orderId"));
         streetColumn.setCellValueFactory(new PropertyValueFactory<>("street"));
         cityColumn.setCellValueFactory(new PropertyValueFactory<>("city"));

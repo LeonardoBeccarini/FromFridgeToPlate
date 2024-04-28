@@ -5,14 +5,16 @@ import com.example.fromfridgetoplate.logic.model.Order;
 public class NotificationBean {
 
     private int notificationId;
-    OrderBean orderBean;
+    private OrderBean orderBean;
 
     private String messageText;
+
 
     public NotificationBean(OrderBean orderBean, String messageText) {
         this.orderBean = orderBean;
         this.messageText = messageText;
     }
+
 
     public OrderBean getOrderBean() {
         return orderBean;
@@ -37,5 +39,46 @@ public class NotificationBean {
     public void setNotificationId(int notificationId) {
         this.notificationId = notificationId;
     }
+
+    public int getOrderId () { // questo sarà chiamato dalla setcellValueFactory(), faccio cosi il metodo per il principio di demetra
+        return orderBean.getOrderId();
+    }
+
+    private AddressBean getAddress(){
+        return orderBean.getShippingAddress();
+    }
+
+    public String getStreet() {
+        return getAddress().getShippingStreet();
+    }
+
+    public String getCity(){
+        return getAddress().getShippingCity();
+    }
+
+    public int getStreetNumber() {
+        return getAddress().getShippingStreetNumber();
+    }
+
+    public String getProvince() {
+        return getAddress().getShippingProvince();
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
 

@@ -34,6 +34,8 @@ public class NotificationListBean extends NotificationList {
         notifyGraphicController();
     }
 
+
+
     public void clearNotifications() { // setstate
         notifications.clear();
         notifyGraphicController();

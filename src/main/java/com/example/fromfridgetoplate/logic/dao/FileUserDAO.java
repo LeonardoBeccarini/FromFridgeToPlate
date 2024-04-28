@@ -32,9 +32,9 @@ public class FileUserDAO extends FileDAOBase implements UserDAO {
             }
         }
 
-        return new User(email, Role.CLIENT ); // da elimianre
+        //return new User(email, Role.CLIENT ); // da elimianre
 
-        //throw new NotExistentUserException("User not found");
+        throw new NotExistentUserException("User not found");
     }
 
 

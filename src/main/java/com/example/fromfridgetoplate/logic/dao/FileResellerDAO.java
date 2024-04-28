@@ -297,7 +297,7 @@ public class FileResellerDAO extends FileDAOBase implements ResellerDAO {
         cartItems.add(item2);
 
         //  nuovo Order con gli item
-        Order newOrder = new Order("vat12345678", "Customer1", "Via Roma", 12, "Milano", "MI");
+        Order newOrder = new Order("vat12345678", "Customer1", "Via Roma", 12, "Milano", "MI", "pronto");
         newOrder.setStatus("pronto");
         newOrder.setOrderTime(LocalDateTime.now());
         newOrder.setItems(cartItems);

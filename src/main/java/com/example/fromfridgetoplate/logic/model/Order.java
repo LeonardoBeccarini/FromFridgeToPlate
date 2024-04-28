@@ -84,13 +84,14 @@ public class Order implements Serializable {
         this.customerId = customerId;
     }
 
-    public Order(String shopId, String customerId, String shippingStreet, int shippingStreetNumber, String shippingCity, String shippingProvince) {
+    public Order(String shopId, String customerId, String shippingStreet, int shippingStreetNumber, String shippingCity, String shippingProvince, String status) {
         this.shopId = shopId;
         this.customerId = customerId;
         this.shippingStreet = shippingStreet;
         this.shippingStreetNumber = shippingStreetNumber;
         this.shippingCity = shippingCity;
         this.shippingProvince = shippingProvince;
+        this.status = status;
     }
 
     // Metodi getter e setter

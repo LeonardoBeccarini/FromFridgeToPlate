@@ -9,6 +9,7 @@ import com.example.fromfridgetoplate.patterns.abstractFactory.DAOAbsFactory;
 import com.example.fromfridgetoplate.patterns.abstractFactory.DAOFactoryProvider;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -132,7 +133,8 @@ public class MakeOrderControl {
         if(dummyPaymentBoundary.pay(totalPriceBean)){
             //se paga salvo l'ordine sul db, invio la notifica al client e svuoto il carrello
 
-            Order newOrder = new Order(orderBean.getShopId(), customerId, addressBean.getShippingStreet(), addressBean.getShippingStreetNumber(),  addressBean.getShippingCity(), addressBean.getShippingProvince() );
+            Order newOrder = new Order(orderBean.getShopId(), customerId, addressBean.getShippingStreet(), addressBean.getShippingStreetNumber(),  addressBean.getShippingCity(), addressBean.getShippingProvince(), "pronto" );
+            newOrder.setOrderTime(LocalDateTime.now());
             newOrder.setItems(cart.getItemList());
             Order savedOrder = resellerDAO.saveOrder(newOrder);
             notificationDAO.insertNotificationRes(savedOrder, "nuovo ordine ricevuto!");

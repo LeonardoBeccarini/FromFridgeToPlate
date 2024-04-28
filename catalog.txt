@@ -1,2 +1,6 @@
 Vat1234567 Banana 2.0
 vat12345678 lattuga 2.0
+ABC123DEF sedano 0.5
+abc123 carota 1.0
+abc123 pomodoro 2.0
+abc123 ricotta 5.0
