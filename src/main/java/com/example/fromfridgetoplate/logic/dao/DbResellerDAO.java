@@ -258,6 +258,7 @@ public class DbResellerDAO implements ResellerDAO{
 
 // ------------------- BECCA ---------------------- BECCA ---------------------- BECCA ---------------------- //
 
+
     public Order saveOrder(Order order) throws DbException {
         int orderID;
         List<CartItem> cartItemList= order.getItems();

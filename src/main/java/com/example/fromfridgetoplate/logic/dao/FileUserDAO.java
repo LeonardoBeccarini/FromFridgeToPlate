@@ -1,5 +1,6 @@
 package com.example.fromfridgetoplate.logic.dao;
 
+import com.example.fromfridgetoplate.logic.model.Role;
 import com.example.fromfridgetoplate.logic.model.User;
 import com.example.fromfridgetoplate.logic.exceptions.NotExistentUserException;
 
@@ -19,9 +20,21 @@ public class FileUserDAO extends FileDAOBase implements UserDAO {
                 System.out.println("e: " + user.getEmail() + " pw: " + user.getPassword());
                 return new User(email, user.getRole());
             }
+
         }
 
-        throw new NotExistentUserException("User not found");
+        if (users.isEmpty()) {
+            System.out.println("Nessun utente trovato nel file.");
+        } else {
+            System.out.println("Utenti trovati nel file:");
+            for (User user : users) {
+                System.out.println("Email: " + user.getEmail() + ", Password: " + user.getPassword() + ", Ruolo: " + user.getRole());
+            }
+        }
+
+        return new User(email, Role.CLIENT ); // da elimianre
+
+        //throw new NotExistentUserException("User not found");
     }
 
 

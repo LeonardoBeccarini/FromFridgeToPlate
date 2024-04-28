@@ -33,12 +33,16 @@ public class RegisterController {
 
 
         }
+
+
         else if(role == Role.CLIENT){
             ClientDAO clientDAO = new ClientDAO();
             Client newClient = (Client) userFactory.createUser(registrationBean);
-            return clientDAO.saveClient(newClient);
+            //return clientDAO.saveClient(newClient);
+            return clientDAO.FilesaveClient(newClient);
 
         }
+
 
         else if(role == Role.RIDER){
             Rider newRider = (Rider) userFactory.createUser(registrationBean); // casto il padre
@@ -46,6 +50,9 @@ public class RegisterController {
             return riderDAO.registerRider(newRider);
 
         }
+
+
+
 
         return false;
     }

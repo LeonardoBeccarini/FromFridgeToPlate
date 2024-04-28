@@ -1,6 +1,8 @@
 package com.example.fromfridgetoplate.logic.model;
 
-public class Client extends User{
+import java.io.Serializable;
+
+public class Client extends User implements Serializable {
     private String name;
     private String surname;
     private String address;

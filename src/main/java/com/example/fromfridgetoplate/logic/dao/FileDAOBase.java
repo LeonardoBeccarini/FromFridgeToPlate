@@ -43,17 +43,28 @@ public abstract class FileDAOBase {
 
     protected <T> List<T> readFromFile(String filePath) {
         File file = new File(filePath);
-        if (!file.exists()) {
+        if (!file.exists() || file.length() == 0) { // Controlla anche se il file è vuoto
             return new ArrayList<>();
         }
 
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
-            return (List<T>) ois.readObject();
+            Object readObject = ois.readObject();
+            if (readObject instanceof List) {
+                return (List<T>) readObject;
+            } else {
+                System.err.println("Tipo Dati scritti male nel file: non è una lista.");
+                return new ArrayList<>();
+            }
+        } catch (EOFException e) {
+            // Log this exception and possibly alert the user or take recovery action
+            System.err.println("eof raggiunta" + e.getMessage());
+            return new ArrayList<>();
         } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+            System.err.println("io exc " + e.getMessage());
             return new ArrayList<>();
         }
     }
+
 
     protected <T> void writeToFile(List<T> genericList, String filePath) {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filePath))) {
@@ -117,6 +128,7 @@ public abstract class FileDAOBase {
         List<User> users = readFromFile(usersFilePath);
         // Verifico che tipo degli elementi sia corretto
         if (!users.isEmpty() && users.get(0) != null) {
+            System.out.println("username:"+ users.get(0).getEmail());
             return users;
         } else {
             return new ArrayList<>();

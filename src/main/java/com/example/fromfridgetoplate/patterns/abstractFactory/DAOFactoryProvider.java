@@ -17,7 +17,7 @@ public class DAOFactoryProvider {
     private static DAOFactoryProvider instance;
     private DAOAbsFactory daoFactory;
 
-    private PersistenceType type = PersistenceType.JDBC;
+    private PersistenceType type = PersistenceType.FILE_SYSTEM;
     private DAOFactoryProvider() {
 
         // basta cambiare new DbDAOFactory(); con new FileDAOFactory per avere la versione basata su file, e lasciare
