@@ -1,22 +1,21 @@
 package com.example.fromfridgetoplate.secondguicontrollers;
 
 
-import com.example.fromfridgetoplate.guicontrollers.NotificationObserver;
 import com.example.fromfridgetoplate.logic.bean.*;
 import com.example.fromfridgetoplate.logic.control.RiderHPController;
 import java.util.List;
 import java.util.Scanner;
 
-public class RiderHomePageCLIController implements NotificationObserver {
+public class RiderHomePageCLIController implements IUpdateable {
 
     private RiderHPController riderController;
-    private NotificationListBean nlb = new NotificationListBean();
+    //private NotificationListBean nlb = new NotificationListBean();
     private Scanner scanner = new Scanner(System.in);
     private boolean isOnline = false;
 
     public RiderHomePageCLIController() {
         //nlb.setGraphicController(this);
-        nlb.attach(this);
+        //nlb.attach(this);
     }
 
     public void mainMenu() {
@@ -25,7 +24,7 @@ public class RiderHomePageCLIController implements NotificationObserver {
             Printer.print("\n*** Menu Principale Rider ***");
             Printer.print("1. Vai Online");
             Printer.print("2. Vai Offline");
-            Printer.print("3. Sezione Notifiche");
+            Printer.print("3. Sezione Incarichi");
             Printer.print("4. Accedi al tuo report delle consegne");
             Printer.print("5. Visualizza l'ordine che devi consegnare");
             Printer.print("6. Esci");
@@ -68,7 +67,8 @@ public class RiderHomePageCLIController implements NotificationObserver {
     private void goOnline() {
         if (!isOnline) {
             isOnline = true;
-            this.riderController = new RiderHPController(nlb);
+            NotificationBeanList notificationBeanList = new NotificationBeanList(this);
+            this.riderController = new RiderHPController(notificationBeanList);
 
             Printer.print("Sei entrato in servizio");
 
@@ -97,7 +97,7 @@ public class RiderHomePageCLIController implements NotificationObserver {
             return;
         }
 
-        List<NotificationBean> notificationBeans = nlb.getNotifications();
+        List<NotificationBean> notificationBeans = riderController.getCurrentNotifications();
         if (notificationBeans.isEmpty()) {
             Printer.print("Non ci sono nuove notifiche.");
             return;
@@ -177,9 +177,11 @@ public class RiderHomePageCLIController implements NotificationObserver {
     }
 
     @Override
-    public void update() {
-        Printer.print("I tuoi incarichi sono stati aggiornati. Potresti avere nuove notifiche. Seleziona 'Visualizza Notifiche' dal menu principale per vederle.");
+    public void update(List<NotificationBean> ntfBeans) {
+        Printer.print("I tuoi incarichi sono stati aggiornati. Hai: " + ntfBeans.size() +  " nuove notifiche. Seleziona 'Sezione Incarichi' dal menu principale per vederle.");
     }
+
+
 
     public static void main(String[] args) {
         new RiderHomePageCLIController().mainMenu();

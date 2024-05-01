@@ -18,11 +18,6 @@ public class OrderListBean {
     }
 
 
-    public void refreshOrders() {
-        PendingOrdersController poc = new PendingOrdersController();
-        OrderListBean updatedOrderList = poc.getPendingOrderListBean();
-        this.setOrderBeans(updatedOrderList.getOrderBeans());
-    }
 
 
 

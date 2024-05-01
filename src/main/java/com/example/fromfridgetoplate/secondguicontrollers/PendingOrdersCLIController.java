@@ -112,9 +112,10 @@ public class PendingOrdersCLIController {
     private void loadAndDisplayOrders() {
         Printer.print("\nAggiornamento degli ordini pendenti, l'aggiornamento avverà ogni 20 secondi, attendere...");
 
+
+
         PendingOrdersController pendingOrdersControl = new PendingOrdersController();
-        OrderListBean orderListBean = pendingOrdersControl.getPendingOrderListBean();
-        orders = orderListBean.getOrderBeans();
+        orders = pendingOrdersControl.getUpdatedPendingOrders();
 
         if (orders.isEmpty()) {
             Printer.print("Non ci sono ordini in sospeso al momento.");

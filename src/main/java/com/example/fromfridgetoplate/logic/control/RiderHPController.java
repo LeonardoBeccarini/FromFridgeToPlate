@@ -3,6 +3,7 @@ package com.example.fromfridgetoplate.logic.control;
 import com.example.fromfridgetoplate.logic.bean.*;
 import com.example.fromfridgetoplate.logic.dao.*;
 import com.example.fromfridgetoplate.logic.exceptions.*;
+import com.example.fromfridgetoplate.logic.model.CachingNotificationList;
 import com.example.fromfridgetoplate.logic.model.Notification;
 import com.example.fromfridgetoplate.logic.model.Order;
 import com.example.fromfridgetoplate.logic.model.OrderList;
@@ -10,6 +11,7 @@ import com.example.fromfridgetoplate.patterns.abstractFactory.DAOAbsFactory;
 import com.example.fromfridgetoplate.patterns.abstractFactory.DAOFactoryProvider;
 import com.example.fromfridgetoplate.patterns.factory.DAOFactory;
 import com.example.fromfridgetoplate.patterns.factory.FileDAOFactory;
+import com.example.fromfridgetoplate.patterns.observer.NotificationList;
 
 
 import java.io.IOException;
@@ -27,25 +29,34 @@ public class RiderHPController {
     private Timer notificationPoller;
 
 
+
+    // CachingNotificationList notificationList;
+
+    CachingNotificationList notificationList;
+
+
     List<Notification> deliveredNotification;
     private int lastNotificationId = 0;
 
-    private NotificationListBean nlb;
+    //private NotificationListBean nlb;
 
 
-    public RiderHPController(NotificationListBean nlb) {
+    public RiderHPController(NotificationBeanList nlb) {
 
-        this.nlb = nlb;
-        this.deliveredNotification = new ArrayList<>();
+        //this.nlb = nlb;
+        //this.deliveredNotification = new ArrayList<>();
         this.riderBean = getRiderDetailsFromSession();// serve per accedere alle informazioni immesse al momento della
         // registrazione, che mi servono, per popolare il riderbean
+
+        this.notificationList = new CachingNotificationList();
+        notificationList.attach(nlb);
 
     }
 
     // 2o costruttore
     public RiderHPController() {
 
-        this.deliveredNotification = new ArrayList<>();
+        //this.deliveredNotification = new ArrayList<>();
         this.riderBean = getRiderDetailsFromSession();// serve per accedere alle informazioni immesse al momento della
         // registrazione, che mi servono, per popolare il riderbean
 
@@ -78,6 +89,32 @@ public class RiderHPController {
         }
     }
 
+    public List<NotificationBean> getCurrentNotifications() {
+        return convertToNotificationBeans(notificationList.getNotifications());
+    }
+
+    private List<NotificationBean> convertToNotificationBeans(List<Notification> notifications) {
+
+        List <NotificationBean> ntfBeanLst = new ArrayList<>();
+
+        for (Notification notification : notifications) {
+
+            Order order = notification.getOrder();
+            AddressBean addressBean = new AddressBean(order.getShippingStreet(), order.getShippingStreetNumber(), order.getShippingCity(), order.getShippingProvince());
+            OrderBean orderBean = new OrderBean(order.getRiderId(), order.getOrderId(), addressBean);
+
+            NotificationBean ntfBean = new NotificationBean(
+                    orderBean,
+                    notification.getMessageText()
+            );
+            ntfBean.setNotificationId(notification.getNotificationId());
+            ntfBeanLst.add(ntfBean);
+
+        }
+
+        return ntfBeanLst;
+    }
+
 
     private class NotificationPollingTask extends TimerTask {
         @Override
@@ -90,21 +127,28 @@ public class RiderHPController {
             List<Notification> newNotifications = ntfDAO.getNotificationsForRider(riderBean.getId(), lastNotificationId);
 
 
-            if (!newNotifications.isEmpty()) {
-                List<NotificationBean> newNotificationBeans = new ArrayList<>();
-                for (Notification notification : newNotifications) {
-                    if (notification.getNotificationId() > lastNotificationId) {
-                        deliveredNotification.add(notification);
-                        NotificationBean notificationBean = convertToNotificationBean(notification);
-                        newNotificationBeans.add(notificationBean);
+            if (!newNotifications.isEmpty())
+            {
+                for (Notification notification : newNotifications)
+                {
+                    if (notification.getNotificationId() > lastNotificationId)
+                    {
+                        notificationList.addNotification(notification);
+
                         lastNotificationId = notification.getNotificationId();
                     }
                 }
-                if (!newNotificationBeans.isEmpty()) {
-                    nlb.addNotifications(newNotificationBeans); // Aggiorna la lista nella NotificationListBean
-                }
+
+
+
             }
+
+
+
+
         }
+
+
 
 
         private NotificationBean convertToNotificationBean(Notification notification) {
@@ -126,7 +170,7 @@ public class RiderHPController {
     }
 
 
-    public void markNotificationsAsRead() {
+    /*public void markNotificationsAsRead() {
 
         //this.stopNotificationPolling(); // interrompo momentaneamente il polling del db
 
@@ -146,33 +190,39 @@ public class RiderHPController {
         // notifiche consegnate, questo metodo in effetti viene chiamato dal controller grafico quando l'utente rider
         // clicca per visualizzare e quindi leggere le notifihce
 
-    }
+    }*/
 
-    public void markNotificationAsRead(NotificationBean notificationToMark) throws NotificationProcessingException {
+    public void markNotificationAsRead(NotificationBean notificationToMark) throws NotificationProcessingException, NotificationHandlingException {
         if (notificationToMark == null) {
             throw new IllegalArgumentException("La notifica da marcare come letta non può essere null.");
         }
 
         NotificationDAO ntfDAO = new NotificationDAO(SingletonConnector.getInstance().getConnection());
 
-        // Marca la notifica specifica come letta, aggiornando il modello e il database
+        // Marco la notifica specifica come letta, aggiornando il modello e il database
         ntfDAO.markNotificationAsRead(notificationToMark.getNotificationId());
 
-        // Aggiorna lo stato della notifica nella lista in memoria, se presente
+        // Aggiorno lo stato della notifica nella lista in memoria, se è presente
+        notificationList.updateNotificationAsRead(notificationToMark);
+
+/*
         for (Notification deliveredNotif : deliveredNotification) {
             if (deliveredNotif.getNotificationId() == notificationToMark.getNotificationId()) {
                 deliveredNotif.markAsRead();
-                break; // Interrompo il ciclo una volta trovata la notifica corrispondente
+                break; // e interrompo il ciclo una volta trovata la notifica corrispondente
             }
-        }
+        }*/
 
+
+
+        /*
         // Rimuovo la notifica marcata come letta dalla lista delle notifiche (NotificationListBean)
         try {
             nlb.removeNotification(notificationToMark);
         } catch (NotificationHandlingException e) {
             // wrappo l'eccezione in una nuova eccezione con ulteriore contesto
             throw new NotificationProcessingException("Errore nella gestione della notifica con ID: " + notificationToMark.getNotificationId(), e);
-        }
+        }*/
 
     }
 
@@ -297,10 +347,6 @@ public class RiderHPController {
         }
     }
 
-
-    public void setNlb (NotificationListBean nlb){
-        this.nlb = nlb;
-    }
 
     public RiderBean getRiderBean() {
         return riderBean;

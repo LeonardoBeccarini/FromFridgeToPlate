@@ -224,6 +224,12 @@ public class FileOrderDAO extends FileDAOBase implements OrderDAO {
             oos.writeObject(orderItemsMap);
         }
     }
+    public static void main(String[] args) {
+        int testRiderId = 3; // Cambia questo ID per testare con diversi rider
+        FileOrderDAO fod = new FileOrderDAO();
+        boolean isInDelivery = fod.checkForOrderInDelivery(testRiderId);
+        System.out.println("Rider " + testRiderId + " has an order in delivery: " + isInDelivery);
+    }
 
 
 }

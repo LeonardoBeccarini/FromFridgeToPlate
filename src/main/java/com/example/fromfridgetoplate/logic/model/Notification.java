@@ -1,4 +1,5 @@
 package com.example.fromfridgetoplate.logic.model;
+
 public class Notification {
 
     private int notificationId;

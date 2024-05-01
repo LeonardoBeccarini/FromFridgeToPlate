@@ -48,7 +48,7 @@ public class PendingOrdersGraphicController extends GenericGraphicController {
     @FXML
     private TableColumn<OrderBean, String> shippingCityColumn;
 
-    private OrderListBean orderListBean;
+    //private OrderListBean orderListBean;
 
 
     @Override
@@ -56,9 +56,9 @@ public class PendingOrdersGraphicController extends GenericGraphicController {
 
         super.initialize(location, resources); // anche la classe padre: GenericGraphicController, ha il suo initialize, quindi bisogna chiamarlo
         // prima di chiamare l'initialize di questo controller
-        this.orderListBean = new OrderListBean();
+        //this.orderListBean = new OrderListBean();
 
-        // Collega le colonne agli attributi di OrderBean
+        // Collego le colonne agli attributi di OrderBean
 
 
         //PropertyValueFactory, implementa l'interfaccia "Callback", e setCellValueFactory riceve come parametro di tipo
@@ -98,7 +98,7 @@ public class PendingOrdersGraphicController extends GenericGraphicController {
             Parent root = loader.load();
 
             SearchRidersGraphicController searchRidersGController = loader.getController();
-            //IRiderSelectionListener riderSelectionListener = new RiderSelectionListener();
+
             SearchBean sBean = new SearchBean(shippingCity, selectedOrder);
             searchRidersGController.loadData(sBean); // Carica i dati nella TableView relativa alla scelta del rider
 
@@ -134,34 +134,33 @@ public class PendingOrdersGraphicController extends GenericGraphicController {
     private void loadData() {
 
         PendingOrdersController pendingOrdersControl = new PendingOrdersController();
-        OrderListBean orderListBn = pendingOrdersControl.getPendingOrderListBean();
-        ordersTable.setItems(FXCollections.observableArrayList(orderListBn.getOrderBeans()));// forse questo da rivedere per
-        // evitare duplicazione di codice
+        refreshOrders(pendingOrdersControl);
 
     }
 
 
     // modello pull , in cui la view attraverso la bean fa la get sul model, in realtà la bean fa la get sul controller
     // invece che sul model, ma cmq dovrebbe restare il fatto da rispettare che è che: se evolve il model, evolverà solo
-    // il bean (qui in realtà neanche il bean ma solo il controller che cmq dovrebbe evolvere uguale se cambiasse il model,
-    // e non la parte grafica , poi i nrealtà vale anche che: in una modalità pull, il controller scrive i dati nel bean, che poi
-    // vengono letti dalla view
+    // il bean .
     private void setupRefreshTimer() {
         Timer timer = new Timer(true);
+        PendingOrdersController poc = new PendingOrdersController();
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                Platform.runLater(() -> { // vedi nota 3.5 tsackoverflow
-                    orderListBean.refreshOrders();
-                    updateTableView();
-                });
+                Platform.runLater(() -> refreshOrders(poc));
             }
-        }, 0, 15000); // Aggiorna ogni 15 secondi
+        }, 0, 15000); // Refresh every 15 seconds
+    }
+
+    private void refreshOrders(PendingOrdersController poc) {
+        List<OrderBean> updatedOrderList = poc.getUpdatedPendingOrders();
+        updateTableView(updatedOrderList);
     }
 
 
-    private void updateTableView() {
-        ObservableList<OrderBean> updatedList = FXCollections.observableArrayList(orderListBean.getOrderBeans());
+    private void updateTableView(List<OrderBean> updatedOrderList) {
+        ObservableList<OrderBean> updatedList = FXCollections.observableArrayList(updatedOrderList);
         ordersTable.setItems(updatedList);
     }
 

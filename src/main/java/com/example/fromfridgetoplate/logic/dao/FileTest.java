@@ -80,17 +80,24 @@ public class FileTest {
     private static String filePath = "userData.ser";
 
     public static void main(String[] args) {
-        // Creazione di una lista di oggetti User da scrivere nel file
-        List<User> usersToWrite = Arrays.asList(
+        // lista di oggetti User da scrivere nel file
+
+       /* List<User> usersToWrite = Arrays.asList(
                 new User("esempio1@example.com", "password123", Role.CLIENT),
                 new User("esempio2@example.com", "password456", Role.CLIENT)
-        );
+        );*/
+
+        User user1 = new User("esempio1@example.com", "password123", Role.CLIENT);
+        User user2 = new User("esempio2@example.com", "password456", Role.CLIENT);
 
         // Scrittura della lista nel file
-        writeToFile(usersToWrite, filePath);
+        //writeToFile(usersToWrite, filePath);
+        addUserToFile(user1);
+        addUserToFile(user2);
 
         // Lettura della lista
-        List<User> usersRead = readFromFile(filePath);
+        //List<User> usersRead = readFromFile(filePath);
+        List<User> usersRead = readUsersFromFile();
 
 
         System.out.println("Contenuti letti dal file:");
@@ -98,6 +105,26 @@ public class FileTest {
             System.out.println("Email: " + user.getEmail() + ", Role: " + user.getRole());
         }
 
+
+    }
+
+    private static boolean addUserToFile(User user) {
+        List<User> users = readUsersFromFile();
+        users.add(user);
+        writeToFile(users, filePath);
+        return true;
+    }
+
+    protected static List<User> readUsersFromFile() {
+        // Usa il metodo readFromFile della superclasse, fornendo il percorso del file e il tipo atteso
+        List<User> users = readFromFile(filePath);
+        // Verifico che tipo degli elementi sia corretto
+        if (!users.isEmpty() && users.get(0) != null) {
+            System.out.println("username:"+ users.get(0).getEmail());
+            return users;
+        } else {
+            return new ArrayList<>();
+        }
     }
 
     protected static <T> void writeToFile(List<T> genericList, String filePath) {
@@ -108,6 +135,8 @@ public class FileTest {
             e.printStackTrace();
         }
     }
+
+
 
     protected static <T> List<T> readFromFile(String filePath) {
         File file = new File(filePath);

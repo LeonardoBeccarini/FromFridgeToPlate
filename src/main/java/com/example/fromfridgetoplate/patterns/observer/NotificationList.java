@@ -2,6 +2,7 @@ package com.example.fromfridgetoplate.patterns.observer;
 
 import com.example.fromfridgetoplate.guicontrollers.NotificationObserver;
 import com.example.fromfridgetoplate.logic.bean.NotificationBean;
+import com.example.fromfridgetoplate.logic.model.Notification;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,8 +10,10 @@ import java.util.List;
 
 public abstract class NotificationList {
 
-    List<NotificationObserver> ntfObservers = new ArrayList<>();
-    protected List<NotificationBean> notifications;
+    protected List<NotificationObserver> ntfObservers = new ArrayList<>();
+
+    //protected List<NotificationBean> notifications;
+
 
 
 

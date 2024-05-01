@@ -20,7 +20,14 @@ import java.util.List;
 
 public class PendingOrdersController {
     // Metodo per ottenere un OrderListBean con gli ordini pendenti
-    public OrderListBean getPendingOrderListBean() {
+
+    // Metodo per ottenere direttamente gli OrderBean aggiornati
+    public List<OrderBean> getUpdatedPendingOrders() {
+
+        return getPendingOrderListBean().getOrderBeans();
+    }
+
+    private OrderListBean getPendingOrderListBean() {
         // Chiamata al DAO per ottenere la lista di ordini pendenti
 
         DAOAbsFactory absFactory = DAOFactoryProvider.getInstance().getDaoFactory();

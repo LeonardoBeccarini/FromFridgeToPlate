@@ -2,12 +2,15 @@
 package com.example.fromfridgetoplate.guicontrollers;
 
 import com.example.fromfridgetoplate.logic.bean.NotificationBean;
-import com.example.fromfridgetoplate.logic.bean.NotificationListBean;
+import com.example.fromfridgetoplate.logic.bean.NotificationBeanList;
+//import com.example.fromfridgetoplate.logic.bean.NotificationListBean;
 import com.example.fromfridgetoplate.logic.bean.RiderBean;
 import com.example.fromfridgetoplate.logic.control.RiderHPController;
 
+import com.example.fromfridgetoplate.logic.exceptions.NotificationHandlingException;
 import com.example.fromfridgetoplate.logic.exceptions.NotificationProcessingException;
 import com.example.fromfridgetoplate.patterns.state.RiderStateContext;
+import com.example.fromfridgetoplate.secondguicontrollers.IUpdateable;
 import com.example.fromfridgetoplate.secondguicontrollers.Printer;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -31,7 +34,9 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class RiderHomePageGraphicController extends GenericGraphicController implements NotificationObserver {
+
+
+public class RiderHomePageGraphicController extends GenericGraphicController implements IUpdateable {
 
     @FXML
     private AnchorPane root;
@@ -69,7 +74,7 @@ public class RiderHomePageGraphicController extends GenericGraphicController imp
 
     private RiderHPController riderController;// è necessario mantenere un riferimento allo stesso controller applicativo , senno si avvierebbero piu timer , ecc.
     private RiderNotificationPageGraphicController notificationPageGController;
-    private NotificationListBean nlb = new NotificationListBean();
+    //private NotificationListBean nlb = new NotificationListBean();
 
     private RiderStateContext stateContext;
 
@@ -92,7 +97,7 @@ public class RiderHomePageGraphicController extends GenericGraphicController imp
         setOnlineStatus();
         goOnline(null);
 
-        super.initialize(location,resources);
+
     }
 
 
@@ -116,9 +121,11 @@ public class RiderHomePageGraphicController extends GenericGraphicController imp
             alert.showAndWait();
             return;
         }
-        this.riderController = new RiderHPController(nlb);
+        NotificationBeanList notificationBeanList = new NotificationBeanList(this); // in modo che la classe bean possa poi aggiornare gli elementi grafici a cui è associata
+        this.riderController = new RiderHPController(notificationBeanList);
+
         //nlb.setGraphicController(this);
-        nlb.attach(this);
+        //nlb.attach(this);
 
     }
 
@@ -233,7 +240,8 @@ public class RiderHomePageGraphicController extends GenericGraphicController imp
         notificationPageGController = loader.getController();
         notificationPageGController.setCallback(this);
 
-        notificationPageGController.update(FXCollections.observableArrayList(nlb.getNotifications()));
+        List<NotificationBean> lst = riderController.getCurrentNotifications();
+        notificationPageGController.update(FXCollections.observableArrayList(lst));
 
         Scene scene = new Scene(nroot);
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -264,10 +272,10 @@ public class RiderHomePageGraphicController extends GenericGraphicController imp
     }
 
 
-    public void update() {
+    public void update(List<NotificationBean> notificationBeans) {
 
         try {
-            List<NotificationBean> notificationBeans = nlb.getNotifications();
+
             int newNotificationsCount = notificationBeans.size();
 
             // aggiorno il testo del bottone notificationsButton
@@ -301,7 +309,7 @@ public class RiderHomePageGraphicController extends GenericGraphicController imp
     public void SetNotificationAsRead(NotificationBean notifBn) {
         try {
             riderController.markNotificationAsRead(notifBn);
-        } catch (NotificationProcessingException e) {
+        } catch (NotificationProcessingException | NotificationHandlingException e) {
             // Gestione dell'eccezione, ad esempio mostrando un Alert con l'errore
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Errore nella gestione della notifica");
