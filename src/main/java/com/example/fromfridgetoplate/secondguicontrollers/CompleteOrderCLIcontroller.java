@@ -62,11 +62,13 @@ public class CompleteOrderCLIcontroller {
             addressBean = getAddressBean();
         }
         OrderBean orderBean = new OrderBean(shopBean.getVatNumber(), addressBean);
+
         try {
             makeOrderControl.completeOrder(orderBean);
         } catch (DbException | PaymentFailedException e) {
             Printer.print("il completamento dell'ordine non è andato a buon fine: " +e.getMessage());
         }
+        Printer.print("Ordine completato con successo!");
         try {
             navigatorCLI.goTo("ClientHomeCLI");
         } catch (IOException e) {

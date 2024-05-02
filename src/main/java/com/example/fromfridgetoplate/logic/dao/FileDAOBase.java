@@ -3,7 +3,6 @@ package com.example.fromfridgetoplate.logic.dao;
 import com.example.fromfridgetoplate.logic.model.Order;
 import com.example.fromfridgetoplate.logic.model.Rider;
 import com.example.fromfridgetoplate.logic.model.User;
-//import com.example.fromfridgetoplate.logic.utility.MyObjectOutputStream;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -68,7 +67,6 @@ public abstract class FileDAOBase {
     }
 
 
-
     protected <T> void writeToFile(List<T> genericList, String filePath) {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filePath))) {
             oos.writeObject(genericList);
@@ -76,10 +74,6 @@ public abstract class FileDAOBase {
             e.printStackTrace();
         }
     }
-
-
-
-
 
 
     protected List<Order> getAllOrders() {
@@ -115,13 +109,13 @@ public abstract class FileDAOBase {
 
         List<Rider> riders = readFromFile(ridersFilePath);
 
-
-        /*System.out.println("Rider estratti dal file:");
+        // Stampa i dettagli di ogni rider
+        System.out.println("Rider estratti dal file:");
         for (Rider rider : riders) {
             System.out.println("ID: " + rider.getId() + ", Nome: " + rider.getName() + ", Cognome: " + rider.getSurname() +
                     ", Disponibilità: " + (rider.isAvailable() ? "Disponibile" : "Non disponibile") +
                     ", Città assegnata: " + rider.getAssignedCity());
-        }*/
+        }
 
         return riders;
     }

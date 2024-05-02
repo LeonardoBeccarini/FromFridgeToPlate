@@ -3,6 +3,7 @@ package com.example.fromfridgetoplate.guicontrollers;
 import com.example.fromfridgetoplate.logic.bean.AddressBean;
 import com.example.fromfridgetoplate.logic.bean.NotificationBean;
 import com.example.fromfridgetoplate.logic.bean.OrderBean;
+import com.example.fromfridgetoplate.logic.control.MakeOrderControl;
 import com.example.fromfridgetoplate.logic.dao.NotificationDAO;
 import com.example.fromfridgetoplate.patterns.factory.DAOFactory;
 import javafx.fxml.FXML;
@@ -36,12 +37,9 @@ public class ResellerNotificationGraphicController extends GenericGraphicControl
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        DAOFactory daoFactory = new DAOFactory();
-        NotificationDAO notificationDAO = daoFactory.getNotificationDAO();
         populateListView();
-        for(NotificationBean notificationBean: notificationBeanList){
-            notificationDAO.markNotificationAsRead(notificationBean.getNotificationId());
-        }
+        MakeOrderControl makeOrderControl = new MakeOrderControl();
+        makeOrderControl.markNotificationAsRead(notificationBeanList);
         super.initialize(location, resources);
     }
 

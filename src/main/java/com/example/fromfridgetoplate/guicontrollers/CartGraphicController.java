@@ -37,10 +37,11 @@ public class CartGraphicController extends GenericGraphicController{
 
     @FXML
     private ListView<CartItemBean> cartListView;
-    private final MakeOrderControl makeOrderControl = new MakeOrderControl();
+    private final MakeOrderControl makeOrderControl;
     private final ShopBean shopBean;
 
     public CartGraphicController(ShopBean shopBean){
+        makeOrderControl = new MakeOrderControl();
         this.shopBean = shopBean;
     }
 
