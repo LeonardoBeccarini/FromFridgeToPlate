@@ -52,7 +52,7 @@ public class NavigatorCLI {
                 marketListCLIcontroller.searchShop();
                 break;
 
-            // Aggiungi altri case qui per le nuove pagine CLI
+            // Aggiungi altri case se servono altre "pagine" CLI
             default:
                 Printer.print("Unrecognized command. Please try again.");
                 break;

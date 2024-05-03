@@ -48,7 +48,7 @@ public class PendingOrdersGraphicController extends GenericGraphicController {
     @FXML
     private TableColumn<OrderBean, String> shippingCityColumn;
 
-    //private OrderListBean orderListBean;
+
 
 
     @Override

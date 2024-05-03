@@ -15,6 +15,7 @@ public class OrderStatusCLIController {
 
         PendingOrdersController pendingOrdersController = new PendingOrdersController();
         OrderListBean assignedOrdersBean = pendingOrdersController.getAssignedOrdersBean();
+        assignedOrdersBean.validateAllOrders();
         List<OrderBean> orders = assignedOrdersBean.getOrderBeans();
 
 

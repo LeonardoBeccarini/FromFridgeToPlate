@@ -12,5 +12,6 @@ public interface DAOAbsFactory {
 
     ShopDAO createShopDAO();
     CatalogDAO createCatalogDAO();
+
     ClientDAO createClientDAO();
 }

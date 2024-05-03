@@ -12,6 +12,14 @@ public class Rider extends User implements Serializable {
 
     private String assignedCity;
 
+    public Rider(int id, String nome, String cognome, boolean isAvailable, String assignedCity) {
+        this.id = id;
+        this.name = nome;
+        this.surname = cognome;
+        this.isAvailable = isAvailable;
+        this.assignedCity = assignedCity;
+    }
+
     public int getId() {
         return id;
     }

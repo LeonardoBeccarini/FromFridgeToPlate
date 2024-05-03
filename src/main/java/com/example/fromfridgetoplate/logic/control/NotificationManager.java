@@ -6,27 +6,30 @@ import com.example.fromfridgetoplate.logic.model.Order;
 import com.example.fromfridgetoplate.logic.bean.RiderBean;
 import com.example.fromfridgetoplate.patterns.abstractFactory.DAOAbsFactory;
 import com.example.fromfridgetoplate.patterns.abstractFactory.DAOFactoryProvider;
-import com.example.fromfridgetoplate.patterns.factory.DAOFactory;
-import com.example.fromfridgetoplate.patterns.factory.FileDAOFactory;
+
 
 public class NotificationManager {
 
+
+
     public void registerRiderAvailability(RiderBean riderBn) {
 
-        //DAOFactory daoFactory = new DAOFactory();
+
         DAOAbsFactory daoAbsFactory = DAOFactoryProvider.getInstance().getDaoFactory();;
         RiderDAO riderDAO = daoAbsFactory.createRiderDAO();
 
-        riderDAO.setRiderAvailable(riderBn);
+        riderDAO.setRiderAvailable(riderBn.getId(), riderBn.isAvailable());
 
     }
+
+
 
     public void notifyRider(RiderBean riderBean, OrderBean orderBean) { // purtroppo da qui il rider, dovrà andarsi a retrievare
         // da solo le notifiche dalla tabella nel databse, dall'istanza di applicazione del rivenditore, non c'è modo di
         // contattare il rider in un'altra istanza di applicazione
 
         NotificationDAO ntfDAO = new NotificationDAO(SingletonConnector.getInstance().getConnection());
-        //DbResellerDAO resellerDAO = daoFactory.getResellerDAO();
+
         DAOAbsFactory daoAbsFactory = DAOFactoryProvider.getInstance().getDaoFactory(); // qui avviene lo switch, il resto del codice rimane uguale
         ResellerDAO resellerDAO = daoAbsFactory.createResellerDAO();
 

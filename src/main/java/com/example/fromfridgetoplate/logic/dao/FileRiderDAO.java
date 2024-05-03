@@ -13,13 +13,13 @@ public class FileRiderDAO extends FileDAOBase implements RiderDAO {
 
     public FileRiderDAO() {}
 
-    public void setRiderAvailable(RiderBean riderBn) {
+    public void setRiderAvailable(int riderId, boolean isAval) {
         List<Rider> riders = getAllRiders(); // deserializzo tutti i rider
 
         // Trovo il rider con l'ID specificato e aggiorno la sua disponibilità
         for (Rider rider : riders) {
-            if (rider.getId() == riderBn.getId()) {
-                rider.setAvailable(riderBn.isAvailable());
+            if (rider.getId() == riderId) {
+                rider.setAvailable(isAval);
                 break; // Interrompo  una volta trovato e aggiornato il rider
             }
         }
@@ -32,7 +32,7 @@ public class FileRiderDAO extends FileDAOBase implements RiderDAO {
 
 
 
-    public RiderBean getRiderDetailsFromSession() {
+    public Rider getRiderDetailsFromSession() {
         // Questo metodo presuppone che tu abbia un modo per ottenere l'email dell'utente corrente
         String userEmail = Session.getSession().getUser().getEmail(); // con "Session.getSession().getUser()" ricavo il current User,
         //questo contiene le informazione immesse al momento del login, quindi username, pw, e role, poi ne prendo l'email (usernm) cosi
@@ -43,15 +43,7 @@ public class FileRiderDAO extends FileDAOBase implements RiderDAO {
 
         for (Rider rider : allRiders) {
             if (rider.getEmail().equals(userEmail)) {
-
-                RiderBean riderBean = new RiderBean(
-                        rider.getName(),
-                        rider.getSurname(),
-                        rider.isAvailable(),
-                        rider.getAssignedCity()
-                );
-                riderBean.setId(rider.getId());
-                return riderBean;
+                return rider;
             }
         }
 

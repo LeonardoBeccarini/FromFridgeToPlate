@@ -23,23 +23,12 @@ public class CachingNotificationList extends NotificationList {
 
 
 
-    public void addNotifications(List<Notification> newNotifications) { // questo sarebbbe setstate
-        // Aggiunge solo le notifiche nuove e non duplicate
-        for (Notification newNotification : newNotifications) {
-            if (!notifications.contains(newNotification)) {
-                notifications.add(newNotification);
-            }
-        }
-
-        notifyGUI();
-    }
-
     public void addNotification(Notification newNotification) { // questo sarebbbe setstate
         // Aggiunge solo le notifiche nuove e non duplicate
 
         if (!notifications.contains(newNotification)) {
             notifications.add(newNotification);
-            notifyGUI();
+            notifyObs();
 
         }
 
@@ -49,14 +38,14 @@ public class CachingNotificationList extends NotificationList {
 
     public void clearNotifications() { // setstate
         notifications.clear();
-        notifyGUI();
+        notifyObs();
     }
 
     public void removeNotification(Notification notificationToRemove) throws NotificationHandlingException { // questo sarebbbe setstate
         // Rimuove la notifica specificata dalla lista, se presente
         if (notificationToRemove != null && notifications.contains(notificationToRemove)) {
             notifications.remove(notificationToRemove);
-            notifyGUI(); //  Notifica il controller grafico dell'aggiornamento
+            notifyObs();
 
 
         } else {
@@ -78,8 +67,8 @@ public class CachingNotificationList extends NotificationList {
         // Cerca la notifica corrispondente nell'elenco basandosi sull'ID della notifica
         for (Notification notification : notifications) {
             if (notification.getNotificationId() == readNotification.getNotificationId()) {
-                notification.markAsRead(); // Marca la notifica come letta
-                toRemove = notification; // Segna per la rimozione se necessario
+                notification.markAsRead(); // Marco la notifica come letta
+                toRemove = notification; // Segno per la rimozione se necessario
                 found = true;
                 break;
             }
@@ -88,7 +77,7 @@ public class CachingNotificationList extends NotificationList {
         // Se la notifica è stata trovata e deve essere rimossa
         if (found && toRemove != null) {
             notifications.remove(toRemove);
-            notifyGUI(); // Notifica il controller grafico dell'aggiornamento
+            notifyObs(); // Notifica lobs
         } else {
             throw new NotificationHandlingException("La notifica da marcare come letta non è presente nella lista.");
         }
@@ -104,8 +93,8 @@ public class CachingNotificationList extends NotificationList {
 
 
     @Override
-    public void notifyGUI() {
-        super.notifyGUI();  // Notifica tutti gli observer senza parametri
+    public void notifyObs() {
+        super.notifyObs();  // Notifica tutti gli observer senza parametri
         List<NotificationBean> ntfBeans = convertToNotificationBeans(this.notifications);
 
         for (NotificationObserver obs : ntfObservers) {

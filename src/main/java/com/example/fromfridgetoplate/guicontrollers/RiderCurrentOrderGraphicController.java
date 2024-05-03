@@ -61,6 +61,14 @@ public class RiderCurrentOrderGraphicController extends GenericGraphicController
             shippingProvinceLabel.setText("Provincia: " + currentOrderBean.getShippingAddress().getShippingProvince());
             shippingStreetNumberLabel.setText("Numero civico: " + currentOrderBean.getShippingAddress().getShippingStreetNumber());
 
+            // Stampa i valori a console
+            System.out.println("Caricamento dettagli ordine:");
+            System.out.println("Id dell'ordine: " + currentOrderBean.getOrderId());
+            System.out.println("Via: " + currentOrderBean.getShippingAddress().getShippingStreet());
+            System.out.println("Città: " + currentOrderBean.getShippingAddress().getShippingCity());
+            System.out.println("Provincia: " + currentOrderBean.getShippingAddress().getShippingProvince());
+            System.out.println("Numero civico: " + currentOrderBean.getShippingAddress().getShippingStreetNumber());
+
         }catch(RiderGcException e) {
             showNoOrderAlert(e);
         }
@@ -95,6 +103,7 @@ public class RiderCurrentOrderGraphicController extends GenericGraphicController
         alert.showAndWait();
         navigator.goTo("RiderDeliveryReport.fxml");
     }
+
 
 
 }

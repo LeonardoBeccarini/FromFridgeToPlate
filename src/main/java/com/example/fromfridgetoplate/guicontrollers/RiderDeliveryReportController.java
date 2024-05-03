@@ -60,6 +60,8 @@ public class RiderDeliveryReportController extends GenericGraphicController{
         if (riderBean != null) {
             try {
                 OrderListBean deliveredOrders = riderCtrl.getConfirmedDeliveries(riderBean);
+
+                //deliveredOrders.validateAllOrders();
                 // Usero poi i dati in deliveredOrdersBean per popolare la TableView
                 deliveriesTable.setItems(FXCollections.observableArrayList(deliveredOrders.getOrderBeans()));
 

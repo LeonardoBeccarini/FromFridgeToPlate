@@ -7,11 +7,11 @@ import java.util.List;
 
 public interface ShopDAO {
 
-    public boolean saveShop(Shop shop) throws DbException;
+    boolean saveShop(Shop shop) throws DbException;
 
-    public Shop retrieveShopByEmail(String email) throws DbException;
+    Shop retrieveShopByEmail(String email) throws DbException;
 
-    public List<Shop> retrieveShopByName(String name) throws DbException;
+    List<Shop> retrieveShopByName(String name) throws DbException;
 
 
 

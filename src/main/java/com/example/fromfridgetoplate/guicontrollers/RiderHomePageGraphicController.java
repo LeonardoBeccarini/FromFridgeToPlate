@@ -3,7 +3,6 @@ package com.example.fromfridgetoplate.guicontrollers;
 
 import com.example.fromfridgetoplate.logic.bean.NotificationBean;
 import com.example.fromfridgetoplate.logic.bean.NotificationBeanList;
-//import com.example.fromfridgetoplate.logic.bean.NotificationListBean;
 import com.example.fromfridgetoplate.logic.bean.RiderBean;
 import com.example.fromfridgetoplate.logic.control.RiderHPController;
 
@@ -124,8 +123,6 @@ public class RiderHomePageGraphicController extends GenericGraphicController imp
         NotificationBeanList notificationBeanList = new NotificationBeanList(this); // in modo che la classe bean possa poi aggiornare gli elementi grafici a cui è associata
         this.riderController = new RiderHPController(notificationBeanList);
 
-        //nlb.setGraphicController(this);
-        //nlb.attach(this);
 
     }
 
@@ -158,69 +155,6 @@ public class RiderHomePageGraphicController extends GenericGraphicController imp
         alert.showAndWait();
 
     }
-
-
-    /*
-     @FXML
-    void goOffline(ActionEvent event) {
-
-        offlineButton.setStyle("-fx-background-color: gold;");
-        offlineButton.setDisable(true);
-        serviceBtn.setStyle("-fx-background-color: originalColor;"); // Sostituisci con il colore originale
-        serviceBtn.setDisable(false);
-
-        riderController.stopNotificationPolling();
-
-    }
-
-
-
-    @FXML
-    void goOnline(ActionEvent event) {
-
-        processOnline();
-    }
-
-    private void processOnline() {
-        // quando andro online chiamero il notificationmanager per segnalare la mia entrata in servizio
-        // in qualche modo il controller grafico di login dovrà passare in caso di successo di login, il rispettivo riderBean, a quest'altro
-        // controller grafico.
-        // qui ne faccio uno adhoc per esempio
-
-        if (!isOnline) {
-            //  istruzioni da eseguire la prima volta che si clicca sul pulsante goOnline
-            isOnline = true;
-            RiderHPController riderCtrl = new RiderHPController();
-            RiderBean riderBn = riderCtrl.getRiderDetailsFromSession();// serve per accedere alle informazioni immesse al momento della
-            // registrazione, che mi servono, per popolare il riderbean
-
-            if (riderBn == null) {
-                // Mostra un messaggio di errore se non sono disponibili dettagli del rider
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Errore di Login");
-                alert.setHeaderText("Dettagli Rider Non Trovati");
-                alert.setContentText("Impossibile trovare i dettagli del rider. Assicurati di essere loggato correttamente.");
-                alert.showAndWait();
-                return;
-            }
-            this.riderController = new RiderHPController(nlb);
-            //nlb.setGraphicController(this);
-            nlb.attach(this);
-
-        }
-
-
-        riderController.setRiderAvailable(true);
-
-        serviceBtn.setStyle("-fx-background-color: gold;");
-        // Disabilito il pulsante per evitare ulteriori clic
-        serviceBtn.setDisable(true);
-        offlineButton.setStyle("-fx-background-color: originalColor;");
-        offlineButton.setDisable(false);
-        riderController.startNotificationPolling();
-
-
-    } */
 
 
 

@@ -118,7 +118,7 @@ public class PendingOrdersCLIController {
         orders = pendingOrdersControl.getUpdatedPendingOrders();
 
         if (orders.isEmpty()) {
-            Printer.print("Non ci sono ordini in sospeso al momento.");
+            Printer.print("Non ci sono ordini in sospeso al momento. Premi 'r' per tornare indietro. ");
         } else {
             Printer.print("Ordini in sospeso:");
             for (OrderBean order : orders) {

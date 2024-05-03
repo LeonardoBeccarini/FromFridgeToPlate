@@ -16,11 +16,11 @@ public class DbRiderDAO implements RiderDAO {
         this.connection = connection;
     }
 
-    public void setRiderAvailable(RiderBean riderBn) {
+    public void setRiderAvailable(int riderId, boolean isAval) {
         String query = "{CALL SetRiderAvailability(?, ?)}";
         try (CallableStatement cstmt = connection.prepareCall(query)) {
-            cstmt.setInt(1, riderBn.getId());
-            cstmt.setBoolean(2, riderBn.isAvailable());
+            cstmt.setInt(1, riderId);
+            cstmt.setBoolean(2, isAval);
             cstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -34,7 +34,7 @@ public class DbRiderDAO implements RiderDAO {
     // RIDER SIA PRESENTE UN ENTRY CON EMAIL UGUALE (LHO FATTO A MANO NEL WORKBENCH) A QUELLA CON CUI IL RIDER SI è
     // REGISTRATO , E CON CUI EFFETTUA L'ACCESSO, BISOGNA FARE LA REGISTRAZIONE DEL RIDER, DOVE PROCEDURA VA AD INSERIRE
     // LA TUPL APRIMA NELLA TABELLA USER E POI NELLA TABELLA RIDER, COME FATTO NELLE PROCEDURES REGISTERSHOP E RREGISTERCLIENT
-    public RiderBean getRiderDetailsFromSession() {
+    public Rider getRiderDetailsFromSession() {
         String userEmail = Session.getSession().getUser().getEmail(); // con "Session.getSession().getUser()" ricavo il current User,
         //questo contiene le informazione immesse al momento del login, quindi username, pw, e role, poi ne prendo l'email (usernm) cosi
         // da poter accedere alle informazioni immesse al momento della registrazione, che mi servono, per popolare il riderbean,
@@ -46,15 +46,14 @@ public class DbRiderDAO implements RiderDAO {
             cstmt.setString(1, userEmail);
             try (ResultSet rs = cstmt.executeQuery()) {
                 if (rs.next()) {
-                    RiderBean riderBean = new RiderBean(
+                    Rider rider = new Rider(
+                            rs.getInt("Id"),
                             rs.getString("Nome"),
                             rs.getString("Cognome"),
                             rs.getBoolean("isAvailable"),
                             rs.getString("assignedCity")
                     );
-
-                    riderBean.setId(rs.getInt("Id"));
-                    return riderBean;
+                    return rider;
                 }
             }
         } catch (SQLException e) {

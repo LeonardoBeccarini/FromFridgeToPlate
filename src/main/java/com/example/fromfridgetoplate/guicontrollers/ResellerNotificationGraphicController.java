@@ -17,7 +17,6 @@ import java.util.ResourceBundle;
 
 public class ResellerNotificationGraphicController extends GenericGraphicController{
 
-    private List<NotificationBean> notificationBeanList;
 
     @FXML
     private ListView<Label> notificationListView;
@@ -25,6 +24,7 @@ public class ResellerNotificationGraphicController extends GenericGraphicControl
     private Label label;
     @FXML
     private Button updateButton;
+    private List<NotificationBean> notificationBeanList;
 
     public ResellerNotificationGraphicController() {
     }
