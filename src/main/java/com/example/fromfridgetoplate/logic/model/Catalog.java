@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Catalog {
-    private List<FoodItem> ingredients;
+    private final List<FoodItem> ingredients;
 
     public Catalog() {
         ingredients = new ArrayList<>();

@@ -2,8 +2,8 @@ package com.example.fromfridgetoplate.logic.control;
 
 import com.example.fromfridgetoplate.logic.bean.FoodItemBean;
 import com.example.fromfridgetoplate.logic.bean.FoodItemListBean;
-import com.example.fromfridgetoplate.logic.dao.*;
-import com.example.fromfridgetoplate.logic.exceptions.CatalogDAOFactoryError;
+import com.example.fromfridgetoplate.logic.dao.CatalogDAO;
+import com.example.fromfridgetoplate.logic.dao.ShopDAO;
 import com.example.fromfridgetoplate.logic.exceptions.DbException;
 import com.example.fromfridgetoplate.logic.model.Catalog;
 import com.example.fromfridgetoplate.logic.model.FoodItem;

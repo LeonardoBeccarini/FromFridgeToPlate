@@ -8,7 +8,7 @@ import com.example.fromfridgetoplate.logic.control.MakeOrderControl;
 import java.util.Scanner;
 
 public class CartCLIcontroller {
-    private ShopBean selectedShopBean;
+    private final ShopBean selectedShopBean;
     Scanner scanner = new Scanner(System.in);
     NavigatorCLI navigatorCLI = NavigatorCLI.getInstance();
     private final MakeOrderControl makeOrderControl = new MakeOrderControl();

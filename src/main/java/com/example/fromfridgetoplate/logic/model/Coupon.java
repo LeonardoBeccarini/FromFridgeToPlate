@@ -4,15 +4,14 @@ import com.example.fromfridgetoplate.patterns.decorator.Discountable;
 
 public abstract class Coupon implements Discountable {
     private int code;
-    private CouponType type;
+
     private double discount;
 
     // interfaccia sulla quale apllicare il decorator (il coupon)
     private Discountable disocuntable;
 
-    protected Coupon(int code, CouponType type, double discount) {
+    protected Coupon(int code, double discount) {
         this.code = code;
-        this.type = type;
         this.discount = discount;
     }
 
