@@ -1,6 +1,7 @@
-package com.example.fromfridgetoplate.patterns.abstractFactory;
+package com.example.fromfridgetoplate.patterns.abstract_factory;
 
 import com.example.fromfridgetoplate.logic.dao.PersistenceType;
+import com.example.fromfridgetoplate.patterns.abstract_factory.DAOAbsFactory;
 import com.example.fromfridgetoplate.patterns.factory.DbDAOFactory;
 import com.example.fromfridgetoplate.patterns.factory.FileDAOFactory;
 
