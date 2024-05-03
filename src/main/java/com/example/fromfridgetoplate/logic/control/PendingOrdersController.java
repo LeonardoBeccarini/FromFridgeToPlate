@@ -1,7 +1,6 @@
 package com.example.fromfridgetoplate.logic.control;
 
 import com.example.fromfridgetoplate.logic.bean.*;
-import com.example.fromfridgetoplate.logic.dao.DbResellerDAO;
 import com.example.fromfridgetoplate.logic.dao.ResellerDAO;
 import com.example.fromfridgetoplate.logic.exceptions.DAOException;
 import com.example.fromfridgetoplate.logic.model.Order;
@@ -10,9 +9,6 @@ import com.example.fromfridgetoplate.logic.model.Rider;
 import com.example.fromfridgetoplate.logic.model.Session;
 import com.example.fromfridgetoplate.patterns.abstractFactory.DAOAbsFactory;
 import com.example.fromfridgetoplate.patterns.abstractFactory.DAOFactoryProvider;
-import com.example.fromfridgetoplate.patterns.factory.DAOFactory;
-import com.example.fromfridgetoplate.patterns.factory.DbDAOFactory;
-import com.example.fromfridgetoplate.patterns.factory.FileDAOFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -101,7 +97,6 @@ public class PendingOrdersController {
     public List<RiderBean> getAvalaibleRiders(SearchBean searchBean) throws DAOException {
 
         // Chiamata al DAO per ottenere la lista di ordini pendenti
-        //DAOFactory daoFactory = new DAOFactory();
         DAOAbsFactory daoAbsFactory = DAOFactoryProvider.getInstance().getDaoFactory();
         ResellerDAO resellerDAO = daoAbsFactory.createResellerDAO();
         List<Rider> availableRiders = resellerDAO.getAvailableRiders(searchBean);

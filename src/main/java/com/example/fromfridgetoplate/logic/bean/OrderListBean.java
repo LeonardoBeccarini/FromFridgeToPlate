@@ -9,11 +9,7 @@ public class OrderListBean {
 
 
     private boolean validateOrderComplete(OrderBean order) {
-        if ((order.getOrderId() == 0) || (order.getCustomerId() == null) || (order.getShippingCity() == null)) {
-            return false;
-        }
-
-        return true;
+        return (order.getOrderId() != 0) && (order.getCustomerId() != null) && (order.getShippingCity() != null);
     }
 
     private boolean validateOrderDate(OrderBean order) {

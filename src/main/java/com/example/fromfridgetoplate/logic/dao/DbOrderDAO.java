@@ -148,18 +148,18 @@ public class DbOrderDAO implements OrderDAO {
             cs.registerOutParameter(7, Types.NUMERIC);
             cs.executeQuery();
             orderID = cs.getInt(7);
-            for(CartItem cartItem: cartItemList){
 
                 try(CallableStatement cs2 = connection.prepareCall("{CALL addIngredientToOrder(?,?,?)}")){
                     cs2.setInt(1, orderID);
-                    cs2.setString(2, cartItem.getName());
-                    cs2.setDouble(3, cartItem.getQuantity());
-                    cs2.executeQuery();
-                }
+                    for(CartItem cartItem: cartItemList){
+                        cs2.setString(2, cartItem.getName());
+                        cs2.setDouble(3, cartItem.getQuantity());
+                        cs2.addBatch();
+                    }
+                    cs2.executeBatch();
             }
 
         }catch(SQLException e){
-            e.printStackTrace();
             throw new DbException("errore database:"+" " + e.getMessage());
         }
         order.setOrderId(orderID);

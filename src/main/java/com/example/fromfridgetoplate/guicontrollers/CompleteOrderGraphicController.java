@@ -79,17 +79,7 @@ public class CompleteOrderGraphicController extends GenericGraphicController{
                 AddressBean addressBean = new AddressBean(streetText.getText(), Integer.parseInt(numberText.getText()), cityText.getText(), provinceText.getText());
                 OrderBean orderBean = new OrderBean(shopBean.getVatNumber(), addressBean);
 
-                try {
-                    makeOrderControl.completeOrder(orderBean);
-                } catch (DbException | PaymentFailedException e) {
-                    Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage()) ;
-                    alert.showAndWait();
-                }catch(DAOException e) {
-                    GUIUtils.showErrorAlert("Errore di scrittura/lettura", "Errore nel salvataggio dell'ordine", "" + e.getMessage());
-                }
-
-                Alert alert = new Alert(Alert.AlertType.INFORMATION, "Ordine salvato con successo");
-                alert.showAndWait();
+               saveOrder(orderBean);
                 try {
                     navigator.goTo("clientHomePage.fxml");
                 } catch (IOException e) {
@@ -98,5 +88,18 @@ public class CompleteOrderGraphicController extends GenericGraphicController{
                 }
             }
         }
+    }
+    private void saveOrder(OrderBean orderBean) {
+        try {
+            makeOrderControl.completeOrder(orderBean);
+        } catch (DbException | PaymentFailedException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage()) ;
+            alert.showAndWait();
+        }catch(DAOException e) {
+            GUIUtils.showErrorAlert("Errore di scrittura/lettura", "Errore nel salvataggio dell'ordine", "" + e.getMessage());
+        }
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Ordine salvato con successo");
+        alert.showAndWait();
     }
 }
