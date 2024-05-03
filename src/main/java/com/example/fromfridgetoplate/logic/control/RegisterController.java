@@ -10,8 +10,8 @@ import com.example.fromfridgetoplate.logic.model.Client;
 import com.example.fromfridgetoplate.logic.model.Rider;
 import com.example.fromfridgetoplate.logic.model.Role;
 import com.example.fromfridgetoplate.logic.model.Shop;
-import com.example.fromfridgetoplate.patterns.abstractFactory.DAOAbsFactory;
-import com.example.fromfridgetoplate.patterns.abstractFactory.DAOFactoryProvider;
+import com.example.fromfridgetoplate.patterns.abstract_factory.DAOAbsFactory;
+import com.example.fromfridgetoplate.patterns.abstract_factory.DAOFactoryProvider;
 import com.example.fromfridgetoplate.patterns.factory.UserFactory;
 
 

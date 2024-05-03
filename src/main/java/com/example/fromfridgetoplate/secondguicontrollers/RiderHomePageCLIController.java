@@ -12,14 +12,8 @@ import java.util.Scanner;
 public class RiderHomePageCLIController implements IUpdateable {
 
     private RiderHPController riderController;
-    //private NotificationListBean nlb = new NotificationListBean();
     private Scanner scanner = new Scanner(System.in);
     private boolean isOnline = false;
-
-    public RiderHomePageCLIController() {
-        //nlb.setGraphicController(this);
-        //nlb.attach(this);
-    }
 
     public void mainMenu() {
         boolean isRunning = true;

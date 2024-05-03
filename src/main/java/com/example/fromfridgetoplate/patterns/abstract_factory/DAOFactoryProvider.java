@@ -1,17 +1,13 @@
-package com.example.fromfridgetoplate.patterns.abstractFactory;
+package com.example.fromfridgetoplate.patterns.abstract_factory;
 
 import com.example.fromfridgetoplate.logic.dao.PersistenceType;
 import com.example.fromfridgetoplate.patterns.factory.DbDAOFactory;
 import com.example.fromfridgetoplate.patterns.factory.FileDAOFactory;
 
 // Centralizzo in questa classe la scelta di usare come strato di persistenza il db o il filesystem, in modo che il
-// meccanismo di scelta non sia sparso nelle classi, come ad esempio :
-// DAOAbsFactory daoAbsFactory = new FileDAOFactory();
-// ShopDAO shopDAO = daoAbsFactory.createShopDAO();
+// meccanismo di scelta non sia sparso nelle classi
 // ma sia centralizzato solo in questa classe, che ha la responsabilità di creator sulle implementazioni concrete della
 // abstactFactory, in base alla scelta che risiede in questa classe, creerà
-
-
 
 
 // impl Singleton
@@ -19,7 +15,7 @@ public class DAOFactoryProvider {
     private static DAOFactoryProvider instance;
     private DAOAbsFactory daoFactory;
 
-    private PersistenceType type = PersistenceType.FILE_SYSTEM;
+    private PersistenceType type = PersistenceType.JDBC;
     private DAOFactoryProvider() {
 
         // basta cambiare new DbDAOFactory(); con new FileDAOFactory per avere la versione basata su file, e lasciare

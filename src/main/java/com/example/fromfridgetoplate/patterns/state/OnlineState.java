@@ -1,8 +1,5 @@
 package com.example.fromfridgetoplate.patterns.state;
 
-
-import javafx.scene.control.Alert;
-
 public class OnlineState implements RiderState {
     @Override
     public void goOnline(RiderStateContext context) {

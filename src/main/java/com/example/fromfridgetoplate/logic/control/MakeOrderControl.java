@@ -5,8 +5,8 @@ import com.example.fromfridgetoplate.logic.boundary.DummyPaymentBoundary;
 import com.example.fromfridgetoplate.logic.dao.*;
 import com.example.fromfridgetoplate.logic.exceptions.*;
 import com.example.fromfridgetoplate.logic.model.*;
-import com.example.fromfridgetoplate.patterns.abstractFactory.DAOAbsFactory;
-import com.example.fromfridgetoplate.patterns.abstractFactory.DAOFactoryProvider;
+import com.example.fromfridgetoplate.patterns.abstract_factory.DAOAbsFactory;
+import com.example.fromfridgetoplate.patterns.abstract_factory.DAOFactoryProvider;
 import com.example.fromfridgetoplate.patterns.factory.DAOFactory;
 
 import java.io.IOException;

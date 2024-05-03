@@ -6,7 +6,7 @@ import com.example.fromfridgetoplate.logic.bean.FoodItemListBean;
 import com.example.fromfridgetoplate.logic.control.ManageCatalogController;
 import com.example.fromfridgetoplate.logic.dao.PersistenceType;
 import com.example.fromfridgetoplate.logic.exceptions.DbException;
-import com.example.fromfridgetoplate.patterns.abstractFactory.DAOFactoryProvider;
+import com.example.fromfridgetoplate.patterns.abstract_factory.DAOFactoryProvider;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

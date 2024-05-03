@@ -8,8 +8,8 @@ import com.example.fromfridgetoplate.logic.model.Cart;
 import com.example.fromfridgetoplate.logic.model.Role;
 import com.example.fromfridgetoplate.logic.model.Session;
 import com.example.fromfridgetoplate.logic.model.User;
-import com.example.fromfridgetoplate.patterns.abstractFactory.DAOAbsFactory;
-import com.example.fromfridgetoplate.patterns.abstractFactory.DAOFactoryProvider;
+import com.example.fromfridgetoplate.patterns.abstract_factory.DAOAbsFactory;
+import com.example.fromfridgetoplate.patterns.abstract_factory.DAOFactoryProvider;
 
 public class LoginController {
     public UserBean login(UserBean userBean) throws NotExistentUserException, DAOException{

@@ -7,8 +7,8 @@ import com.example.fromfridgetoplate.logic.dao.RiderDAO;
 import com.example.fromfridgetoplate.logic.dao.SingletonConnector;
 import com.example.fromfridgetoplate.logic.exceptions.*;
 import com.example.fromfridgetoplate.logic.model.*;
-import com.example.fromfridgetoplate.patterns.abstractFactory.DAOAbsFactory;
-import com.example.fromfridgetoplate.patterns.abstractFactory.DAOFactoryProvider;
+import com.example.fromfridgetoplate.patterns.abstract_factory.DAOAbsFactory;
+import com.example.fromfridgetoplate.patterns.abstract_factory.DAOFactoryProvider;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

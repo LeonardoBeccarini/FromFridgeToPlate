@@ -1,14 +1,11 @@
 package com.example.fromfridgetoplate.logic.control;
 
 import com.example.fromfridgetoplate.logic.bean.ShopBean;
-import com.example.fromfridgetoplate.logic.dao.DbShopDAO;
 import com.example.fromfridgetoplate.logic.dao.ShopDAO;
 import com.example.fromfridgetoplate.logic.exceptions.DbException;
 import com.example.fromfridgetoplate.logic.model.Shop;
-import com.example.fromfridgetoplate.patterns.abstractFactory.DAOAbsFactory;
-import com.example.fromfridgetoplate.patterns.abstractFactory.DAOFactoryProvider;
-import com.example.fromfridgetoplate.patterns.factory.DAOFactory;
-import com.example.fromfridgetoplate.patterns.factory.FileDAOFactory;
+import com.example.fromfridgetoplate.patterns.abstract_factory.DAOAbsFactory;
+import com.example.fromfridgetoplate.patterns.abstract_factory.DAOFactoryProvider;
 
 public class ShopProfileController {
 

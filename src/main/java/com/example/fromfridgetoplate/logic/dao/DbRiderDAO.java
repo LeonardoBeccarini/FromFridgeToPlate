@@ -1,12 +1,9 @@
 package com.example.fromfridgetoplate.logic.dao;
 
-import com.example.fromfridgetoplate.logic.bean.*;
 import com.example.fromfridgetoplate.logic.model.Rider;
 import com.example.fromfridgetoplate.logic.model.Session;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class DbRiderDAO implements RiderDAO {
@@ -46,14 +43,13 @@ public class DbRiderDAO implements RiderDAO {
             cstmt.setString(1, userEmail);
             try (ResultSet rs = cstmt.executeQuery()) {
                 if (rs.next()) {
-                    Rider rider = new Rider(
+                    return  new Rider(
                             rs.getInt("Id"),
                             rs.getString("Nome"),
                             rs.getString("Cognome"),
                             rs.getBoolean("isAvailable"),
                             rs.getString("assignedCity")
                     );
-                    return rider;
                 }
             }
         } catch (SQLException e) {
@@ -62,21 +58,6 @@ public class DbRiderDAO implements RiderDAO {
         }
         return null;
     }
-
-
-
-    // Metodo per chiudere le risorse in modo sicuro
-    void closeQuietly(AutoCloseable resource) {
-        if (resource != null) {
-            try {
-                resource.close();
-            } catch (Exception e) {
-
-                e.printStackTrace();
-            }
-        }
-    }
-
 
 
     public boolean registerRider(Rider rider) {
