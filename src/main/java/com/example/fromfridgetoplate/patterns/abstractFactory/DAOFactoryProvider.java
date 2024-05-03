@@ -16,33 +16,23 @@ import com.example.fromfridgetoplate.patterns.factory.FileDAOFactory;
 
 // impl Singleton
 public class DAOFactoryProvider {
-    private static DAOFactoryProvider instance;
-    private DAOAbsFactory daoFactory;
-
-    private PersistenceType type = PersistenceType.FILE_SYSTEM;
-    private DAOFactoryProvider() {
-
-        // basta cambiare new DbDAOFactory(); con new FileDAOFactory per avere la versione basata su file, e lasciare
-        // tutto il resto del codice uguale
-         // o PersistenceType.JDBC, questo poi potrebbe essere letto da un file
-        // di config oppure potrebbe essere scelto inizialmente dall' utente sulla gui
-
-        if (type == PersistenceType.FILE_SYSTEM) {
-            daoFactory = new FileDAOFactory();
-
-        } else if (type == PersistenceType.JDBC) {
-            daoFactory = new DbDAOFactory();
-
-        }
-
+    private static class Holder {
+        static final DAOFactoryProvider INSTANCE = new DAOFactoryProvider();
     }
 
+    private DAOAbsFactory daoFactory;
+    private PersistenceType type = PersistenceType.FILE_SYSTEM;
+
+    private DAOFactoryProvider() {
+        if (type == PersistenceType.FILE_SYSTEM) {
+            daoFactory = new FileDAOFactory();
+        } else if (type == PersistenceType.JDBC) {
+            daoFactory = new DbDAOFactory();
+        }
+    }
 
     public static DAOFactoryProvider getInstance() {
-        if (instance == null) {
-            instance = new DAOFactoryProvider();
-        }
-        return instance;
+        return Holder.INSTANCE;
     }
 
     public PersistenceType getType() {
@@ -52,7 +42,7 @@ public class DAOFactoryProvider {
     public DAOAbsFactory getDaoFactory() {
         return daoFactory;
     }
-
 }
+
 
 
