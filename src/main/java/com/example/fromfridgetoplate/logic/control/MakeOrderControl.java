@@ -7,6 +7,7 @@ import com.example.fromfridgetoplate.logic.exceptions.*;
 import com.example.fromfridgetoplate.logic.model.*;
 import com.example.fromfridgetoplate.patterns.abstractFactory.DAOAbsFactory;
 import com.example.fromfridgetoplate.patterns.abstractFactory.DAOFactoryProvider;
+import com.example.fromfridgetoplate.patterns.factory.DAOFactory;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -130,9 +131,7 @@ public class MakeOrderControl {
         String customerId = Session.getSession().getUser().getEmail();
         DummyPaymentBoundary dummyPaymentBoundary = new DummyPaymentBoundary();
         TotalPriceBean totalPriceBean = new TotalPriceBean(couponApplier.getFinalPrice().getPrice());
-        if(dummyPaymentBoundary.pay(totalPriceBean)){
-            //se paga salvo l'ordine sul db, invio la notifica al client e svuoto il carrello
-
+        if(dummyPaymentBoundary.pay(totalPriceBean)){   // se il pagamento va a buon fine
             Order newOrder = new Order(orderBean.getShopId(), customerId, addressBean.getShippingStreet(), addressBean.getShippingStreetNumber(),  addressBean.getShippingCity(), addressBean.getShippingProvince(), "pronto" );
             newOrder.setOrderTime(LocalDateTime.now());
             newOrder.setItems(cart.getItemList());
@@ -143,8 +142,6 @@ public class MakeOrderControl {
         else{
             throw new PaymentFailedException("pagamento non andato a buon fine");
         }
-
-
     }
 
     public List<NotificationBean> loadNotification() throws DbException {
@@ -168,5 +165,13 @@ public class MakeOrderControl {
             notificationBeanList.add(notificationBean);
         }
         return notificationBeanList;
+    }
+
+    public void markNotificationAsRead(List<NotificationBean> notificationBeanList){
+        DAOFactory daoFactory = new DAOFactory();
+        NotificationDAO notificationDAO = daoFactory.getNotificationDAO();
+        for(NotificationBean notificationBean: notificationBeanList){
+            notificationDAO.markNotificationAsRead(notificationBean.getNotificationId());
+        }
     }
 }
