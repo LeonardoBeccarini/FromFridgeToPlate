@@ -23,6 +23,6 @@ public interface OrderDAO {
 
     Order getInDeliveryOrderForRider(int riderId) throws OrderNotFoundException;
 
-    void updateOrderStatusToDelivered(int orderId, LocalDateTime deliveryTime);
+    void updateOrderStatusToDelivered(int orderId, LocalDateTime deliveryTime) throws DAOException;
     Order saveOrder(Order order) throws DbException;
 }

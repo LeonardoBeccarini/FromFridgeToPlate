@@ -16,7 +16,7 @@ import java.util.Map;
 
 public class FileOrderDAO extends FileDAOBase implements OrderDAO {
 
-
+    private static final String CONSEGNA = " in consegna ";
     public FileOrderDAO() {// default
     }
 
@@ -27,7 +27,7 @@ public class FileOrderDAO extends FileDAOBase implements OrderDAO {
         for (Order order : orders) {
 
             if (order.getOrderId() == orderId) {
-                order.setStatus("in consegna");
+                order.setStatus(CONSEGNA);
                 order.setAcceptedByRider(true);
                 order.setRiderId(riderId);
                 orderFound = true;
@@ -101,7 +101,7 @@ public class FileOrderDAO extends FileDAOBase implements OrderDAO {
         try {
             writeAssignedOrdersToFile(assignedOrders);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new DAOException("Errore di scrittura sul file degli ordini assegnati ai rider", e.getCause());
         }
     }
 
@@ -126,7 +126,7 @@ public class FileOrderDAO extends FileDAOBase implements OrderDAO {
 
         for (Order order : allOrders) {
 
-            if (order.getRiderId() == riderId && "in consegna".equals(order.getStatus())) {
+            if (order.getRiderId() == riderId && CONSEGNA.equals(order.getStatus())) {
                 return true; // C'è almeno un ordine in consegna per questo rider
             }
         }
@@ -139,7 +139,7 @@ public class FileOrderDAO extends FileDAOBase implements OrderDAO {
         List<Order> allOrders = getAllAssignedOrders();
 
         for (Order order : allOrders) {
-            if (order.getRiderId() == riderId && "in consegna".equals(order.getStatus())) {
+            if (order.getRiderId() == riderId && CONSEGNA.equals(order.getStatus())) {
                 return order; // Restituisce il primo ordine "in consegna" trovato per il rider
             }
         }
@@ -148,7 +148,7 @@ public class FileOrderDAO extends FileDAOBase implements OrderDAO {
         throw new OrderNotFoundException("Nessun ordine 'in consegna' trovato per il rider con ID: " + riderId);
     }
 
-    public void updateOrderStatusToDelivered(int orderId, LocalDateTime deliveryTime) {
+    public void updateOrderStatusToDelivered(int orderId, LocalDateTime deliveryTime) throws DAOException {
         List<Order> allOrders = getAllAssignedOrders();
         boolean orderFound = false;
 
@@ -166,7 +166,7 @@ public class FileOrderDAO extends FileDAOBase implements OrderDAO {
                 writeAssignedOrdersToFile(allOrders);
             }
             catch (IOException e){
-                System.err.println("errore nella scrittura sul file degli ordini assegnati");
+                throw new DAOException("Errore di scrittura sul file degli ordini assegnati ai rider", e.getCause());
 
             }// Salvo la lista aggiornata degli ordini assegnati sul file
         }

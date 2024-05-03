@@ -3,6 +3,7 @@ package com.example.fromfridgetoplate.secondguicontrollers;
 import com.example.fromfridgetoplate.logic.bean.OrderBean;
 import com.example.fromfridgetoplate.logic.bean.RiderBean;
 import com.example.fromfridgetoplate.logic.control.RiderHPController;
+import com.example.fromfridgetoplate.logic.exceptions.DAOException;
 import com.example.fromfridgetoplate.logic.exceptions.RiderGcException;
 
 import java.util.Scanner;
@@ -47,7 +48,7 @@ public class RiderCurrentOrderCLIController {
                 riderController.confirmDelivery(currentOrderBean);
                 Printer.print("Complimenti. Hai completato la consegna!");
                 Printer.print("Controlla le tue notifiche, per verificare se ci sono nuovi ordini per te!");
-            } catch (Exception e) {
+            } catch (DAOException e) {
                 Printer.print("Errore nella conferma della consegna: " + e.getMessage());
             }
         } else {

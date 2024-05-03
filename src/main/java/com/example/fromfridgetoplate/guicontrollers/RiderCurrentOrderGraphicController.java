@@ -5,6 +5,7 @@ package com.example.fromfridgetoplate.guicontrollers;
 import com.example.fromfridgetoplate.logic.bean.OrderBean;
 import com.example.fromfridgetoplate.logic.bean.RiderBean;
 import com.example.fromfridgetoplate.logic.control.RiderHPController;
+import com.example.fromfridgetoplate.logic.exceptions.DAOException;
 import com.example.fromfridgetoplate.logic.exceptions.RiderGcException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -93,16 +94,32 @@ public class RiderCurrentOrderGraphicController extends GenericGraphicController
 
 
     @FXML
-    private void handleConfirmDelivery(ActionEvent event) throws IOException {
+    private void handleConfirmDelivery(ActionEvent event) {
         RiderHPController riderCtrl = new RiderHPController();
-        riderCtrl.confirmDelivery(currentOrderBean);
-        Alert alert = new Alert(AlertType.INFORMATION);
-        alert.setTitle("Ordine correttamente consegnato");
-        alert.setHeaderText("Complimenti. Hai completato la consegna!");
-        alert.setContentText("Controlla le tue notifiche, per verificare se ci sono nuovi ordini per te!");
-        alert.showAndWait();
-        navigator.goTo("RiderDeliveryReport.fxml");
+        try {
+            riderCtrl.confirmDelivery(currentOrderBean);
+            Alert alert = new Alert(AlertType.INFORMATION);
+            alert.setTitle("Ordine correttamente consegnato");
+            alert.setHeaderText("Complimenti. Hai completato la consegna!");
+            alert.setContentText("Controlla le tue notifiche, per verificare se ci sono nuovi ordini per te!");
+            alert.showAndWait();
+            navigator.goTo("RiderDeliveryReport.fxml");
+        } catch (DAOException e) {
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Errore di Consegna");
+            alert.setHeaderText("Errore durante la conferma della consegna");
+            alert.setContentText("Dettagli errore: " + e.getMessage());
+            alert.showAndWait();
+        } catch (IOException e){
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Errore del Navigator");
+            alert.setHeaderText("Errore durante il cambio di scena");
+            alert.setContentText("Dettagli errore: " + e.getMessage());
+            alert.showAndWait();
+        }
+
     }
+
 
 
 

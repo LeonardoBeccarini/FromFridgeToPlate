@@ -120,25 +120,15 @@ public class DbOrderDAO implements OrderDAO {
     }
 
     // trasferirsco in OrderDAO
-    public void updateOrderStatusToDelivered(int orderId, LocalDateTime deliveryTime) {
+    @Override
+    public void updateOrderStatusToDelivered(int orderId, LocalDateTime deliveryTime) throws DAOException {
         String query = "{CALL UpdateOrderToDelivered(?, ?)}";
-        CallableStatement cstmt = null;  // metto qui null perche per il blocco finally, cstmt deve risultare inizializzato, e il blocco finally devo farlo perchè devo sempre chiudere la risorsa
-        try {
-            cstmt = connection.prepareCall(query);
+        try (CallableStatement cstmt = connection.prepareCall(query)) { // uso try-with resources in modo che ogni risorsa (CallableStatement in questo caso) venga chiusa alla fine del blocco, cosi non serve finally, perchè ajva cosi garantisce che quella risorsa venga chiusa al termine del blocco try, indipendentemente dal fatto che l'esecuzione avvenga normalmente o che venga lanciata uneccezione
             cstmt.setInt(1, orderId);
             cstmt.setTimestamp(2, Timestamp.valueOf(deliveryTime));
             cstmt.execute();
         } catch (SQLException e) {
-            e.printStackTrace();
-        }finally {
-            // chiudo risorse aperte
-            if (cstmt != null) {
-                try {
-                    cstmt.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
+            throw new DAOException("Failed to update order status to delivered for order ID: " + orderId, e);
         }
     }
 

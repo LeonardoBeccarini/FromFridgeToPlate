@@ -310,7 +310,7 @@ public class RiderHPController {
         );
     }
 
-    public void confirmDelivery(OrderBean orderBean) {
+    public void confirmDelivery(OrderBean orderBean) throws DAOException {
         if (orderBean != null) {
             LocalDateTime deliveryTime = LocalDateTime.now(); // Orario corrente
 
