@@ -183,7 +183,7 @@ public class RiderHPController {
 
 
 
-    public void acceptOrder(NotificationBean notification) {
+    public void acceptOrder(NotificationBean notification) throws DAOException {
 
         DAOAbsFactory daoAbsFactory = DAOFactoryProvider.getInstance().getDaoFactory();;
         OrderDAO orderDAO = daoAbsFactory.createOrderDAO();
@@ -193,7 +193,7 @@ public class RiderHPController {
         orderDAO.acceptOrder(notifiedOrder.getOrderId(), notifiedOrder.getRiderId());
     }
 
-    public void declineOrder(NotificationBean notification) throws IOException {
+    public void declineOrder(NotificationBean notification) throws DAOException{
         DAOAbsFactory daoAbsFactory = DAOFactoryProvider.getInstance().getDaoFactory();
         OrderDAO orderDAO = daoAbsFactory.createOrderDAO();
         //DbOrderDAO orderDAO = new DAOFactory().getOrderDAO();

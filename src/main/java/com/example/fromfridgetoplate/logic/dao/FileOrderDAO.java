@@ -1,5 +1,6 @@
 package com.example.fromfridgetoplate.logic.dao;
 
+import com.example.fromfridgetoplate.logic.exceptions.DAOException;
 import com.example.fromfridgetoplate.logic.exceptions.OrderNotFoundException;
 import com.example.fromfridgetoplate.logic.model.CartItem;
 import com.example.fromfridgetoplate.logic.model.Order;
@@ -15,11 +16,11 @@ import java.util.Map;
 
 public class FileOrderDAO extends FileDAOBase implements OrderDAO {
 
-    private static final String STATUS = " status: ";
+
     public FileOrderDAO() {// default
     }
 
-    public void acceptOrder(int orderId, int riderId) {
+    public void acceptOrder(int orderId, int riderId) throws DAOException {
         List<Order> orders = getAllAssignedOrders(); // Carica tutti gli ordini ass.ti
         boolean orderFound = false;
 
@@ -36,12 +37,12 @@ public class FileOrderDAO extends FileDAOBase implements OrderDAO {
 
         if (orderFound) {
             try {
-                writeAssignedOrdersToFile(orders); // Salva l'elenco degli ordini aggiornato sul file
+                writeAssignedOrdersToFile(orders);
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                throw new DAOException("Errore durante la scrittura degli ordini assegnati", e);
             }
         } else {
-            System.err.println("Errore: L'ordine " + orderId + " non trovato.");
+            throw new DAOException("Errore: L'ordine " + orderId + " non trovato.");
         }
     }
 
@@ -49,7 +50,7 @@ public class FileOrderDAO extends FileDAOBase implements OrderDAO {
 
 
 
-    public void declineOrder(int orderId, int riderId) throws IOException {
+    public void declineOrder(int orderId, int riderId) throws DAOException {
 
         List<Order> orders = getAllOrders();
         boolean orderUpdated = false;
@@ -70,7 +71,7 @@ public class FileOrderDAO extends FileDAOBase implements OrderDAO {
         if (orderUpdated) {
             writeOrdersToFile(orders);
         } else {
-            System.err.println("Errore: L'ordine " + orderId + " non trovato.");
+            throw new DAOException("L'ordine " + orderId + " non è stato aggiornato.");
         }
 
         // Carico gli ordini assegnati e rimuovi l'ordine declinato
@@ -91,7 +92,7 @@ public class FileOrderDAO extends FileDAOBase implements OrderDAO {
                 writeAssignedOrdersToFile(assignedOrders);
             }
                 catch(IOException e ){
-                    System.err.println("Errore nella rimozione dell' elemento : " + e.getMessage());
+                    throw new DAOException("L'ordine " + orderId + " non è stato rimosso.");
             }
 
         }

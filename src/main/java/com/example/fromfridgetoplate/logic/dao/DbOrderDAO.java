@@ -1,5 +1,6 @@
 package com.example.fromfridgetoplate.logic.dao;
 
+import com.example.fromfridgetoplate.logic.exceptions.DAOException;
 import com.example.fromfridgetoplate.logic.exceptions.DbException;
 import com.example.fromfridgetoplate.logic.exceptions.DeliveryRetrievalException;
 import com.example.fromfridgetoplate.logic.exceptions.OrderNotFoundException;
@@ -22,28 +23,27 @@ public class DbOrderDAO implements OrderDAO {
 
 
     // trasferirsco in OrderDAO
-    public void acceptOrder(int orderId, int riderId) {
+    public void acceptOrder(int orderId, int riderId) throws DAOException {
         String query = "{CALL AcceptOrder(?, ?)}";
         try (CallableStatement cstmt = connection.prepareCall(query)) {
             cstmt.setInt(1, orderId);
             cstmt.setInt(2, riderId);
             cstmt.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
-            // da moddare bene poi
+            throw new DAOException("Operazione di accettazione dell'ordine nel DB fallita", e);
         }
 
     }
 
     // trasferirsco in OrderDAO
-    public void declineOrder(int orderId, int riderId) {
+    public void declineOrder(int orderId, int riderId) throws DAOException {
         String query = "{CALL DeclineOrder(?, ?)}";
         try (CallableStatement cstmt = connection.prepareCall(query)) {
             cstmt.setInt(1, orderId);
             cstmt.setInt(2, riderId);
             cstmt.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DAOException("L'ordine " + orderId + " non è stato aggiornato.");
             // da moddare bene poi
         }
     }
