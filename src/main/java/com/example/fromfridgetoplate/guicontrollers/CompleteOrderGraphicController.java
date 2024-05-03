@@ -75,17 +75,17 @@ public class CompleteOrderGraphicController extends GenericGraphicController{
                 Alert alert = new Alert(Alert.AlertType.WARNING, "complete all fields before||");
                 alert.showAndWait();
             }
-            else{
-                AddressBean addressBean = new AddressBean(streetText.getText(), Integer.parseInt(numberText.getText()), cityText.getText(), provinceText.getText());
-                OrderBean orderBean = new OrderBean(shopBean.getVatNumber(), addressBean);
+            AddressBean addressBean = new AddressBean(streetText.getText(), Integer.parseInt(numberText.getText()), cityText.getText(), provinceText.getText());
+            OrderBean orderBean = new OrderBean(shopBean.getVatNumber(), addressBean);
 
-               saveOrder(orderBean);
-                try {
-                    navigator.goTo("clientHomePage.fxml");
-                } catch (IOException e) {
-                    Alert alert2 = new Alert(Alert.AlertType.ERROR, e.getMessage());
-                    alert2.showAndWait();
-                }
+            saveOrder(orderBean);
+            try {
+                navigator.goTo("clientHomePage.fxml");
+            } catch (IOException e) {
+                Alert alert2 = new Alert(Alert.AlertType.ERROR, e.getMessage());
+                alert2.showAndWait();
+
+
             }
         }
     }
