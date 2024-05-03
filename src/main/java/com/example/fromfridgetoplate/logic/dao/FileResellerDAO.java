@@ -129,7 +129,7 @@ public class FileResellerDAO extends FileDAOBase implements ResellerDAO {
 
 
     public OrderList getAssignedOrders(String currentResellerEmail) {
-        System.out.println("currentResellerEmail: " + currentResellerEmail );
+
         List<Shop> allShops = getAllShops();
         List<Order> allAssignedOrders = getAllAssignedOrders();
 
@@ -137,9 +137,9 @@ public class FileResellerDAO extends FileDAOBase implements ResellerDAO {
         // Filtra i negozi per l'email corrente
         List<String> shopIds = new ArrayList<>();
         for (Shop shop : allShops) {
-            System.out.println("ResellerEmail: " + shop.getEmail() );
+
             if (shop.getEmail().equals(currentResellerEmail)) {
-                System.out.println("currentResellerVat: " + shop.getVATnumber() );
+
                 shopIds.add(shop.getVATnumber());
 
             }
@@ -150,9 +150,9 @@ public class FileResellerDAO extends FileDAOBase implements ResellerDAO {
 
         // Aggiungo alla lista ordini assegnati solo gli ordini che corrispondono al negozio filtrato
         for (Order order : allAssignedOrders) {
-            System.out.println("shopid: " + order.getShopId() );
+
             if (shopIds.contains(order.getShopId())) {
-                System.out.println("shopid check: " + order.getShopId() );
+
                 assignedOrderList.addOrder(order);
             }
         }
@@ -211,90 +211,6 @@ public class FileResellerDAO extends FileDAOBase implements ResellerDAO {
         }
 
         return availableRiders;
-    }
-
-
-
-
-
-    public static void main(String[] args) throws IOException {
-
-        // Test getAllRiders
-        FileResellerDAO dao = new FileResellerDAO();
-        List<Rider> riders = dao.getAllRiders();
-        System.out.println("Numero totale di rider estratti: " + riders.size());
-
-        // Test saveOrder
-        /*Order newOrder = new Order(
-                0, // L'ID verrà assegnato automaticamente
-                "Customer1", "Shop1", "pronto", new ArrayList<>(), LocalDateTime.now()
-        );*/
-
-        // Test saveOrder
-/*
-        //  CartItem per il test
-        CartItem item1 = new CartItem("Pane", 2);
-        CartItem item2 = new CartItem("Latte", 4);
-        List<CartItem> cartItems = new ArrayList<>();
-        cartItems.add(item1);
-        cartItems.add(item2);
-
-        //  nuovo Order con gli item
-        Order newOrder = new Order("vat12345678", "Customer1", "Via Roma", 12, "Milano", "MI", "pronto");
-        newOrder.setStatus("pronto");
-        newOrder.setOrderTime(LocalDateTime.now());
-        newOrder.setItems(cartItems);
-
-
-        Order savedOrder = dao.saveOrder(newOrder);
-        System.out.println("Ordine salvato con ID: " + savedOrder.getOrderId());
-
-        // Verifico se l'ordine è stato salvato correttamente e stampa i dettagli degli item associati
-        Map<Integer, List<CartItem>> orderItemsMap = dao.getAllOrderItems();
-        System.out.println("Dettagli degli ordini salvati:");
-        orderItemsMap.forEach((orderId, items) -> {
-            System.out.println("Ordine ID: " + orderId);
-            items.forEach(item -> System.out.println(" - " + item.getName() + ", Quantità: " + item.getQuantity()));
-        });
-
-*/
-
-        // Test getPendingOrders
-            // qui cambi mettendo quircio4@gmail.com o quircio5@gmail.com, devi cambiare anche sopra il vat del nuovo ordine se vuoi aggiungerne un nuovo ordine per quel dato shop pero
-        OrderList pendingOrders = dao.getPendingOrders("quircio4@gmail.com");
-        System.out.println("Ordini in sospeso: ");
-        for (Order order : pendingOrders.getOrders()) {
-            System.out.println("ID Ordine: " + order.getOrderId() + ", Stato: " + order.getStatus() + "shopId:" + order.getShopId());
-        }
-
-
-        // Assumendo che abbiamo almeno un ordine in sospeso da aggiornare
-       /* if (!pendingOrders.getOrders().isEmpty()) {
-            // Prendi l'ID del primo ordine in sospeso per la dimostrazione
-            int orderIdToUpdate = pendingOrders.getOrders().get(0).getOrderId();
-            System.out.println("valore di orderIdToUpdate: " + orderIdToUpdate);
-
-            // Crea un OrderBean per simulare l'input dell'aggiornamento
-            OrderBean orderBeanToUpdate = new OrderBean();
-            orderBeanToUpdate.setOrderId(orderIdToUpdate);
-
-            // Test updateAvailability
-            dao.updateAvailability(orderBeanToUpdate);
-
-            // Verifica se l'aggiornamento è stato eseguito correttamente
-            OrderList updatedOrders = dao.getPendingOrders();
-            System.out.println("Dopo l'aggiornamento, ordini in sospeso: ");
-            for (Order order : updatedOrders.getOrders()) {
-                System.out.println("ID Ordine: " + order.getOrderId() + ", Stato: " + order.getStatus());
-            }
-        } else {
-            System.out.println("Nessun ordine in sospeso da aggiornare.");
-        }*/
-
-
-
-
-
     }
 
 
