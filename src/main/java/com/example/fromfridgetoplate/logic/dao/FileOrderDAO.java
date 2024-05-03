@@ -15,7 +15,7 @@ import java.util.Map;
 
 public class FileOrderDAO extends FileDAOBase implements OrderDAO {
 
-
+    private static final String STATUS = " status: ";
     public FileOrderDAO() {// default
     }
 
@@ -24,7 +24,7 @@ public class FileOrderDAO extends FileDAOBase implements OrderDAO {
         boolean orderFound = false;
 
         for (Order order : orders) {
-            System.out.println("assOrder: " + order.getOrderId()+ " status: " + order.getStatus());
+
             if (order.getOrderId() == orderId) {
                 order.setStatus("in consegna");
                 order.setAcceptedByRider(true);
@@ -41,7 +41,7 @@ public class FileOrderDAO extends FileDAOBase implements OrderDAO {
                 throw new RuntimeException(e);
             }
         } else {
-            System.out.println("Ordine con ID " + orderId + " non trovato.");
+            System.err.println("Errore: L'ordine " + orderId + " non trovato.");
         }
     }
 
@@ -57,7 +57,7 @@ public class FileOrderDAO extends FileDAOBase implements OrderDAO {
         // Trova l'ordine con l'ID e il riderId specificati e aggiorna lo stato
         for (Order order : orders) {
             if (order.getOrderId() == orderId && order.getRiderId() == riderId) {
-                System.out.println("orderid:" + order.getOrderId() + " status: " + order.getStatus());
+
                 order.setStatus("pronto");
                 order.setRiderId(0); // Rimuovi l'associazione con il rider
                 order.setAcceptedByRider(false); // Indica che l'ordine non è accettato da nessun rider
@@ -70,7 +70,7 @@ public class FileOrderDAO extends FileDAOBase implements OrderDAO {
         if (orderUpdated) {
             writeOrdersToFile(orders);
         } else {
-            System.out.println("Ordine con ID " + orderId + " e RiderId " + riderId + " non trovato.");
+            System.err.println("Errore: L'ordine " + orderId + " non trovato.");
         }
 
         // Carico gli ordini assegnati e rimuovi l'ordine declinato
@@ -124,7 +124,7 @@ public class FileOrderDAO extends FileDAOBase implements OrderDAO {
         List<Order> allOrders = getAllAssignedOrders(); //  getAllOrders() anddava a deserializzare gli ordini da un file
 
         for (Order order : allOrders) {
-            System.out.println("orderId: " + order.getOrderId() + "order.getRiderId: " + order.getRiderId() + " order.getStatus. " + order.getStatus());
+
             if (order.getRiderId() == riderId && "in consegna".equals(order.getStatus())) {
                 return true; // C'è almeno un ordine in consegna per questo rider
             }
@@ -168,9 +168,8 @@ public class FileOrderDAO extends FileDAOBase implements OrderDAO {
                 System.err.println("errore nella scrittura sul file degli ordini assegnati");
 
             }// Salvo la lista aggiornata degli ordini assegnati sul file
-        } else {
-            System.out.println("Ordine con ID " + orderId + " non trovato.");
         }
+
     }
 
     public Order saveOrder(Order order)  {
@@ -185,7 +184,7 @@ public class FileOrderDAO extends FileDAOBase implements OrderDAO {
         for (Order existingOrder : orders) {
             if (existingOrder.getOrderId() > maxOrderId) {
                 maxOrderId = existingOrder.getOrderId(); // Aggiorno l'ID massimo se trova un ordine con ID maggiore
-                System.out.println("orderId: "+ maxOrderId + " status: " + existingOrder.getStatus());
+
             }
         }
         order.setOrderId(maxOrderId + 1); // Assegna al nuovo ordine l'ID successivo all'ID massimo trovato
@@ -224,12 +223,7 @@ public class FileOrderDAO extends FileDAOBase implements OrderDAO {
             oos.writeObject(orderItemsMap);
         }
     }
-    public static void main(String[] args) {
-        int testRiderId = 3; // Cambia questo ID per testare con diversi rider
-        FileOrderDAO fod = new FileOrderDAO();
-        boolean isInDelivery = fod.checkForOrderInDelivery(testRiderId);
-        System.out.println("Rider " + testRiderId + " has an order in delivery: " + isInDelivery);
-    }
+
 
 
 }
