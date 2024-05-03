@@ -54,7 +54,7 @@ public abstract class FileDAOBase {
             if (readObject instanceof List) {
                 return (List<T>) readObject;
             } else {
-                System.err.println("Tipo Dati scritti male nel file: non è una lista.");
+
                 return new ArrayList<>();
             }
         } catch (EOFException e) {
@@ -70,9 +70,6 @@ public abstract class FileDAOBase {
     protected <T> void writeToFile(List<T> genericList, String filePath) throws IOException {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filePath))) {
             oos.writeObject(genericList);
-        } catch (IOException e) {
-            // Propago l'eccezione
-            throw e;
         }
     }
 
@@ -84,15 +81,13 @@ public abstract class FileDAOBase {
         return this.readFromFile(ordersFilePath);
     }
 
-    protected void writeOrdersToFile(List<Order> orders) {
+    protected void writeOrdersToFile(List<Order> orders) throws DAOException {
         try {
             // Chiamo il metodo della superclasse per scrivere gli ordini sul file
             this.writeToFile(orders, this.ordersFilePath);
         } catch (IOException e) {
-            // Scrivo l'errore su stderr
-            System.err.println("Errore nella scrittura del file degli ordini: " + e.getMessage());
-
-            // potrei anche fare:throw new RuntimeException("Errore nella scrittura del file degli ordini", e);
+            // Rilancia l'eccezione come DAOException
+            throw new DAOException("Errore nella scrittura del file degli ordini", e);
         }
     }
 
@@ -116,17 +111,8 @@ public abstract class FileDAOBase {
     // metodo per deserializzare la lista di riders
     protected List<Rider> getAllRiders() throws DAOException {
 
-        List<Rider> riders = readFromFile(ridersFilePath);
+        return readFromFile(ridersFilePath);
 
-        // Stampa i dettagli di ogni rider
-        /*System.out.println("Rider estratti dal file:");
-        for (Rider rider : riders) {
-            System.out.println("ID: " + rider.getId() + ", Nome: " + rider.getName() + ", Cognome: " + rider.getSurname() +
-                    ", Disponibilità: " + (rider.isAvailable() ? "Disponibile" : "Non disponibile") +
-                    ", Città assegnata: " + rider.getAssignedCity());
-        }*/
-
-        return riders;
     }
 
     protected List<User> readUsersFromFile() throws DAOException {
@@ -134,7 +120,7 @@ public abstract class FileDAOBase {
         List<User> users = readFromFile(usersFilePath);
         // Verifico che tipo degli elementi sia corretto
         if (!users.isEmpty() && users.get(0) != null) {
-            System.out.println("username:"+ users.get(0).getEmail());
+
             return users;
         } else {
             return new ArrayList<>();
@@ -142,15 +128,17 @@ public abstract class FileDAOBase {
     }
 
     // Serializza gli utenti registrati nel file
-    protected boolean writeUsersToFile(List<User> users) {
+    protected boolean writeUsersToFile(List<User> users) throws DAOException {
         try {
             writeToFile(users, usersFilePath);
             return true; //  true se la scrittura è andata a buon fine
         } catch (IOException e) {
-            System.err.println("Errore nella scrittura del file degli utenti: " + e.getMessage());
-            return false;
+            throw new DAOException("Errore nella scrittura del file degli ordini", e);
         }
     }
-
+/* Convertendo IOException in DAOException, centralizzamoi la gestione degli errori legati ai dati. se poi si cambia il modo in cui i dati sono memorizzati (ad esempio, si va da file a database), non dobbiamo cambiare altre parti del codice che gestiscono DAOException
+* tipo : Se cambio il metodo di salvataggio per usare un database, il metodo potrebbe iniziare a lanciare SQLException invece di IOException, se il resto del  codice gestisce
+* solo DAOException, non andremo a cambiare quei gestori di eccezioni quando cambiamo il metodo di storage. Devo solo mettere che
+*   le SQLException vengano convertite in DAOException nel  DAO.*/
 
 }
