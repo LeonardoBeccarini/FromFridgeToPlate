@@ -3,8 +3,10 @@ package com.example.fromfridgetoplate.logic.dao;
 import com.example.fromfridgetoplate.logic.bean.OrderBean;
 import com.example.fromfridgetoplate.logic.bean.RiderBean;
 import com.example.fromfridgetoplate.logic.bean.SearchBean;
-import com.example.fromfridgetoplate.logic.exceptions.DbException;
-import com.example.fromfridgetoplate.logic.model.*;
+import com.example.fromfridgetoplate.logic.model.CartItem;
+import com.example.fromfridgetoplate.logic.model.Order;
+import com.example.fromfridgetoplate.logic.model.OrderList;
+import com.example.fromfridgetoplate.logic.model.Rider;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -174,7 +176,7 @@ public class DbResellerDAO implements ResellerDAO{
     }
 
 
-    public boolean assignRiderToOrder(int orderId, int riderId) {
+    public void assignRiderToOrder(int orderId, int riderId) {
 
         CallableStatement stmt = null;
 
@@ -186,10 +188,8 @@ public class DbResellerDAO implements ResellerDAO{
 
             // Esecuzione della stored procedure
             stmt.execute();
-            return true; // L'aggiornamento ha avuto successo
         } catch (SQLException e) {
             e.printStackTrace();
-            return false; // L'aggiornamento non è riuscito
         } finally {
             // Chiudi le risorse JDBC in modo sicuro
             if (stmt != null) {
