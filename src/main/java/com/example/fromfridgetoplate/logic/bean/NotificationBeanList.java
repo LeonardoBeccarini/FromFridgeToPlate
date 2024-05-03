@@ -1,9 +1,6 @@
 package com.example.fromfridgetoplate.logic.bean;
 
 import com.example.fromfridgetoplate.guicontrollers.NotificationObserver;
-import com.example.fromfridgetoplate.guicontrollers.RiderHomePageGraphicController;
-import com.example.fromfridgetoplate.logic.model.Notification;
-import com.example.fromfridgetoplate.logic.model.Order;
 import com.example.fromfridgetoplate.secondguicontrollers.IUpdateable;
 
 import java.util.ArrayList;
@@ -22,7 +19,7 @@ public class NotificationBeanList implements NotificationObserver {
 
     @Override
     public void update() {
-
+        //to notify observer
     }
 
     @Override
@@ -39,13 +36,6 @@ public class NotificationBeanList implements NotificationObserver {
 
 
     }
-
-
-    public List<NotificationBean> getNotificationBeans() {
-        return new ArrayList<>(notificationBeans); // Restituisco una copia per evitare modifiche esterne
-    }
-
-
 
     private void setNotificationBeans(List<NotificationBean> notificationBeans) {
         this.notificationBeans = notificationBeans;

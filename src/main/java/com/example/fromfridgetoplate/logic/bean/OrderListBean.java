@@ -1,7 +1,5 @@
 package com.example.fromfridgetoplate.logic.bean;
 
-import com.example.fromfridgetoplate.logic.control.PendingOrdersController;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +9,7 @@ public class OrderListBean {
 
 
     private boolean validateOrderComplete(OrderBean order) {
-        if (order.getOrderId() == 0 || order.getCustomerId() == null || order.getShippingCity() == null) {
+        if ((order.getOrderId() == 0) || (order.getCustomerId() == null) || (order.getShippingCity() == null)) {
             return false;
         }
 

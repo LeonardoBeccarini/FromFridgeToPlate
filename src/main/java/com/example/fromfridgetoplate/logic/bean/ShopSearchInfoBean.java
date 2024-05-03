@@ -1,7 +1,7 @@
 package com.example.fromfridgetoplate.logic.bean;
 
 public class ShopSearchInfoBean {
-    private String name;
+    private final String name;
 
     public ShopSearchInfoBean(String name) {
         this.name = name;

@@ -4,12 +4,12 @@ public class SearchBean {
 
     private String  shippingCity;
 
-    private OrderBean selectedOrderBean;
+    private final OrderBean selectedOrderBean;
 
 
 
-    public SearchBean(String città, OrderBean ordBean) {
-        this.shippingCity = città;
+    public SearchBean(String city, OrderBean ordBean) {
+        this.shippingCity = city;
         this.selectedOrderBean = ordBean;
     }
 
@@ -26,7 +26,4 @@ public class SearchBean {
         return selectedOrderBean;
     }
 
-    public void setSelectedOrderBean(OrderBean selectedOrderBean) {
-        this.selectedOrderBean = selectedOrderBean;
-    }
 }

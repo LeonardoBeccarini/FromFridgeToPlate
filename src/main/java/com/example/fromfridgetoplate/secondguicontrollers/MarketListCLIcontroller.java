@@ -15,14 +15,19 @@ public class MarketListCLIcontroller {
     NavigatorCLI navigatorCLI = NavigatorCLI.getInstance();
 
     public void searchShop(){
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+
         Scanner scanner = new Scanner(System.in);
         String shopName;
         List<ShopBean> shopBeanList;
-
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
         Printer.print("Type the name of the shop: \n");
+
         try {
-            shopName = bufferedReader.readLine();
+           shopName = bufferedReader.readLine();
+            if(shopName.isEmpty()){
+                Printer.print("inserisci il nome dello shop!");
+                searchShop();
+            }
             MakeOrderControl makeOrderControl = new MakeOrderControl();
             shopBeanList = makeOrderControl.loadShop(new ShopSearchInfoBean(shopName));
 
@@ -47,5 +52,4 @@ public class MarketListCLIcontroller {
         }
 
     }
-
 }
