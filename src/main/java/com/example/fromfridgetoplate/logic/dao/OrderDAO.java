@@ -7,7 +7,6 @@ import com.example.fromfridgetoplate.logic.exceptions.OrderNotFoundException;
 import com.example.fromfridgetoplate.logic.model.Order;
 import com.example.fromfridgetoplate.logic.model.OrderList;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 
 public interface OrderDAO {
@@ -15,7 +14,6 @@ public interface OrderDAO {
     void acceptOrder(int orderId, int riderId) throws DAOException;
 
     void declineOrder(int orderId, int riderId) throws DAOException;
-    ;
 
     OrderList getConfirmedDeliveriesForRider(int riderId) throws DeliveryRetrievalException, DAOException;
 

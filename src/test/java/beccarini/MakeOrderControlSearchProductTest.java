@@ -6,6 +6,7 @@ import com.example.fromfridgetoplate.logic.bean.ShopBean;
 import com.example.fromfridgetoplate.logic.bean.UserBean;
 import com.example.fromfridgetoplate.logic.control.LoginController;
 import com.example.fromfridgetoplate.logic.control.MakeOrderControl;
+import com.example.fromfridgetoplate.logic.exceptions.DAOException;
 import com.example.fromfridgetoplate.logic.exceptions.DbException;
 import com.example.fromfridgetoplate.logic.exceptions.EmptyCatalogException;
 import com.example.fromfridgetoplate.logic.exceptions.NotExistentUserException;
@@ -22,7 +23,7 @@ public class MakeOrderControlSearchProductTest {
         LoginController loginController = new LoginController();
         try {
             loginController.login(new UserBean("leonardo.beccarini@hotmail.com", "pippo23"));
-        } catch (NotExistentUserException e) {
+        } catch (NotExistentUserException | DAOException e) {
             //don't care
         }
         //shop da cui prendo il catalogo

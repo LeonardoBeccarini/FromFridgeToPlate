@@ -16,7 +16,6 @@ public class RiderStateContext {
     }
 
     public void goOnline() {
-        System.out.println("ckeck");
         currentState.goOnline(this);
     }
 

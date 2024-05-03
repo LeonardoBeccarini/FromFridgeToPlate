@@ -1,8 +1,6 @@
 package com.example.fromfridgetoplate.secondguicontrollers;
 
-import com.example.fromfridgetoplate.guicontrollers.IRiderSelectionListener;
 import com.example.fromfridgetoplate.logic.bean.OrderBean;
-import com.example.fromfridgetoplate.logic.bean.OrderListBean;
 import com.example.fromfridgetoplate.logic.bean.RiderBean;
 import com.example.fromfridgetoplate.logic.bean.SearchBean;
 import com.example.fromfridgetoplate.logic.control.PendingOrdersController;
@@ -10,14 +8,11 @@ import com.example.fromfridgetoplate.logic.exceptions.DAOException;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
 
 public class PendingOrdersCLIController {
     private Scanner scanner;
     private Timer refreshTimer;
 
-    private Thread inputThread;
 
 
     private boolean searchingRiders = false;

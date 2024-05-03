@@ -1,4 +1,4 @@
-package com.example.fromfridgetoplate.patterns.abstractFactory;
+package com.example.fromfridgetoplate.patterns.abstract_factory;
 
 import com.example.fromfridgetoplate.logic.dao.*;
 

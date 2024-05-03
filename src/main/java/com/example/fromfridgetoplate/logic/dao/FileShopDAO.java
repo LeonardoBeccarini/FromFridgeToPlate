@@ -16,8 +16,6 @@ public class FileShopDAO extends FileDAOBase implements ShopDAO {
 
 // x becca: dovresti cambiare nome e messaggio di errore alla DbException, in tipo PersistenceException in modo
 // che non sia relativa solo al db ma anche a i file
-    public FileShopDAO() {}
-
     @Override
     public boolean saveShop(Shop shop) throws DbException, DAOException {
 
@@ -90,10 +88,6 @@ public class FileShopDAO extends FileDAOBase implements ShopDAO {
             throw new DbException("Errore durante la scrittura sul file: " + e.getMessage());
         }
     }
-
-
-
-
 
 }
 
