@@ -2,6 +2,7 @@ package com.example.fromfridgetoplate.secondguicontrollers;
 
 import com.example.fromfridgetoplate.logic.bean.UserBean;
 import com.example.fromfridgetoplate.logic.control.LoginController;
+import com.example.fromfridgetoplate.logic.exceptions.DAOException;
 import com.example.fromfridgetoplate.logic.exceptions.NotExistentUserException;
 import com.example.fromfridgetoplate.logic.model.Role;
 import java.io.IOException;
@@ -30,29 +31,30 @@ public class LoginCLIController {
 
         UserBean userBean = new UserBean(email, password);
         LoginController loginController = new LoginController();
-        UserBean loggedUser = null;
         try {
-            loggedUser = loginController.login(userBean);
-        } catch (NotExistentUserException e) {
-            Printer.print("errore login: "+ e.getMessage());
-        }
+            UserBean loggedUser = loginController.login(userBean);
 
-        try {
-            if (loggedUser != null) {
-                if (loggedUser.getRole() == Role.CLIENT) {
-                    navigator.goTo("ClientHomeCLI");
-                } else if (loggedUser.getRole() == Role.RIDER) {
-                    navigator.goTo("RiderHomeCLI");
-                } else if (loggedUser.getRole() == Role.OWNER) {
-                    navigator.goTo("ResellerHomeCLI");
-                }
-            } else {
-                Printer.print("Login failed. Please check your credentials.");
-            }
+            // Controllo post-login per determinare la navigazione in base al ruolo
+            navigateByRole(loggedUser);
+        } catch (NotExistentUserException e) {
+            Printer.print("Errore: l'utente non esiste " + e.getMessage());
+        } catch (DAOException e) {
+            Printer.print("Errore di accesso al database: " + e.getMessage());
         } catch (IOException e) {
-            e.printStackTrace();
+            Printer.print("Errore di sistema: Impossibile navigare alla pagina desiderata.");
         }
     }
+
+    private void navigateByRole(UserBean loggedUser) throws IOException {
+        if (loggedUser.getRole() == Role.CLIENT) {
+            navigator.goTo("ClientHomeCLI");
+        } else if (loggedUser.getRole() == Role.RIDER) {
+            navigator.goTo("RiderHomeCLI");
+        } else if (loggedUser.getRole() == Role.OWNER) {
+            navigator.goTo("ResellerHomeCLI");
+        }
+    }
+
 
 
 }

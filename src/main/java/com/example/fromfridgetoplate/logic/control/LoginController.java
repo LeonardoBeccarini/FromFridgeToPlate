@@ -12,7 +12,7 @@ import com.example.fromfridgetoplate.patterns.abstractFactory.DAOAbsFactory;
 import com.example.fromfridgetoplate.patterns.abstractFactory.DAOFactoryProvider;
 
 public class LoginController {
-    public UserBean login(UserBean userBean) throws NotExistentUserException{
+    public UserBean login(UserBean userBean) throws NotExistentUserException, DAOException{
 
         DAOAbsFactory daoAbsFactory = DAOFactoryProvider.getInstance().getDaoFactory(); // questa è responsabile di creare istanze di FileDAOFactory() o DbDAOFactory(), implementazioni concrete di DAOAbsFactory
         UserDAO userDAO = daoAbsFactory.createUserDAO();
@@ -22,8 +22,6 @@ public class LoginController {
             user = userDAO.verifyUserCredentials(userBean.getEmail(), userBean.getPassword());
         }catch(NotExistentUserException e){
             throw new NotExistentUserException(e.getMessage());
-        } catch (DAOException e) {
-            throw new RuntimeException(e);
         }
         assert user != null;
         loggedUser = new UserBean(user.getEmail(), user.getRole());

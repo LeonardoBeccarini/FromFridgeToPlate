@@ -10,9 +10,7 @@ import java.util.*;
 
 public class FileRiderDAO extends FileDAOBase implements RiderDAO {
 
-
-    public FileRiderDAO() {}
-
+    
     public void setRiderAvailable(int riderId, boolean isAval) throws DAOException {
         List<Rider> riders = getAllRiders(); // deserializzo tutti i rider
 

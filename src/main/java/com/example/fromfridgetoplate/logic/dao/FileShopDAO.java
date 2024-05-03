@@ -93,48 +93,6 @@ public class FileShopDAO extends FileDAOBase implements ShopDAO {
 
 
 
-    public static void main(String[] args) throws DAOException {
-        FileShopDAO dao = new FileShopDAO();
-
-        // Crea un nuovo negozio di esempio
-        Shop newShop = new Shop("quircio5@gmail.com", "qr", "quircioresellero", "Via dei pantani", "12345678123", "1234567890");
-
-        boolean registrationResult = false;
-        try {
-            registrationResult = dao.saveShop(newShop);
-        } catch (DbException e) {
-            throw new RuntimeException(e);
-        } catch (DAOException e) {
-            throw new RuntimeException(e);
-        }
-
-        if (registrationResult) {
-            System.out.println("Il nuovo negozio è stato registrato con successo.");
-        } else {
-            System.out.println("La registrazione del nuovo negozio non è riuscita (potrebbe essere già registrato).");
-        }
-
-        // Stampa tutti i negozi per verificare la registrazione
-        System.out.println("\nElenco dei negozi registrati:");
-        try {
-            for (Shop shop : dao.readShopsFromFile()) {
-                System.out.println("Email: " + shop.getEmail() + ", Nome: " + shop.getName() + " vat: " + shop.getVATnumber());
-            }
-        } catch (DbException e) {
-            e.printStackTrace();
-        }
-
-        // Leggi e stampa tutti gli utenti dal file "users.dat" per verificare che il nuovo negozio sia stato aggiunto come owner
-        System.out.println("\nElenco degli utenti registrati in 'users.dat':");
-
-        List<User> users = dao.readUsersFromFile();
-        for (User user : users) {
-            System.out.println("Email: " + user.getEmail() + ", Ruolo: " + user.getRole());
-        }
-
-    }
-
-
 
 
 }

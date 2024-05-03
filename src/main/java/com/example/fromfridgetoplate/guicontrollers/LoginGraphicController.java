@@ -2,6 +2,7 @@ package com.example.fromfridgetoplate.guicontrollers;
 
 import com.example.fromfridgetoplate.logic.bean.UserBean;
 import com.example.fromfridgetoplate.logic.control.LoginController;
+import com.example.fromfridgetoplate.logic.exceptions.DAOException;
 import com.example.fromfridgetoplate.logic.exceptions.NotExistentUserException;
 import com.example.fromfridgetoplate.logic.model.Role;
 import javafx.fxml.FXML;
@@ -47,11 +48,11 @@ public class LoginGraphicController implements Initializable {
 
         try {
             loggedUser = loginController.login(userBean);
-            navigateBasedOnRole(loggedUser);
+            navigateByRole(loggedUser);
         } catch (NotExistentUserException e) {
-            showAlert("Errore login: " + e.getMessage());
-        } catch (IOException e) {
-            e.printStackTrace();
+            showAlert("Errore, le credenziali non corrispondono a nessun utente: " + e.getMessage());
+        } catch (DAOException e) {
+            GUIUtils.showErrorAlert("Errore nel salvataggio delle credenziali", "Errore nello strato di persistenza", "causa errore:" + e.getMessage());
         }
     }
 
@@ -59,19 +60,25 @@ public class LoginGraphicController implements Initializable {
         try {
             navigator.goTo("chooseUserPage.fxml");
         } catch (IOException e) {
-            e.printStackTrace();
+            GUIUtils.showErrorAlert("Errore di Navigazione", "Impossibile caricare la pagina", "Non è stato possibile navigare alla pagina desiderata. Si prega di riprovare.");
         }
     }
 
-    private void navigateBasedOnRole(UserBean loggedUser) throws IOException {
-        if (Objects.requireNonNull(loggedUser).getRole() == Role.CLIENT) {
-            navigator.goTo("clientHomePage.fxml");
-        } else if (loggedUser.getRole() == Role.RIDER) {
-            navigator.goTo("riderMainPage.fxml");
-        } else if (loggedUser.getRole() == Role.OWNER) {
-            navigator.goTo("resellerMainPage2.fxml");
+
+    private void navigateByRole(UserBean loggedUser) {
+        try {
+            if (Objects.requireNonNull(loggedUser).getRole() == Role.CLIENT) {
+                navigator.goTo("clientHomePage.fxml");
+            } else if (loggedUser.getRole() == Role.RIDER) {
+                navigator.goTo("riderMainPage.fxml");
+            } else if (loggedUser.getRole() == Role.OWNER) {
+                navigator.goTo("resellerMainPage2.fxml");
+            }
+        } catch (IOException e) {
+            GUIUtils.showErrorAlert("Errore di Navigazione", "Impossibile caricare la pagina", "Non è stato possibile navigare alla pagina specificata in base al ruolo. ");
         }
     }
+
 
     private void showAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.WARNING, message);
