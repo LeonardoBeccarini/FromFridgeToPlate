@@ -167,7 +167,7 @@ public class FileResellerDAO extends FileDAOBase implements ResellerDAO {
     }
 
 
-    public boolean assignRiderToOrder(int orderId, int riderId) throws DAOException  {
+    public void assignRiderToOrder(int orderId, int riderId) throws DAOException  {
         List<Order> orders = getAllOrders();
         boolean isOrderFound = false;
 
@@ -181,9 +181,7 @@ public class FileResellerDAO extends FileDAOBase implements ResellerDAO {
 
         if (isOrderFound) {
             writeOrdersToFile(orders); // Riscrivo la lista aggiornata degli ordini nel file
-            return true;
         } else {
-            return false; // L'ordine specificato non è stato trovato
         }
     }
 
