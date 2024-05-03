@@ -75,28 +75,31 @@ public class CompleteOrderGraphicController extends GenericGraphicController{
                 Alert alert = new Alert(Alert.AlertType.WARNING, "complete all fields before||");
                 alert.showAndWait();
             }
-            else{
-                AddressBean addressBean = new AddressBean(streetText.getText(), Integer.parseInt(numberText.getText()), cityText.getText(), provinceText.getText());
-                OrderBean orderBean = new OrderBean(shopBean.getVatNumber(), addressBean);
+            AddressBean addressBean = new AddressBean(streetText.getText(), Integer.parseInt(numberText.getText()), cityText.getText(), provinceText.getText());
+            OrderBean orderBean = new OrderBean(shopBean.getVatNumber(), addressBean);
 
-                try {
-                    makeOrderControl.completeOrder(orderBean);
-                } catch (DbException | PaymentFailedException e) {
-                    Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage()) ;
-                    alert.showAndWait();
-                }catch(DAOException e) {
-                    GUIUtils.showErrorAlert("Errore di scrittura/lettura", "Errore nel salvataggio dell'ordine", "" + e.getMessage());
-                }
+            saveOrder(orderBean);
+            try {
+                navigator.goTo("clientHomePage.fxml");
+            } catch (IOException e) {
+                Alert alert2 = new Alert(Alert.AlertType.ERROR, e.getMessage());
+                alert2.showAndWait();
 
-                Alert alert = new Alert(Alert.AlertType.INFORMATION, "Ordine salvato con successo");
-                alert.showAndWait();
-                try {
-                    navigator.goTo("clientHomePage.fxml");
-                } catch (IOException e) {
-                    Alert alert2 = new Alert(Alert.AlertType.ERROR, e.getMessage());
-                    alert2.showAndWait();
-                }
+
             }
         }
+    }
+    private void saveOrder(OrderBean orderBean) {
+        try {
+            makeOrderControl.completeOrder(orderBean);
+        } catch (DbException | PaymentFailedException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage()) ;
+            alert.showAndWait();
+        }catch(DAOException e) {
+            GUIUtils.showErrorAlert("Errore di scrittura/lettura", "Errore nel salvataggio dell'ordine", "" + e.getMessage());
+        }
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Ordine salvato con successo");
+        alert.showAndWait();
     }
 }

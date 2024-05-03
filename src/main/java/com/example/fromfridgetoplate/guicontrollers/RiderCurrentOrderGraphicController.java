@@ -1,7 +1,6 @@
 package com.example.fromfridgetoplate.guicontrollers;
 
 
-
 import com.example.fromfridgetoplate.logic.bean.OrderBean;
 import com.example.fromfridgetoplate.logic.bean.RiderBean;
 import com.example.fromfridgetoplate.logic.control.RiderHPController;
@@ -9,21 +8,14 @@ import com.example.fromfridgetoplate.logic.exceptions.DAOException;
 import com.example.fromfridgetoplate.logic.exceptions.RiderGcException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.stage.Stage;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Objects;
 import java.util.ResourceBundle;
-
-import static com.example.fromfridgetoplate.guicontrollers.Navigator.stage;
 
 public class RiderCurrentOrderGraphicController extends GenericGraphicController {
 
@@ -61,14 +53,6 @@ public class RiderCurrentOrderGraphicController extends GenericGraphicController
             shippingCityLabel.setText("Città: " + currentOrderBean.getShippingAddress().getShippingCity());
             shippingProvinceLabel.setText("Provincia: " + currentOrderBean.getShippingAddress().getShippingProvince());
             shippingStreetNumberLabel.setText("Numero civico: " + currentOrderBean.getShippingAddress().getShippingStreetNumber());
-
-            // Stampa i valori a console
-            System.out.println("Caricamento dettagli ordine:");
-            System.out.println("Id dell'ordine: " + currentOrderBean.getOrderId());
-            System.out.println("Via: " + currentOrderBean.getShippingAddress().getShippingStreet());
-            System.out.println("Città: " + currentOrderBean.getShippingAddress().getShippingCity());
-            System.out.println("Provincia: " + currentOrderBean.getShippingAddress().getShippingProvince());
-            System.out.println("Numero civico: " + currentOrderBean.getShippingAddress().getShippingStreetNumber());
 
         }catch(RiderGcException e) {
             showNoOrderAlert(e);

@@ -2,11 +2,11 @@
 package com.example.fromfridgetoplate.guicontrollers;
 
 
-import com.example.fromfridgetoplate.logic.bean.*;
-
+import com.example.fromfridgetoplate.logic.bean.OrderBean;
+import com.example.fromfridgetoplate.logic.bean.SearchBean;
+import com.example.fromfridgetoplate.logic.control.PendingOrdersController;
 import com.example.fromfridgetoplate.logic.exceptions.DAOException;
 import com.example.fromfridgetoplate.logic.model.CartItem;
-import com.example.fromfridgetoplate.logic.model.FoodItem;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,9 +16,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-
-import com.example.fromfridgetoplate.logic.control.PendingOrdersController;
-import com.example.fromfridgetoplate.logic.model.Order;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
@@ -57,7 +54,6 @@ public class PendingOrdersGraphicController extends GenericGraphicController {
 
         super.initialize(location, resources); // anche la classe padre: GenericGraphicController, ha il suo initialize, quindi bisogna chiamarlo
         // prima di chiamare l'initialize di questo controller
-        //this.orderListBean = new OrderListBean();
 
         // Collego le colonne agli attributi di OrderBean
 
@@ -88,7 +84,7 @@ public class PendingOrdersGraphicController extends GenericGraphicController {
 
 
     @FXML  // Questo metodo viene chiamato quando si clicca sul pulsante per cercare i rider
-    void search_riders(ActionEvent event) throws IOException {
+    void searchRiders(ActionEvent event) throws IOException {
         OrderBean selectedOrder = ordersTable.getSelectionModel().getSelectedItem();
 
         if (selectedOrder != null) {

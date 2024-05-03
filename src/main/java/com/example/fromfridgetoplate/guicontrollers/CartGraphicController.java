@@ -27,6 +27,8 @@ public class CartGraphicController extends GenericGraphicController{
 
     @FXML
     private Button completeButton;
+    @FXML
+    private Button backButton;
 
     @FXML
     private Label nameLabel;
@@ -71,6 +73,9 @@ public class CartGraphicController extends GenericGraphicController{
         if(sourceNode == minusButton){
             makeOrderControl.changeQuantity(selectedCartItemBean, false);
             updateCart();
+        }
+        if(sourceNode == backButton){
+            navigator.goToWithController("buyProductPage.fxml", new BuyProductGraphicController(shopBean));
         }
         if(sourceNode == completeButton){
             navigator.goToWithController("completeOrderPage.fxml", new CompleteOrderGraphicController(shopBean));

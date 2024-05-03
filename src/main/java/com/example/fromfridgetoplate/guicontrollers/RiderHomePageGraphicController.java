@@ -5,9 +5,7 @@ import com.example.fromfridgetoplate.logic.bean.NotificationBean;
 import com.example.fromfridgetoplate.logic.bean.NotificationBeanList;
 import com.example.fromfridgetoplate.logic.bean.RiderBean;
 import com.example.fromfridgetoplate.logic.control.RiderHPController;
-
 import com.example.fromfridgetoplate.logic.exceptions.NotificationHandlingException;
-import com.example.fromfridgetoplate.logic.exceptions.NotificationProcessingException;
 import com.example.fromfridgetoplate.patterns.state.RiderStateContext;
 import com.example.fromfridgetoplate.secondguicontrollers.IUpdateable;
 import com.example.fromfridgetoplate.secondguicontrollers.Printer;
@@ -28,7 +26,6 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.io.PrintStream;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -73,7 +70,6 @@ public class RiderHomePageGraphicController extends GenericGraphicController imp
 
     private RiderHPController riderController;// è necessario mantenere un riferimento allo stesso controller applicativo , senno si avvierebbero piu timer , ecc.
     private RiderNotificationPageGraphicController notificationPageGController;
-    //private NotificationListBean nlb = new NotificationListBean();
 
     private RiderStateContext stateContext;
 
