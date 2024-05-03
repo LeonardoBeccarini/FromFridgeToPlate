@@ -4,6 +4,7 @@ import com.example.fromfridgetoplate.logic.bean.OrderBean;
 import com.example.fromfridgetoplate.logic.bean.RiderBean;
 import com.example.fromfridgetoplate.logic.bean.SearchBean;
 import com.example.fromfridgetoplate.logic.exceptions.DbException;
+import com.example.fromfridgetoplate.logic.exceptions.OrderAssignmentException;
 import com.example.fromfridgetoplate.logic.model.Order;
 import com.example.fromfridgetoplate.logic.model.OrderList;
 import com.example.fromfridgetoplate.logic.model.Rider;
@@ -17,7 +18,7 @@ public interface ResellerDAO {
 
     void updateAvailability(OrderBean orderBean) ;
 
-    void setAssignation(int orderId) ;
+    void setAssignation(int orderId) throws OrderAssignmentException;
 
     OrderList getAssignedOrders(String currentResellerEmail);
 

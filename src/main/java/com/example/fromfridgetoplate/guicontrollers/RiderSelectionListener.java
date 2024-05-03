@@ -3,12 +3,13 @@ package com.example.fromfridgetoplate.guicontrollers;
 import com.example.fromfridgetoplate.logic.bean.OrderBean;
 import com.example.fromfridgetoplate.logic.bean.RiderBean;
 import com.example.fromfridgetoplate.logic.control.NotificationManager;
-import com.example.fromfridgetoplate.logic.model.Order;
+import com.example.fromfridgetoplate.logic.exceptions.OrderAssignmentException;
+
 import javafx.scene.control.Alert;
 
 public class RiderSelectionListener implements IRiderSelectionListener {
 
-    public void onRiderSelected(RiderBean selectedRiderBean, OrderBean orderBean) { // in realtà dovrà mandare una notifica al rider
+    public void onRiderSelected(RiderBean selectedRiderBean, OrderBean orderBean) throws OrderAssignmentException { // in realtà dovrà mandare una notifica al rider
 
         assignOrderToRider(orderBean, selectedRiderBean);
 
@@ -25,7 +26,7 @@ public class RiderSelectionListener implements IRiderSelectionListener {
     }
 
 
-    private void assignOrderToRider(OrderBean orderBn, RiderBean riderBn) {
+    private void assignOrderToRider(OrderBean orderBn, RiderBean riderBn) throws OrderAssignmentException {
 
         NotificationManager notManager = new NotificationManager();
         notManager.notifyRider(riderBn, orderBn);

@@ -3,14 +3,15 @@ package com.example.fromfridgetoplate.logic.dao;
 import com.example.fromfridgetoplate.logic.bean.OrderBean;
 import com.example.fromfridgetoplate.logic.bean.RiderBean;
 import com.example.fromfridgetoplate.logic.bean.SearchBean;
+import com.example.fromfridgetoplate.logic.exceptions.OrderAssignmentException;
 import com.example.fromfridgetoplate.logic.model.*;
 
 import java.io.*;
-import java.time.LocalDateTime;
+
 import java.util.ArrayList;
-import java.util.HashMap;
+
 import java.util.List;
-import java.util.Map;
+
 
 
 
@@ -23,7 +24,7 @@ public class FileResellerDAO extends FileDAOBase implements ResellerDAO {
     }
 
     public OrderList getPendingOrders(String loggedEmail) {
-        // Prima recupera tutti i negozi per trovare il VATnumber corrispondente all'email del reseller
+        // Prima recupero tutti i negozi per trovare il VATnumber corrispondente all'email del reseller
         List<Shop> shops = getAllShops();
 
         String shopVATnumber = null;
@@ -35,12 +36,12 @@ public class FileResellerDAO extends FileDAOBase implements ResellerDAO {
         }
 
         if (shopVATnumber == null) {
-            System.out.println("Negozio non trovato per l'email: " + loggedEmail);
+
             return new OrderList(); // Nessun negozio trovato, quindi nessun ordine da restituire.
         }
 
         // Ora filtra gli ordini per lo status "pronto" e il VATnumber del negozio
-        List<Order> allOrders = getAllOrders(); // Assumi che questo metodo legga gli ordini da un file
+        List<Order> allOrders = getAllOrders();
         OrderList pendingOrders = new OrderList();
 
         for (Order order : allOrders) {
@@ -49,7 +50,6 @@ public class FileResellerDAO extends FileDAOBase implements ResellerDAO {
             }
         }
 
-        System.out.println("getPendingOrders called for shop VAT: " + shopVATnumber);
         return pendingOrders;
     }
 
@@ -57,10 +57,10 @@ public class FileResellerDAO extends FileDAOBase implements ResellerDAO {
     public void updateAvailability(OrderBean orderBean)  {
         List<Order> orders = getAllOrders();
 
-        // Trovo l'ordine con l'ID specificato e aggiorna il suo stato
+        // Trovo l'ordine con l'ID specificato e aggiorno il suo stato
         for (Order order : orders) {
             if (order.getOrderId() == orderBean.getOrderId()) {
-                order.setStatus("in consegna"); // Aggiorna lo stato dell'ordine a in consegna
+                order.setStatus("in consegna");
                 break;
             }
         }
@@ -70,7 +70,7 @@ public class FileResellerDAO extends FileDAOBase implements ResellerDAO {
     }
 
 
-    public void setAssignation(int orderId) {
+    public void setAssignation(int orderId) throws OrderAssignmentException {
         List<Order> orders = getAllOrders();
         boolean orderFound = false;
 
@@ -81,7 +81,7 @@ public class FileResellerDAO extends FileDAOBase implements ResellerDAO {
                 try {
                     writeAssignedOrder(order); // Scrivo l'ordine aggiornato nel file degli `OrdiniAssegnati`
                 } catch (IOException e) {
-                    throw new RuntimeException(e);
+                    throw new OrderAssignmentException("Failed to write assigned order to file", e);
                 }
                 orderFound = true;
                 break;

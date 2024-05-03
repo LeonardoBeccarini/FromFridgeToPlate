@@ -2,6 +2,7 @@ package com.example.fromfridgetoplate.logic.control;
 
 import com.example.fromfridgetoplate.logic.bean.OrderBean;
 import com.example.fromfridgetoplate.logic.dao.*;
+import com.example.fromfridgetoplate.logic.exceptions.OrderAssignmentException;
 import com.example.fromfridgetoplate.logic.model.Order;
 import com.example.fromfridgetoplate.logic.bean.RiderBean;
 import com.example.fromfridgetoplate.patterns.abstractFactory.DAOAbsFactory;
@@ -24,7 +25,7 @@ public class NotificationManager {
 
 
 
-    public void notifyRider(RiderBean riderBean, OrderBean orderBean) { // purtroppo da qui il rider, dovrà andarsi a retrievare
+    public void notifyRider(RiderBean riderBean, OrderBean orderBean) throws OrderAssignmentException { // purtroppo da qui il rider, dovrà andarsi a retrievare
         // da solo le notifiche dalla tabella nel databse, dall'istanza di applicazione del rivenditore, non c'è modo di
         // contattare il rider in un'altra istanza di applicazione
 
@@ -47,7 +48,7 @@ public class NotificationManager {
             ntfDAO.insertNotification(riderBean.getId(), order, "Nuovo ordine assegnato");
 
         }
-        System.out.println("available ?" + isAvailable);
+
 
         resellerDAO.assignRiderToOrder(orderBean.getOrderId(), riderBean.getId());
         resellerDAO.setAssignation(orderBean.getOrderId());
