@@ -2,6 +2,7 @@ package com.example.fromfridgetoplate.guicontrollers;
 
 import com.example.fromfridgetoplate.logic.bean.RegistrationBean;
 import com.example.fromfridgetoplate.logic.control.RegisterController;
+import com.example.fromfridgetoplate.logic.exceptions.DAOException;
 import com.example.fromfridgetoplate.logic.exceptions.DbException;
 import com.example.fromfridgetoplate.logic.model.Role;
 import javafx.fxml.FXML;
@@ -54,6 +55,8 @@ public class ShopSigninGraphicController implements Initializable {
                 } catch (DbException | IOException e) {
                     Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
                     alert.showAndWait();
+                }catch(DAOException e) {
+                    GUIUtils.showErrorAlert("Errore di scrittura/lettura", "Errore nel salvataggio delle credenziali del reseller", "" + e.getMessage());
                 }
             }
         });

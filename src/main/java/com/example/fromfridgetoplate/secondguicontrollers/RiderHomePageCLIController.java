@@ -3,6 +3,9 @@ package com.example.fromfridgetoplate.secondguicontrollers;
 
 import com.example.fromfridgetoplate.logic.bean.*;
 import com.example.fromfridgetoplate.logic.control.RiderHPController;
+import com.example.fromfridgetoplate.logic.exceptions.DAOException;
+import com.example.fromfridgetoplate.logic.exceptions.NotificationHandlingException;
+
 import java.util.List;
 import java.util.Scanner;
 
@@ -66,20 +69,25 @@ public class RiderHomePageCLIController implements IUpdateable {
 
     private void goOnline() {
         if (!isOnline) {
-            isOnline = true;
             NotificationBeanList notificationBeanList = new NotificationBeanList(this);
             this.riderController = new RiderHPController(notificationBeanList);
 
-            Printer.print("Sei entrato in servizio");
-
-
-            riderController.setRiderAvailable(true);
-            riderController.startNotificationPolling();
-            Printer.print("Sei ora online e disponibile per le consegne.");
+            try {
+                // Tentativo di impostare lo stato del rider come disponibile e avviare il polling delle notifiche
+                riderController.setRiderAvailable(true);
+                riderController.startNotificationPolling();
+                isOnline = true;
+                Printer.print("Sei entrato in servizio. Sei ora online e disponibile per le consegne.");
+            } catch (DAOException e) {
+                // Gestione dell'eccezione se non è possibile impostare il rider come disponibile
+                Printer.print("Errore nel passare in stato online: " + e.getMessage());
+                isOnline = false; // Assicurati di resettare lo stato se l'operazione fallisce
+            }
         } else {
             Printer.print("Sei già online.");
         }
     }
+
 
     private void goOffline() {
         if (isOnline) {
@@ -147,23 +155,28 @@ public class RiderHomePageCLIController implements IUpdateable {
     }
 
     private void acceptNotification(NotificationBean notification) {
-        RiderBean currentRider = riderController.getRiderDetailsFromSession();
+        try {
+            RiderBean currentRider = riderController.getRiderDetailsFromSession(); // Potrebbe lanciare DAOException
 
-        // Verifica se il rider ha già un ordine in consegna
-        boolean hasOrderInDelivery = riderController.checkForOrderInDelivery(currentRider);
+            // Verifica se il rider ha già un ordine in consegna
+            boolean hasOrderInDelivery = riderController.checkForOrderInDelivery(currentRider); // Potrebbe lanciare DAOException
 
-        if (hasOrderInDelivery) {
-            Printer.print("Consegna in corso: Hai già un ordine in consegna. Devi completare la consegna corrente prima di accettarne un'altra.");
-        } else {
-            try {
-                riderController.acceptOrder(notification);
-                riderController.markNotificationAsRead(notification); // Qui si suppone che il metodo markNotificationAsRead simuli l'accettazione dell'ordine
+            if (hasOrderInDelivery) {
+                Printer.print("Consegna in corso: Hai già un ordine in consegna. Devi completare la consegna corrente prima di accettarne un'altra.");
+            } else {
+                riderController.acceptOrder(notification); // Potrebbe lanciare DAOException
+                riderController.markNotificationAsRead(notification); // Potrebbe lanciare DAOException
                 Printer.print("Hai accettato l'ordine con ID:" + notification.getOrderBean().getOrderId()+"\n");
-            } catch (Exception e) {
-                Printer.print("Errore nell'accettazione dell'ordine: " + e.getMessage());
             }
+        } catch (DAOException e) {
+            Printer.print("Errore nell'accettazione dell'ordine: " + e.getMessage());
         }
+        catch (NotificationHandlingException e) {
+            Printer.print("Errore nel registrare la lettura della notifica " + e.getMessage());
+        }
+
     }
+
 
 
     private void declineNotification(NotificationBean notification) {

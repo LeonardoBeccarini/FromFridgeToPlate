@@ -2,10 +2,7 @@ package com.example.fromfridgetoplate.secondguicontrollers;
 
 import com.example.fromfridgetoplate.logic.bean.*;
 import com.example.fromfridgetoplate.logic.control.MakeOrderControl;
-import com.example.fromfridgetoplate.logic.exceptions.CouponNotFoundException;
-import com.example.fromfridgetoplate.logic.exceptions.DbException;
-import com.example.fromfridgetoplate.logic.exceptions.NegativePriceException;
-import com.example.fromfridgetoplate.logic.exceptions.PaymentFailedException;
+import com.example.fromfridgetoplate.logic.exceptions.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -67,6 +64,9 @@ public class CompleteOrderCLIcontroller {
             makeOrderControl.completeOrder(orderBean);
         } catch (DbException | PaymentFailedException e) {
             Printer.print("il completamento dell'ordine non è andato a buon fine: " +e.getMessage());
+        }
+        catch (DAOException e) {
+            Printer.print("Errore nella lettura/scrittura degli ordini salvati sullo strato di persistenza " +e.getMessage());
         }
         Printer.print("Ordine completato con successo!");
         try {

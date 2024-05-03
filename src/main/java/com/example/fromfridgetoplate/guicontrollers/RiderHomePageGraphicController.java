@@ -98,33 +98,34 @@ public class RiderHomePageGraphicController extends GenericGraphicController imp
 
 
     }
-
+// quando andro online chiamero il notificationmanager per segnalare la mia entrata in servizio
+    // in qualche modo il controller grafico di login dovrà passare in caso di successo di login, il rispettivo riderBean, a quest'altro
+    // controller grafico.
 
 
     private void setOnlineStatus() {
+
         // quando andro online chiamero il notificationmanager per segnalare la mia entrata in servizio
         // in qualche modo il controller grafico di login dovrà passare in caso di successo di login, il rispettivo riderBean, a quest'altro
         // controller grafico.
-
-
         RiderHPController riderCtrl = new RiderHPController();
-        RiderBean riderBn = riderCtrl.getRiderDetailsFromSession();// serve per accedere alle informazioni immesse al momento della
-        // registrazione, che mi servono, per popolare il riderbean
+        try {
+            RiderBean riderBn = riderCtrl.getRiderDetailsFromSession(); // Può lanciare DAOException o una specifica eccezione di sessione
 
-        if (riderBn == null) {
-            // Mostra un messaggio di errore se non sono disponibili dettagli del rider
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Errore di Login");
-            alert.setHeaderText("Dettagli Rider Non Trovati");
-            alert.setContentText("Impossibile trovare i dettagli del rider. Assicurati di essere loggato correttamente.");
-            alert.showAndWait();
-            return;
+            if (riderBn == null) {
+                throw new Exception("Dettagli del rider non disponibili.");
+            }
+
+            // Prosegui con l'impostazione dello stato online e altre logiche
+            NotificationBeanList notificationBeanList = new NotificationBeanList(this);
+            this.riderController = new RiderHPController(notificationBeanList);
+
+        } catch (Exception e) {
+            showErrorAlert("Errore di Login", "Dettagli Rider Non Trovati", "Impossibile trovare i dettagli del rider: " + e.getMessage());
         }
-        NotificationBeanList notificationBeanList = new NotificationBeanList(this); // in modo che la classe bean possa poi aggiornare gli elementi grafici a cui è associata
-        this.riderController = new RiderHPController(notificationBeanList);
-
-
     }
+
+
 
 
     @FXML
@@ -184,17 +185,20 @@ public class RiderHomePageGraphicController extends GenericGraphicController imp
     }
 
     public void updateUIForOnlineState() {
-
-        riderController.setRiderAvailable(true);
-
-        serviceBtn.setStyle("-fx-background-color: gold;");
-        // Disabilito il pulsante per evitare ulteriori clic
-        //serviceBtn.setDisable(true);
-        offlineButton.setStyle("-fx-background-color: originalColor;");
-        //offlineButton.setDisable(false);
-        riderController.startNotificationPolling();
-
+        try {
+            riderController.setRiderAvailable(true);
+            serviceBtn.setStyle("-fx-background-color: gold;");
+            // Disabilito il pulsante per evitare ulteriori clic
+            //serviceBtn.setDisable(true);
+            offlineButton.setStyle("-fx-background-color: originalColor;");
+            //offlineButton.setDisable(false);
+            riderController.startNotificationPolling();
+        } catch (Exception e) {
+            showErrorAlert("Errore di Stato", "Errore Durante l'Impostazione dello Stato Online", e.getMessage());
+        }
     }
+
+
 
     public void updateUIForOfflineState() {
         offlineButton.setStyle("-fx-background-color: gold;");
@@ -207,11 +211,8 @@ public class RiderHomePageGraphicController extends GenericGraphicController imp
 
 
     public void update(List<NotificationBean> notificationBeans) {
-
         try {
-
             int newNotificationsCount = notificationBeans.size();
-
             // aggiorno il testo del bottone notificationsButton
             Platform.runLater(() -> {
                 notificationsButton.setText("Notifiche (" + newNotificationsCount + ")");
@@ -228,14 +229,7 @@ public class RiderHomePageGraphicController extends GenericGraphicController imp
     }
 
     private void onUpdateFailed(String reason) {
-
-
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Errore di aggiornamento");
-            alert.setHeaderText(null);
-            alert.setContentText(reason);
-            alert.showAndWait();
-
+        showErrorAlert("Errore di aggiornamento", null, reason);
     }
 
 
@@ -243,7 +237,7 @@ public class RiderHomePageGraphicController extends GenericGraphicController imp
     public void SetNotificationAsRead(NotificationBean notifBn) {
         try {
             riderController.markNotificationAsRead(notifBn);
-        } catch (NotificationProcessingException | NotificationHandlingException e) {
+        } catch (NotificationHandlingException e) {
             // Gestione dell'eccezione, ad esempio mostrando un Alert con l'errore
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Errore nella gestione della notifica");
@@ -256,6 +250,15 @@ public class RiderHomePageGraphicController extends GenericGraphicController imp
 
     public Node getRootNode() {
         return root; // 'root' è l'AnchorPane
+    }
+
+
+    private void showErrorAlert(String title, String header, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
 

@@ -72,6 +72,8 @@ public class RiderCurrentOrderGraphicController extends GenericGraphicController
 
         }catch(RiderGcException e) {
             showNoOrderAlert(e);
+        } catch(DAOException e) {
+            GUIUtils.showErrorAlert("Errore di caricamento", "Errore nel recupero delle informazioni del rider", "" + e.getMessage());
         }
     }
 

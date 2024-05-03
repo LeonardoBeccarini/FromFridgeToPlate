@@ -3,10 +3,7 @@ package com.example.fromfridgetoplate.guicontrollers;
 import com.example.fromfridgetoplate.guicontrollers.list_cell_factories.CouponListCellFactory;
 import com.example.fromfridgetoplate.logic.bean.*;
 import com.example.fromfridgetoplate.logic.control.MakeOrderControl;
-import com.example.fromfridgetoplate.logic.exceptions.CouponNotFoundException;
-import com.example.fromfridgetoplate.logic.exceptions.DbException;
-import com.example.fromfridgetoplate.logic.exceptions.NegativePriceException;
-import com.example.fromfridgetoplate.logic.exceptions.PaymentFailedException;
+import com.example.fromfridgetoplate.logic.exceptions.*;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -87,6 +84,8 @@ public class CompleteOrderGraphicController extends GenericGraphicController{
                 } catch (DbException | PaymentFailedException e) {
                     Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage()) ;
                     alert.showAndWait();
+                }catch(DAOException e) {
+                    GUIUtils.showErrorAlert("Errore di scrittura/lettura", "Errore nel salvataggio dell'ordine", "" + e.getMessage());
                 }
 
                 Alert alert = new Alert(Alert.AlertType.INFORMATION, "Ordine salvato con successo");

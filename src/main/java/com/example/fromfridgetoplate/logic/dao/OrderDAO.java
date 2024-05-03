@@ -17,12 +17,12 @@ public interface OrderDAO {
     void declineOrder(int orderId, int riderId) throws DAOException;
     ;
 
-    OrderList getConfirmedDeliveriesForRider(int riderId) throws DeliveryRetrievalException;
+    OrderList getConfirmedDeliveriesForRider(int riderId) throws DeliveryRetrievalException, DAOException;
 
-    boolean checkForOrderInDelivery(int riderId);
+    boolean checkForOrderInDelivery(int riderId) throws DAOException;
 
-    Order getInDeliveryOrderForRider(int riderId) throws OrderNotFoundException;
+    Order getInDeliveryOrderForRider(int riderId) throws OrderNotFoundException, DAOException;
 
     void updateOrderStatusToDelivered(int orderId, LocalDateTime deliveryTime) throws DAOException;
-    Order saveOrder(Order order) throws DbException;
+    Order saveOrder(Order order) throws DbException, DAOException;
 }

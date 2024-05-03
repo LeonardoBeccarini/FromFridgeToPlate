@@ -1,5 +1,6 @@
 package com.example.fromfridgetoplate.logic.dao;
 
+import com.example.fromfridgetoplate.logic.exceptions.DAOException;
 import com.example.fromfridgetoplate.logic.model.Role;
 import com.example.fromfridgetoplate.logic.model.User;
 import com.example.fromfridgetoplate.logic.exceptions.NotExistentUserException;
@@ -10,7 +11,7 @@ import java.util.ArrayList;
 
 public class FileUserDAO extends FileDAOBase implements UserDAO {
 
-    public User verifyUserCredentials(String email, String password) throws NotExistentUserException {
+    public User verifyUserCredentials(String email, String password) throws NotExistentUserException, DAOException {
         System.out.println("check verifyUserCredentials");
         List<User> users = null;
         users = readUsersFromFile();
@@ -39,7 +40,7 @@ public class FileUserDAO extends FileDAOBase implements UserDAO {
 
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws DAOException {
 
         FileUserDAO fileUserDAO = new FileUserDAO();
         // Test readUsersFromFile

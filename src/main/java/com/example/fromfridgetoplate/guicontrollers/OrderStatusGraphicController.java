@@ -5,8 +5,10 @@ import com.example.fromfridgetoplate.logic.bean.OrderBean;
 import com.example.fromfridgetoplate.logic.bean.OrderListBean;
 import com.example.fromfridgetoplate.logic.control.PendingOrdersController;
 
+import com.example.fromfridgetoplate.logic.exceptions.DAOException;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
@@ -72,15 +74,27 @@ public class OrderStatusGraphicController extends GenericGraphicController {
 
 
     private void loadAssignedOrders() {
+        try {
+            PendingOrdersController pendingOrdersController = new PendingOrdersController();
+            OrderListBean assignedOrdersBean = pendingOrdersController.getAssignedOrdersBean();
 
-        PendingOrdersController pendingOrdersController = new PendingOrdersController();
-        OrderListBean assignedOrdersBean = pendingOrdersController.getAssignedOrdersBean();
+            // Validiamo gli ordini prima di caricarli nella tabella, cosi che mostriamo solo gli ordini validi all'utente
+            assignedOrdersBean.validateAllOrders();
 
-        // Validiamo gli ordini prima di caricarli nella tabella, cosi che mostriamo solo gli ordini validi all'utente
-        assignedOrdersBean.validateAllOrders();
-
-        this.assignedOrdersTable.setItems(FXCollections.observableArrayList(assignedOrdersBean.getOrderBeans()));
+            this.assignedOrdersTable.setItems(FXCollections.observableArrayList(assignedOrdersBean.getOrderBeans()));
+        } catch (DAOException e) {
+            showErrorAlert("Errore di Caricamento", "Errore nel caricamento degli ordini assegnati", "Si è verificato un errore durante il recupero degli ordini: " + e.getMessage());
+        }
     }
+
+    private void showErrorAlert(String title, String header, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
 
 
 

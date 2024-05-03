@@ -107,7 +107,7 @@ public class FileOrderDAO extends FileDAOBase implements OrderDAO {
     }
 
 
-    public OrderList getConfirmedDeliveriesForRider(int riderId) {
+    public OrderList getConfirmedDeliveriesForRider(int riderId) throws DAOException {
         List<Order> allOrders = getAllAssignedOrders(); // Assume getAllOrders() deserializzi gli ordini da un file
         OrderList confirmedDeliveries = new OrderList();
 
@@ -122,7 +122,7 @@ public class FileOrderDAO extends FileDAOBase implements OrderDAO {
 
 
     // metodo verifica se c'è almeno un ordine in consegna assegnato a un rider specifico
-    public boolean checkForOrderInDelivery(int riderId) {
+    public boolean checkForOrderInDelivery(int riderId) throws DAOException {
         List<Order> allOrders = getAllAssignedOrders(); //  getAllOrders() anddava a deserializzare gli ordini da un file
 
         for (Order order : allOrders) {
@@ -136,7 +136,7 @@ public class FileOrderDAO extends FileDAOBase implements OrderDAO {
     }
 
 
-    public Order getInDeliveryOrderForRider(int riderId) throws OrderNotFoundException {
+    public Order getInDeliveryOrderForRider(int riderId) throws OrderNotFoundException, DAOException {
         List<Order> allOrders = getAllAssignedOrders();
 
         for (Order order : allOrders) {
@@ -174,7 +174,7 @@ public class FileOrderDAO extends FileDAOBase implements OrderDAO {
 
     }
 
-    public Order saveOrder(Order order) throws DbException {
+    public Order saveOrder(Order order) throws DbException, DAOException {
         // Recupera tutti gli ordini esistenti e la mappa degli item associati
         List<Order> orders = getAllOrders();
         Map<Integer, List<CartItem>> orderItemsMap = getAllOrderItems();

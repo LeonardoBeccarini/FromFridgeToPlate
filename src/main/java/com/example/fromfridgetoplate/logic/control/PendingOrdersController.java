@@ -3,6 +3,7 @@ package com.example.fromfridgetoplate.logic.control;
 import com.example.fromfridgetoplate.logic.bean.*;
 import com.example.fromfridgetoplate.logic.dao.DbResellerDAO;
 import com.example.fromfridgetoplate.logic.dao.ResellerDAO;
+import com.example.fromfridgetoplate.logic.exceptions.DAOException;
 import com.example.fromfridgetoplate.logic.model.Order;
 import com.example.fromfridgetoplate.logic.model.OrderList;
 import com.example.fromfridgetoplate.logic.model.Rider;
@@ -22,12 +23,12 @@ public class PendingOrdersController {
 
 
     // Metodo per ottenere direttamente gli OrderBean aggiornati per demetra
-    public List<OrderBean> getUpdatedPendingOrders() {
+    public List<OrderBean> getUpdatedPendingOrders() throws DAOException {
 
         return getPendingOrderListBean().getOrderBeans();
     }
 
-    private OrderListBean getPendingOrderListBean() {
+    private OrderListBean getPendingOrderListBean() throws DAOException {
         // Chiamata al DAO per ottenere la lista di ordini pendenti
 
         DAOAbsFactory absFactory = DAOFactoryProvider.getInstance().getDaoFactory();
@@ -54,7 +55,7 @@ public class PendingOrdersController {
         return orderListBean;
     }
 
-    public OrderListBean getAssignedOrdersBean() {
+    public OrderListBean getAssignedOrdersBean() throws DAOException {
 
 
         DAOAbsFactory daoAbsFactory = DAOFactoryProvider.getInstance().getDaoFactory();
@@ -97,7 +98,7 @@ public class PendingOrdersController {
      **/
 
 
-    public List<RiderBean> getAvalaibleRiders(SearchBean searchBean) {
+    public List<RiderBean> getAvalaibleRiders(SearchBean searchBean) throws DAOException {
 
         // Chiamata al DAO per ottenere la lista di ordini pendenti
         //DAOFactory daoFactory = new DAOFactory();

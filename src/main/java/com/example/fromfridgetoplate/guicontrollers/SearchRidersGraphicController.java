@@ -5,6 +5,7 @@ import com.example.fromfridgetoplate.logic.bean.RiderBean;
 import com.example.fromfridgetoplate.logic.bean.RiderPrefBean;
 import com.example.fromfridgetoplate.logic.bean.SearchBean;
 import com.example.fromfridgetoplate.logic.control.PendingOrdersController;
+import com.example.fromfridgetoplate.logic.exceptions.DAOException;
 import com.example.fromfridgetoplate.logic.exceptions.RiderSelectionException;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -81,19 +82,29 @@ public class SearchRidersGraphicController extends GenericGraphicController {
     // selezionato dalla TableView(ogni riga è un riderBean). Se un rider è selezionato dall'utente, il metodo selectRider
     // viene chiamato.
     public void loadData(SearchBean searchBean) {
+        try {
+            PendingOrdersController pendingOrdersControl = new PendingOrdersController();
+            this.setAssignedCity(searchBean.getCity());
+            IRiderSelectionListener riderSelectionListener = new RiderSelectionListener();
+            this.setRiderSelectionListener(riderSelectionListener);
+            this.orderBean = searchBean.getSelectedOrderBean(); // ordine che deve assegnato al rider selezionato
 
-        PendingOrdersController pendingOrdersControl = new PendingOrdersController();
+            List<RiderBean> avRidersBean = pendingOrdersControl.getAvalaibleRiders(searchBean);
+            ridersTable.setItems(FXCollections.observableArrayList(avRidersBean));
+        } catch (DAOException e) {
+            showErrorAlert("Errore di Caricamento", "Errore nel caricamento dei rider disponibili", "Si è verificato un errore durante il recupero dei rider disponibili dallo strato di persistenza: " + e.getMessage());
 
-        this.setAssignedCity(searchBean.getCity());
-        IRiderSelectionListener riderSelectionListener = new RiderSelectionListener();
-        this.setRiderSelectionListener(riderSelectionListener);
-        this.orderBean = searchBean.getSelectedOrderBean(); // ordine che deve assegnato al rider selezionato
-
-        List<RiderBean> avRidersBean = pendingOrdersControl.getAvalaibleRiders(searchBean);
-
-        ridersTable.setItems(FXCollections.observableArrayList(avRidersBean));
-
+        }
     }
+
+    private void showErrorAlert(String title, String header, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
 
     @FXML
     void choose_rider(ActionEvent event) {

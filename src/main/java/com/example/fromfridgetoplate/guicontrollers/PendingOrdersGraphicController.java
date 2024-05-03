@@ -4,6 +4,7 @@ package com.example.fromfridgetoplate.guicontrollers;
 
 import com.example.fromfridgetoplate.logic.bean.*;
 
+import com.example.fromfridgetoplate.logic.exceptions.DAOException;
 import com.example.fromfridgetoplate.logic.model.CartItem;
 import com.example.fromfridgetoplate.logic.model.FoodItem;
 import javafx.application.Platform;
@@ -154,9 +155,16 @@ public class PendingOrdersGraphicController extends GenericGraphicController {
     }
 
     private void refreshOrders(PendingOrdersController poc) {
-        List<OrderBean> updatedOrderList = poc.getUpdatedPendingOrders();
-        updateTableView(updatedOrderList);
+        try {
+            List<OrderBean> updatedOrderList = poc.getUpdatedPendingOrders();
+            updateTableView(updatedOrderList);
+        } catch (DAOException e) {
+            GUIUtils.showErrorAlert("Errore di Aggiornamento", "Errore nel caricamento degli ordini", "Non è stato possibile aggiornare l'elenco degli ordini: " + e.getMessage());
+        }
     }
+
+
+
 
 
     private void updateTableView(List<OrderBean> updatedOrderList) {

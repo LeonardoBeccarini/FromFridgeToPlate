@@ -9,3 +9,4 @@ gvf34gh5 carota 2.0
 fekk3 zucchina 2.0
 cejce3f verza 2.0
 cejce3f parmigiano 4.0
+cejce3f pasta 2.0

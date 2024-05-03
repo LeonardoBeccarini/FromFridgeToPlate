@@ -1,5 +1,6 @@
 package com.example.fromfridgetoplate.logic.dao;
 
+import com.example.fromfridgetoplate.logic.exceptions.DAOException;
 import com.example.fromfridgetoplate.logic.model.Client;
 import com.example.fromfridgetoplate.logic.model.Role;
 import com.example.fromfridgetoplate.logic.model.User;
@@ -8,7 +9,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class FileClientDAO extends FileDAOBase implements ClientDAO {
-    public boolean saveClient(Client newClient) {
+    public boolean saveClient(Client newClient) throws DAOException {
         // Verifica se il cliente esiste già nel file degli utenti
         if (isUserExists(newClient.getEmail())) {
             System.out.println("Cliente già registrato con questa email.");
@@ -35,12 +36,12 @@ public class FileClientDAO extends FileDAOBase implements ClientDAO {
         return true;
     }
 
-    private boolean isUserExists(String email) {
+    private boolean isUserExists(String email) throws DAOException{
         List<User> users = readUsersFromFile();
         return users.stream().anyMatch(user -> user.getEmail().equals(email));
     }
 
-    private boolean addUserToFile(User user) {
+    private boolean addUserToFile(User user ) throws DAOException{
         List<User> users = readUsersFromFile();
         users.add(user);
         try {
@@ -53,29 +54,9 @@ public class FileClientDAO extends FileDAOBase implements ClientDAO {
     }
 
 
-    private List<Client> readClientsFromFile() {
+    private List<Client> readClientsFromFile() throws DAOException {
         return readFromFile(clientsFilePath);
     }
 
-    public static void main(String[] args) {
-        FileClientDAO clientDAO = new FileClientDAO();
 
-        // Crea un nuovo oggetto Client per il test
-        Client newClient = new Client("test4@test.com", "password123", "Nome", "Cognome", "Indirizzo 123");
-
-
-        // Prova a salvare il cliente nel file
-        boolean saveResult = clientDAO.saveClient(newClient);
-        System.out.println("Risultato del salvataggio: " + (saveResult ? "Successo" : "Fallimento"));
-
-        // Leggi i clienti dal file e stampali per verificare l'inserimento
-        List<Client> clients = clientDAO.readClientsFromFile();
-        System.out.println("Clienti registrati nel file:");
-        for (Client client : clients) {
-            System.out.println("Email: " + client.getEmail() +
-                    ", Nome: " + client.getName() +
-                    ", Cognome: " + client.getSurname() +
-                    ", Indirizzo: " + client.getAddress());
-        }
-    }
 }

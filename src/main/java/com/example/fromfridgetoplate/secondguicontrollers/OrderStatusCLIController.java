@@ -4,6 +4,7 @@ package com.example.fromfridgetoplate.secondguicontrollers;
 import com.example.fromfridgetoplate.logic.bean.OrderBean;
 import com.example.fromfridgetoplate.logic.bean.OrderListBean;
 import com.example.fromfridgetoplate.logic.control.PendingOrdersController;
+import com.example.fromfridgetoplate.logic.exceptions.DAOException;
 
 import java.util.List;
 import java.util.Scanner;
@@ -12,21 +13,28 @@ public class OrderStatusCLIController {
 
 
     public void displayAssignedOrders() {
+        try {
+            PendingOrdersController pendingOrdersController = new PendingOrdersController();
+            OrderListBean assignedOrdersBean = pendingOrdersController.getAssignedOrdersBean();
+            assignedOrdersBean.validateAllOrders();
+            List<OrderBean> orders = assignedOrdersBean.getOrderBeans();
 
-        PendingOrdersController pendingOrdersController = new PendingOrdersController();
-        OrderListBean assignedOrdersBean = pendingOrdersController.getAssignedOrdersBean();
-        assignedOrdersBean.validateAllOrders();
-        List<OrderBean> orders = assignedOrdersBean.getOrderBeans();
+            Printer.print("Ordini Assegnati:");
+            for (OrderBean order : orders) {
+                Printer.print(formatOrder(order));
+            }
 
+            handleUserInput();
+        } catch (DAOException e) {
+            Printer.print("Errore nella gestione delle notifiche: " + e.getMessage());
 
-        Printer.print("Ordini Assegnati:");
-        for (OrderBean order : orders) {
-            Printer.print(formatOrder(order));
+            if (e.getCause() != null) {
+                Printer.print("Causa dell'errore: " + e.getCause().getMessage());
+            }
         }
-
-
-        handleUserInput();
     }
+
+
 
     private String formatOrder(OrderBean order) {
 

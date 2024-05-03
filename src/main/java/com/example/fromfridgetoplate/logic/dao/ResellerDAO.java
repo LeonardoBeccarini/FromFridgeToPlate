@@ -3,6 +3,7 @@ package com.example.fromfridgetoplate.logic.dao;
 import com.example.fromfridgetoplate.logic.bean.OrderBean;
 import com.example.fromfridgetoplate.logic.bean.RiderBean;
 import com.example.fromfridgetoplate.logic.bean.SearchBean;
+import com.example.fromfridgetoplate.logic.exceptions.DAOException;
 import com.example.fromfridgetoplate.logic.exceptions.DbException;
 import com.example.fromfridgetoplate.logic.exceptions.OrderAssignmentException;
 import com.example.fromfridgetoplate.logic.model.Order;
@@ -14,19 +15,19 @@ import java.util.List;
 
 public interface ResellerDAO {
 
-    OrderList getPendingOrders(String email);
+    OrderList getPendingOrders(String email) throws DAOException;
 
-    void updateAvailability(OrderBean orderBean) ;
+    void updateAvailability(OrderBean orderBean) throws DAOException ;
 
-    void setAssignation(int orderId) throws OrderAssignmentException;
+    void setAssignation(int orderId) throws OrderAssignmentException, DAOException;
 
-    OrderList getAssignedOrders(String currentResellerEmail);
+    OrderList getAssignedOrders(String currentResellerEmail) throws DAOException;
 
-    boolean assignRiderToOrder(int orderId, int riderId) ;
+    boolean assignRiderToOrder(int orderId, int riderId) throws DAOException ;
 
-    boolean isRiderAvailable(RiderBean riderBn);
+    boolean isRiderAvailable(RiderBean riderBn) throws DAOException ;
 
-    List<Rider> getAvailableRiders(SearchBean rpBean);
+    List<Rider> getAvailableRiders(SearchBean rpBean) throws DAOException;
 
 
 }

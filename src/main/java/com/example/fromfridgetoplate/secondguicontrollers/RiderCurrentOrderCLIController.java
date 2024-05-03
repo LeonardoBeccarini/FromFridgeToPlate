@@ -11,11 +11,10 @@ import java.util.Scanner;
 public class RiderCurrentOrderCLIController {
 
     public void loadOrderDetails() {
-
         RiderHPController riderController = new RiderHPController();
         try {
-            RiderBean riderBean = riderController.getRiderDetailsFromSession();
-            OrderBean currentOrderBean = riderController.getInDeliveryOrderForRider(riderBean);
+            RiderBean riderBean = riderController.getRiderDetailsFromSession(); // Può lanciare DAOException
+            OrderBean currentOrderBean = riderController.getInDeliveryOrderForRider(riderBean); // Può lanciare RiderGcException
 
             if (currentOrderBean != null) {
                 Printer.print("\n*** Dettagli dell'Ordine Corrente ***");
@@ -29,14 +28,17 @@ public class RiderCurrentOrderCLIController {
             } else {
                 Printer.print("Attualmente non hai ordini in consegna. Per favore, accetta un ordine nella sezione Notifiche.");
             }
+        } catch (DAOException e) {
+            Printer.print("Errore nel recupero dei dettagli del rider: " + e.getMessage());
         } catch (RiderGcException e) {
             Printer.print("Errore: " + e.getMessage());
             Throwable cause = e.getCause();
             if (cause != null) {
-                Printer.print("Causa: " + cause.getMessage());
+                Printer.print("Causa dell'errore: " + cause.getMessage());
             }
         }
     }
+
 
     private void confirmDelivery(RiderHPController riderController, OrderBean currentOrderBean) {
         Printer.print("\nVuoi confermare la consegna di questo ordine? (sì/no):");

@@ -4,6 +4,7 @@ import com.example.fromfridgetoplate.logic.bean.OrderBean;
 import com.example.fromfridgetoplate.logic.bean.OrderListBean;
 import com.example.fromfridgetoplate.logic.bean.RiderBean;
 import com.example.fromfridgetoplate.logic.control.RiderHPController;
+import com.example.fromfridgetoplate.logic.exceptions.DAOException;
 import com.example.fromfridgetoplate.logic.exceptions.RiderGcException;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -18,7 +19,7 @@ import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
 
-public class RiderDeliveryReportController extends GenericGraphicController{
+public class RiderDeliveryReportController extends GenericGraphicController {
 
 
     @FXML
@@ -39,7 +40,6 @@ public class RiderDeliveryReportController extends GenericGraphicController{
     private TableColumn<OrderBean, Integer> riderIdColumn;
 
 
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         super.initialize(location, resources); // anche la classe padre: GenericGraphicController, ha il suo initialize, quindi bisogna chiamarlo
@@ -54,37 +54,23 @@ public class RiderDeliveryReportController extends GenericGraphicController{
     }
 
     private void loadDeliveries() {
-        RiderHPController riderCtrl = new RiderHPController();
-        RiderBean riderBean = riderCtrl.getRiderDetailsFromSession();
+        try {
+            RiderHPController riderCtrl = new RiderHPController();
+            RiderBean riderBean = riderCtrl.getRiderDetailsFromSession();  // Può lanciare DAOException
 
-        if (riderBean != null) {
-            try {
-                OrderListBean deliveredOrders = riderCtrl.getConfirmedDeliveries(riderBean);
+            OrderListBean deliveredOrders = riderCtrl.getConfirmedDeliveries(riderBean);  // Può lanciare RiderGcException o DAOException
 
-                //deliveredOrders.validateAllOrders();
-                // Usero poi i dati in deliveredOrdersBean per popolare la TableView
-                deliveriesTable.setItems(FXCollections.observableArrayList(deliveredOrders.getOrderBeans()));
+            // Utilizzare i dati in deliveredOrders per popolare la TableView
+            deliveriesTable.setItems(FXCollections.observableArrayList(deliveredOrders.getOrderBeans()));
+        } catch (DAOException e) {
 
-            } catch (RiderGcException e) {
-                String errorMessage = e.getMessage();
+            GUIUtils.showErrorAlert("Errore di Accesso alla persistenza", "Errore durante il recupero dei dati del rider o delle consegne effettuate", "causa errore  " + e.getMessage());
+        } catch (RiderGcException e) {
 
-                // Ottieni il messaggio dall'eccezione originale, se presente
-                Throwable cause = e.getCause();
-                if (cause != null) {
-                    errorMessage += "\nCausa: " + cause.getMessage();
-                }
+            GUIUtils.showErrorAlert("Errore di Consegna", "Impossibile recuperare le consegne confermate", "causa errore  " + e.getMessage());
 
-                // Mostra il messaggio d'errore all'utente, ad esempio usando un Alert in JavaFX
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Errore");
-                alert.setHeaderText("Si è verificato un errore");
-                alert.setContentText(errorMessage);
-                alert.showAndWait();
-            }
         }
+
+
     }
-
-
-
-
 }

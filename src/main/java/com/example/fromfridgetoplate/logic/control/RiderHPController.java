@@ -55,7 +55,7 @@ public class RiderHPController {
 
 
 
-    public void setRiderAvailable(boolean available) {
+    public void setRiderAvailable(boolean available) throws DAOException {
         RiderBean riderBean = getRiderDetailsFromSession(); // Accede alle informazioni del rider dalla sessione
         riderBean.setAvailable(available);
 
@@ -111,13 +111,18 @@ public class RiderHPController {
 
     private class NotificationPollingTask extends TimerTask {
         @Override
-        public void run() {
+        public void run()  {
             pollForNotifications();
         }
 
-        private void pollForNotifications() {
+        private void pollForNotifications()  {
             NotificationDAO ntfDAO = new NotificationDAO(SingletonConnector.getInstance().getConnection());
-            RiderBean riderBean = getRiderDetailsFromSession(); // Accede alle informazioni del rider dalla sessione
+            RiderBean riderBean = null; // Accede alle informazioni del rider dalla sessione
+            try {
+                riderBean = getRiderDetailsFromSession();
+            } catch (DAOException e) {
+                throw new RuntimeException(e);
+            }
             List<Notification> newNotifications = ntfDAO.getNotificationsForRider(riderBean.getId(), lastNotificationId);
 
 
@@ -165,7 +170,7 @@ public class RiderHPController {
 
 
 
-    public void markNotificationAsRead(NotificationBean notificationToMark) throws NotificationProcessingException, NotificationHandlingException {
+    public void markNotificationAsRead(NotificationBean notificationToMark) throws NotificationHandlingException {
         if (notificationToMark == null) {
             throw new IllegalArgumentException("La notifica da marcare come letta non può essere null.");
         }
@@ -202,7 +207,7 @@ public class RiderHPController {
         orderDAO.declineOrder(notifiedOrder.getOrderId(), notifiedOrder.getRiderId());
     }
 
-    public OrderListBean getConfirmedDeliveries(RiderBean riderInfo) throws RiderGcException {
+    public OrderListBean getConfirmedDeliveries(RiderBean riderInfo) throws RiderGcException, DAOException {
 
         OrderListBean orderListBean = new OrderListBean();
         try {
@@ -240,7 +245,7 @@ public class RiderHPController {
     }
 
 
-    public RiderBean getRiderDetailsFromSession() {
+    public RiderBean getRiderDetailsFromSession() throws DAOException {
 
         DAOAbsFactory daoAbsFactory = DAOFactoryProvider.getInstance().getDaoFactory();
         RiderDAO riderDAO = daoAbsFactory.createRiderDAO();
@@ -267,7 +272,7 @@ public class RiderHPController {
         return riderBean;
     }
 
-    public boolean checkForOrderInDelivery(RiderBean currentRider) {
+    public boolean checkForOrderInDelivery(RiderBean currentRider) throws DAOException {
 
         int riderId = currentRider.getId();
 
@@ -284,7 +289,7 @@ public class RiderHPController {
             OrderDAO orderDAO = daoAbsFactory.createOrderDAO();
             Order order = orderDAO.getInDeliveryOrderForRider(riderInfo.getId());
             return convertToOrderBean(order);
-        } catch (OrderNotFoundException e) {
+        } catch (OrderNotFoundException | DAOException e) {
             throw new RiderGcException("Errore durante il recupero dell'ordine 'in consegna' per il rider con ID: " + riderInfo.getId(), e);
             // cosi questo errore potrebbe esser sia relativo al fatto che non c'è nessun ordine in consegna da parte
             // del rider, sia che c'è stato un errore da parte del db, l'nfo sul tipo di errore è contenuta in e

@@ -3,6 +3,7 @@ package com.example.fromfridgetoplate.logic.dao;
 import com.example.fromfridgetoplate.logic.bean.OrderBean;
 import com.example.fromfridgetoplate.logic.bean.RiderBean;
 import com.example.fromfridgetoplate.logic.bean.SearchBean;
+import com.example.fromfridgetoplate.logic.exceptions.DAOException;
 import com.example.fromfridgetoplate.logic.exceptions.OrderAssignmentException;
 import com.example.fromfridgetoplate.logic.model.*;
 
@@ -23,7 +24,7 @@ public class FileResellerDAO extends FileDAOBase implements ResellerDAO {
 
     }
 
-    public OrderList getPendingOrders(String loggedEmail) {
+    public OrderList getPendingOrders(String loggedEmail) throws DAOException {
         // Prima recupero tutti i negozi per trovare il VATnumber corrispondente all'email del reseller
         List<Shop> shops = getAllShops();
 
@@ -54,7 +55,7 @@ public class FileResellerDAO extends FileDAOBase implements ResellerDAO {
     }
 
 
-    public void updateAvailability(OrderBean orderBean)  {
+    public void updateAvailability(OrderBean orderBean) throws DAOException  {
         List<Order> orders = getAllOrders();
 
         // Trovo l'ordine con l'ID specificato e aggiorno il suo stato
@@ -70,7 +71,7 @@ public class FileResellerDAO extends FileDAOBase implements ResellerDAO {
     }
 
 
-    public void setAssignation(int orderId) throws OrderAssignmentException {
+    public void setAssignation(int orderId) throws OrderAssignmentException, DAOException {
         List<Order> orders = getAllOrders();
         boolean orderFound = false;
 
@@ -95,7 +96,7 @@ public class FileResellerDAO extends FileDAOBase implements ResellerDAO {
     }
 
 
-    private void writeAssignedOrder(Order assignedOrder) throws IOException {
+    private void writeAssignedOrder(Order assignedOrder) throws IOException, DAOException {
 
 
         List<Order> assignedOrders = getAllAssignedOrders();
@@ -128,7 +129,7 @@ public class FileResellerDAO extends FileDAOBase implements ResellerDAO {
 
 
 
-    public OrderList getAssignedOrders(String currentResellerEmail) {
+    public OrderList getAssignedOrders(String currentResellerEmail) throws DAOException {
 
         List<Shop> allShops = getAllShops();
         List<Order> allAssignedOrders = getAllAssignedOrders();
@@ -160,13 +161,13 @@ public class FileResellerDAO extends FileDAOBase implements ResellerDAO {
         return assignedOrderList;
     }
 
-    private List<Shop> getAllShops() {
+    private List<Shop> getAllShops() throws DAOException {
 
         return readFromFile(shopsFilePath);
     }
 
 
-    public boolean assignRiderToOrder(int orderId, int riderId)  {
+    public boolean assignRiderToOrder(int orderId, int riderId) throws DAOException  {
         List<Order> orders = getAllOrders();
         boolean isOrderFound = false;
 
@@ -187,7 +188,7 @@ public class FileResellerDAO extends FileDAOBase implements ResellerDAO {
     }
 
 
-    public boolean isRiderAvailable(RiderBean riderBn) {
+    public boolean isRiderAvailable(RiderBean riderBn) throws DAOException {
         List<Rider> riders = getAllRiders();
 
         for (Rider rider : riders) {
@@ -200,7 +201,7 @@ public class FileResellerDAO extends FileDAOBase implements ResellerDAO {
     }
 
 
-    public List<Rider> getAvailableRiders(SearchBean rpBean) {
+    public List<Rider> getAvailableRiders(SearchBean rpBean) throws DAOException {
         List<Rider> allRiders = getAllRiders();
         List<Rider> availableRiders = new ArrayList<>();
 

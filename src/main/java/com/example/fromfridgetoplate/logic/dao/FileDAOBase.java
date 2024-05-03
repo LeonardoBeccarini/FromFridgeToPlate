@@ -1,5 +1,6 @@
 package com.example.fromfridgetoplate.logic.dao;
 
+import com.example.fromfridgetoplate.logic.exceptions.DAOException;
 import com.example.fromfridgetoplate.logic.model.Order;
 import com.example.fromfridgetoplate.logic.model.Rider;
 import com.example.fromfridgetoplate.logic.model.User;
@@ -22,7 +23,7 @@ public abstract class FileDAOBase {
     protected String usersFilePath;
     protected String catalogFilePath;
 
-    public FileDAOBase() {
+    protected FileDAOBase() {
         loadProperties();
         this.ordersFilePath = properties.getProperty("ordersFilePath");
         this.ridersFilePath = properties.getProperty("ridersFilePath");
@@ -42,7 +43,7 @@ public abstract class FileDAOBase {
         }
     }
 
-    protected <T> List<T> readFromFile(String filePath) {
+    protected <T> List<T> readFromFile(String filePath) throws DAOException {
         File file = new File(filePath);
         if (!file.exists() || file.length() == 0) { // Controlla anche se il file è vuoto
             return new ArrayList<>();
@@ -58,11 +59,10 @@ public abstract class FileDAOBase {
             }
         } catch (EOFException e) {
 
-            System.err.println("eof raggiunta" + e.getMessage());
+
             return new ArrayList<>();
         } catch (IOException | ClassNotFoundException e) {
-            System.err.println("io exc " + e.getMessage());
-            return new ArrayList<>();
+            throw new DAOException("Errore di lettura da file: ", e.getCause());
         }
     }
 
@@ -78,7 +78,7 @@ public abstract class FileDAOBase {
 
 
 
-    protected List<Order> getAllOrders() {
+    protected List<Order> getAllOrders() throws DAOException {
 
         // Utilizzo il metodo readFromFile ereditato dalla superclasse
         return this.readFromFile(ordersFilePath);
@@ -99,7 +99,7 @@ public abstract class FileDAOBase {
 
 
 
-    protected List<Order> getAllAssignedOrders() {
+    protected List<Order> getAllAssignedOrders() throws DAOException {
 
         List<Order> assignedOrders = readFromFile(assignedOrdersFilePath);
         return  assignedOrders;
@@ -114,7 +114,7 @@ public abstract class FileDAOBase {
 
 
     // metodo per deserializzare la lista di riders
-    protected List<Rider> getAllRiders() {
+    protected List<Rider> getAllRiders() throws DAOException {
 
         List<Rider> riders = readFromFile(ridersFilePath);
 
@@ -129,7 +129,7 @@ public abstract class FileDAOBase {
         return riders;
     }
 
-    protected List<User> readUsersFromFile() {
+    protected List<User> readUsersFromFile() throws DAOException {
         // Usa il metodo readFromFile della superclasse, fornendo il percorso del file e il tipo atteso
         List<User> users = readFromFile(usersFilePath);
         // Verifico che tipo degli elementi sia corretto

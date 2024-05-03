@@ -6,12 +6,10 @@ import com.example.fromfridgetoplate.logic.bean.OrderListBean;
 import com.example.fromfridgetoplate.logic.bean.RiderBean;
 import com.example.fromfridgetoplate.logic.bean.SearchBean;
 import com.example.fromfridgetoplate.logic.control.PendingOrdersController;
+import com.example.fromfridgetoplate.logic.exceptions.DAOException;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Scanner;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
@@ -20,7 +18,7 @@ public class PendingOrdersCLIController {
     private Timer refreshTimer;
 
     private Thread inputThread;
-    private BlockingQueue<String> inputQueue = new ArrayBlockingQueue<>(1);
+
 
     private boolean searchingRiders = false;
     private boolean exit = false;
@@ -89,7 +87,7 @@ public class PendingOrdersCLIController {
             if (selectedOrder != null) {
                 searchingRiders = true;
             } else {
-                Printer.print("ID ordine non trovato.");
+                Printer.print("ID ordine non trovato. Premi 'r' per tornare indietro");
             }
         } else if ("r".equals(input)) {
             exit = true;
@@ -112,22 +110,26 @@ public class PendingOrdersCLIController {
     private void loadAndDisplayOrders() {
         Printer.print("\nAggiornamento degli ordini pendenti, l'aggiornamento avverà ogni 20 secondi, attendere...");
 
+        try {
+            PendingOrdersController pendingOrdersControl = new PendingOrdersController();
+            this.orders = pendingOrdersControl.getUpdatedPendingOrders();
 
-
-        PendingOrdersController pendingOrdersControl = new PendingOrdersController();
-        orders = pendingOrdersControl.getUpdatedPendingOrders();
-
-        if (orders.isEmpty()) {
-            Printer.print("Non ci sono ordini in sospeso al momento. Premi 'r' per tornare indietro. ");
-        } else {
-            Printer.print("Ordini in sospeso:");
-            for (OrderBean order : orders) {
-                Printer.print("ID Ordine: " + order.getOrderId() + ", Cliente ID: " + order.getCustomerId()
-                        + ", Data Ordine: " + order.getOrderTime() + ", Città Spedizione: " + order.getShippingCity());
+            if (orders.isEmpty()) {
+                Printer.print("Non ci sono ordini in sospeso al momento. Premi 'r' per tornare indietro.");
+            } else {
+                Printer.print("Ordini in sospeso:");
+                for (OrderBean order : orders) {
+                    Printer.print("ID Ordine: " + order.getOrderId() + ", Cliente ID: " + order.getCustomerId()
+                            + ", Data Ordine: " + order.getOrderTime() + ", Città Spedizione: " + order.getShippingCity());
+                }
+                Printer.print("Premi 'd' seguito da ID ordine per i dettagli, 'r' per tornare indietro.");
             }
-            Printer.print("Premi 'd' seguito da ID ordine per i dettagli, 'r' per tornare indietro.");
+        } catch (DAOException e) {
+            Printer.print("Si è verificato un errore durante il recupero degli ordini pendenti: " + e.getMessage());
+            Printer.print("Premi 'r' per tornare indietro.");
         }
     }
+
 
 
 
@@ -151,11 +153,17 @@ public class PendingOrdersCLIController {
     }
 
     private List<RiderBean> getAvailableRiders(String shippingCity, OrderBean selectedOrder) {
-
         SearchBean searchBean = new SearchBean(shippingCity, selectedOrder);
         PendingOrdersController pendingOrdersControl = new PendingOrdersController();
-        return pendingOrdersControl.getAvalaibleRiders(searchBean);
+        try {
+            return pendingOrdersControl.getAvalaibleRiders(searchBean);
+        } catch (DAOException e) {
+
+            Printer.print("Errore nel recuperare i riders disponibili: " + e.getMessage());
+            return new ArrayList<>(); // Restituisco una lista vuota in caso di errore
+        }
     }
+
 
     private void displayAvailableRiders(List<RiderBean> availableRiders, String shippingCity) {
         Printer.print("Rider disponibili in " + shippingCity + ":");

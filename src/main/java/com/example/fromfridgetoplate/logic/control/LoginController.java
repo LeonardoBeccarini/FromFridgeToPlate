@@ -2,6 +2,7 @@ package com.example.fromfridgetoplate.logic.control;
 
 import com.example.fromfridgetoplate.logic.bean.UserBean;
 import com.example.fromfridgetoplate.logic.dao.UserDAO;
+import com.example.fromfridgetoplate.logic.exceptions.DAOException;
 import com.example.fromfridgetoplate.logic.exceptions.NotExistentUserException;
 import com.example.fromfridgetoplate.logic.model.Cart;
 import com.example.fromfridgetoplate.logic.model.Role;
@@ -23,6 +24,8 @@ public class LoginController {
             user = userDAO.verifyUserCredentials(userBean.getEmail(), userBean.getPassword());
         }catch(NotExistentUserException e){
             throw new NotExistentUserException(e.getMessage());
+        } catch (DAOException e) {
+            throw new RuntimeException(e);
         }
         assert user != null;
         loggedUser = new UserBean(user.getEmail(), user.getRole());

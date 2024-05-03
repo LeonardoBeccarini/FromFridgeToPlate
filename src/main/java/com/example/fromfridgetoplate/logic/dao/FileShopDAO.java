@@ -1,6 +1,7 @@
 package com.example.fromfridgetoplate.logic.dao;
 
 
+import com.example.fromfridgetoplate.logic.exceptions.DAOException;
 import com.example.fromfridgetoplate.logic.exceptions.DbException;
 import com.example.fromfridgetoplate.logic.model.Role;
 import com.example.fromfridgetoplate.logic.model.Shop;
@@ -18,7 +19,7 @@ public class FileShopDAO extends FileDAOBase implements ShopDAO {
     public FileShopDAO() {}
 
     @Override
-    public boolean saveShop(Shop shop) throws DbException {
+    public boolean saveShop(Shop shop) throws DbException, DAOException {
 
             List<User> users = readUsersFromFile();
             for (User user : users) {
@@ -92,7 +93,7 @@ public class FileShopDAO extends FileDAOBase implements ShopDAO {
 
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws DAOException {
         FileShopDAO dao = new FileShopDAO();
 
         // Crea un nuovo negozio di esempio
@@ -102,6 +103,8 @@ public class FileShopDAO extends FileDAOBase implements ShopDAO {
         try {
             registrationResult = dao.saveShop(newShop);
         } catch (DbException e) {
+            throw new RuntimeException(e);
+        } catch (DAOException e) {
             throw new RuntimeException(e);
         }
 

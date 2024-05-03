@@ -115,7 +115,7 @@ public class MakeOrderControl {
         return  couponBeanList;
     }
 
-    public void completeOrder(OrderBean orderBean) throws DbException, PaymentFailedException {
+    public void completeOrder(OrderBean orderBean) throws DbException, PaymentFailedException, DAOException {
 
         DAOAbsFactory daoAbsFactory = DAOFactoryProvider.getInstance().getDaoFactory();
         OrderDAO orderDAO = daoAbsFactory.createOrderDAO();

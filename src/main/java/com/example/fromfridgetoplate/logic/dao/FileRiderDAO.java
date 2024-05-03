@@ -2,6 +2,7 @@ package com.example.fromfridgetoplate.logic.dao;
 
 import com.example.fromfridgetoplate.logic.bean.RiderBean;
 import com.example.fromfridgetoplate.logic.bean.SearchBean;
+import com.example.fromfridgetoplate.logic.exceptions.DAOException;
 import com.example.fromfridgetoplate.logic.model.*;
 
 import java.io.*;
@@ -13,7 +14,7 @@ public class FileRiderDAO extends FileDAOBase implements RiderDAO {
 
     public FileRiderDAO() {}
 
-    public void setRiderAvailable(int riderId, boolean isAval) {
+    public void setRiderAvailable(int riderId, boolean isAval) throws DAOException {
         List<Rider> riders = getAllRiders(); // deserializzo tutti i rider
 
         // Trovo il rider con l'ID specificato e aggiorno la sua disponibilità
@@ -32,7 +33,7 @@ public class FileRiderDAO extends FileDAOBase implements RiderDAO {
 
 
 
-    public Rider getRiderDetailsFromSession() {
+    public Rider getRiderDetailsFromSession() throws DAOException{
         // Questo metodo presuppone che tu abbia un modo per ottenere l'email dell'utente corrente
         String userEmail = Session.getSession().getUser().getEmail(); // con "Session.getSession().getUser()" ricavo il current User,
         //questo contiene le informazione immesse al momento del login, quindi username, pw, e role, poi ne prendo l'email (usernm) cosi
@@ -51,7 +52,7 @@ public class FileRiderDAO extends FileDAOBase implements RiderDAO {
     }
 
 
-    public boolean registerRider(Rider newRider) {
+    public boolean registerRider(Rider newRider) throws DAOException{
         // Controllo se esiste già un utente (rider o altro) con la stessa email
         if (isUserExists(newRider.getEmail())) {
             System.out.println("rider gia registrato");
@@ -74,7 +75,7 @@ public class FileRiderDAO extends FileDAOBase implements RiderDAO {
         return addRiderToFile(newRider);
     }
 
-    private boolean isUserExists(String email) {
+    private boolean isUserExists(String email) throws DAOException {
         List<User> users = readUsersFromFile();
         for (User user : users) {
             if (user.getEmail().equals(email)) {
@@ -85,7 +86,7 @@ public class FileRiderDAO extends FileDAOBase implements RiderDAO {
         return false; // Nessun utente corrispondente trovato
     }
 
-    private int getMaxRiderId() {
+    private int getMaxRiderId() throws DAOException {
         List<Rider> riders = getAllRiders();
         int maxId = 0;
         for (Rider rider : riders) {
@@ -98,7 +99,7 @@ public class FileRiderDAO extends FileDAOBase implements RiderDAO {
 
 
 
-    private boolean addUserToFile(User user) {
+    private boolean addUserToFile(User user) throws DAOException{
         List<User> users = readUsersFromFile();
         users.add(user);
         return writeUsersToFile(users);
@@ -106,7 +107,7 @@ public class FileRiderDAO extends FileDAOBase implements RiderDAO {
 
 
 
-    private boolean addRiderToFile(Rider rider) {
+    private boolean addRiderToFile(Rider rider) throws DAOException {
         List<Rider> riders = getAllRiders();
         riders.add(rider);
         return writeRidersToFile(riders);
@@ -129,7 +130,7 @@ public class FileRiderDAO extends FileDAOBase implements RiderDAO {
 
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws DAOException {
         FileRiderDAO dao = new FileRiderDAO();
         // rider di esempio
         Rider newRider = new Rider( "marco2@gmail.com", "marco", "mirini", "marco2", "Milano");
