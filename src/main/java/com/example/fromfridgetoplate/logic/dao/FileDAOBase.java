@@ -86,18 +86,16 @@ public abstract class FileDAOBase {
             // Chiamo il metodo della superclasse per scrivere gli ordini sul file
             this.writeToFile(orders, this.ordersFilePath);
         } catch (IOException e) {
-            // Rilancia l'eccezione come DAOException
+            // Rilancio l'eccezione come DAOException
             throw new DAOException("Errore nella scrittura del file degli ordini", e);
         }
     }
 
 
 
-
     protected List<Order> getAllAssignedOrders() throws DAOException {
 
-        List<Order> assignedOrders = readFromFile(assignedOrdersFilePath);
-        return  assignedOrders;
+        return readFromFile(assignedOrdersFilePath);
 
     }
 
