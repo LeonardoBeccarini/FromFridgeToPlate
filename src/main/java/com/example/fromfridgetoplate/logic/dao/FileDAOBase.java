@@ -67,13 +67,15 @@ public abstract class FileDAOBase {
     }
 
 
-    protected <T> void writeToFile(List<T> genericList, String filePath) {
+    protected <T> void writeToFile(List<T> genericList, String filePath) throws IOException {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filePath))) {
             oos.writeObject(genericList);
         } catch (IOException e) {
-            e.printStackTrace();
+            // Propago l'eccezione
+            throw e;
         }
     }
+
 
 
     protected List<Order> getAllOrders() {
@@ -83,10 +85,17 @@ public abstract class FileDAOBase {
     }
 
     protected void writeOrdersToFile(List<Order> orders) {
+        try {
+            // Chiamo il metodo della superclasse per scrivere gli ordini sul file
+            this.writeToFile(orders, this.ordersFilePath);
+        } catch (IOException e) {
+            // Scrivo l'errore su stderr
+            System.err.println("Errore nella scrittura del file degli ordini: " + e.getMessage());
 
-        // Chiamo il metodo della superclasse per scrivere gli ordini sul file
-        this.writeToFile(orders, this.ordersFilePath);
+            // potrei anche fare:throw new RuntimeException("Errore nella scrittura del file degli ordini", e);
+        }
     }
+
 
 
 
@@ -134,9 +143,14 @@ public abstract class FileDAOBase {
 
     // Serializza gli utenti registrati nel file
     protected boolean writeUsersToFile(List<User> users) {
-
-        writeToFile(users, usersFilePath);
-        return true;
+        try {
+            writeToFile(users, usersFilePath);
+            return true; //  true se la scrittura è andata a buon fine
+        } catch (IOException e) {
+            System.err.println("Errore nella scrittura del file degli utenti: " + e.getMessage());
+            return false;
+        }
     }
+
 
 }

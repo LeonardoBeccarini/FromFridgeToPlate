@@ -4,6 +4,7 @@ import com.example.fromfridgetoplate.logic.model.Client;
 import com.example.fromfridgetoplate.logic.model.Role;
 import com.example.fromfridgetoplate.logic.model.User;
 
+import java.io.IOException;
 import java.util.List;
 
 public class FileClientDAO extends FileDAOBase implements ClientDAO {
@@ -21,10 +22,15 @@ public class FileClientDAO extends FileDAOBase implements ClientDAO {
             return false;
         }
 
-        // Aggiungi il cliente al file dei clienti
+        // Aggiungo il cliente al file dei clientss
         List<Client> clients = readClientsFromFile();
         clients.add(newClient);
-        writeToFile(clients, clientsFilePath);
+        try {
+            writeToFile(clients, clientsFilePath);
+        } catch (IOException e) {
+            System.out.println("Errore nella scrittura del file dei clienti: " + e.getMessage());
+            return false;
+        }
 
         return true;
     }
@@ -37,9 +43,15 @@ public class FileClientDAO extends FileDAOBase implements ClientDAO {
     private boolean addUserToFile(User user) {
         List<User> users = readUsersFromFile();
         users.add(user);
-        writeToFile(users, usersFilePath);
-        return true;
+        try {
+            writeToFile(users, usersFilePath);
+            return true;
+        } catch (IOException e) {
+            System.out.println("Errore nella scrittura del file: " + e.getMessage());
+            return false;
+        }
     }
+
 
     private List<Client> readClientsFromFile() {
         return readFromFile(clientsFilePath);

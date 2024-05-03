@@ -117,10 +117,16 @@ public class FileRiderDAO extends FileDAOBase implements RiderDAO {
 
     // il metodo ha la responsabilità di serializzare la lista di oggetti Rider in un file.
     private boolean writeRidersToFile(List<Rider> riders) {
-        // Usa il metodo writeToFile della superclasse per scrivere i rider nel file
-        writeToFile(riders, ridersFilePath);
-        return true;
+        try {
+            // uso il metodo writeToFile della superclasse per scrivere i rider nel file
+            writeToFile(riders, ridersFilePath);
+            return true; //  true sea scrittura è andata a buon fine
+        } catch (IOException e) {
+            System.err.println("Errore nella scrittura del file dei rider: " + e.getMessage());
+            return false;
+        }
     }
+
 
 
     public static void main(String[] args) {
