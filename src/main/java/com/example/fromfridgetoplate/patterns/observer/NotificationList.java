@@ -24,7 +24,7 @@ public abstract class NotificationList {
         ntfObservers.remove(obs);
     }
 
-    public void notifyGUI (){
+    public void notifyObs (){
         for(NotificationObserver obs : ntfObservers){
             obs.update();
         }

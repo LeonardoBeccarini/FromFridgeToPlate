@@ -46,10 +46,10 @@ public class ResellerNotificationCLIcontroller {
             OrderBean orderBean = notificationBean.getOrderBean();
             AddressBean addressBean = orderBean.getShippingAddress();
 
-            Printer.print(notificationBean.getMessageText() + ":" + "\n" +
+            Printer.print(notificationBean.getMessageText() + " :" + "\n" +
                     "Customer: " + orderBean.getCustomerId() + "\n" +
-                    "Address: " + addressBean.getShippingStreet() + addressBean.getShippingStreetNumber() +
-                    addressBean.getShippingCity() + addressBean.getShippingProvince());
+                    "Address: " + addressBean.getShippingStreet() + addressBean.getShippingStreetNumber() + " " +
+                    addressBean.getShippingCity() + " " + addressBean.getShippingProvince());
 
         }
     }

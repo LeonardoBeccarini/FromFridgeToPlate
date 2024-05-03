@@ -76,6 +76,9 @@ public class OrderStatusGraphicController extends GenericGraphicController {
         PendingOrdersController pendingOrdersController = new PendingOrdersController();
         OrderListBean assignedOrdersBean = pendingOrdersController.getAssignedOrdersBean();
 
+        // Validiamo gli ordini prima di caricarli nella tabella, cosi che mostriamo solo gli ordini validi all'utente
+        assignedOrdersBean.validateAllOrders();
+
         this.assignedOrdersTable.setItems(FXCollections.observableArrayList(assignedOrdersBean.getOrderBeans()));
     }
 

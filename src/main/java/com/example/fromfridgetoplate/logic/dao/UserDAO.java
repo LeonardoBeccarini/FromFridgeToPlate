@@ -5,5 +5,5 @@ import com.example.fromfridgetoplate.logic.model.User;
 
 public interface UserDAO {
 
-    public User verifyUserCredentials(String email, String password)throws NotExistentUserException;
+    User verifyUserCredentials(String email, String password)throws NotExistentUserException;
 }

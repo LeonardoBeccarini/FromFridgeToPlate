@@ -110,12 +110,12 @@ public abstract class FileDAOBase {
         List<Rider> riders = readFromFile(ridersFilePath);
 
         // Stampa i dettagli di ogni rider
-        System.out.println("Rider estratti dal file:");
+        /*System.out.println("Rider estratti dal file:");
         for (Rider rider : riders) {
             System.out.println("ID: " + rider.getId() + ", Nome: " + rider.getName() + ", Cognome: " + rider.getSurname() +
                     ", Disponibilità: " + (rider.isAvailable() ? "Disponibile" : "Non disponibile") +
                     ", Città assegnata: " + rider.getAssignedCity());
-        }
+        }*/
 
         return riders;
     }

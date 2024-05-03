@@ -3,10 +3,7 @@ package com.example.fromfridgetoplate.logic.control;
 import com.example.fromfridgetoplate.logic.bean.*;
 import com.example.fromfridgetoplate.logic.dao.*;
 import com.example.fromfridgetoplate.logic.exceptions.*;
-import com.example.fromfridgetoplate.logic.model.CachingNotificationList;
-import com.example.fromfridgetoplate.logic.model.Notification;
-import com.example.fromfridgetoplate.logic.model.Order;
-import com.example.fromfridgetoplate.logic.model.OrderList;
+import com.example.fromfridgetoplate.logic.model.*;
 import com.example.fromfridgetoplate.patterns.abstractFactory.DAOAbsFactory;
 import com.example.fromfridgetoplate.patterns.abstractFactory.DAOFactoryProvider;
 import com.example.fromfridgetoplate.patterns.factory.DAOFactory;
@@ -25,46 +22,41 @@ import java.util.TimerTask;
 public class RiderHPController {
 
 
-    private RiderBean riderBean;
+    //private RiderBean riderBean;
     private Timer notificationPoller;
 
-
-
-    // CachingNotificationList notificationList;
 
     CachingNotificationList notificationList;
 
 
-    List<Notification> deliveredNotification;
     private int lastNotificationId = 0;
 
-    //private NotificationListBean nlb;
 
 
+    /**
+     * Costruttore principale che accetta una NotificationBeanList.
+     */
     public RiderHPController(NotificationBeanList nlb) {
-
-        //this.nlb = nlb;
-        //this.deliveredNotification = new ArrayList<>();
-        this.riderBean = getRiderDetailsFromSession();// serve per accedere alle informazioni immesse al momento della
-        // registrazione, che mi servono, per popolare il riderbean
-
+        //this.riderBean = getRiderDetailsFromSession(); // Accede alle informazioni del rider dalla sessione
         this.notificationList = new CachingNotificationList();
-        notificationList.attach(nlb);
 
+        if (nlb != null) {
+            notificationList.attach(nlb);
+        }
     }
 
-    // 2o costruttore
+    /**
+     * Costruttore che invece non richiede parametri per la lista delle notifiche.
+     * Utilizza 'null' per nlb.
+     */
     public RiderHPController() {
-
-        //this.deliveredNotification = new ArrayList<>();
-        this.riderBean = getRiderDetailsFromSession();// serve per accedere alle informazioni immesse al momento della
-        // registrazione, che mi servono, per popolare il riderbean
-
-
+        this(null); // Delego al costruttore principale
     }
+
 
 
     public void setRiderAvailable(boolean available) {
+        RiderBean riderBean = getRiderDetailsFromSession(); // Accede alle informazioni del rider dalla sessione
         riderBean.setAvailable(available);
 
         NotificationManager ntfManager = new NotificationManager();
@@ -92,6 +84,7 @@ public class RiderHPController {
     public List<NotificationBean> getCurrentNotifications() {
         return convertToNotificationBeans(notificationList.getNotifications());
     }
+
 
     private List<NotificationBean> convertToNotificationBeans(List<Notification> notifications) {
 
@@ -124,6 +117,7 @@ public class RiderHPController {
 
         private void pollForNotifications() {
             NotificationDAO ntfDAO = new NotificationDAO(SingletonConnector.getInstance().getConnection());
+            RiderBean riderBean = getRiderDetailsFromSession(); // Accede alle informazioni del rider dalla sessione
             List<Notification> newNotifications = ntfDAO.getNotificationsForRider(riderBean.getId(), lastNotificationId);
 
 
@@ -170,27 +164,6 @@ public class RiderHPController {
     }
 
 
-    /*public void markNotificationsAsRead() {
-
-        //this.stopNotificationPolling(); // interrompo momentaneamente il polling del db
-
-
-        NotificationDAO ntfDAO = new NotificationDAO(SingletonConnector.getInstance().getConnection());
-        for (NotificationBean notificationBn : nlb.getNotifications()) {
-            ntfDAO.markNotificationAsRead(notificationBn.getNotificationId()); // marca le notifiche come lette , aggiornando il model e il db
-            // Aggiorna la lista deliveredNotification
-            for (Notification deliveredNotif : deliveredNotification) {
-                if (deliveredNotif.getNotificationId() == notificationBn.getNotificationId()) {
-                    deliveredNotif.markAsRead(); // Aggiorna lo stato nella lista in memoria
-                    break;
-                }
-            }
-        }
-        nlb.clearNotifications();// pulisco la lista(buffer delle notifiche), in modo da rappresentare che l'utente rider abbia visualizzato tutte le
-        // notifiche consegnate, questo metodo in effetti viene chiamato dal controller grafico quando l'utente rider
-        // clicca per visualizzare e quindi leggere le notifihce
-
-    }*/
 
     public void markNotificationAsRead(NotificationBean notificationToMark) throws NotificationProcessingException, NotificationHandlingException {
         if (notificationToMark == null) {
@@ -205,27 +178,8 @@ public class RiderHPController {
         // Aggiorno lo stato della notifica nella lista in memoria, se è presente
         notificationList.updateNotificationAsRead(notificationToMark);
 
-/*
-        for (Notification deliveredNotif : deliveredNotification) {
-            if (deliveredNotif.getNotificationId() == notificationToMark.getNotificationId()) {
-                deliveredNotif.markAsRead();
-                break; // e interrompo il ciclo una volta trovata la notifica corrispondente
-            }
-        }*/
-
-
-
-        /*
-        // Rimuovo la notifica marcata come letta dalla lista delle notifiche (NotificationListBean)
-        try {
-            nlb.removeNotification(notificationToMark);
-        } catch (NotificationHandlingException e) {
-            // wrappo l'eccezione in una nuova eccezione con ulteriore contesto
-            throw new NotificationProcessingException("Errore nella gestione della notifica con ID: " + notificationToMark.getNotificationId(), e);
-        }*/
 
     }
-
 
 
 
@@ -291,7 +245,26 @@ public class RiderHPController {
         DAOAbsFactory daoAbsFactory = DAOFactoryProvider.getInstance().getDaoFactory();
         RiderDAO riderDAO = daoAbsFactory.createRiderDAO();
 
-        return riderDAO.getRiderDetailsFromSession();
+        Rider loggedRider = riderDAO.getRiderDetailsFromSession();
+
+        return convertToRiderBean(loggedRider);
+    }
+
+    private RiderBean convertToRiderBean(Rider rider) {
+
+        if (rider == null) {
+            return null;
+        }
+
+        RiderBean riderBean = new RiderBean(
+                rider.getId(),
+                rider.getName(),
+                rider.getSurname(),
+                rider.isAvailable(),
+                rider.getAssignedCity()
+        );
+        riderBean.setId(rider.getId());
+        return riderBean;
     }
 
     public boolean checkForOrderInDelivery(RiderBean currentRider) {
@@ -348,8 +321,6 @@ public class RiderHPController {
     }
 
 
-    public RiderBean getRiderBean() {
-        return riderBean;
-    }
+
 }
 

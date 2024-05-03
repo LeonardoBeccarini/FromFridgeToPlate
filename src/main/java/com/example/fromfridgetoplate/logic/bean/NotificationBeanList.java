@@ -12,16 +12,8 @@ import java.util.List;
 public class NotificationBeanList implements NotificationObserver {
 
     private List<NotificationBean> notificationBeans = new ArrayList<>();
-    private IUpdateable rgc;
-    //private CachingNotificationList notificationList;
+    private IUpdateable rgc; // graphiccontroller
 
-
-
-    //public NotificationBeanList(CachingNotificationList notificationList) {
-        // Collega questa lista di bean di notifica alla lista di notifica principale
-        //this.notificationList = notificationList;
-        //this.notificationList.attach(this); // si registra come observer
-   // }
 
     public NotificationBeanList(IUpdateable rgc) {
         this.rgc = rgc;
@@ -48,19 +40,6 @@ public class NotificationBeanList implements NotificationObserver {
 
     }
 
-    private OrderBean convertToOrderBean(Order order) {
-        AddressBean address = new AddressBean(
-                order.getShippingStreet(),
-                order.getShippingStreetNumber(),
-                order.getShippingCity(),
-                order.getShippingProvince()
-        );
-
-        return new OrderBean(
-                order.getOrderId(),
-                address
-        );
-    }
 
     public List<NotificationBean> getNotificationBeans() {
         return new ArrayList<>(notificationBeans); // Restituisco una copia per evitare modifiche esterne

@@ -7,7 +7,7 @@ import com.example.fromfridgetoplate.logic.model.OrderList;
 
 import java.io.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,8 +16,7 @@ import java.util.Map;
 public class FileOrderDAO extends FileDAOBase implements OrderDAO {
 
 
-    public FileOrderDAO() {
-
+    public FileOrderDAO() {// default
     }
 
     public void acceptOrder(int orderId, int riderId) {
@@ -218,6 +217,7 @@ public class FileOrderDAO extends FileDAOBase implements OrderDAO {
             return new HashMap<>();
         }
     }
+
     private void writeOrderItemsMapToFile(Map<Integer, List<CartItem>> orderItemsMap) throws IOException {
 
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(properties.getProperty("orderItemsMapFilePath")))) {

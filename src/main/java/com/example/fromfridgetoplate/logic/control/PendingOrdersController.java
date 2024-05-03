@@ -19,9 +19,9 @@ import java.util.List;
 
 
 public class PendingOrdersController {
-    // Metodo per ottenere un OrderListBean con gli ordini pendenti
 
-    // Metodo per ottenere direttamente gli OrderBean aggiornati
+
+    // Metodo per ottenere direttamente gli OrderBean aggiornati per demetra
     public List<OrderBean> getUpdatedPendingOrders() {
 
         return getPendingOrderListBean().getOrderBeans();
@@ -56,7 +56,7 @@ public class PendingOrdersController {
 
     public OrderListBean getAssignedOrdersBean() {
 
-        //DbResellerDAO resellerDAO = new DAOFactory().getResellerDAO();
+
         DAOAbsFactory daoAbsFactory = DAOFactoryProvider.getInstance().getDaoFactory();
         ResellerDAO resellerDAO = daoAbsFactory.createResellerDAO();
         String resellerEmail = Session.getSession().getUser().getEmail();

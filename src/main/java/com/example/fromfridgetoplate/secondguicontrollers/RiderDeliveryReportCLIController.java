@@ -15,6 +15,7 @@ public class RiderDeliveryReportCLIController {
         if (riderBean != null) {
             try {
                 OrderListBean deliveredOrders = riderController.getConfirmedDeliveries(riderBean);
+                //deliveredOrders.validateAllOrders();
                 if (deliveredOrders.getOrderBeans().isEmpty()) {
                     Printer.print("Non ci sono consegne confermate da mostrare.");
                     return;

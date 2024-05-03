@@ -202,6 +202,11 @@ public class Order implements Serializable {
     }
 
 
+
+
+
+
+
     // Altri metodi, come per accettare l'ordine da parte del rider
     public void acceptOrderByRider(int riderId) {
         this.riderId = riderId;
