@@ -2,6 +2,7 @@ package com.example.fromfridgetoplate.guicontrollers;
 
 import com.example.fromfridgetoplate.logic.bean.UserBean;
 import com.example.fromfridgetoplate.logic.control.LoginController;
+import com.example.fromfridgetoplate.logic.exceptions.NotExistentUserException;
 import com.example.fromfridgetoplate.logic.model.Role;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -12,6 +13,7 @@ import javafx.scene.control.TextField;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class LoginGraphicController implements Initializable {
@@ -31,7 +33,7 @@ public class LoginGraphicController implements Initializable {
     public void initialize(URL location,
                            ResourceBundle resources) {
         loginButton.setOnMouseClicked(event -> {
-            UserBean loggedUser;
+            UserBean loggedUser = null;
 
             if (emailText.getText().isEmpty() || pwdText.getText().isEmpty()) {
                 Alert alert = new Alert(Alert.AlertType.WARNING, "Complete the field before!");
@@ -42,19 +44,23 @@ public class LoginGraphicController implements Initializable {
             else {
                 UserBean userBean = new UserBean(emailText.getText(), pwdText.getText());
                 LoginController loginController = new LoginController();
-                loggedUser = loginController.login(userBean);
+                try {
+                    loggedUser = loginController.login(userBean);
+                } catch (NotExistentUserException e) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR, "errore login:" +e.getMessage());
+                    alert.showAndWait();
+                }
             }
             try {
 
-                if(loggedUser.getRole() == Role.CLIENT) {
+                if(Objects.requireNonNull(loggedUser).getRole() == Role.CLIENT) {
                     navigator.goTo("clientHomePage.fxml");
                 }
+
                 if(loggedUser.getRole() == Role.RIDER) {
-                    /* vai rider homepage*/
-
                     navigator.goTo("riderMainPage.fxml");
-
                 }
+
                 if(loggedUser.getRole() == Role.OWNER){
                     navigator.goTo("resellerMainPage2.fxml");
                 }

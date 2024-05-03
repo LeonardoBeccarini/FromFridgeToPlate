@@ -8,6 +8,7 @@ import com.example.fromfridgetoplate.logic.control.LoginController;
 import com.example.fromfridgetoplate.logic.control.MakeOrderControl;
 import com.example.fromfridgetoplate.logic.exceptions.DbException;
 import com.example.fromfridgetoplate.logic.exceptions.EmptyCatalogException;
+import com.example.fromfridgetoplate.logic.exceptions.NotExistentUserException;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -19,7 +20,11 @@ public class MakeOrderControlSearchProductTest {
     public void searchProduct(){
         //devo fare prima il login
         LoginController loginController = new LoginController();
-        loginController.login(new UserBean("leonardo.beccarini@hotmail.com", "pippo23"));
+        try {
+            loginController.login(new UserBean("leonardo.beccarini@hotmail.com", "pippo23"));
+        } catch (NotExistentUserException e) {
+            //don't care
+        }
         //shop da cui prendo il catalogo
         ShopBean selectedShopBean = new ShopBean("Pippi", "Via pippo 23, RM", "3456798334", "12345678945");
         //input che inserisce l'utente
