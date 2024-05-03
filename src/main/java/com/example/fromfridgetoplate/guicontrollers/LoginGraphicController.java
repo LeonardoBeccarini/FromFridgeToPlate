@@ -30,51 +30,51 @@ public class LoginGraphicController implements Initializable {
 
 
     @Override
-    public void initialize(URL location,
-                           ResourceBundle resources) {
-        loginButton.setOnMouseClicked(event -> {
-            UserBean loggedUser = null;
+    public void initialize(URL location, ResourceBundle resources) {
+        loginButton.setOnMouseClicked(event -> handleLogin());
+        signInButton.setOnMouseClicked(event -> handleSignIn());
+    }
 
-            if (emailText.getText().isEmpty() || pwdText.getText().isEmpty()) {
-                Alert alert = new Alert(Alert.AlertType.WARNING, "Complete the field before!");
-                alert.showAndWait();
-                return;
-            }
+    private void handleLogin() {
+        if (emailText.getText().isEmpty() || pwdText.getText().isEmpty()) {
+            showAlert("Complete the field before!");
+            return;
+        }
 
-            else {
-                UserBean userBean = new UserBean(emailText.getText(), pwdText.getText());
-                LoginController loginController = new LoginController();
-                try {
-                    loggedUser = loginController.login(userBean);
-                } catch (NotExistentUserException e) {
-                    Alert alert = new Alert(Alert.AlertType.ERROR, "errore login:" +e.getMessage());
-                    alert.showAndWait();
-                }
-            }
-            try {
+        UserBean userBean = new UserBean(emailText.getText(), pwdText.getText());
+        LoginController loginController = new LoginController();
+        UserBean loggedUser = null;
 
-                if(Objects.requireNonNull(loggedUser).getRole() == Role.CLIENT) {
-                    navigator.goTo("clientHomePage.fxml");
-                }
+        try {
+            loggedUser = loginController.login(userBean);
+            navigateBasedOnRole(loggedUser);
+        } catch (NotExistentUserException e) {
+            showAlert("Errore login: " + e.getMessage());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-                if(loggedUser.getRole() == Role.RIDER) {
-                    navigator.goTo("riderMainPage.fxml");
-                }
+    private void handleSignIn() {
+        try {
+            navigator.goTo("chooseUserPage.fxml");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-                if(loggedUser.getRole() == Role.OWNER){
-                    navigator.goTo("resellerMainPage2.fxml");
-                }
+    private void navigateBasedOnRole(UserBean loggedUser) throws IOException {
+        if (Objects.requireNonNull(loggedUser).getRole() == Role.CLIENT) {
+            navigator.goTo("clientHomePage.fxml");
+        } else if (loggedUser.getRole() == Role.RIDER) {
+            navigator.goTo("riderMainPage.fxml");
+        } else if (loggedUser.getRole() == Role.OWNER) {
+            navigator.goTo("resellerMainPage2.fxml");
+        }
+    }
 
-            } catch (IOException e) {
-               e.printStackTrace();
-            }
-        });
-        signInButton.setOnMouseClicked(event -> {
-            try {
-                navigator.goTo("chooseUserPage.fxml"); /*qui devo mettere la schermata per scegliere il tipo di user che si vuole registrare*/
-            }catch(IOException e){
-                e.printStackTrace();
-            }
-        });
+    private void showAlert(String message) {
+        Alert alert = new Alert(Alert.AlertType.WARNING, message);
+        alert.showAndWait();
     }
 }
