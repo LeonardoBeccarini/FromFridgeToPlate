@@ -2,13 +2,14 @@ package com.example.fromfridgetoplate.secondguicontrollers;
 
 import com.example.fromfridgetoplate.logic.bean.UserBean;
 import com.example.fromfridgetoplate.logic.control.LoginController;
+import com.example.fromfridgetoplate.logic.exceptions.NotExistentUserException;
 import com.example.fromfridgetoplate.logic.model.Role;
 import java.io.IOException;
 import java.util.Scanner;
 
 public class LoginCLIController {
-    private NavigatorCLI navigator;
-    private Scanner scanner;
+    private final NavigatorCLI navigator;
+    private final Scanner scanner;
 
     public LoginCLIController() {
         this.navigator = NavigatorCLI.getInstance();
@@ -29,7 +30,12 @@ public class LoginCLIController {
 
         UserBean userBean = new UserBean(email, password);
         LoginController loginController = new LoginController();
-        UserBean loggedUser = loginController.login(userBean);
+        UserBean loggedUser = null;
+        try {
+            loggedUser = loginController.login(userBean);
+        } catch (NotExistentUserException e) {
+            Printer.print("errore login: "+ e.getMessage());
+        }
 
         try {
             if (loggedUser != null) {

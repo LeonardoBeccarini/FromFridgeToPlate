@@ -13,7 +13,7 @@ import javafx.scene.control.Alert;
 
 public class LoginController {
     /*chiama il dao che*/
-    public UserBean login(UserBean userBean){
+    public UserBean login(UserBean userBean) throws NotExistentUserException{
 
         DAOAbsFactory daoAbsFactory = DAOFactoryProvider.getInstance().getDaoFactory(); // questa è responsabile di creare istanze di FileDAOFactory() o DbDAOFactory(), implementazioni concrete di DAOAbsFactory
         UserDAO userDAO = daoAbsFactory.createUserDAO();
@@ -22,8 +22,7 @@ public class LoginController {
         try{
             user = userDAO.verifyUserCredentials(userBean.getEmail(), userBean.getPassword());
         }catch(NotExistentUserException e){
-            Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage()) ;
-            alert.showAndWait();
+            throw new NotExistentUserException(e.getMessage());
         }
         assert user != null;
         loggedUser = new UserBean(user.getEmail(), user.getRole());
