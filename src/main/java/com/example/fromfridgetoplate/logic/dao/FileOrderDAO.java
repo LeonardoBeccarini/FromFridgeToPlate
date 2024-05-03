@@ -201,7 +201,7 @@ public class FileOrderDAO extends FileDAOBase implements OrderDAO {
         try {
             writeOrderItemsMapToFile(orderItemsMap);
         } catch (IOException e) {
-            throw new DbException("Errore di scrittura sul file degli ordini assegnati ai rider");
+            throw new DbException("Errore di scrittura sul file degli articoli");
         }
 
         return order;
