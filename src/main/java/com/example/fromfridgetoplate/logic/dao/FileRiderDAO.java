@@ -1,7 +1,6 @@
 package com.example.fromfridgetoplate.logic.dao;
 
-import com.example.fromfridgetoplate.logic.bean.RiderBean;
-import com.example.fromfridgetoplate.logic.bean.SearchBean;
+
 import com.example.fromfridgetoplate.logic.exceptions.DAOException;
 import com.example.fromfridgetoplate.logic.model.*;
 
@@ -55,7 +54,7 @@ public class FileRiderDAO extends FileDAOBase implements RiderDAO {
     public boolean registerRider(Rider newRider) throws DAOException{
         // Controllo se esiste già un utente (rider o altro) con la stessa email
         if (isUserExists(newRider.getEmail())) {
-            System.out.println("rider gia registrato");
+
             return false; // L'utente è già registrato
         }
 
@@ -117,51 +116,25 @@ public class FileRiderDAO extends FileDAOBase implements RiderDAO {
 
 
     // il metodo ha la responsabilità di serializzare la lista di oggetti Rider in un file.
-    private boolean writeRidersToFile(List<Rider> riders) {
+    private boolean writeRidersToFile(List<Rider> riders) throws DAOException {
         try {
             // uso il metodo writeToFile della superclasse per scrivere i rider nel file
             writeToFile(riders, ridersFilePath);
             return true; //  true sea scrittura è andata a buon fine
         } catch (IOException e) {
-            System.err.println("Errore nella scrittura del file dei rider: " + e.getMessage());
-            return false;
+            // Rilancio l'eccezione come DAOException
+            throw new DAOException("Errore nella scrittura del file degli ordini", e);
         }
     }
-
-
-
-    public static void main(String[] args) throws DAOException {
-        FileRiderDAO dao = new FileRiderDAO();
-        // rider di esempio
-        Rider newRider = new Rider( "marco2@gmail.com", "marco", "mirini", "marco2", "Milano");
-        boolean registrationResult = dao.registerRider(newRider);
-
-        if (registrationResult) {
-            System.out.println("Il nuovo rider è stato registrato con successo.");
-        } else {
-            System.out.println("La registrazione del nuovo rider non è riuscita (potrebbe essere già registrato).");
-        }
-
-        // verifica la registrazione
-        System.out.println("\nElenco dei rider registrati:");
-        for (Rider rider : dao.getAllRiders()) {
-            System.out.println("Email: " + rider.getEmail() + ", ID: " + rider.getId() + ", Nome: " + rider.getName());
-        }
-
-        // stampo tutti gli utenti dal file "users.dat" per verificare che il nuovo rider sia stato aggiunto
-        System.out.println("\nElenco degli utenti registrati in 'users.dat':");
-        List<User> users = dao.readUsersFromFile();
-        for (User user : users) {
-            System.out.println("Email: " + user.getEmail() + ", Ruolo: " + user.getRole());
-        }
-    }
-
-
-
-
-
+    /* Convertendo IOException in DAOException, centralizzamoi la gestione degli errori legati ai dati. se poi si cambia il modo in cui i dati sono memorizzati (ad esempio, si va da file a database), non dobbiamo cambiare altre parti del codice che gestiscono DAOException
+     * tipo :Se cambio il metodo di salvataggio per usare un database, il metodo potrebbe iniziare a lanciare SQLException invece di IOException, se il resto del  codice gestisce
+     * solo DAOException, non andremo a cambiare quei gestori di eccezioni quando cambiamo il metodo di storage. Devo solo mettere che
+     *   le SQLException vengano convertite in DAOException nel  DAO.*/
 
 }
+
+
+
 
 
 
