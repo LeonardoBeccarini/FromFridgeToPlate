@@ -1,17 +1,15 @@
 package com.example.fromfridgetoplate.logic.control;
 
 import com.example.fromfridgetoplate.logic.bean.*;
-import com.example.fromfridgetoplate.logic.dao.*;
+import com.example.fromfridgetoplate.logic.dao.NotificationDAO;
+import com.example.fromfridgetoplate.logic.dao.OrderDAO;
+import com.example.fromfridgetoplate.logic.dao.RiderDAO;
+import com.example.fromfridgetoplate.logic.dao.SingletonConnector;
 import com.example.fromfridgetoplate.logic.exceptions.*;
 import com.example.fromfridgetoplate.logic.model.*;
 import com.example.fromfridgetoplate.patterns.abstractFactory.DAOAbsFactory;
 import com.example.fromfridgetoplate.patterns.abstractFactory.DAOFactoryProvider;
-import com.example.fromfridgetoplate.patterns.factory.DAOFactory;
-import com.example.fromfridgetoplate.patterns.factory.FileDAOFactory;
-import com.example.fromfridgetoplate.patterns.observer.NotificationList;
 
-
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,8 +19,6 @@ import java.util.TimerTask;
 
 public class RiderHPController {
 
-
-    //private RiderBean riderBean;
     private Timer notificationPoller;
 
 
@@ -117,7 +113,7 @@ public class RiderHPController {
 
         private void pollForNotifications()  {
             NotificationDAO ntfDAO = new NotificationDAO(SingletonConnector.getInstance().getConnection());
-            RiderBean riderBean = null; // Accede alle informazioni del rider dalla sessione
+            RiderBean riderBean; // Accede alle informazioni del rider dalla sessione
             try {
                 riderBean = getRiderDetailsFromSession();
             } catch (DAOException e) {
@@ -150,20 +146,6 @@ public class RiderHPController {
 
 
 
-        private NotificationBean convertToNotificationBean(Notification notification) {
-
-
-            Order order = notification.getOrder();
-            AddressBean addressBean = new AddressBean(order.getShippingStreet(), order.getShippingStreetNumber(), order.getShippingCity(), order.getShippingProvince());
-            OrderBean orderBean = new OrderBean(order.getRiderId(), order.getOrderId(), addressBean);
-
-            NotificationBean ntfBean = new NotificationBean(
-                    orderBean,
-                    notification.getMessageText()
-            );
-            ntfBean.setNotificationId(notification.getNotificationId());
-            return ntfBean;
-        }
 
 
     }
@@ -190,9 +172,8 @@ public class RiderHPController {
 
     public void acceptOrder(NotificationBean notification) throws DAOException {
 
-        DAOAbsFactory daoAbsFactory = DAOFactoryProvider.getInstance().getDaoFactory();;
+        DAOAbsFactory daoAbsFactory = DAOFactoryProvider.getInstance().getDaoFactory();
         OrderDAO orderDAO = daoAbsFactory.createOrderDAO();
-        //DbOrderDAO orderDAO = new DAOFactory().getOrderDAO();
 
         OrderBean notifiedOrder = notification.getOrderBean();
         orderDAO.acceptOrder(notifiedOrder.getOrderId(), notifiedOrder.getRiderId());
@@ -201,7 +182,6 @@ public class RiderHPController {
     public void declineOrder(NotificationBean notification) throws DAOException{
         DAOAbsFactory daoAbsFactory = DAOFactoryProvider.getInstance().getDaoFactory();
         OrderDAO orderDAO = daoAbsFactory.createOrderDAO();
-        //DbOrderDAO orderDAO = new DAOFactory().getOrderDAO();
 
         OrderBean notifiedOrder = notification.getOrderBean();
         orderDAO.declineOrder(notifiedOrder.getOrderId(), notifiedOrder.getRiderId());

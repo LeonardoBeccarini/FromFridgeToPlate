@@ -79,6 +79,7 @@ public class CompleteOrderGraphicController extends GenericGraphicController{
             OrderBean orderBean = new OrderBean(shopBean.getVatNumber(), addressBean);
 
             saveOrder(orderBean);
+
             try {
                 navigator.goTo("clientHomePage.fxml");
             } catch (IOException e) {
