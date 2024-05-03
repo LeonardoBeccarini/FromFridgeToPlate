@@ -3,7 +3,7 @@ package com.example.fromfridgetoplate.logic.bean;
 public class CartItemBean {
     private String name;
     private float price;
-    private double quantity;
+    private final double quantity;
 
     public CartItemBean(String name, float price, double quantity) {
         this.name = name;
@@ -31,7 +31,4 @@ public class CartItemBean {
         this.price = price;
     }
 
-    public void setQuantity(double quantity) {
-        this.quantity = quantity;
-    }
 }

@@ -1,9 +1,9 @@
 package com.example.fromfridgetoplate.logic.bean;
 
-public class SearchInfoBean {
+public class ShopSearchInfoBean {
     private String name;
 
-    public SearchInfoBean(String name) {
+    public ShopSearchInfoBean(String name) {
         this.name = name;
     }
 

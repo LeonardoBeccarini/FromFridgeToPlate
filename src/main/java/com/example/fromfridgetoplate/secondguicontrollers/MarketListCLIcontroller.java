@@ -1,6 +1,6 @@
 package com.example.fromfridgetoplate.secondguicontrollers;
 
-import com.example.fromfridgetoplate.logic.bean.SearchInfoBean;
+import com.example.fromfridgetoplate.logic.bean.ShopSearchInfoBean;
 import com.example.fromfridgetoplate.logic.bean.ShopBean;
 import com.example.fromfridgetoplate.logic.control.MakeOrderControl;
 import com.example.fromfridgetoplate.logic.exceptions.DbException;
@@ -24,7 +24,7 @@ public class MarketListCLIcontroller {
         try {
             shopName = bufferedReader.readLine();
             MakeOrderControl makeOrderControl = new MakeOrderControl();
-            shopBeanList = makeOrderControl.loadShop(new SearchInfoBean(shopName));
+            shopBeanList = makeOrderControl.loadShop(new ShopSearchInfoBean(shopName));
 
             int i = 1;
             for (ShopBean shopBean : shopBeanList) {

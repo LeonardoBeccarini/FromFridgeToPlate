@@ -37,12 +37,12 @@ public class MakeOrderControl {
         this.catalog = null;
     }
 
-    public List<ShopBean> loadShop(SearchInfoBean searchInfoBean) throws DbException {
+    public List<ShopBean> loadShop(ShopSearchInfoBean shopSearchInfoBean) throws DbException {
         List<ShopBean> listShopBean = new ArrayList<>();
 
         DAOAbsFactory daoAbsFactory = DAOFactoryProvider.getInstance().getDaoFactory();
         ShopDAO shopDAO = daoAbsFactory.createShopDAO();
-        for(Shop shop: shopDAO.retrieveShopByName(searchInfoBean.getName())){
+        for(Shop shop: shopDAO.retrieveShopByName(shopSearchInfoBean.getName())){
             ShopBean shopBean = new ShopBean(shop.getName(), shop.getAddress(), shop.getPhoneNumber(), shop.getVATnumber());
             listShopBean.add(shopBean);
         }

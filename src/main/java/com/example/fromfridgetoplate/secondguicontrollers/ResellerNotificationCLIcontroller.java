@@ -3,9 +3,7 @@ package com.example.fromfridgetoplate.secondguicontrollers;
 import com.example.fromfridgetoplate.logic.bean.AddressBean;
 import com.example.fromfridgetoplate.logic.bean.NotificationBean;
 import com.example.fromfridgetoplate.logic.bean.OrderBean;
-import com.example.fromfridgetoplate.logic.dao.NotificationDAO;
-import com.example.fromfridgetoplate.logic.dao.SingletonConnector;
-import com.example.fromfridgetoplate.patterns.factory.DAOFactory;
+import com.example.fromfridgetoplate.logic.control.MakeOrderControl;
 
 import java.io.IOException;
 import java.util.List;
@@ -21,12 +19,11 @@ public class ResellerNotificationCLIcontroller {
         Scanner scanner = new Scanner(System.in);
         NavigatorCLI navigatorCLI = NavigatorCLI.getInstance();
 
-
-        NotificationDAO notificationDAO = new NotificationDAO(SingletonConnector.getInstance().getConnection());
         printList();
-        for(NotificationBean notificationBean: notificationBeanList){
-            notificationDAO.markNotificationAsRead(notificationBean.getNotificationId());
-        }
+
+        MakeOrderControl makeOrderControl = new MakeOrderControl();
+        makeOrderControl.markNotificationAsRead(notificationBeanList);
+
         Printer.print("-------------------------------");
         Printer.print("1. Back");
         int choice = scanner.nextInt();

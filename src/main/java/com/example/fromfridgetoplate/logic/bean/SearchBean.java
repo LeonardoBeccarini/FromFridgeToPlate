@@ -1,7 +1,5 @@
 package com.example.fromfridgetoplate.logic.bean;
 
-import com.example.fromfridgetoplate.guicontrollers.IRiderSelectionListener;
-
 public class SearchBean {
 
     private String  shippingCity;
