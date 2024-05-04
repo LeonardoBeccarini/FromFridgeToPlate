@@ -1,5 +1,6 @@
 package com.example.fromfridgetoplate.logic.dao;
 
+import com.example.fromfridgetoplate.logic.exceptions.ConfigurationException;
 import com.example.fromfridgetoplate.logic.exceptions.DAOException;
 import com.example.fromfridgetoplate.logic.model.Order;
 import com.example.fromfridgetoplate.logic.model.Rider;
@@ -23,8 +24,12 @@ public abstract class FileDAOBase {
     protected String usersFilePath;
     protected String catalogFilePath;
 
-    protected FileDAOBase() {
-        loadProperties();
+    protected FileDAOBase()  {
+        try {
+            loadProperties();
+        } catch (ConfigurationException e) {
+            throw new RuntimeException(e);
+        }
         this.ordersFilePath = properties.getProperty("ordersFilePath");
         this.ridersFilePath = properties.getProperty("ridersFilePath");
         this.assignedOrdersFilePath = properties.getProperty("assignedOrdersFilePath");
@@ -34,14 +39,15 @@ public abstract class FileDAOBase {
         this.clientsFilePath = properties.getProperty("clientsFilePath");
     }
 
-    private void loadProperties() {
+    private void loadProperties() throws ConfigurationException {
         String relativePath = "src/main/resources/com/example/Properties/files_config.properties";
         try (InputStream input = new FileInputStream(relativePath)) {
             properties.load(input);
         } catch (IOException ex) {
-            ex.printStackTrace();
+            throw new ConfigurationException("Impossibile caricare il file di configurazione: " + relativePath, ex);
         }
     }
+
 
     protected <T> List<T> readFromFile(String filePath) throws DAOException {
         File file = new File(filePath);
