@@ -23,7 +23,7 @@ public class MakeOrderControl {
 
     public MakeOrderControl(ShopBean shopBean) throws DbException, IOException, EmptyCatalogException {
         DAOAbsFactory daoAbsFactory = DAOFactoryProvider.getInstance().getDaoFactory();
-        CatalogDAO catalogDAO = null;
+        CatalogDAO catalogDAO;
         try {
             catalogDAO = daoAbsFactory.createCatalogDAO();
         } catch (ConfigurationException e) {
@@ -49,7 +49,7 @@ public class MakeOrderControl {
         List<ShopBean> listShopBean = new ArrayList<>();
 
         DAOAbsFactory daoAbsFactory = DAOFactoryProvider.getInstance().getDaoFactory();
-        ShopDAO shopDAO = null;
+        ShopDAO shopDAO;
         try {
             shopDAO = daoAbsFactory.createShopDAO();
         } catch (ConfigurationException e) {
@@ -130,10 +130,10 @@ public class MakeOrderControl {
         return  couponBeanList;
     }
 
-    public void completeOrder(OrderBean orderBean) throws DbException, PaymentFailedException, DAOException {
+    public void completeOrder(OrderBean orderBean) throws DbException, PaymentFailedException, DAOException, IOException {
 
         DAOAbsFactory daoAbsFactory = DAOFactoryProvider.getInstance().getDaoFactory();
-        OrderDAO orderDAO = null;
+        OrderDAO orderDAO;
         try {
             orderDAO = daoAbsFactory.createOrderDAO();
         } catch (ConfigurationException e) {
@@ -169,7 +169,7 @@ public class MakeOrderControl {
         NotificationDAO notificationDAO = new NotificationDAO(SingletonConnector.getInstance().getConnection());
 
         DAOAbsFactory daoAbsFactory = DAOFactoryProvider.getInstance().getDaoFactory(); // restituirà un 'istanza di DbDAOFactory o FileDAOFactory a seconda della scelta fatta nel factoryProvider
-        ShopDAO shopDAO = null;
+        ShopDAO shopDAO;
         try {
             shopDAO = daoAbsFactory.createShopDAO();
         } catch (ConfigurationException e) {

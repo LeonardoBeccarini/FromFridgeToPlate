@@ -93,7 +93,7 @@ public class CompleteOrderGraphicController extends GenericGraphicController{
     private void saveOrder(OrderBean orderBean) {
         try {
             makeOrderControl.completeOrder(orderBean);
-        } catch (DbException | PaymentFailedException e) {
+        } catch (DbException | PaymentFailedException | IOException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage()) ;
             alert.showAndWait();
         }catch(DAOException e) {

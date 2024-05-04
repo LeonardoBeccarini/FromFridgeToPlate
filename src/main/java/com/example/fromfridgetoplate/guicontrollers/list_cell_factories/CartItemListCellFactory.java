@@ -3,6 +3,7 @@ package com.example.fromfridgetoplate.guicontrollers.list_cell_factories;
 import com.example.fromfridgetoplate.logic.bean.CartItemBean;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.VBox;
@@ -21,7 +22,7 @@ public class CartItemListCellFactory extends ListCell<CartItemBean> {
     private Label quantityLabel
             ;
     @Override
-    protected void updateItem(CartItemBean item, boolean empty) {
+    protected void updateItem(CartItemBean item, boolean empty){
         super.updateItem(item, empty);
 
         // voglio che succeda qualcosa solo se ho una classe foodItemBean e se la cella non è vuota
@@ -35,13 +36,14 @@ public class CartItemListCellFactory extends ListCell<CartItemBean> {
                 try {
                     mLLoader.load();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    Alert alert = new Alert(Alert.AlertType.ERROR, "errore nella lista: " + e.getMessage());
+                    alert.showAndWait();
                 }
             }
             ingredientNameLabel.setText(item.getName());
             ingredientPriceLabel.setText(String.valueOf(item.getPrice()));
             quantityLabel.setText(String.valueOf(item.getQuantity()));
-            
+
 
             setText(null);
             setGraphic(vBox);

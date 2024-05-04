@@ -8,7 +8,7 @@ import java.io.*;
 import java.util.Objects;
 
 public class CatalogDAOImplFile extends FileDAOBase implements CatalogDAO{
-    private static final String FILE_NAME = "catalog.txt";
+
     private boolean outcome;
 
     public CatalogDAOImplFile() throws ConfigurationException {
@@ -24,7 +24,6 @@ public class CatalogDAOImplFile extends FileDAOBase implements CatalogDAO{
             outcome = true;
         }catch (IOException e){
             outcome = false;
-            e.printStackTrace();
             throw new IOException("errore IO");
 
         }
@@ -42,7 +41,6 @@ public class CatalogDAOImplFile extends FileDAOBase implements CatalogDAO{
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
             throw new IOException("errore IO");
         }
         return catalog;

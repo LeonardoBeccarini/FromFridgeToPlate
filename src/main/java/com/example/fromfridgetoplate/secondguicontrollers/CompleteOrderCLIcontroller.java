@@ -62,7 +62,7 @@ public class CompleteOrderCLIcontroller {
 
         try {
             makeOrderControl.completeOrder(orderBean);
-        } catch (DbException | PaymentFailedException e) {
+        } catch (DbException | PaymentFailedException | IOException e) {
             Printer.print("il completamento dell'ordine non è andato a buon fine: " +e.getMessage());
         }
         catch (DAOException e) {
@@ -72,7 +72,7 @@ public class CompleteOrderCLIcontroller {
         try {
             navigatorCLI.goTo("ClientHomeCLI");
         } catch (IOException e) {
-           e.printStackTrace();
+            Printer.print("errore di I/O: " + e.getMessage());
         }
     }
     private AddressBean getAddressBean(){
@@ -91,7 +91,7 @@ public class CompleteOrderCLIcontroller {
             Printer.print("Inserisci la provincia: ");
             province = bufferedReader.readLine();
         }catch (IOException e){
-            e.printStackTrace();
+            Printer.print("errore di I/O: " + e.getMessage());
         }
 
         return new AddressBean(street, streetNumber, city ,  province);

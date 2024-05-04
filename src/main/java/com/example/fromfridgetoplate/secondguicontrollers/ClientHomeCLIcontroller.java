@@ -40,7 +40,7 @@ public class ClientHomeCLIcontroller {
         try {
             navigatorCLI.goTo("MarketListCLI");
         } catch (IOException e) {
-            e.printStackTrace();
+           Printer.print("errore di I/O: " + e.getMessage());
         }
     }
 

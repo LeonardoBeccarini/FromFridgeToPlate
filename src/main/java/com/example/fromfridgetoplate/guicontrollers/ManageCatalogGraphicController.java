@@ -67,7 +67,6 @@ public class ManageCatalogGraphicController extends GenericGraphicController{
         } catch (DbException | IOException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
             alert.showAndWait();
-            e.printStackTrace();
         }
         return foodItemListBean;
     }

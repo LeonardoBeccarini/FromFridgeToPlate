@@ -37,7 +37,7 @@ public class MainPageCLIController {
                     Printer.print("Invalid option. Please try again.");
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            Printer.print("errore di I/O: " + e.getMessage());
         }
     }
 

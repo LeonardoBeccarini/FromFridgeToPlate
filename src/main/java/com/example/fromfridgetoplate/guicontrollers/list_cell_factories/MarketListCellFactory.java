@@ -3,6 +3,7 @@ package com.example.fromfridgetoplate.guicontrollers.list_cell_factories;
 import com.example.fromfridgetoplate.logic.bean.ShopBean;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.VBox;
@@ -35,7 +36,8 @@ public class MarketListCellFactory extends ListCell<ShopBean> {
                 try {
                     mLLoader.load();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    Alert alert = new Alert(Alert.AlertType.ERROR, "errore nella lista: " + e.getMessage());
+                    alert.showAndWait();
                 }
             }
             shopNameLabel.setText(item.getName());
