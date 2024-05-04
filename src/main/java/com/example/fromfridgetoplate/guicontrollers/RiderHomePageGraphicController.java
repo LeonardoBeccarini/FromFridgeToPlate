@@ -5,7 +5,6 @@ import com.example.fromfridgetoplate.logic.bean.NotificationBean;
 import com.example.fromfridgetoplate.logic.bean.NotificationBeanList;
 import com.example.fromfridgetoplate.logic.bean.RiderBean;
 import com.example.fromfridgetoplate.logic.control.RiderHPController;
-import com.example.fromfridgetoplate.logic.exceptions.DAOException;
 import com.example.fromfridgetoplate.logic.exceptions.NotificationHandlingException;
 import com.example.fromfridgetoplate.patterns.state.RiderStateContext;
 import com.example.fromfridgetoplate.secondguicontrollers.IUpdateable;
@@ -226,7 +225,7 @@ public class RiderHomePageGraphicController extends GenericGraphicController imp
     public void setNotificationAsRead(NotificationBean notifBn) {
         try {
             riderController.markNotificationAsRead(notifBn);
-        } catch (NotificationHandlingException | DAOException e) {
+        } catch (NotificationHandlingException e) {
             // Gestione dell'eccezione, ad esempio mostrando un Alert con l'errore
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Errore nella gestione della notifica");
