@@ -18,9 +18,10 @@ public class CompleteOrderCLIcontroller {
     Scanner scanner = new Scanner(System.in);
     public void showMenu(){
         boolean running = true;
+        TotalPriceBean totalPriceBean = makeOrderControl.getOriginalPrice();
         while(running){
             Printer.print("1. Apply coupon");
-            Printer.print("2. Pay");
+            Printer.print("2. Pay: " + totalPriceBean.getTotalPrice());
             Printer.print("Choose an option: ");
 
             int choice = scanner.nextInt();
