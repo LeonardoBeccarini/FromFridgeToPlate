@@ -117,7 +117,7 @@ public class RiderNotificationPageGraphicController {
                     throw new IllegalStateException("Hai già un ordine in consegna.");
                 } else {
                     riderCtrl.acceptOrder(selectedNotification);
-                    riderGC.SetNotificationAsRead(selectedNotification);
+                    riderGC.setNotificationAsRead(selectedNotification);
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle("Consegna accettata");
                     alert.setHeaderText("Hai preso in carico l'ordine");
@@ -144,7 +144,7 @@ public class RiderNotificationPageGraphicController {
             try {
                 RiderHPController riderCtrl = new RiderHPController();
                 riderCtrl.declineOrder(selectedNotification);
-                riderGC.SetNotificationAsRead(selectedNotification);
+                riderGC.setNotificationAsRead(selectedNotification);
 
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Ordine rifiutato");

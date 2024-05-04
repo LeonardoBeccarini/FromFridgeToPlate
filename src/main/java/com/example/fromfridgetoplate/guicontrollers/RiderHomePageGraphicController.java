@@ -109,7 +109,8 @@ public class RiderHomePageGraphicController extends GenericGraphicController imp
             RiderBean riderBn = riderCtrl.getRiderDetailsFromSession(); // Può lanciare DAOException o una specifica eccezione di sessione
 
             if (riderBn == null) {
-                throw new Exception("Dettagli del rider non disponibili.");
+                Alert alert = new Alert(Alert.AlertType.WARNING, "Dettagli del rider non disponibili.");
+                alert.showAndWait();
             }
 
             // Prosegui con l'impostazione dello stato online e altre logiche
@@ -184,35 +185,25 @@ public class RiderHomePageGraphicController extends GenericGraphicController imp
         try {
             riderController.setRiderAvailable(true);
             serviceBtn.setStyle("-fx-background-color: gold;");
-            // Disabilito il pulsante per evitare ulteriori clic
-            //serviceBtn.setDisable(true);
             offlineButton.setStyle("-fx-background-color: originalColor;");
-            //offlineButton.setDisable(false);
             riderController.startNotificationPolling();
         } catch (Exception e) {
             showErrorAlert("Errore di Stato", "Errore Durante l'Impostazione dello Stato Online", e.getMessage());
         }
     }
 
-
-
     public void updateUIForOfflineState() {
         offlineButton.setStyle("-fx-background-color: gold;");
-        //offlineButton.setDisable(true);
         serviceBtn.setStyle("-fx-background-color: originalColor;");
-        //serviceBtn.setDisable(false);
         riderController.stopNotificationPolling();
 
     }
-
 
     public void update(List<NotificationBean> notificationBeans) {
         try {
             int newNotificationsCount = notificationBeans.size();
             // aggiorno il testo del bottone notificationsButton
-            Platform.runLater(() -> {
-                notificationsButton.setText("Notifiche (" + newNotificationsCount + ")");
-            });
+            Platform.runLater(() -> notificationsButton.setText("Notifiche (" + newNotificationsCount + ")"));
 
             if (notificationPageGController != null) {
                 notificationPageGController.update(FXCollections.observableArrayList(notificationBeans));
@@ -230,7 +221,7 @@ public class RiderHomePageGraphicController extends GenericGraphicController imp
 
 
 
-    public void SetNotificationAsRead(NotificationBean notifBn) {
+    public void setNotificationAsRead(NotificationBean notifBn) {
         try {
             riderController.markNotificationAsRead(notifBn);
         } catch (NotificationHandlingException e) {

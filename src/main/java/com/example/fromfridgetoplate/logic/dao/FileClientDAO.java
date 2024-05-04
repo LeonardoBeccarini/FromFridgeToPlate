@@ -10,30 +10,28 @@ import java.util.List;
 
 public class FileClientDAO extends FileDAOBase implements ClientDAO {
     public boolean saveClient(Client newClient) throws DAOException {
+        boolean outcome = true;
         // Verifica se il cliente esiste già nel file degli utenti
         if (isUserExists(newClient.getEmail())) {
-            System.out.println("Cliente già registrato con questa email.");
-            return false;
+            throw new DAOException("Cliente già registrato con questa email.");
         }
 
         // Aggiungi il cliente al file degli utenti
         User newUser = new User(newClient.getEmail(), newClient.getPassword(), Role.CLIENT);
-        if (!addUserToFile(newUser)) {
-            System.out.println("Non è stato possibile aggiungere l'utente al file degli utenti.");
-            return false;
+        try{
+            addUserToFile(newUser);
+        }catch (DAOException e){
+            throw new DAOException(e.getMessage());
         }
-
         // Aggiungo il cliente al file dei clientss
         List<Client> clients = readClientsFromFile();
         clients.add(newClient);
         try {
             writeToFile(clients, clientsFilePath);
         } catch (IOException e) {
-            System.out.println("Errore nella scrittura del file dei clienti: " + e.getMessage());
-            return false;
+            throw new DAOException("Exception FileDAO: " + e.getMessage());
         }
-
-        return true;
+        return outcome;
     }
 
     private boolean isUserExists(String email) throws DAOException{
@@ -41,15 +39,13 @@ public class FileClientDAO extends FileDAOBase implements ClientDAO {
         return users.stream().anyMatch(user -> user.getEmail().equals(email));
     }
 
-    private boolean addUserToFile(User user ) throws DAOException{
+    private void addUserToFile(User user ) throws DAOException{
         List<User> users = readUsersFromFile();
         users.add(user);
         try {
             writeToFile(users, usersFilePath);
-            return true;
         } catch (IOException e) {
-            System.out.println("Errore nella scrittura del file: " + e.getMessage());
-            return false;
+            throw new DAOException("Errore nella scrittura del file: " + e.getMessage());
         }
     }
 
