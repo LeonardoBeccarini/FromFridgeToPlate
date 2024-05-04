@@ -37,7 +37,7 @@ public class MainPageCLIController {
                     Printer.print("Invalid option. Please try again.");
             }
         } catch (IOException e) {
-            Printer.print("Errore nel caricamento della successiva pagina CLI");;
+            Printer.print("Errore nel caricamento della successiva pagina CLI");
         }
     }
 
