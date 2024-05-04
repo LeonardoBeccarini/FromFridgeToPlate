@@ -75,7 +75,7 @@ public class CachingNotificationList extends NotificationList {
         }
 
         // Se la notifica è stata trovata e deve essere rimossa
-        if (found && toRemove != null) {
+        if (found) {
             notifications.remove(toRemove);
             notifyObs(); // Notifica lobs
         } else {
