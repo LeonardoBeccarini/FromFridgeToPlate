@@ -1,5 +1,6 @@
 package com.example.fromfridgetoplate.logic.dao;
 
+import com.example.fromfridgetoplate.logic.exceptions.DAOException;
 import com.example.fromfridgetoplate.logic.exceptions.NotExistentUserException;
 import com.example.fromfridgetoplate.logic.model.Role;
 import com.example.fromfridgetoplate.logic.model.User;
@@ -8,7 +9,7 @@ import java.sql.*;
 
 public class DbUserDAO implements UserDAO {
     public DbUserDAO(){/*costruttore*/}
-    public User verifyUserCredentials(String email, String password)throws NotExistentUserException {
+    public User verifyUserCredentials(String email, String password) throws NotExistentUserException, DAOException {
         Connection connection = SingletonConnector.getInstance().getConnection();
         int role = 0;
         try ( CallableStatement cs = connection.prepareCall("{call login(?,?,?)}")){
@@ -21,7 +22,7 @@ public class DbUserDAO implements UserDAO {
                 throw new NotExistentUserException("user not found");
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DAOException("Errore durante la verifica delle credenziali utente: " + e.getMessage(), e);
         }
         return new User(email, Role.fromInt(role));
     }

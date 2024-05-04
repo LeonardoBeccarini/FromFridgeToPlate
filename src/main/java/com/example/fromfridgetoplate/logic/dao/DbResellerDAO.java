@@ -3,6 +3,7 @@ package com.example.fromfridgetoplate.logic.dao;
 import com.example.fromfridgetoplate.logic.bean.OrderBean;
 import com.example.fromfridgetoplate.logic.bean.RiderBean;
 import com.example.fromfridgetoplate.logic.bean.SearchBean;
+import com.example.fromfridgetoplate.logic.exceptions.DAOException;
 import com.example.fromfridgetoplate.logic.model.CartItem;
 import com.example.fromfridgetoplate.logic.model.Order;
 import com.example.fromfridgetoplate.logic.model.OrderList;
@@ -22,7 +23,7 @@ public class DbResellerDAO implements ResellerDAO{
     }
 
 
-    public OrderList getPendingOrders(String loggedEmail) {  // passo l'email del reseller attualmente loggato
+    public OrderList getPendingOrders(String loggedEmail) throws DAOException {  // passo l'email del reseller attualmente loggato
         OrderList orderList = new OrderList();
         CallableStatement cstmt = null;
         ResultSet rs = null;
@@ -61,12 +62,12 @@ public class DbResellerDAO implements ResellerDAO{
             }
         } catch (SQLException e) {
 
-            e.printStackTrace();
+            throw new DAOException("Failed to retrieve pending orders for email: " + loggedEmail, e);
 
         } finally {
 
-            closeQuietly(rs);
-            closeQuietly(cstmt);
+            close(rs);
+            close(cstmt);
         }
 
         return orderList;
@@ -75,7 +76,7 @@ public class DbResellerDAO implements ResellerDAO{
 
     // con questo metodo dalla tabella Formazione nel db estraggo i foodItem( nel db corrispondo a "ingrediente" e li setto
     // nell'ordine corrispettivo, che sarà passato come parametro attuale
-    private void loadOrderItems(int orderId, Order order) {
+    private void loadOrderItems(int orderId, Order order) throws DAOException {
         CallableStatement cstmt = null;
         ResultSet rs = null;
 
@@ -96,17 +97,17 @@ public class DbResellerDAO implements ResellerDAO{
 
             order.setItems(items);
         } catch (SQLException e) {
-            e.printStackTrace();
-            // Gestione delle eccezioni
+            throw new DAOException("Errore nel caricare gli order items per l'ordine con order ID: " + orderId, e);
+
         } finally {
-            // Chiudi CallableStatement e ResultSet in modo sicuro
-            closeQuietly(rs);
-            closeQuietly(cstmt);
+            // Chiudo le risosre CallableStatement e ResultSet in modo sicuro
+            close(rs);
+            close(cstmt);
         }
     }
 
 
-    public void updateAvailability(OrderBean orderBean) {
+    public void updateAvailability(OrderBean orderBean) throws DAOException {
         CallableStatement cstmt = null;
 
         try {
@@ -114,69 +115,66 @@ public class DbResellerDAO implements ResellerDAO{
             cstmt.setInt(1, orderBean.getOrderId());
             cstmt.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
-            // Gestione delle eccezioni
+            throw new DAOException("Failed to update availability for order ID: " + orderBean.getOrderId(), e);
         } finally {
-            closeQuietly(cstmt);
+            close(cstmt);
         }
     } // not used
 
 
     // Metodo dal china
-    private void closeQuietly(AutoCloseable resource) {
+    // Metodo per chiudere risorse con gestione centralizzata delle eccezioni
+    private void close(AutoCloseable resource) throws DAOException {
         if (resource != null) {
             try {
                 resource.close();
             } catch (Exception e) {
-                // Log dell'eccezione silenziosa se necessario
-                e.printStackTrace();
+                // Lancio una DAOException che avvolge l'eccezione originale
+                throw new DAOException("Errore nella chiusura delle risorse", e);
             }
         }
     }
 
-    public void setAssignation(int orderId) {
+
+    public void setAssignation(int orderId) throws DAOException {
         String query = "{CALL MoveOrderToAssigned(?)}";
         try (CallableStatement cstmt = connection.prepareCall(query)) {
             cstmt.setInt(1, orderId);
             cstmt.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
-            // Gestisci l'eccezione
+            throw new DAOException("Failed to assign order", e);
         }
     }
 
 
-    public OrderList getAssignedOrders(String currentResellerEmail) {
 
+    public OrderList getAssignedOrders(String currentResellerEmail) throws DAOException {
         OrderList orderList = new OrderList();
         try (CallableStatement cstmt = connection.prepareCall("{CALL GetAssignedOrders(?)}")) {
             cstmt.setString(1, currentResellerEmail);
-
             try (ResultSet rs = cstmt.executeQuery()) {
-
                 while (rs.next()) {
                     Order order = new Order(
                             rs.getInt("orderId"),
                             rs.getString("CustomerId"),
-                            rs.getString("NegozioId"), // questo corrisponderà al vatnumber dello specifico reseller che è attualmente loggato
+                            rs.getString("NegozioId"),
                             rs.getString("status"),
                             rs.getTimestamp("orderTime").toLocalDateTime(),
                             rs.getInt("RiderId")
                     );
-                    String city = rs.getString("shippingCity");
-                    order.setShippingCity(city);
+                    order.setShippingCity(rs.getString("shippingCity"));
                     orderList.addOrder(order);
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
-
+            throw new DAOException("Failed to fetch assigned orders", e);
         }
         return orderList;
     }
 
 
-    public void assignRiderToOrder(int orderId, int riderId) {
+
+    public void assignRiderToOrder(int orderId, int riderId) throws DAOException {
 
         CallableStatement stmt = null;
 
@@ -189,20 +187,14 @@ public class DbResellerDAO implements ResellerDAO{
             // Esecuzione della stored procedure
             stmt.execute();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DAOException("Failed to assign rider to order", e);
         } finally {
-            // Chiudi le risorse JDBC in modo sicuro
-            if (stmt != null) {
-                try {
-                    stmt.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
+            close(stmt);
+
         }
     }
 
-    public boolean isRiderAvailable(RiderBean riderBn) {
+    public boolean isRiderAvailable(RiderBean riderBn) throws DAOException {
         String query = "{CALL GetRiderAvailability(?, ?)}";
         try (CallableStatement cstmt = connection.prepareCall(query)) {
             cstmt.setInt(1, riderBn.getId());
@@ -211,15 +203,13 @@ public class DbResellerDAO implements ResellerDAO{
 
             return cstmt.getBoolean(2);
         } catch (SQLException e) {
-            e.printStackTrace();
-            // sempre da combiare poi
+            throw new DAOException("Errore nel check della disponibilità del rider", e);
         }
-        return false;
     }
 
 
     // Metodo per ottenere i rider disponibili
-    public List<Rider> getAvailableRiders(SearchBean rpBean) {
+    public List<Rider> getAvailableRiders(SearchBean rpBean) throws DAOException {
         List<Rider> availableRiders = new ArrayList<>();
         CallableStatement cstmt = null;
         ResultSet rs = null;
@@ -242,12 +232,12 @@ public class DbResellerDAO implements ResellerDAO{
                 availableRiders.add(rider);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DAOException("Errore nel retrieve dei rider disponibili", e);
 
         } finally {
 
-            closeQuietly(rs);
-            closeQuietly(cstmt);
+            close(rs);
+            close(cstmt);
         }
 
         return availableRiders;

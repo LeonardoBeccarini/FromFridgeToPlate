@@ -83,8 +83,7 @@ public class DbOrderDAO implements OrderDAO {
         return confirmedDeliveries;
     }
 
-    // trasferirsco in OrderDAO
-    public boolean checkForOrderInDelivery(int riderId) {
+    public boolean checkForOrderInDelivery(int riderId) throws DAOException {
         String query = "{CALL checkOrderInDeliveryForRider(?, ?)}";
         try (CallableStatement cstmt = connection.prepareCall(query)) {
             cstmt.setInt(1, riderId);
@@ -93,12 +92,11 @@ public class DbOrderDAO implements OrderDAO {
 
             return cstmt.getBoolean(2);
         } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+            throw new DAOException("Errore durante il controllo dell'ordine in consegna per il rider.", e);
         }
     }
 
-    // trasferirsco in OrderDAO
+
     public Order getInDeliveryOrderForRider(int riderId) throws OrderNotFoundException {
         Order order = null;
         String query = "{CALL GetInDeliveryOrderForRider(?)}";
