@@ -23,15 +23,16 @@ public class DbResellerDAO implements ResellerDAO{
     }
 
 
+
     public OrderList getPendingOrders(String loggedEmail) throws DAOException {  // passo l'email del reseller attualmente loggato
         OrderList orderList = new OrderList();
-        CallableStatement cstmt = null;
+        String query = "{CALL GetPendingOrders(?)}";
         ResultSet rs = null;
         int orderId;
 
-        try {
-            cstmt = connection.prepareCall("{CALL GetPendingOrders(?)}");
+        try (CallableStatement cstmt = connection.prepareCall(query)) { // trycatch with resources
             cstmt.setString(1, loggedEmail);
+
             rs = cstmt.executeQuery();
 
             while (rs.next()) {
@@ -64,10 +65,6 @@ public class DbResellerDAO implements ResellerDAO{
 
             throw new DAOException("Failed to retrieve pending orders for email: " + loggedEmail, e);
 
-        } finally {
-
-            close(rs);
-            close(cstmt);
         }
 
         return orderList;
@@ -77,34 +74,27 @@ public class DbResellerDAO implements ResellerDAO{
     // con questo metodo dalla tabella Formazione nel db estraggo i foodItem( nel db corrispondo a "ingrediente" e li setto
     // nell'ordine corrispettivo, che sarà passato come parametro attuale
     private void loadOrderItems(int orderId, Order order) throws DAOException {
-        CallableStatement cstmt = null;
-        ResultSet rs = null;
+        String query = "{CALL GetOrderItems(?)}";
+        List<CartItem> items = new ArrayList<>();
 
-        try {
-            cstmt = connection.prepareCall("{CALL GetOrderItems(?)}");
+        try (CallableStatement cstmt = connection.prepareCall(query)) {
             cstmt.setInt(1, orderId);
-            rs = cstmt.executeQuery();
 
-            List<CartItem> items = new ArrayList<>();
-
-            while (rs.next()) {
-                CartItem item = new CartItem(
-                        rs.getString("Ingrediente"),
-                        rs.getDouble("Quantita")
-                );
-                items.add(item);
+            try (ResultSet rs = cstmt.executeQuery()) {
+                while (rs.next()) {
+                    CartItem item = new CartItem(
+                            rs.getString("Ingrediente"),
+                            rs.getDouble("Quantita")
+                    );
+                    items.add(item);
+                }
             }
-
             order.setItems(items);
         } catch (SQLException e) {
-            throw new DAOException("Errore nel caricare gli order items per l'ordine con order ID: " + orderId, e);
-
-        } finally {
-            // Chiudo le risosre CallableStatement e ResultSet in modo sicuro
-            close(rs);
-            close(cstmt);
+            throw new DAOException("Errore nel caricare gli articoli dell'ordine per l'ordine con ID: " + orderId, e);
         }
     }
+
 
 
     public void updateAvailability(OrderBean orderBean) throws DAOException {
@@ -211,14 +201,13 @@ public class DbResellerDAO implements ResellerDAO{
     // Metodo per ottenere i rider disponibili
     public List<Rider> getAvailableRiders(SearchBean rpBean) throws DAOException {
         List<Rider> availableRiders = new ArrayList<>();
-        CallableStatement cstmt = null;
-        ResultSet rs = null;
 
-        try {
-            cstmt = connection.prepareCall("{CALL GetAvailableRiders(?)}");// la stored procedure ritornerà un result_set con
+
+        try (CallableStatement cstmt = connection.prepareCall("{CALL GetAvailableRiders(?)}")) {
+            // la stored procedure ritornerà un result_set con
             // i riders operanti in quella città(indiciata da pBean.getCity())
             cstmt.setString(1, rpBean.getCity());
-            rs = cstmt.executeQuery();
+            ResultSet rs = cstmt.executeQuery();
 
             while (rs.next()) {
                 int riderId = rs.getInt("Id");
@@ -234,10 +223,6 @@ public class DbResellerDAO implements ResellerDAO{
         } catch (SQLException e) {
             throw new DAOException("Errore nel retrieve dei rider disponibili", e);
 
-        } finally {
-
-            close(rs);
-            close(cstmt);
         }
 
         return availableRiders;
