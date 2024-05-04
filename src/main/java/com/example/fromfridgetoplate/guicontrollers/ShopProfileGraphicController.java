@@ -2,7 +2,7 @@ package com.example.fromfridgetoplate.guicontrollers;
 
 import com.example.fromfridgetoplate.logic.bean.ShopBean;
 import com.example.fromfridgetoplate.logic.control.ShopProfileController;
-import com.example.fromfridgetoplate.logic.exceptions.DbException;
+import com.example.fromfridgetoplate.logic.exceptions.DAOException;
 import com.example.fromfridgetoplate.logic.model.Session;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -34,7 +34,7 @@ public class ShopProfileGraphicController extends GenericGraphicController {
         ShopBean shopBean = null;
         try {
             shopBean = shopProfileController.getShopByEmail(new ShopBean(Session.getSession().getUser().getEmail()));
-        } catch (DbException e) {
+        } catch (DAOException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
             alert.showAndWait();
         }

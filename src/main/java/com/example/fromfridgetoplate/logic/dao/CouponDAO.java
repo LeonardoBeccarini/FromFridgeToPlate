@@ -1,7 +1,7 @@
 package com.example.fromfridgetoplate.logic.dao;
 
 import com.example.fromfridgetoplate.logic.exceptions.CouponNotFoundException;
-import com.example.fromfridgetoplate.logic.exceptions.DbException;
+import com.example.fromfridgetoplate.logic.exceptions.DAOException;
 import com.example.fromfridgetoplate.logic.model.Coupon;
 import com.example.fromfridgetoplate.logic.model.CouponType;
 import com.example.fromfridgetoplate.logic.model.SubtractionCoupon;
@@ -13,7 +13,7 @@ import java.sql.SQLException;
 
 
 public class CouponDAO {
-    public Coupon retrieveCoupon(String vatNumber, int code) throws CouponNotFoundException, DbException{
+    public Coupon retrieveCoupon(String vatNumber, int code) throws CouponNotFoundException, DAOException{
         Connection connection = SingletonConnector.getInstance().getConnection();
         Coupon retrievedCoupon = null;
         try(CallableStatement cs = connection.prepareCall("{call retrieveCoupon(?, ?)}")){
@@ -30,18 +30,18 @@ public class CouponDAO {
            if(retrievedCoupon == null) throw new CouponNotFoundException("coupon not found!!");
 
         }catch(SQLException e){
-            throw new DbException("errore database" + e.getMessage());
+            throw new DAOException("errore database" + e.getMessage());
         }
         return retrievedCoupon;
     }
-    public void deleteCoupon(String vatNumber, int code) throws DbException {
+    public void deleteCoupon(String vatNumber, int code) throws DAOException {
         Connection connection = SingletonConnector.getInstance().getConnection();
         try(CallableStatement cs = connection.prepareCall("{call deleteCoupon(?, ?)}")) {
             cs.setString(1, vatNumber);
             cs.setInt(2, code);
             cs.execute();
         }catch (SQLException e){
-            throw new DbException("errore database" + e.getMessage());
+            throw new DAOException("errore database" + e.getMessage());
         }
     }
 }

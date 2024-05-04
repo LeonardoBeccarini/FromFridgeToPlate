@@ -5,8 +5,7 @@ import com.example.fromfridgetoplate.logic.bean.FoodItemBean;
 import com.example.fromfridgetoplate.logic.bean.FoodItemListBean;
 import com.example.fromfridgetoplate.logic.bean.ShopBean;
 import com.example.fromfridgetoplate.logic.control.MakeOrderControl;
-import com.example.fromfridgetoplate.logic.exceptions.CatalogDAOFactoryError;
-import com.example.fromfridgetoplate.logic.exceptions.DbException;
+import com.example.fromfridgetoplate.logic.exceptions.DAOException;
 import com.example.fromfridgetoplate.logic.exceptions.EmptyCatalogException;
 import com.example.fromfridgetoplate.logic.model.Session;
 import javafx.collections.FXCollections;
@@ -48,7 +47,7 @@ public class BuyProductGraphicController extends GenericGraphicController{
         this.shopBean = shopBean;
         try {
             this.makeOrderControl = new MakeOrderControl(shopBean);
-        } catch (DbException | IOException  e) {
+        } catch (DAOException | IOException  e) {
             Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
             alert.showAndWait();
         }catch (EmptyCatalogException e){

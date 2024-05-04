@@ -2,7 +2,7 @@ package com.example.fromfridgetoplate.secondguicontrollers;
 
 import com.example.fromfridgetoplate.logic.bean.NotificationBean;
 import com.example.fromfridgetoplate.logic.control.MakeOrderControl;
-import com.example.fromfridgetoplate.logic.exceptions.DbException;
+import com.example.fromfridgetoplate.logic.exceptions.DAOException;
 import javafx.scene.control.Alert;
 
 import java.io.IOException;
@@ -19,7 +19,7 @@ public class ResellerMainPageCLIController {
         MakeOrderControl makeOrderControl = new MakeOrderControl();
         try {
             notificationBeanList = makeOrderControl.loadNotification();
-        } catch (DbException e) {
+        } catch (DAOException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
             alert.showAndWait();
         }

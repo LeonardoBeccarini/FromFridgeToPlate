@@ -1,6 +1,6 @@
 package com.example.fromfridgetoplate.logic.dao;
 
-import com.example.fromfridgetoplate.logic.exceptions.DbException;
+import com.example.fromfridgetoplate.logic.exceptions.DAOException;
 import com.example.fromfridgetoplate.logic.model.Catalog;
 import com.example.fromfridgetoplate.logic.model.FoodItem;
 
@@ -10,7 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class CatalogDAOImplJDBC implements CatalogDAO{
-    public Catalog retrieveCatalog(String vatNumber) throws DbException {
+    public Catalog retrieveCatalog(String vatNumber) throws DAOException {
         Catalog catalog = new Catalog();
         Connection connection = SingletonConnector.getInstance().getConnection();
         try(CallableStatement cs = connection.prepareCall("{call retrieveCatalog(?)}")){
@@ -22,11 +22,11 @@ public class CatalogDAOImplJDBC implements CatalogDAO{
                 catalog.addIngredient(foodItem);
             }
         }catch(SQLException e){
-            throw new DbException("errore database" + e.getMessage());
+            throw new DAOException("errore database" + e.getMessage());
         }
         return catalog;
     }
-    public void addItem(String name, float price, String shopName) throws DbException {
+    public void addItem(String name, float price, String shopName) throws DAOException {
         Connection connection = SingletonConnector.getInstance().getConnection();
         try (CallableStatement cs = connection.prepareCall("{call addToCatalogo(?,?,?)}")) {
             cs.setString(1, name);
@@ -35,7 +35,7 @@ public class CatalogDAOImplJDBC implements CatalogDAO{
             cs.executeQuery();
 
         }catch (SQLException e) {
-            throw new DbException("errore database" + e.getMessage());
+            throw new DAOException("errore database" + e.getMessage());
         }
     }
 }

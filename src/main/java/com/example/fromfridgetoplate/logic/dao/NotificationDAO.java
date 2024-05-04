@@ -124,28 +124,17 @@ public class NotificationDAO {
     }
 
 
-    public void markNotificationAsRead(int notificationId) {
+    public void markNotificationAsRead(int notificationId) throws DAOException {
         String query = "{CALL SetNotificationAsRead(?)}";
         try (CallableStatement cstmt = connection.prepareCall(query)) {
             cstmt.setInt(1, notificationId);
            cstmt.executeQuery();
 
         } catch (SQLException e) {
-            // da fare
+            throw new DAOException("Errore nel marcare notifiche come lette: " + e.getMessage());
 
         }
     }
-
-
-
-
-
-
-
-
-
-
-
 
 }
 

@@ -3,7 +3,6 @@ package com.example.fromfridgetoplate.logic.dao;
 
 import com.example.fromfridgetoplate.logic.exceptions.ConfigurationException;
 import com.example.fromfridgetoplate.logic.exceptions.DAOException;
-import com.example.fromfridgetoplate.logic.exceptions.DbException;
 import com.example.fromfridgetoplate.logic.model.Role;
 import com.example.fromfridgetoplate.logic.model.Shop;
 import com.example.fromfridgetoplate.logic.model.User;
@@ -22,7 +21,7 @@ public class FileShopDAO extends FileDAOBase implements ShopDAO {
     // x becca: dovresti cambiare nome e messaggio di errore alla DbException, in tipo PersistenceException in modo
 // che non sia relativa solo al db ma anche a i file
     @Override
-    public boolean saveShop(Shop shop) throws DbException, DAOException {
+    public boolean saveShop(Shop shop) throws DAOException {
 
             List<User> users = readUsersFromFile();
             for (User user : users) {
@@ -49,7 +48,7 @@ public class FileShopDAO extends FileDAOBase implements ShopDAO {
     }
 
 
-    public Shop retrieveShopByEmail(String email) throws DbException {
+    public Shop retrieveShopByEmail(String email) throws DAOException {
         List<Shop> shops = readShopsFromFile();
         for (Shop shop : shops) {
             if (shop.getEmail().equals(email)) {
@@ -59,7 +58,7 @@ public class FileShopDAO extends FileDAOBase implements ShopDAO {
         return null;
     }
 
-    public List<Shop> retrieveShopByName(String name) throws DbException {
+    public List<Shop> retrieveShopByName(String name) throws DAOException {
         List<Shop> shops = readShopsFromFile();
         List<Shop> result = new ArrayList<>();
         for (Shop shop : shops) {
@@ -71,7 +70,7 @@ public class FileShopDAO extends FileDAOBase implements ShopDAO {
     }
 
     // Helper method to read shops from file
-    private List<Shop> readShopsFromFile() throws DbException {
+    private List<Shop> readShopsFromFile() throws DAOException {
         File file = new File(shopsFilePath);
         if (!file.exists() || file.length()==0) {
             return new ArrayList<>();
@@ -81,16 +80,16 @@ public class FileShopDAO extends FileDAOBase implements ShopDAO {
             return (List<Shop>) ois.readObject();
         } catch (IOException | ClassNotFoundException e) {
 
-            throw new DbException("Errore durante la lettura dal file: " + e.getMessage());
+            throw new DAOException("Errore durante la lettura dal file: " + e.getMessage());
         }
     }
 
 
-    private void writeShopsToFile(List<Shop> shops) throws DbException {
+    private void writeShopsToFile(List<Shop> shops) throws DAOException {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(shopsFilePath))) {
             oos.writeObject(shops);
         } catch (IOException e) {
-            throw new DbException("Errore durante la scrittura sul file: " + e.getMessage());
+            throw new DAOException("Errore durante la scrittura sul file: " + e.getMessage());
         }
     }
 

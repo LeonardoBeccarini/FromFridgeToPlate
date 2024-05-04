@@ -3,7 +3,7 @@ package com.example.fromfridgetoplate.secondguicontrollers;
 import com.example.fromfridgetoplate.logic.bean.ShopSearchInfoBean;
 import com.example.fromfridgetoplate.logic.bean.ShopBean;
 import com.example.fromfridgetoplate.logic.control.MakeOrderControl;
-import com.example.fromfridgetoplate.logic.exceptions.DbException;
+import com.example.fromfridgetoplate.logic.exceptions.DAOException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -47,7 +47,7 @@ public class MarketListCLIcontroller {
             ProductListCLIcontroller productListCLIcontroller = new ProductListCLIcontroller(shopBean);
             navigatorCLI.goToWithCOntroller("ProductListCLI", productListCLIcontroller);
 
-        } catch (IOException | DbException e) {
+        } catch (IOException | DAOException e) {
             Printer.print(e.getMessage());
         }
 

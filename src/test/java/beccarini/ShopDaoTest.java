@@ -3,7 +3,7 @@ package beccarini;
 import com.example.fromfridgetoplate.logic.dao.DbShopDAO;
 import com.example.fromfridgetoplate.logic.dao.ShopDAO;
 import com.example.fromfridgetoplate.logic.dao.SingletonConnector;
-import com.example.fromfridgetoplate.logic.exceptions.DbException;
+import com.example.fromfridgetoplate.logic.exceptions.DAOException;
 import com.example.fromfridgetoplate.logic.model.Shop;
 import org.junit.AfterClass;
 import org.junit.Test;
@@ -24,7 +24,7 @@ public class ShopDaoTest {
         ShopDAO shopDAO = new DbShopDAO();
         try {
             assertTrue( shopDAO.saveShop(shop));
-        } catch (DbException e) {
+        } catch (DAOException e) {
             //don't care handling exceptions
         }
     }
@@ -37,7 +37,7 @@ public class ShopDaoTest {
         ShopDAO shopDAO = new DbShopDAO();
         try {
             assertFalse( shopDAO.saveShop(shop));
-        } catch (DbException e) {
+        } catch (DAOException e) {
             //don't care handling exceptions
         }
     }
@@ -50,7 +50,7 @@ public class ShopDaoTest {
         Shop ouptutShop = null;
         try {
             ouptutShop = shopDAO.retrieveShopByEmail("quircio@gmail.com");
-        } catch (DbException e) {
+        } catch (DAOException e) {
             //don't care handling exceptions
         }
         assertEquals(shop.getEmail(), Objects.requireNonNull(ouptutShop).getEmail());

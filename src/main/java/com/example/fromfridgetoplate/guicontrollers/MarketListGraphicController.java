@@ -1,10 +1,10 @@
 package com.example.fromfridgetoplate.guicontrollers;
 
 import com.example.fromfridgetoplate.guicontrollers.list_cell_factories.MarketListCellFactory;
-import com.example.fromfridgetoplate.logic.bean.ShopSearchInfoBean;
 import com.example.fromfridgetoplate.logic.bean.ShopBean;
+import com.example.fromfridgetoplate.logic.bean.ShopSearchInfoBean;
 import com.example.fromfridgetoplate.logic.control.MakeOrderControl;
-import com.example.fromfridgetoplate.logic.exceptions.DbException;
+import com.example.fromfridgetoplate.logic.exceptions.DAOException;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -62,7 +62,7 @@ public class MarketListGraphicController extends GenericGraphicController {
             else{
                 try {
                     shopBeanList = makeOrderControl.loadShop(new ShopSearchInfoBean(nameTextField.getText()));
-                } catch (DbException e) {
+                } catch (DAOException e) {
                     Alert alert = new Alert(Alert.AlertType.WARNING, e.getMessage());
                     alert.showAndWait();
                 }

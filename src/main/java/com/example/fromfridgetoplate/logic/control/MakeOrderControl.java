@@ -21,16 +21,16 @@ public class MakeOrderControl {
     private final Cart cart = Session.getSession().getCart();
     private final CouponApplier couponApplier = new CouponApplier(cart);
 
-    public MakeOrderControl(ShopBean shopBean) throws DbException, IOException, EmptyCatalogException {
+    public MakeOrderControl(ShopBean shopBean) throws DAOException, IOException, EmptyCatalogException {
         DAOAbsFactory daoAbsFactory = DAOFactoryProvider.getInstance().getDaoFactory();
         CatalogDAO catalogDAO;
         try {
             catalogDAO = daoAbsFactory.createCatalogDAO();
         } catch (ConfigurationException e) {
             // passo il messaggio e la causa originale dall'eccezione ConfigurationException alla nuova
-            // DbException per non perdere il contesto dell'errore originale
+            // DAOException per non perdere il contesto dell'errore originale
 
-            throw new DbException("Errore nella configurazione durante la creazione della catalogDAO: " + e.getMessage());
+            throw new DAOException("Errore nella configurazione durante la creazione della catalogDAO: " + e.getMessage());
         }
 
         Catalog catalogTemp = catalogDAO.retrieveCatalog(shopBean.getVatNumber());
@@ -45,7 +45,7 @@ public class MakeOrderControl {
         this.catalog = null;
     }
 
-    public List<ShopBean> loadShop(ShopSearchInfoBean shopSearchInfoBean) throws DbException {
+    public List<ShopBean> loadShop(ShopSearchInfoBean shopSearchInfoBean) throws DAOException {
         List<ShopBean> listShopBean = new ArrayList<>();
 
         DAOAbsFactory daoAbsFactory = DAOFactoryProvider.getInstance().getDaoFactory();
@@ -55,7 +55,7 @@ public class MakeOrderControl {
         } catch (ConfigurationException e) {
 
 
-            throw new DbException("Errore nella configurazione durante la creazione della ShopDAO: " + e.getMessage());
+            throw new DAOException("Errore nella configurazione durante la creazione della ShopDAO: " + e.getMessage());
         }
         for(Shop shop: shopDAO.retrieveShopByName(shopSearchInfoBean.getName())){
             ShopBean shopBean = new ShopBean(shop.getName(), shop.getAddress(), shop.getPhoneNumber(), shop.getVATnumber());
@@ -108,7 +108,7 @@ public class MakeOrderControl {
     }
 
 
-    public TotalPriceBean applyCoupon(CouponBean couponBean) throws CouponNotFoundException, DbException, NegativePriceException {
+    public TotalPriceBean applyCoupon(CouponBean couponBean) throws CouponNotFoundException, DAOException, NegativePriceException {
         CouponDAO couponDAO = new CouponDAO();
         Coupon retrievedCoupon =  couponDAO.retrieveCoupon(couponBean.getVatNumber(), couponBean.getCode());
         couponApplier.applyCoupon(retrievedCoupon);
@@ -130,7 +130,7 @@ public class MakeOrderControl {
         return  couponBeanList;
     }
 
-    public void completeOrder(OrderBean orderBean) throws DbException, PaymentFailedException, DAOException, IOException {
+    public void completeOrder(OrderBean orderBean) throws  PaymentFailedException, DAOException, IOException {
 
         DAOAbsFactory daoAbsFactory = DAOFactoryProvider.getInstance().getDaoFactory();
         OrderDAO orderDAO;
@@ -164,7 +164,7 @@ public class MakeOrderControl {
         }
     }
 
-    public List<NotificationBean> loadNotification() throws DbException {
+    public List<NotificationBean> loadNotification() throws DAOException {
 
         NotificationDAO notificationDAO = new NotificationDAO(SingletonConnector.getInstance().getConnection());
 
@@ -173,15 +173,15 @@ public class MakeOrderControl {
         try {
             shopDAO = daoAbsFactory.createShopDAO();
         } catch (ConfigurationException e) {
-            throw new DbException("Errore nella configurazione durante la creazione della ShopDAO: " + e.getMessage());
+            throw new DAOException("Errore nella configurazione durante la creazione della ShopDAO: " + e.getMessage());
         }
         Shop shop = shopDAO.retrieveShopByEmail(Session.getSession().getUser().getEmail());
 
-        List<Notification> notificationList = null;
+        List<Notification> notificationList;
         try {
             notificationList = notificationDAO.getNotificationsForOwner(shop.getVATnumber());
         } catch (DAOException e) {
-            throw new DbException(e.getMessage());
+            throw new DAOException(e.getMessage());
         }
 
         List<NotificationBean> notificationBeanList = new ArrayList<>();
@@ -198,7 +198,7 @@ public class MakeOrderControl {
         return notificationBeanList;
     }
 
-    public void markNotificationAsRead(List<NotificationBean> notificationBeanList){
+    public void markNotificationAsRead(List<NotificationBean> notificationBeanList) throws DAOException {
         DAOFactory daoFactory = new DAOFactory();
         NotificationDAO notificationDAO = daoFactory.getNotificationDAO();
         for(NotificationBean notificationBean: notificationBeanList){

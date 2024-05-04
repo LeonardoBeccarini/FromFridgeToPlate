@@ -4,6 +4,7 @@ import com.example.fromfridgetoplate.logic.bean.AddressBean;
 import com.example.fromfridgetoplate.logic.bean.NotificationBean;
 import com.example.fromfridgetoplate.logic.bean.OrderBean;
 import com.example.fromfridgetoplate.logic.control.MakeOrderControl;
+import com.example.fromfridgetoplate.logic.exceptions.DAOException;
 
 import java.io.IOException;
 import java.util.List;
@@ -22,7 +23,11 @@ public class ResellerNotificationCLIcontroller {
         printList();
 
         MakeOrderControl makeOrderControl = new MakeOrderControl();
-        makeOrderControl.markNotificationAsRead(notificationBeanList);
+        try {
+            makeOrderControl.markNotificationAsRead(notificationBeanList);
+        } catch (DAOException e) {
+            Printer.print(e.getMessage());
+        }
 
         Printer.print("-------------------------------");
         Printer.print("1. Back");

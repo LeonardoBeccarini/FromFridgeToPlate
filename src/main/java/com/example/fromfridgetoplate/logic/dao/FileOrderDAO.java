@@ -2,7 +2,6 @@ package com.example.fromfridgetoplate.logic.dao;
 
 import com.example.fromfridgetoplate.logic.exceptions.ConfigurationException;
 import com.example.fromfridgetoplate.logic.exceptions.DAOException;
-import com.example.fromfridgetoplate.logic.exceptions.DbException;
 import com.example.fromfridgetoplate.logic.exceptions.OrderNotFoundException;
 import com.example.fromfridgetoplate.logic.model.CartItem;
 import com.example.fromfridgetoplate.logic.model.Order;
@@ -176,7 +175,7 @@ public class FileOrderDAO extends FileDAOBase implements OrderDAO {
 
     }
 
-    public Order saveOrder(Order order) throws DbException, DAOException {
+    public Order saveOrder(Order order) throws DAOException {
         // Recupera tutti gli ordini esistenti e la mappa degli item associati
         List<Order> orders = getAllOrders();
         Map<Integer, List<CartItem>> orderItemsMap = getAllOrderItems();
@@ -203,7 +202,7 @@ public class FileOrderDAO extends FileDAOBase implements OrderDAO {
         try {
             writeOrderItemsMapToFile(orderItemsMap);
         } catch (IOException e) {
-            throw new DbException("Errore di scrittura sul file degli articoli");
+            throw new DAOException("Errore di scrittura sul file degli articoli");
         }
 
         return order;
