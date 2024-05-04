@@ -111,11 +111,8 @@ public class RiderHPController {
             try {
                 pollForNotifications();
             } catch (NotificationPollingException e) {
-                // Log dell'eccezione, ad esempio usando System.err o un logger dedicato
-                System.err.println("Error during notification polling: " + e.getMessage());
-                e.printStackTrace();  // Solo se necessario per il debug dettagliato.
 
-                // Qui puoi anche decidere di notificare un sistema di monitoraggio o di eseguire altre azioni di recupero.
+                e.printStackTrace();
             }
         }
 
