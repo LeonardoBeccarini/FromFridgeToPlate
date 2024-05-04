@@ -14,7 +14,7 @@ public class SingletonConnector {
 
     private final Connection connection;
     private static SingletonConnector instance;
-    private SingletonConnector() {
+    protected SingletonConnector() {
         try (InputStream is = new FileInputStream("src/main/resources/com/example/Properties/db_config.properties")) {
             Properties prop = new Properties();
             prop.load(is);

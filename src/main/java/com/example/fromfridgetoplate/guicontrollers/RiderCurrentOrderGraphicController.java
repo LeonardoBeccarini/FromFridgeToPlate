@@ -6,6 +6,7 @@ import com.example.fromfridgetoplate.logic.bean.RiderBean;
 import com.example.fromfridgetoplate.logic.control.RiderHPController;
 import com.example.fromfridgetoplate.logic.exceptions.DAOException;
 import com.example.fromfridgetoplate.logic.exceptions.RiderGcException;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -84,18 +85,21 @@ public class RiderCurrentOrderGraphicController extends GenericGraphicController
         RiderHPController riderCtrl = new RiderHPController();
         try {
             riderCtrl.confirmDelivery(currentOrderBean);
+
             Alert alert = new Alert(AlertType.INFORMATION);
             alert.setTitle("Ordine correttamente consegnato");
             alert.setHeaderText("Complimenti. Hai completato la consegna!");
             alert.setContentText("Controlla le tue notifiche, per verificare se ci sono nuovi ordini per te!");
             alert.showAndWait();
             navigator.goTo("RiderDeliveryReport.fxml");
+
         } catch (DAOException e) {
             Alert alert = new Alert(AlertType.ERROR);
             alert.setTitle("Errore di Consegna");
             alert.setHeaderText("Errore durante la conferma della consegna");
             alert.setContentText("Dettagli errore: " + e.getMessage());
             alert.showAndWait();
+            
         } catch (IOException e){
             Alert alert = new Alert(AlertType.ERROR);
             alert.setTitle("Errore del Navigator");
