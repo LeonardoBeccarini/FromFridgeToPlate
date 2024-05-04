@@ -15,15 +15,22 @@ import com.example.fromfridgetoplate.patterns.factory.FileDAOFactory;
 
 
 // impl Singleton
-public class DAOFactoryProvider {
-    private static class Holder {
-        static final DAOFactoryProvider INSTANCE = new DAOFactoryProvider();
-    }
 
+
+import com.example.fromfridgetoplate.logic.dao.PersistenceType;
+import com.example.fromfridgetoplate.patterns.factory.DbDAOFactory;
+import com.example.fromfridgetoplate.patterns.factory.FileDAOFactory;
+
+public class DAOFactoryProvider {
+    private static DAOFactoryProvider instance;
     private DAOAbsFactory daoFactory;
     private PersistenceType type = PersistenceType.FILE_SYSTEM;
 
     private DAOFactoryProvider() {
+        initializeFactory();
+    }
+
+    private void initializeFactory() {
         if (type == PersistenceType.FILE_SYSTEM) {
             daoFactory = new FileDAOFactory();
         } else if (type == PersistenceType.JDBC) {
@@ -31,8 +38,11 @@ public class DAOFactoryProvider {
         }
     }
 
-    public static DAOFactoryProvider getInstance() {
-        return Holder.INSTANCE;
+    public static synchronized DAOFactoryProvider getInstance() {
+        if (instance == null) {
+            instance = new DAOFactoryProvider();
+        }
+        return instance;
     }
 
     public PersistenceType getType() {
@@ -43,6 +53,7 @@ public class DAOFactoryProvider {
         return daoFactory;
     }
 }
+
 
 
 
