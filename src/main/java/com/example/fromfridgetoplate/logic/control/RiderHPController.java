@@ -107,17 +107,25 @@ public class RiderHPController {
 
     private class NotificationPollingTask extends TimerTask {
         @Override
-        public void run()  {
-            pollForNotifications();
+        public void run() {
+            try {
+                pollForNotifications();
+            } catch (NotificationPollingException e) {
+                // Log dell'eccezione, ad esempio usando System.err o un logger dedicato
+                System.err.println("Error during notification polling: " + e.getMessage());
+                e.printStackTrace();  // Solo se necessario per il debug dettagliato.
+
+                // Qui puoi anche decidere di notificare un sistema di monitoraggio o di eseguire altre azioni di recupero.
+            }
         }
 
-        private void pollForNotifications()  {
+        private void pollForNotifications() throws NotificationPollingException {
             NotificationDAO ntfDAO = new NotificationDAO(SingletonConnector.getInstance().getConnection());
             RiderBean riderBean; // Accede alle informazioni del rider dalla sessione
             try {
                 riderBean = getRiderDetailsFromSession();
             } catch (DAOException e) {
-                throw new RuntimeException(e);
+                throw new NotificationPollingException("Failed to retrieve rider details for notification polling.", e);
             }
             List<Notification> newNotifications = ntfDAO.getNotificationsForRider(riderBean.getId(), lastNotificationId);
 
