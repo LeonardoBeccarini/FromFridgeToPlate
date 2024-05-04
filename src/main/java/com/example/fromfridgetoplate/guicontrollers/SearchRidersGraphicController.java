@@ -85,8 +85,8 @@ public class SearchRidersGraphicController extends GenericGraphicController {
         try {
             PendingOrdersController pendingOrdersControl = new PendingOrdersController();
             this.setAssignedCity(searchBean.getCity());
-            IRiderSelectionListener riderSelectionListener = new RiderSelectionListener();
-            this.setRiderSelectionListener(riderSelectionListener);
+            IRiderSelectionListener riderSelListener = new RiderSelectionListener();
+            this.setRiderSelectionListener(riderSelListener);
             this.orderBean = searchBean.getSelectedOrderBean(); // ordine che deve assegnato al rider selezionato
 
             List<RiderBean> avRidersBean = pendingOrdersControl.getAvalaibleRiders(searchBean);

@@ -181,7 +181,6 @@ public class FileResellerDAO extends FileDAOBase implements ResellerDAO {
 
         if (isOrderFound) {
             writeOrdersToFile(orders); // Riscrivo la lista aggiornata degli ordini nel file
-        } else {
         }
     }
 
