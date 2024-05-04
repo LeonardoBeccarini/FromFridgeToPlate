@@ -3,7 +3,6 @@ package com.example.fromfridgetoplate.logic.control;
 import com.example.fromfridgetoplate.logic.bean.ShopBean;
 import com.example.fromfridgetoplate.logic.dao.ShopDAO;
 import com.example.fromfridgetoplate.logic.exceptions.ConfigurationException;
-import com.example.fromfridgetoplate.logic.exceptions.DAOException;
 import com.example.fromfridgetoplate.logic.exceptions.DbException;
 import com.example.fromfridgetoplate.logic.model.Shop;
 import com.example.fromfridgetoplate.patterns.abstract_factory.DAOAbsFactory;

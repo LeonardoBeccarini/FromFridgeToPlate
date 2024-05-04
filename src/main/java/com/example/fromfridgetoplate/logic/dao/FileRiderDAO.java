@@ -13,6 +13,7 @@ public class FileRiderDAO extends FileDAOBase implements RiderDAO {
 
 
     public FileRiderDAO() throws ConfigurationException {
+        super();
     }
 
     public void setRiderAvailable(int riderId, boolean isAval) throws DAOException {

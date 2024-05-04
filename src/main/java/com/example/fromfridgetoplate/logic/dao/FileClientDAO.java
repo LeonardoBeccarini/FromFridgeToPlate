@@ -11,6 +11,7 @@ import java.util.List;
 
 public class FileClientDAO extends FileDAOBase implements ClientDAO {
     public FileClientDAO() throws ConfigurationException {
+        super();
     }
 
     public boolean saveClient(Client newClient) throws DAOException {

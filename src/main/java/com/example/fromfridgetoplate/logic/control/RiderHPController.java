@@ -20,6 +20,8 @@ import java.util.TimerTask;
 
 public class RiderHPController {
 
+
+    private static final String ERROR_CREATING_DAO = "Errore nella configurazione durante la creazione dell'OrderDAO: ";
     private Timer notificationPoller;
 
 
@@ -179,7 +181,7 @@ public class RiderHPController {
             // passo il messaggio e la causa originale dall'eccezione ConfigurationException alla nuova
             // DAOException per non perdere il contesto dell'errore originale
 
-            throw new DAOException("Errore nella configurazione durante la creazione dell'OrderDAO: " + e.getMessage(), e);
+            throw new DAOException(ERROR_CREATING_DAO + e.getMessage(), e);
         }
 
         OrderBean notifiedOrder = notification.getOrderBean();
@@ -195,50 +197,46 @@ public class RiderHPController {
             // passo il messaggio e la causa originale dall'eccezione ConfigurationException alla nuova
             // DAOException per non perdere il contesto dell'errore originale
 
-            throw new DAOException("Errore nella configurazione durante la creazione dell'OrderDAO: " + e.getMessage(), e);
+            throw new DAOException(ERROR_CREATING_DAO + e.getMessage(), e);
         }
 
         OrderBean notifiedOrder = notification.getOrderBean();
         orderDAO.declineOrder(notifiedOrder.getOrderId(), notifiedOrder.getRiderId());
     }
 
-    public OrderListBean getConfirmedDeliveries(RiderBean riderInfo) throws RiderGcException, DAOException {
 
+    public OrderListBean getConfirmedDeliveries(RiderBean riderInfo) throws RiderGcException, DAOException {
         OrderListBean orderListBean = new OrderListBean();
         try {
-
-            DAOAbsFactory daoAbsFactory = DAOFactoryProvider.getInstance().getDaoFactory();
-            OrderDAO orderDAO = null;
-            try {
-                orderDAO = daoAbsFactory.createOrderDAO();
-            } catch (ConfigurationException e) {
-                // passo il messaggio e la causa originale dall'eccezione ConfigurationException alla nuova
-                // DAOException per non perdere il contesto dell'errore originale
-
-                throw new DAOException("Errore nella configurazione durante la creazione dell'OrderDAO: " + e.getMessage(), e);
-            }
+            OrderDAO orderDAO = createOrderDAO();
             OrderList confirmedOrders = orderDAO.getConfirmedDeliveriesForRider(riderInfo.getId());
-
-
-            // creiamo una nuova lista vuota per gli OrderBean
-            List<OrderBean> orderBeans = new ArrayList<>();
+            List<OrderBean> orderBeans = new ArrayList<>();// creiamo una nuova lista vuota per gli OrderBean
 
             // Ottieniamo la lista degli ordini dall'OrderList
             List<Order> orders = confirmedOrders.getOrders();
             for (Order order : orders) {
-                OrderBean orderBean = convertToOrdBean(order);
-                orderBeans.add(orderBean);
+                orderBeans.add(convertToOrdBean(order));
             }
-
-
             orderListBean.setOrderBeans(orderBeans);
-        }catch (DeliveryRetrievalException e) {
+        } catch (DeliveryRetrievalException e) {
             throw new RiderGcException("Impossibile recuperare le consegne confermate.", e);
+            // creiamo una nuova eccezione e passiamo la cause dell'eccezione originale per mantenere un tracciamento completo dello stack di chiamate che ha portato all'errore
         }
-        // creiamo una nuova eccezione e passiamo la cause dell'eccezione originale per mantenere un tracciamento completo dello stack di chiamate che ha portato all'errore
 
         return orderListBean;
     }
+
+    private OrderDAO createOrderDAO() throws DAOException {
+        try {
+            // passo il messaggio e la causa originale dall'eccezione ConfigurationException alla nuova
+            // DAOException per non perdere il contesto dell'errore originale
+            DAOAbsFactory daoAbsFactory = DAOFactoryProvider.getInstance().getDaoFactory();
+            return daoAbsFactory.createOrderDAO();
+        } catch (ConfigurationException e) {
+            throw new DAOException(ERROR_CREATING_DAO + e.getMessage(), e);
+        }
+    }
+
 
     private OrderBean convertToOrdBean(Order order) {
 
@@ -258,7 +256,7 @@ public class RiderHPController {
             // passo il messaggio e la causa originale dall'eccezione ConfigurationException alla nuova
             // DAOException per non perdere il contesto dell'errore originale
 
-            throw new DAOException("Errore nella configurazione durante la creazione dell'OrderDAO: " + e.getMessage(), e);
+            throw new DAOException(ERROR_CREATING_DAO + e.getMessage(), e);
         }
 
         Rider loggedRider = riderDAO.getRiderDetailsFromSession();
@@ -295,25 +293,15 @@ public class RiderHPController {
             // passo il messaggio e la causa originale dall'eccezione ConfigurationException alla nuova
             // DAOException per non perdere il contesto dell'errore originale
 
-            throw new DAOException("Errore nella configurazione durante la creazione dell'OrderDAO: " + e.getMessage(), e);
+            throw new DAOException(ERROR_CREATING_DAO + e.getMessage(), e);
         }
         return orderDAO.checkForOrderInDelivery(riderId);
     }
 
 
-    public OrderBean getInDeliveryOrderForRider(RiderBean riderInfo) throws RiderGcException {
+    public OrderBean getInDeliveryOrderForRider(RiderBean riderInfo) throws RiderGcException, DAOException {
         try {
-
-            DAOAbsFactory daoAbsFactory = DAOFactoryProvider.getInstance().getDaoFactory();
-            OrderDAO orderDAO = null;
-            try {
-                orderDAO = daoAbsFactory.createOrderDAO();
-            } catch (ConfigurationException e) {
-                // passo il messaggio e la causa originale dall'eccezione ConfigurationException alla nuova
-                // DAOException per non perdere il contesto dell'errore originale
-
-                throw new DAOException("Errore nella configurazione durante la creazione dell'OrderDAO: " + e.getMessage(), e);
-            }
+            OrderDAO orderDAO = createOrderDAO();
             Order order = orderDAO.getInDeliveryOrderForRider(riderInfo.getId());
             return convertToOrderBean(order);
         } catch (OrderNotFoundException | DAOException e) {
@@ -322,8 +310,6 @@ public class RiderHPController {
             // del rider, sia che c'è stato un errore da parte del db, l'nfo sul tipo di errore è contenuta in e
         }
     }
-
-
 
 
 
@@ -354,7 +340,7 @@ public class RiderHPController {
                 // passo il messaggio e la causa originale dall'eccezione ConfigurationException alla nuova
                 // DAOException per non perdere il contesto dell'errore originale
 
-                throw new DAOException("Errore nella configurazione durante la creazione dell'OrderDAO: " + e.getMessage(), e);
+                throw new DAOException(ERROR_CREATING_DAO + e.getMessage(), e);
             }
             orderDAO.updateOrderStatusToDelivered(orderBean.getOrderId(), deliveryTime);
         }

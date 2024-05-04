@@ -10,6 +10,7 @@ import java.util.List;
 public class FileUserDAO extends FileDAOBase implements UserDAO {
 
     public FileUserDAO() throws ConfigurationException {
+        super();
     }
 
     public User verifyUserCredentials(String email, String password) throws NotExistentUserException, DAOException {

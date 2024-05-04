@@ -28,7 +28,7 @@ public class FileOrderDAO extends FileDAOBase implements OrderDAO {
         boolean orderFound = false;
 
         for (Order order : orders) {
-            System.out.println("orderid: " + order.getOrderId());
+
             if (order.getOrderId() == orderId) {
                 order.setStatus(CONSEGNA);
                 order.setAcceptedByRider(true);

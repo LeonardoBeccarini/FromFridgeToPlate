@@ -16,6 +16,7 @@ import java.util.List;
 public class FileShopDAO extends FileDAOBase implements ShopDAO {
 
     public FileShopDAO() throws ConfigurationException {
+        super();
     }
 
     // x becca: dovresti cambiare nome e messaggio di errore alla DbException, in tipo PersistenceException in modo

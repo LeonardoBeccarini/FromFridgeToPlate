@@ -11,8 +11,10 @@ public class CatalogDAOImplFile extends FileDAOBase implements CatalogDAO{
     private static final String FILE_NAME = "catalog.txt";
     private boolean outcome;
 
-    public CatalogDAOImplFile() throws ConfigurationException {
+    protected CatalogDAOImplFile() throws ConfigurationException {
+        // st constructor
     }
+
 
     public void addItem(String name, float price, String shopName) throws IOException {
         try( BufferedWriter fileWriter = new BufferedWriter(new FileWriter(catalogFilePath,true))){
