@@ -71,8 +71,5 @@ public class ResellerMainPageCLIController {
         showMenu();
     }
 
-    public static void main(String[] args) {
-        ResellerMainPageCLIController resellerMainPageCLIController = new ResellerMainPageCLIController();
-        resellerMainPageCLIController.showMenu();
-    }
+
 }

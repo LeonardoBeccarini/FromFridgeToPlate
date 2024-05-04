@@ -58,9 +58,6 @@ public class RiderCurrentOrderCLIController {
         }
     }
 
-    public static void main(String[] args) {
-        RiderCurrentOrderCLIController controller = new RiderCurrentOrderCLIController();
-        controller.loadOrderDetails();
-    }
+
 }
 

@@ -39,8 +39,5 @@ public class RiderDeliveryReportCLIController {
     }
 
 
-    public static void main(String[] args) {
-        RiderDeliveryReportCLIController controller = new RiderDeliveryReportCLIController();
-        controller.showDeliveryReport();
-    }
+
 }

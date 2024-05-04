@@ -1,13 +1,1 @@
-Vat1234567 Banana 2.0
-vat12345678 lattuga 2.0
-ABC123DEF sedano 0.5
-abc123 carota 1.0
-abc123 pomodoro 2.0
-abc123 ricotta 5.0
-abc123 parmigiano 2.0
-gvf34gh5 carota 2.0
-fekk3 zucchina 2.0
-cejce3f verza 2.0
-cejce3f parmigiano 4.0
-cejce3f pasta 2.0
-cejce3f pizza 6.0
+cejce3f ricotta 4.0

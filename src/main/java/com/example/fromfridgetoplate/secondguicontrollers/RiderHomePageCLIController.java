@@ -190,7 +190,4 @@ public class RiderHomePageCLIController implements IUpdateable {
 
 
 
-    public static void main(String[] args) {
-        new RiderHomePageCLIController().mainMenu();
-    }
 }
