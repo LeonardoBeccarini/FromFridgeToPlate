@@ -1,5 +1,6 @@
 package com.example.fromfridgetoplate.logic.dao;
 
+import com.example.fromfridgetoplate.logic.exceptions.ConfigurationException;
 import com.example.fromfridgetoplate.logic.model.Catalog;
 import com.example.fromfridgetoplate.logic.model.FoodItem;
 
@@ -9,6 +10,9 @@ import java.util.Objects;
 public class CatalogDAOImplFile extends FileDAOBase implements CatalogDAO{
     private static final String FILE_NAME = "catalog.txt";
     private boolean outcome;
+
+    public CatalogDAOImplFile() throws ConfigurationException {
+    }
 
     public void addItem(String name, float price, String shopName) throws IOException {
         try( BufferedWriter fileWriter = new BufferedWriter(new FileWriter(catalogFilePath,true))){

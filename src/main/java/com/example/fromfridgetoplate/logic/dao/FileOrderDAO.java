@@ -1,5 +1,6 @@
 package com.example.fromfridgetoplate.logic.dao;
 
+import com.example.fromfridgetoplate.logic.exceptions.ConfigurationException;
 import com.example.fromfridgetoplate.logic.exceptions.DAOException;
 import com.example.fromfridgetoplate.logic.exceptions.DbException;
 import com.example.fromfridgetoplate.logic.exceptions.OrderNotFoundException;
@@ -18,7 +19,8 @@ import java.util.Map;
 public class FileOrderDAO extends FileDAOBase implements OrderDAO {
 
     private static final String CONSEGNA = " in consegna ";
-    public FileOrderDAO() {// default
+    public FileOrderDAO() throws ConfigurationException {
+        super();// default
     }
 
     public void acceptOrder(int orderId, int riderId) throws DAOException {
@@ -26,7 +28,7 @@ public class FileOrderDAO extends FileDAOBase implements OrderDAO {
         boolean orderFound = false;
 
         for (Order order : orders) {
-
+            System.out.println("orderid: " + order.getOrderId());
             if (order.getOrderId() == orderId) {
                 order.setStatus(CONSEGNA);
                 order.setAcceptedByRider(true);

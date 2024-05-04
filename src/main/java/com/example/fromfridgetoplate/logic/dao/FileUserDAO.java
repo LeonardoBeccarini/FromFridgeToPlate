@@ -1,5 +1,6 @@
 package com.example.fromfridgetoplate.logic.dao;
 
+import com.example.fromfridgetoplate.logic.exceptions.ConfigurationException;
 import com.example.fromfridgetoplate.logic.exceptions.DAOException;
 import com.example.fromfridgetoplate.logic.model.User;
 import com.example.fromfridgetoplate.logic.exceptions.NotExistentUserException;
@@ -7,6 +8,9 @@ import com.example.fromfridgetoplate.logic.exceptions.NotExistentUserException;
 import java.util.List;
 
 public class FileUserDAO extends FileDAOBase implements UserDAO {
+
+    public FileUserDAO() throws ConfigurationException {
+    }
 
     public User verifyUserCredentials(String email, String password) throws NotExistentUserException, DAOException {
         List<User> users = null;

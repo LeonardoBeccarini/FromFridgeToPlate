@@ -2,6 +2,7 @@ package com.example.fromfridgetoplate.logic.control;
 
 import com.example.fromfridgetoplate.logic.bean.*;
 import com.example.fromfridgetoplate.logic.dao.ResellerDAO;
+import com.example.fromfridgetoplate.logic.exceptions.ConfigurationException;
 import com.example.fromfridgetoplate.logic.exceptions.DAOException;
 import com.example.fromfridgetoplate.logic.model.Order;
 import com.example.fromfridgetoplate.logic.model.OrderList;
@@ -29,7 +30,15 @@ public class PendingOrdersController {
 
         DAOAbsFactory absFactory = DAOFactoryProvider.getInstance().getDaoFactory();
 
-        ResellerDAO resellerDao = absFactory.createResellerDAO();
+        ResellerDAO resellerDao = null;
+        try {
+            resellerDao = absFactory.createResellerDAO();
+        } catch (ConfigurationException e) {
+            // passo il messaggio e la causa originale dall'eccezione ConfigurationException alla nuova
+            // DAOException per non perdere il contesto dell'errore originale
+
+            throw new DAOException("Errore nella configurazione durante la creazione della ResellerDAO: " + e.getMessage(), e);
+        }
         String loggedEmail = Session.getSession().getUser().getEmail();
         OrderList orderList = resellerDao.getPendingOrders(loggedEmail);
         OrderListBean orderListBean = new OrderListBean();
@@ -55,7 +64,15 @@ public class PendingOrdersController {
 
 
         DAOAbsFactory daoAbsFactory = DAOFactoryProvider.getInstance().getDaoFactory();
-        ResellerDAO resellerDAO = daoAbsFactory.createResellerDAO();
+        ResellerDAO resellerDAO = null;
+        try {
+            resellerDAO = daoAbsFactory.createResellerDAO();
+        } catch (ConfigurationException e) {
+            // passo il messaggio e la causa originale dall'eccezione ConfigurationException alla nuova
+            // DAOException per non perdere il contesto dell'errore originale
+
+            throw new DAOException("Errore nella configurazione durante la creazione della resellerDAO: " + e.getMessage(), e);
+        }
         String resellerEmail = Session.getSession().getUser().getEmail();
         OrderList assignedOrders = resellerDAO.getAssignedOrders(resellerEmail);
 
@@ -98,7 +115,15 @@ public class PendingOrdersController {
 
         // Chiamata al DAO per ottenere la lista di ordini pendenti
         DAOAbsFactory daoAbsFactory = DAOFactoryProvider.getInstance().getDaoFactory();
-        ResellerDAO resellerDAO = daoAbsFactory.createResellerDAO();
+        ResellerDAO resellerDAO = null;
+        try {
+            resellerDAO = daoAbsFactory.createResellerDAO();
+        } catch (ConfigurationException e) {
+            // passo il messaggio e la causa originale dall'eccezione ConfigurationException alla nuova
+            // DAOException per non perdere il contesto dell'errore originale
+
+            throw new DAOException("Errore nella configurazione durante la creazione della ResellerDAO: " + e.getMessage(), e);
+        }
         List<Rider> availableRiders = resellerDAO.getAvailableRiders(searchBean);
         List<RiderBean> avRidersBean = new ArrayList<>();
         // bisogna convertire  List <Rider> in List <RiderBean>

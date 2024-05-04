@@ -68,11 +68,10 @@ public class CachingNotificationList extends NotificationList {
         for (Notification notification : notifications) {
             if (notification.getNotificationId() == readNotification.getNotificationId()) {
                 notification.markAsRead(); // Marco la notifica come letta
-
+                toRemove = notification; // Segno per la rimozione se necessario
                 found = true;
                 break;
             }
-            toRemove = notification; // Segno per la rimozione se necessario
         }
 
         // Se la notifica è stata trovata e deve essere rimossa
@@ -83,6 +82,7 @@ public class CachingNotificationList extends NotificationList {
             throw new NotificationHandlingException("La notifica da marcare come letta non è presente nella lista.");
         }
     }
+
 
 
 

@@ -1,6 +1,7 @@
 package com.example.fromfridgetoplate.logic.dao;
 
 
+import com.example.fromfridgetoplate.logic.exceptions.ConfigurationException;
 import com.example.fromfridgetoplate.logic.exceptions.DAOException;
 import com.example.fromfridgetoplate.logic.exceptions.DbException;
 import com.example.fromfridgetoplate.logic.model.Role;
@@ -14,7 +15,10 @@ import java.util.List;
 
 public class FileShopDAO extends FileDAOBase implements ShopDAO {
 
-// x becca: dovresti cambiare nome e messaggio di errore alla DbException, in tipo PersistenceException in modo
+    public FileShopDAO() throws ConfigurationException {
+    }
+
+    // x becca: dovresti cambiare nome e messaggio di errore alla DbException, in tipo PersistenceException in modo
 // che non sia relativa solo al db ma anche a i file
     @Override
     public boolean saveShop(Shop shop) throws DbException, DAOException {

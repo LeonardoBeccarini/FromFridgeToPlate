@@ -2,6 +2,7 @@ package com.example.fromfridgetoplate.logic.control;
 
 import com.example.fromfridgetoplate.logic.bean.UserBean;
 import com.example.fromfridgetoplate.logic.dao.UserDAO;
+import com.example.fromfridgetoplate.logic.exceptions.ConfigurationException;
 import com.example.fromfridgetoplate.logic.exceptions.DAOException;
 import com.example.fromfridgetoplate.logic.exceptions.NotExistentUserException;
 import com.example.fromfridgetoplate.logic.model.Cart;
@@ -15,7 +16,15 @@ public class LoginController {
     public UserBean login(UserBean userBean) throws NotExistentUserException, DAOException{
 
         DAOAbsFactory daoAbsFactory = DAOFactoryProvider.getInstance().getDaoFactory(); // questa è responsabile di creare istanze di FileDAOFactory() o DbDAOFactory(), implementazioni concrete di DAOAbsFactory
-        UserDAO userDAO = daoAbsFactory.createUserDAO();
+        UserDAO userDAO = null;
+        try {
+            userDAO = daoAbsFactory.createUserDAO();
+        } catch (ConfigurationException e) {
+            // passo il messaggio e la causa originale dall'eccezione ConfigurationException alla nuova
+            // DAOException per non perdere il contesto dell'errore originale
+
+            throw new DAOException("Errore nella configurazione durante la creazione della UserDAO: " + e.getMessage(), e);
+        }
         UserBean loggedUser;
         User user;
         try{

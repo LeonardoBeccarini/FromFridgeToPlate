@@ -24,12 +24,8 @@ public abstract class FileDAOBase {
     protected String usersFilePath;
     protected String catalogFilePath;
 
-    protected FileDAOBase()  {
-        try {
-            loadProperties();
-        } catch (ConfigurationException e) {
-            throw new RuntimeException(e);
-        }
+    protected FileDAOBase() throws ConfigurationException {
+        loadProperties();
         this.ordersFilePath = properties.getProperty("ordersFilePath");
         this.ridersFilePath = properties.getProperty("ridersFilePath");
         this.assignedOrdersFilePath = properties.getProperty("assignedOrdersFilePath");

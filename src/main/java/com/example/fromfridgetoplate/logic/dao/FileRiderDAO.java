@@ -1,6 +1,7 @@
 package com.example.fromfridgetoplate.logic.dao;
 
 
+import com.example.fromfridgetoplate.logic.exceptions.ConfigurationException;
 import com.example.fromfridgetoplate.logic.exceptions.DAOException;
 import com.example.fromfridgetoplate.logic.model.*;
 
@@ -10,7 +11,10 @@ import java.util.*;
 
 public class FileRiderDAO extends FileDAOBase implements RiderDAO {
 
-    
+
+    public FileRiderDAO() throws ConfigurationException {
+    }
+
     public void setRiderAvailable(int riderId, boolean isAval) throws DAOException {
         List<Rider> riders = getAllRiders(); // deserializzo tutti i rider
 

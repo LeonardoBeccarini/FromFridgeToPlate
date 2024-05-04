@@ -2,6 +2,7 @@ package com.example.fromfridgetoplate.logic.control;
 
 import com.example.fromfridgetoplate.logic.bean.OrderBean;
 import com.example.fromfridgetoplate.logic.dao.*;
+import com.example.fromfridgetoplate.logic.exceptions.ConfigurationException;
 import com.example.fromfridgetoplate.logic.exceptions.DAOException;
 import com.example.fromfridgetoplate.logic.exceptions.OrderAssignmentException;
 import com.example.fromfridgetoplate.logic.model.Order;
@@ -18,7 +19,15 @@ public class NotificationManager {
 
 
         DAOAbsFactory daoAbsFactory = DAOFactoryProvider.getInstance().getDaoFactory();
-        RiderDAO riderDAO = daoAbsFactory.createRiderDAO();
+        RiderDAO riderDAO = null;
+        try {
+            riderDAO = daoAbsFactory.createRiderDAO();
+        } catch (ConfigurationException e) {
+            // passo il messaggio e la causa originale dall'eccezione ConfigurationException alla nuova
+            // DAOException per non perdere il contesto dell'errore originale
+
+            throw new DAOException("Errore nella configurazione durante la creazione della RiderDAO: " + e.getMessage(), e);
+        }
 
         riderDAO.setRiderAvailable(riderBn.getId(), riderBn.isAvailable());
 
@@ -33,7 +42,15 @@ public class NotificationManager {
         NotificationDAO ntfDAO = new NotificationDAO(SingletonConnector.getInstance().getConnection());
 
         DAOAbsFactory daoAbsFactory = DAOFactoryProvider.getInstance().getDaoFactory(); // qui avviene lo switch, il resto del codice rimane uguale
-        ResellerDAO resellerDAO = daoAbsFactory.createResellerDAO();
+        ResellerDAO resellerDAO = null;
+        try {
+            resellerDAO = daoAbsFactory.createResellerDAO();
+        } catch (ConfigurationException e) {
+            // passo il messaggio e la causa originale dall'eccezione ConfigurationException alla nuova
+            // DAOException per non perdere il contesto dell'errore originale
+
+            throw new DAOException("Errore nella configurazione durante la creazione della RiderDAO: " + e.getMessage(), e);
+        }
 
         boolean isAvailable = resellerDAO.isRiderAvailable(riderBean);
         if (isAvailable) {

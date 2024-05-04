@@ -23,7 +23,15 @@ public class MakeOrderControl {
 
     public MakeOrderControl(ShopBean shopBean) throws DbException, IOException, EmptyCatalogException {
         DAOAbsFactory daoAbsFactory = DAOFactoryProvider.getInstance().getDaoFactory();
-        CatalogDAO catalogDAO = daoAbsFactory.createCatalogDAO();
+        CatalogDAO catalogDAO = null;
+        try {
+            catalogDAO = daoAbsFactory.createCatalogDAO();
+        } catch (ConfigurationException e) {
+            // passo il messaggio e la causa originale dall'eccezione ConfigurationException alla nuova
+            // DbException per non perdere il contesto dell'errore originale
+
+            throw new DbException("Errore nella configurazione durante la creazione della catalogDAO: " + e.getMessage());
+        }
 
         Catalog catalogTemp = catalogDAO.retrieveCatalog(shopBean.getVatNumber());
 
@@ -41,7 +49,14 @@ public class MakeOrderControl {
         List<ShopBean> listShopBean = new ArrayList<>();
 
         DAOAbsFactory daoAbsFactory = DAOFactoryProvider.getInstance().getDaoFactory();
-        ShopDAO shopDAO = daoAbsFactory.createShopDAO();
+        ShopDAO shopDAO = null;
+        try {
+            shopDAO = daoAbsFactory.createShopDAO();
+        } catch (ConfigurationException e) {
+
+
+            throw new DbException("Errore nella configurazione durante la creazione della ShopDAO: " + e.getMessage());
+        }
         for(Shop shop: shopDAO.retrieveShopByName(shopSearchInfoBean.getName())){
             ShopBean shopBean = new ShopBean(shop.getName(), shop.getAddress(), shop.getPhoneNumber(), shop.getVATnumber());
             listShopBean.add(shopBean);
@@ -118,7 +133,12 @@ public class MakeOrderControl {
     public void completeOrder(OrderBean orderBean) throws DbException, PaymentFailedException, DAOException {
 
         DAOAbsFactory daoAbsFactory = DAOFactoryProvider.getInstance().getDaoFactory();
-        OrderDAO orderDAO = daoAbsFactory.createOrderDAO();
+        OrderDAO orderDAO = null;
+        try {
+            orderDAO = daoAbsFactory.createOrderDAO();
+        } catch (ConfigurationException e) {
+            throw new DAOException("Errore nella configurazione durante la creazione della OrderDAO: " + e.getMessage(), e);
+        }
         NotificationDAO notificationDAO = new NotificationDAO(SingletonConnector.getInstance().getConnection());
         CouponDAO couponDAO = new CouponDAO();
 
@@ -149,7 +169,12 @@ public class MakeOrderControl {
         NotificationDAO notificationDAO = new NotificationDAO(SingletonConnector.getInstance().getConnection());
 
         DAOAbsFactory daoAbsFactory = DAOFactoryProvider.getInstance().getDaoFactory(); // restituirà un 'istanza di DbDAOFactory o FileDAOFactory a seconda della scelta fatta nel factoryProvider
-        ShopDAO shopDAO = daoAbsFactory.createShopDAO();
+        ShopDAO shopDAO = null;
+        try {
+            shopDAO = daoAbsFactory.createShopDAO();
+        } catch (ConfigurationException e) {
+            throw new DbException("Errore nella configurazione durante la creazione della ShopDAO: " + e.getMessage());
+        }
         Shop shop = shopDAO.retrieveShopByEmail(Session.getSession().getUser().getEmail());
 
         List<Notification> notificationList = notificationDAO.getNotificationsForOwner(shop.getVATnumber());

@@ -3,6 +3,7 @@ package com.example.fromfridgetoplate.logic.dao;
 import com.example.fromfridgetoplate.logic.bean.OrderBean;
 import com.example.fromfridgetoplate.logic.bean.RiderBean;
 import com.example.fromfridgetoplate.logic.bean.SearchBean;
+import com.example.fromfridgetoplate.logic.exceptions.ConfigurationException;
 import com.example.fromfridgetoplate.logic.exceptions.DAOException;
 import com.example.fromfridgetoplate.logic.exceptions.OrderAssignmentException;
 import com.example.fromfridgetoplate.logic.model.*;
@@ -19,7 +20,7 @@ import java.util.List;
 public class FileResellerDAO extends FileDAOBase implements ResellerDAO {
 
 
-    public FileResellerDAO() {
+    public FileResellerDAO() throws ConfigurationException {
         super();
 
     }

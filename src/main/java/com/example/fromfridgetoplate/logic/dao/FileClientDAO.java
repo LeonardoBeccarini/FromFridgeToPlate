@@ -1,5 +1,6 @@
 package com.example.fromfridgetoplate.logic.dao;
 
+import com.example.fromfridgetoplate.logic.exceptions.ConfigurationException;
 import com.example.fromfridgetoplate.logic.exceptions.DAOException;
 import com.example.fromfridgetoplate.logic.model.Client;
 import com.example.fromfridgetoplate.logic.model.Role;
@@ -9,6 +10,9 @@ import java.io.IOException;
 import java.util.List;
 
 public class FileClientDAO extends FileDAOBase implements ClientDAO {
+    public FileClientDAO() throws ConfigurationException {
+    }
+
     public boolean saveClient(Client newClient) throws DAOException {
         boolean outcome = true;
         // Verifica se il cliente esiste già nel file degli utenti
