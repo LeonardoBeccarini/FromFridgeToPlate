@@ -85,8 +85,6 @@ public class CachingNotificationList extends NotificationList {
 
 
 
-
-
     public List<Notification> getNotifications() {
         return notifications;
     }
@@ -95,54 +93,13 @@ public class CachingNotificationList extends NotificationList {
 
     @Override
     public void notifyObs() {
-        super.notifyObs();  // Notifica tutti gli observer senza parametri
-        List<NotificationBean> ntfBeans = convertToNotificationBeans(this.notifications);
 
         for (NotificationObserver obs : ntfObservers) {
             if (obs instanceof NotificationBeanList) {
-                obs.update(ntfBeans);
+                obs.update();
             }
         }
     }
-
-    private List <NotificationBean> convertToNotificationBeans(List <Notification> notifications) {
-
-        List <NotificationBean> ntfBeanLst = new ArrayList<>();
-
-        for (Notification notification : notifications) {
-
-            Order order = notification.getOrder();
-            AddressBean addressBean = new AddressBean(order.getShippingStreet(), order.getShippingStreetNumber(), order.getShippingCity(), order.getShippingProvince());
-            OrderBean orderBean = new OrderBean(order.getRiderId(), order.getOrderId(), addressBean);
-
-            NotificationBean ntfBean = new NotificationBean(
-                    orderBean,
-                    notification.getMessageText()
-            );
-            ntfBean.setNotificationId(notification.getNotificationId());
-            ntfBeanLst.add(ntfBean);
-
-        }
-
-        return ntfBeanLst;
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

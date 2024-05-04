@@ -40,6 +40,7 @@ public class RiderHPController {
 
         if (nlb != null) {
             notificationList.attach(nlb);
+            nlb.setConcreteSubj(notificationList);
         }
     }
 
