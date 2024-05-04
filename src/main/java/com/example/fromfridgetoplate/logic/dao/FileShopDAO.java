@@ -80,7 +80,7 @@ public class FileShopDAO extends FileDAOBase implements ShopDAO {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
             return (List<Shop>) ois.readObject();
         } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace(); //debug
+
             throw new DbException("Errore durante la lettura dal file: " + e.getMessage());
         }
     }

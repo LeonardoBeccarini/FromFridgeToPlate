@@ -11,8 +11,8 @@ public class CatalogDAOImplFile extends FileDAOBase implements CatalogDAO{
     private static final String FILE_NAME = "catalog.txt";
     private boolean outcome;
 
-    protected CatalogDAOImplFile() throws ConfigurationException {
-        // st constructor
+    public CatalogDAOImplFile() throws ConfigurationException {
+        super();
     }
 
 

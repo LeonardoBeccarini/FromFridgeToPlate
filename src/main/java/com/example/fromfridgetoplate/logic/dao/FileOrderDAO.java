@@ -216,7 +216,7 @@ public class FileOrderDAO extends FileDAOBase implements OrderDAO {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
             return (Map<Integer, List<CartItem>>) ois.readObject();
         } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+
             return new HashMap<>();
         }
     }

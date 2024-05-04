@@ -16,7 +16,7 @@ import com.example.fromfridgetoplate.patterns.factory.FileDAOFactory;
 public class DAOFactoryProvider {
     private static DAOFactoryProvider instance;
     private DAOAbsFactory daoFactory;
-    private PersistenceType type = PersistenceType.FILE_SYSTEM;
+    private PersistenceType type = PersistenceType.JDBC;
 
     protected DAOFactoryProvider() {
         initializeFactory();

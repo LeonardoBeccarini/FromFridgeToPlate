@@ -1,6 +1,7 @@
 package com.example.fromfridgetoplate.logic.dao;
 
 
+import com.example.fromfridgetoplate.logic.exceptions.DAOException;
 import com.example.fromfridgetoplate.logic.model.Notification;
 import com.example.fromfridgetoplate.logic.model.Order;
 
@@ -22,8 +23,7 @@ public class NotificationDAO {
     }
 
 
-    public void insertNotification(int riderId, Order order, String message )
-    {
+    public void insertNotification(int riderId, Order order, String message ) throws DAOException {
         String query = "{CALL insertNotification(?, ?, ?, ?, ?, ?, ?, ?, ?)}";
 
         try (CallableStatement cstmt = connection.prepareCall(query)) {
@@ -40,12 +40,12 @@ public class NotificationDAO {
             cstmt.setString(9, message);
             cstmt.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DAOException("Errore durante l'inserimento della notifica per il Rider rispetto all'ordine ID: " + order.getOrderId(), e);
 
         }
     }
 
-    public void insertNotificationRes(Order order, String message){
+    public void insertNotificationRes(Order order, String message) throws DAOException {
         String query = "{CALL insertNotification(?, ?, ?, ?, ?, ?, ?, ?, ?)}";
 
         try (CallableStatement cstmt = connection.prepareCall(query)) {
@@ -60,13 +60,13 @@ public class NotificationDAO {
             cstmt.setString(9, message);
             cstmt.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DAOException("Errore durante l'inserimento della notifica per il Reseller rispetto  all'ordine ID: " + order.getOrderId(), e);
 
         }
     }
 
 
-    public List<Notification> getNotificationsForRider(int riderId, int lastDeliveredNotificationId) {
+    public List<Notification> getNotificationsForRider(int riderId, int lastDeliveredNotificationId) throws DAOException {
         List<Notification> notifications = new ArrayList<>();
         String query = "{CALL getNotificationsForRider(?, ?)}";
 
@@ -92,12 +92,12 @@ public class NotificationDAO {
                 }
             }
         } catch (SQLException e) {
-            //
+            throw new DAOException("Errore nel recupero delle notifiche per il rider.", e);
         }
         return notifications;
     }
 
-    public List<Notification> getNotificationsForOwner(String vatNumber) {
+    public List<Notification> getNotificationsForOwner(String vatNumber) throws DAOException {
         List<Notification> notifications = new ArrayList<>();
         String query = "{CALL getNotificationsForOwner(?)}";
 
@@ -118,7 +118,7 @@ public class NotificationDAO {
                 }
             }
         } catch (SQLException e) {
-            //
+            throw new DAOException("Errore nel recupero delle notifiche per il Reseller.", e);
         }
         return notifications;
     }
@@ -131,7 +131,7 @@ public class NotificationDAO {
            cstmt.executeQuery();
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            // da fare
 
         }
     }

@@ -177,7 +177,13 @@ public class MakeOrderControl {
         }
         Shop shop = shopDAO.retrieveShopByEmail(Session.getSession().getUser().getEmail());
 
-        List<Notification> notificationList = notificationDAO.getNotificationsForOwner(shop.getVATnumber());
+        List<Notification> notificationList = null;
+        try {
+            notificationList = notificationDAO.getNotificationsForOwner(shop.getVATnumber());
+        } catch (DAOException e) {
+            throw new DbException(e.getMessage());
+        }
+
         List<NotificationBean> notificationBeanList = new ArrayList<>();
         for(Notification notification : notificationList){
 

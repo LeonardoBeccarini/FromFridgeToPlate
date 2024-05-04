@@ -31,7 +31,6 @@ public class RiderHPController {
     private int lastNotificationId = 0;
 
 
-
     /**
      * Costruttore principale che accetta una NotificationBeanList.
      */
@@ -53,7 +52,6 @@ public class RiderHPController {
     }
 
 
-
     public void setRiderAvailable(boolean available) throws DAOException {
         RiderBean riderBean = getRiderDetailsFromSession(); // Accede alle informazioni del rider dalla sessione
         riderBean.setAvailable(available);
@@ -62,6 +60,39 @@ public class RiderHPController {
         ntfManager.registerRiderAvailability(riderBean);
 
 
+    }
+    public RiderBean getRiderDetailsFromSession() throws DAOException {
+
+        DAOAbsFactory daoAbsFactory = DAOFactoryProvider.getInstance().getDaoFactory();
+        RiderDAO riderDAO = null;
+        try {
+            riderDAO = daoAbsFactory.createRiderDAO();
+        } catch (ConfigurationException e) {
+            // passo il messaggio e la causa originale dall'eccezione ConfigurationException alla nuova
+            // DAOException per non perdere il contesto dell'errore originale
+
+            throw new DAOException(ERROR_CREATING_DAO + e.getMessage(), e);
+        }
+
+        Rider loggedRider = riderDAO.getRiderDetailsFromSession();
+
+        return convertToRiderBean(loggedRider);
+    }
+    private RiderBean convertToRiderBean(Rider rider) {
+
+        if (rider == null) {
+            return null;
+        }
+
+        RiderBean riderBean = new RiderBean(
+                rider.getId(),
+                rider.getName(),
+                rider.getSurname(),
+                rider.isAvailable(),
+                rider.getAssignedCity()
+        );
+        riderBean.setId(rider.getId());
+        return riderBean;
     }
 
     public void startNotificationPolling() {
@@ -91,7 +122,7 @@ public class RiderHPController {
 
     private List<NotificationBean> convertToNotificationBeans(List<Notification> notifications) {
 
-        List <NotificationBean> ntfBeanLst = new ArrayList<>();
+        List<NotificationBean> ntfBeanLst = new ArrayList<>();
 
         for (Notification notification : notifications) {
 
@@ -111,51 +142,7 @@ public class RiderHPController {
         return ntfBeanLst;
     }
 
-
-    private class NotificationPollingTask extends TimerTask {
-        @Override
-        public void run() {
-            try {
-                pollForNotifications();
-            } catch (NotificationPollingException e) {
-                GUIUtils.showErrorAlert("Errore nel recupero periodico delle notifiche", "", "Dettagli errore: " + e.getMessage());
-            }
-        }
-
-        private void pollForNotifications() throws NotificationPollingException {
-            NotificationDAO ntfDAO = new NotificationDAO(SingletonConnector.getInstance().getConnection());
-            RiderBean riderBean; // Accede alle informazioni del rider dalla sessione
-            try {
-                riderBean = getRiderDetailsFromSession();
-            } catch (DAOException e) {
-                throw new NotificationPollingException("Failed to retrieve rider details for notification polling.", e);
-            }
-            List<Notification> newNotifications = ntfDAO.getNotificationsForRider(riderBean.getId(), lastNotificationId);
-
-
-            if (!newNotifications.isEmpty())
-            {
-                for (Notification notification : newNotifications)
-                {
-                    if (notification.getNotificationId() > lastNotificationId)
-                    {
-                        notificationList.addNotification(notification);
-
-                        lastNotificationId = notification.getNotificationId();
-                    }
-                }
-
-            }
-
-
-        }
-
-
-    }
-
-
-
-    public void markNotificationAsRead(NotificationBean notificationToMark) throws NotificationHandlingException {
+    public void markNotificationAsRead(NotificationBean notificationToMark) throws NotificationHandlingException, DAOException {
 
 
         NotificationDAO ntfDAO = new NotificationDAO(SingletonConnector.getInstance().getConnection());
@@ -168,7 +155,6 @@ public class RiderHPController {
 
 
     }
-
 
 
     public void acceptOrder(NotificationBean notification) throws DAOException {
@@ -188,7 +174,7 @@ public class RiderHPController {
         orderDAO.acceptOrder(notifiedOrder.getOrderId(), notifiedOrder.getRiderId());
     }
 
-    public void declineOrder(NotificationBean notification) throws DAOException{
+    public void declineOrder(NotificationBean notification) throws DAOException {
         DAOAbsFactory daoAbsFactory = DAOFactoryProvider.getInstance().getDaoFactory();
         OrderDAO orderDAO = null;
         try {
@@ -240,46 +226,11 @@ public class RiderHPController {
 
     private OrderBean convertToOrdBean(Order order) {
 
-        return new OrderBean(order.getOrderId(), order.getCustomerId(), order.getShopId(), order.getStatus(), order.getOrderTime(), order.getRiderId() );
+        return new OrderBean(order.getOrderId(), order.getCustomerId(), order.getShopId(), order.getStatus(), order.getOrderTime(), order.getRiderId());
 
 
     }
 
-
-    public RiderBean getRiderDetailsFromSession() throws DAOException {
-
-        DAOAbsFactory daoAbsFactory = DAOFactoryProvider.getInstance().getDaoFactory();
-        RiderDAO riderDAO = null;
-        try {
-            riderDAO = daoAbsFactory.createRiderDAO();
-        } catch (ConfigurationException e) {
-            // passo il messaggio e la causa originale dall'eccezione ConfigurationException alla nuova
-            // DAOException per non perdere il contesto dell'errore originale
-
-            throw new DAOException(ERROR_CREATING_DAO + e.getMessage(), e);
-        }
-
-        Rider loggedRider = riderDAO.getRiderDetailsFromSession();
-
-        return convertToRiderBean(loggedRider);
-    }
-
-    private RiderBean convertToRiderBean(Rider rider) {
-
-        if (rider == null) {
-            return null;
-        }
-
-        RiderBean riderBean = new RiderBean(
-                rider.getId(),
-                rider.getName(),
-                rider.getSurname(),
-                rider.isAvailable(),
-                rider.getAssignedCity()
-        );
-        riderBean.setId(rider.getId());
-        return riderBean;
-    }
 
     public boolean checkForOrderInDelivery(RiderBean currentRider) throws DAOException {
 
@@ -310,8 +261,6 @@ public class RiderHPController {
             // del rider, sia che c'è stato un errore da parte del db, l'nfo sul tipo di errore è contenuta in e
         }
     }
-
-
 
 
     private OrderBean convertToOrderBean(Order order) {
@@ -345,6 +294,52 @@ public class RiderHPController {
             orderDAO.updateOrderStatusToDelivered(orderBean.getOrderId(), deliveryTime);
         }
     }
+
+
+
+
+    private class NotificationPollingTask extends TimerTask {
+        @Override
+        public void run() {
+            try {
+                pollForNotifications();
+            } catch (NotificationPollingException e) {
+                GUIUtils.showErrorAlert("Errore nel recupero periodico delle notifiche", "", "Dettagli errore: " + e.getMessage());
+            }
+        }
+
+        private void pollForNotifications() throws NotificationPollingException {
+            NotificationDAO ntfDAO = new NotificationDAO(SingletonConnector.getInstance().getConnection());
+            RiderBean riderBean;
+            try {
+                riderBean = getRiderDetailsFromSession();
+            } catch (DAOException e) {
+                throw new NotificationPollingException("Errore nel recupero dei dettagli del rider, updating periodico delle notifiche disattivato..." + e.getMessage(), e);
+            }
+
+            try {
+                List<Notification> newNotifications = ntfDAO.getNotificationsForRider(riderBean.getId(), lastNotificationId);
+                if (!newNotifications.isEmpty()) {
+                    for (Notification notification : newNotifications) {
+                        if (notification.getNotificationId() > lastNotificationId) {
+                            notificationList.addNotification(notification);
+                            lastNotificationId = notification.getNotificationId();
+                        }
+                    }
+                }
+            } catch (DAOException e) {
+                throw new NotificationPollingException("Errore nel recupero delle notifiche del rider: " + e.getMessage(), e);
+            }
+        }
+
+
+
+    }
+
+
+
+
+
 
 
 
