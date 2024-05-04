@@ -1,7 +1,6 @@
 package com.example.fromfridgetoplate.logic.dao;
 
 import com.example.fromfridgetoplate.logic.exceptions.DAOException;
-import com.example.fromfridgetoplate.logic.exceptions.DbException;
 import com.example.fromfridgetoplate.logic.exceptions.DeliveryRetrievalException;
 import com.example.fromfridgetoplate.logic.exceptions.OrderNotFoundException;
 import com.example.fromfridgetoplate.logic.model.CartItem;
@@ -133,7 +132,7 @@ public class DbOrderDAO implements OrderDAO {
     // ------------------- BECCA ---------------------- BECCA ---------------------- BECCA ---------------------- //
 
 
-    public Order saveOrder(Order order) throws DbException {
+    public Order saveOrder(Order order) throws DAOException {
         int orderID;
         List<CartItem> cartItemList= order.getItems();
         try(CallableStatement cs = connection.prepareCall("{CALL saveOrder(?,?,?,?,?,?,?)}")){
@@ -158,7 +157,7 @@ public class DbOrderDAO implements OrderDAO {
             }
 
         }catch(SQLException e){
-            throw new DbException("errore database:"+" " + e.getMessage());
+            throw new DAOException("errore database:"+" " + e.getMessage());
         }
         order.setOrderId(orderID);
         return order;

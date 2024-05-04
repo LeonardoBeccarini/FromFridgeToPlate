@@ -142,7 +142,7 @@ public class RiderHPController {
         return ntfBeanLst;
     }
 
-    public void markNotificationAsRead(NotificationBean notificationToMark) throws NotificationHandlingException {
+    public void markNotificationAsRead(NotificationBean notificationToMark) throws NotificationHandlingException, DAOException {
 
 
         NotificationDAO ntfDAO = new NotificationDAO(SingletonConnector.getInstance().getConnection());

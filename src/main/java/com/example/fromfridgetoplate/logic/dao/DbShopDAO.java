@@ -1,6 +1,6 @@
 package com.example.fromfridgetoplate.logic.dao;
 
-import com.example.fromfridgetoplate.logic.exceptions.DbException;
+import com.example.fromfridgetoplate.logic.exceptions.DAOException;
 import com.example.fromfridgetoplate.logic.model.Shop;
 
 import java.sql.CallableStatement;
@@ -16,7 +16,7 @@ public class DbShopDAO implements ShopDAO {
     private Connection conn;
     public DbShopDAO(Connection conn) {this.conn = conn;}
     public DbShopDAO(){ this.conn = SingletonConnector.getInstance().getConnection();} // questo dovresti eliminarlo quando hai adattato il resto del tuo codice (becca) a usare la DAOfactory
-    public boolean saveShop(Shop shop) throws DbException {
+    public boolean saveShop(Shop shop) throws DAOException {
 
         try(CallableStatement cs = conn.prepareCall("{call registerShop(?,?,?,?,?,?)}")){
             cs.setString(1,shop.getEmail());
@@ -27,11 +27,11 @@ public class DbShopDAO implements ShopDAO {
             cs.setString(6, shop.getPhoneNumber());
             cs.executeQuery();
         }catch(SQLException e){
-            throw new DbException(ERROREDATABASE+ e.getMessage());
+            throw new DAOException(ERROREDATABASE+ e.getMessage());
         }
         return true; /*potrei farlo meglio, non sono neanche sicurissimo sia corretto far tornare un booleano*/
     }
-    public Shop retrieveShopByEmail(String email) throws DbException {
+    public Shop retrieveShopByEmail(String email) throws DAOException {
         Shop shop = null;
         try(CallableStatement cs = conn.prepareCall("{call retrieveShopByEmail(?)}")){
             cs.setString(1, email);
@@ -41,11 +41,11 @@ public class DbShopDAO implements ShopDAO {
                  shop = new Shop(rs.getString(1), rs.getString(3), rs.getString(4), rs.getString(2), rs.getString(5) );
             }
         }catch(SQLException e){
-            throw new DbException(ERROREDATABASE+ e.getMessage());
+            throw new DAOException(ERROREDATABASE+ e.getMessage());
         }
         return shop;
     }
-    public List<Shop> retrieveShopByName(String name) throws DbException {
+    public List<Shop> retrieveShopByName(String name) throws DAOException {
         Connection connect = SingletonConnector.getInstance().getConnection();
         List<Shop> shopList = new ArrayList<>();
         try(CallableStatement cs = connect.prepareCall("{call retrieveShopByName(?)}")){
@@ -57,7 +57,7 @@ public class DbShopDAO implements ShopDAO {
                 Objects.requireNonNull(shopList).add(shop);
             }
         }catch(SQLException e){
-            throw new DbException(ERROREDATABASE+ e.getMessage());
+            throw new DAOException(ERROREDATABASE+ e.getMessage());
         }
         return shopList;
     }

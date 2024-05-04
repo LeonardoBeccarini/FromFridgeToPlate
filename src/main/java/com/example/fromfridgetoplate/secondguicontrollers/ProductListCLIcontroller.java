@@ -4,7 +4,7 @@ import com.example.fromfridgetoplate.logic.bean.FoodItemBean;
 import com.example.fromfridgetoplate.logic.bean.FoodItemListBean;
 import com.example.fromfridgetoplate.logic.bean.ShopBean;
 import com.example.fromfridgetoplate.logic.control.MakeOrderControl;
-import com.example.fromfridgetoplate.logic.exceptions.DbException;
+import com.example.fromfridgetoplate.logic.exceptions.DAOException;
 import com.example.fromfridgetoplate.logic.exceptions.EmptyCatalogException;
 
 import java.io.IOException;
@@ -19,7 +19,7 @@ public class ProductListCLIcontroller {
         this.selectedShopBean = shopBean;
         try {
             makeOrderControl = new MakeOrderControl(shopBean);
-        } catch (DbException | IOException  e) {
+        } catch (DAOException | IOException  e) {
             Printer.print(e.getMessage());
         }catch(EmptyCatalogException e){
             Printer.print(e.getMessage());

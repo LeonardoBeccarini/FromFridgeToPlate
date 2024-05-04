@@ -4,9 +4,9 @@ import com.example.fromfridgetoplate.logic.bean.AddressBean;
 import com.example.fromfridgetoplate.logic.bean.NotificationBean;
 import com.example.fromfridgetoplate.logic.bean.OrderBean;
 import com.example.fromfridgetoplate.logic.control.MakeOrderControl;
-import com.example.fromfridgetoplate.logic.dao.NotificationDAO;
-import com.example.fromfridgetoplate.patterns.factory.DAOFactory;
+import com.example.fromfridgetoplate.logic.exceptions.DAOException;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -39,7 +39,12 @@ public class ResellerNotificationGraphicController extends GenericGraphicControl
     public void initialize(URL location, ResourceBundle resources) {
         populateListView();
         MakeOrderControl makeOrderControl = new MakeOrderControl();
-        makeOrderControl.markNotificationAsRead(notificationBeanList);
+        try {
+            makeOrderControl.markNotificationAsRead(notificationBeanList);
+        } catch (DAOException e) {
+            Alert alert = new Alert(Alert.AlertType.WARNING, e.getMessage());
+            alert.showAndWait();
+        }
         super.initialize(location, resources);
     }
 

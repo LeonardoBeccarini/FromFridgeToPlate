@@ -45,7 +45,7 @@ public class CompleteOrderCLIcontroller {
 
             Printer.print("Il nuovo prezzo dell'ordine è : " + totalPriceBean.getTotalPrice());
 
-        } catch (CouponNotFoundException | NegativePriceException | DbException e) {
+        } catch (CouponNotFoundException | NegativePriceException | DAOException e) {
             Printer.print(e.getMessage());
 
         }
@@ -63,7 +63,7 @@ public class CompleteOrderCLIcontroller {
 
         try {
             makeOrderControl.completeOrder(orderBean);
-        } catch (DbException | PaymentFailedException | IOException e) {
+        } catch (PaymentFailedException | IOException e) {
             Printer.print("il completamento dell'ordine non è andato a buon fine: " +e.getMessage());
         }
         catch (DAOException e) {

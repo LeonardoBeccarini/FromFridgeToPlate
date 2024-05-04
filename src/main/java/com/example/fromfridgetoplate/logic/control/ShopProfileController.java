@@ -3,7 +3,7 @@ package com.example.fromfridgetoplate.logic.control;
 import com.example.fromfridgetoplate.logic.bean.ShopBean;
 import com.example.fromfridgetoplate.logic.dao.ShopDAO;
 import com.example.fromfridgetoplate.logic.exceptions.ConfigurationException;
-import com.example.fromfridgetoplate.logic.exceptions.DbException;
+import com.example.fromfridgetoplate.logic.exceptions.DAOException;
 import com.example.fromfridgetoplate.logic.model.Shop;
 import com.example.fromfridgetoplate.patterns.abstract_factory.DAOAbsFactory;
 import com.example.fromfridgetoplate.patterns.abstract_factory.DAOFactoryProvider;
@@ -11,7 +11,7 @@ import com.example.fromfridgetoplate.patterns.abstract_factory.DAOFactoryProvide
 public class ShopProfileController {
 
 
-    public ShopBean getShopByEmail(ShopBean shopBean) throws DbException {
+    public ShopBean getShopByEmail(ShopBean shopBean) throws DAOException {
 
         DAOAbsFactory daoAbsFactory = DAOFactoryProvider.getInstance().getDaoFactory();
         ShopDAO shopDAO = null;
@@ -21,7 +21,7 @@ public class ShopProfileController {
             // passo il messaggio e la causa originale dall'eccezione ConfigurationException alla nuova
             // DAOException per non perdere il contesto dell'errore originale
 
-            throw new DbException("Errore nella configurazione durante la creazione della RiderDAO: " + e.getMessage());
+            throw new DAOException("Errore nella configurazione durante la creazione della RiderDAO: " + e.getMessage());
         }
 
         Shop shop = shopDAO.retrieveShopByEmail(shopBean.getEmail());

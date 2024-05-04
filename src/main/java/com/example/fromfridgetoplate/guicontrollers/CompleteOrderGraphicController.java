@@ -64,7 +64,7 @@ public class CompleteOrderGraphicController extends GenericGraphicController{
                 couponListView.setItems(FXCollections.observableList(totalPriceBean.getCouponBeanList()));
                 totalPriceLabel.setText(String.valueOf(totalPriceBean.getTotalPrice()));
 
-            } catch (CouponNotFoundException | NegativePriceException | DbException e) {
+            } catch (CouponNotFoundException | NegativePriceException | DAOException e) {
                 Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage()) ;
                 alert.showAndWait();
             }
@@ -93,7 +93,7 @@ public class CompleteOrderGraphicController extends GenericGraphicController{
     private void saveOrder(OrderBean orderBean) {
         try {
             makeOrderControl.completeOrder(orderBean);
-        } catch (DbException | PaymentFailedException | IOException e) {
+        } catch ( PaymentFailedException | IOException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage()) ;
             alert.showAndWait();
         }catch(DAOException e) {

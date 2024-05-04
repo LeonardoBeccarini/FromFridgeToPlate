@@ -5,7 +5,7 @@ import com.example.fromfridgetoplate.logic.bean.FoodItemBean;
 import com.example.fromfridgetoplate.logic.bean.FoodItemListBean;
 import com.example.fromfridgetoplate.logic.control.ManageCatalogController;
 import com.example.fromfridgetoplate.logic.dao.PersistenceType;
-import com.example.fromfridgetoplate.logic.exceptions.DbException;
+import com.example.fromfridgetoplate.logic.exceptions.DAOException;
 import com.example.fromfridgetoplate.patterns.abstract_factory.DAOFactoryProvider;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -64,7 +64,7 @@ public class ManageCatalogGraphicController extends GenericGraphicController{
         ManageCatalogController manageCatalogController = new ManageCatalogController();
         try {
             foodItemListBean = manageCatalogController.getIngredients();
-        } catch (DbException | IOException e) {
+        } catch (DAOException | IOException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
             alert.showAndWait();
         }
@@ -91,7 +91,7 @@ public class ManageCatalogGraphicController extends GenericGraphicController{
             try {
                 manageCatalogController.addIngredient(foodItemBean);
                 refreshFileButton.setDisable(true);
-            } catch (DbException | IOException e) {
+            } catch (DAOException | IOException e) {
                 Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
                 alert.showAndWait();
             }
@@ -103,7 +103,7 @@ public class ManageCatalogGraphicController extends GenericGraphicController{
             try{
                 manageCatalogController.addIngredient(new FoodItemBean(nameText.getText(), Float.parseFloat(priceText.getText())));
                 refreshButton.setDisable(true);
-            }catch (DbException | IOException e){
+            }catch (DAOException | IOException e){
                 Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
                 alert.showAndWait();
             }
