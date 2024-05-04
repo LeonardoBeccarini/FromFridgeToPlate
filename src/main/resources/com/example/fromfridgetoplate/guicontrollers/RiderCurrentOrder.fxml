@@ -14,7 +14,7 @@
          <children>
             <Button fx:id="homeButton" layoutX="719.0" layoutY="6.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="52.0" text="Home" />
             <Button fx:id="profileButton" layoutX="784.0" layoutY="6.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="52.0" text="Profile" />
-            <Text layoutX="14.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Home" wrappingWidth="71.09033203125">
+            <Text layoutX="14.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Home" wrappingWidth="87.75701904296875">
                <font>
                   <Font size="27.0" />
                </font>
@@ -30,8 +30,7 @@
                   <Font name="Helvetica Bold" size="32.0" />
                </font>
             </Text>
-            <Button fx:id="confirmDeliveryButton" layoutX="398.0" layoutY="610.0" mnemonicParsing="false" onAction="#handleConfirmDelivery" text="Confirm Delivery" />
-            <VBox layoutX="14.0" layoutY="80.0" prefHeight="438.0" prefWidth="829.0" spacing="80.0">
+            <VBox layoutX="14.0" layoutY="80.0" prefHeight="497.0" prefWidth="829.0" spacing="80.0">
                <children>
                   <Label fx:id="orderIdLabel" text="Label">
                      <font>
@@ -60,6 +59,7 @@
                   </Label>
                </children>
             </VBox>
+            <Button fx:id="confirmDeliveryButton" layoutX="400.0" layoutY="627.0" mnemonicParsing="false" onAction="#handleConfirmDelivery" text="Confirm Delivery" />
          </children>
       </AnchorPane>
    </center>
