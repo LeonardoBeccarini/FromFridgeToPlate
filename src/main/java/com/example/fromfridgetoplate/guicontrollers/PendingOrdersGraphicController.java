@@ -46,7 +46,7 @@ public class PendingOrdersGraphicController extends GenericGraphicController {
     @FXML
     private TableColumn<OrderBean, String> shippingCityColumn;
 
-
+    private PendingOrdersController poc = new PendingOrdersController();
 
 
     @Override
@@ -55,6 +55,15 @@ public class PendingOrdersGraphicController extends GenericGraphicController {
         super.initialize(location, resources); // anche la classe padre: GenericGraphicController, ha il suo initialize, quindi bisogna chiamarlo
         // prima di chiamare l'initialize di questo controller
 
+        // Collego le colonne agli attributi di OrderBean
+        setupTable();
+
+        // Carica i dati nella TableView
+        loadData();
+        setupRefreshTimer();
+    }
+
+    private void setupTable() {
         // Collego le colonne agli attributi di OrderBean
 
 
@@ -77,9 +86,6 @@ public class PendingOrdersGraphicController extends GenericGraphicController {
         });
         // ritorna un oggetto DetailButtonCell che is a kind of TableCell, come richiesto dall'interfaccia funzionale
 
-        // Carica i dati nella TableView
-        loadData();
-        setupRefreshTimer();
     }
 
 
@@ -130,27 +136,22 @@ public class PendingOrdersGraphicController extends GenericGraphicController {
 
     private void loadData() {
 
-        PendingOrdersController pendingOrdersControl = new PendingOrdersController();
-        refreshOrders(pendingOrdersControl);
+
+        refreshOrders();
 
     }
 
 
-    // modello pull , in cui la view attraverso la bean fa la get sul model, in realtà la bean fa la get sul controller
-    // invece che sul model, ma cmq dovrebbe restare il fatto da rispettare che è che: se evolve il model, evolverà solo
-    // il bean .
     private void setupRefreshTimer() {
         Timer timer = new Timer(true);
-        PendingOrdersController poc = new PendingOrdersController();
-        timer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                Platform.runLater(() -> refreshOrders(poc));
-            }
-        }, 0, 15000); // Refresh every 15 seconds
+        timer.scheduleAtFixedRate(new RefreshOrdersTask(), 0, 15000); // Refresh every 15 seconds
     }
+    /*public void scheduleAtFixedRate(     java.util.TimerTask task,
+    long delay,
+    long period ) --- > quindi scheduleAtFixedRate prende come parametro un'istanza della classe Timertask, dove Timertask  è una classe astratta che  estendo per definire il compito che deve essere fatto dal timer.
+    quindi sostituisco ad un istanza del padre un istanza del figlio, perche NotificationPollingTask is a kind of TimerTask*/
 
-    private void refreshOrders(PendingOrdersController poc) {
+    private void refreshOrders() {
         try {
             List<OrderBean> updatedOrderList = poc.getUpdatedPendingOrders();
             updateTableView(updatedOrderList);
@@ -166,6 +167,13 @@ public class PendingOrdersGraphicController extends GenericGraphicController {
     private void updateTableView(List<OrderBean> updatedOrderList) {
         ObservableList<OrderBean> updatedList = FXCollections.observableArrayList(updatedOrderList);
         ordersTable.setItems(updatedList);
+    }
+
+    private class RefreshOrdersTask extends TimerTask {
+        @Override
+        public void run() {
+            Platform.runLater(() -> refreshOrders());
+        }
     }
 
 

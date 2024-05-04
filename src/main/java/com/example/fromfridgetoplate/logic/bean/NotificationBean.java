@@ -46,5 +46,17 @@ public class NotificationBean {
         return getAddress().getShippingCity();
     }
 
+    public String getStreet() {
+        return getAddress().getShippingStreet();
+    }
+
+    public int getStreetNumber() {
+        return getAddress().getShippingStreetNumber();
+    }
+
+    public String getProvince() {
+        return getAddress().getShippingProvince();
+    }
+
 }
 

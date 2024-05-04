@@ -1,5 +1,6 @@
 package com.example.fromfridgetoplate.logic.control;
 
+import com.example.fromfridgetoplate.guicontrollers.GUIUtils;
 import com.example.fromfridgetoplate.logic.bean.*;
 import com.example.fromfridgetoplate.logic.dao.NotificationDAO;
 import com.example.fromfridgetoplate.logic.dao.OrderDAO;
@@ -68,6 +69,10 @@ public class RiderHPController {
         notificationPoller = new Timer();
         notificationPoller.scheduleAtFixedRate(new NotificationPollingTask(), 0, 5000); // Polling ogni 5 secondi
     }
+    /*public void scheduleAtFixedRate(     java.util.TimerTask task,
+    long delay,
+    long period ) --- > quindi scheduleAtFixedRate prende come parametro un'istanza della classe Timertask, dove Timertask  è una classe astratta che  estendo per definire il compito che deve essere fatto dal timer.
+    quindi sostituisco ad un istanza del padre un istanza del figlio, perche NotificationPollingTask is a kind of TimerTask*/
 
 
     public void stopNotificationPolling() {
@@ -111,8 +116,7 @@ public class RiderHPController {
             try {
                 pollForNotifications();
             } catch (NotificationPollingException e) {
-
-                e.printStackTrace();
+                GUIUtils.showErrorAlert("Errore nel recupero periodico delle notifiche", "", "Dettagli errore: " + e.getMessage());
             }
         }
 
@@ -139,18 +143,10 @@ public class RiderHPController {
                     }
                 }
 
-
-
             }
 
 
-
-
         }
-
-
-
-
 
 
     }
@@ -158,9 +154,7 @@ public class RiderHPController {
 
 
     public void markNotificationAsRead(NotificationBean notificationToMark) throws NotificationHandlingException {
-        if (notificationToMark == null) {
-            throw new IllegalArgumentException("La notifica da marcare come letta non può essere null.");
-        }
+
 
         NotificationDAO ntfDAO = new NotificationDAO(SingletonConnector.getInstance().getConnection());
 

@@ -173,6 +173,7 @@ public class RiderHomePageGraphicController extends GenericGraphicController imp
         notificationPageGController.setCallback(this);
 
         List<NotificationBean> lst = riderController.getCurrentNotifications();
+
         notificationPageGController.update(FXCollections.observableArrayList(lst));
 
         Scene scene = new Scene(nroot);
