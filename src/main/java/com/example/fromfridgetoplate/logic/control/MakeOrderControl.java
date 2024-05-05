@@ -35,10 +35,9 @@ public class MakeOrderControl {
 
         Catalog catalogTemp = catalogDAO.retrieveCatalog(shopBean.getVatNumber());
 
-       if(catalogTemp != null){
-           this.catalog = catalogTemp;
-       }
-       else throw new EmptyCatalogException("Empty catalog for the selected shop!");
+       if(catalogTemp.getItems().isEmpty()){
+           throw new EmptyCatalogException("catalog of selected shop is empty!");
+       }else this.catalog = catalogTemp;
     }
 
     public MakeOrderControl() {
