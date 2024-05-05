@@ -16,7 +16,8 @@ public abstract class NotificationList {
         ntfObservers.remove(obs);
     }
 
-    public void notifyObs (){
+    protected void notifyObs (){ // protected perchè voglio che solo il possessore dello stato, ovvero CachingNotificaionList possa inviare le notifiche
+        // se avviene un cambiamento di stato
         for(NotificationObserver obs : ntfObservers){
             obs.update();
         }

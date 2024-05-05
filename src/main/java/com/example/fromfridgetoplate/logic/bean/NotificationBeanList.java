@@ -28,12 +28,6 @@ public class NotificationBeanList implements NotificationObserver {
         rgc.update(notificationBeans);
     }
 
-    /*@Override
-    public void update(List<NotificationBean> ntfBeans) {
-        // Sincronizza i NotificationBean con le Notification nella lista principale
-        synchronizeBeans(ntfBeans);
-        rgc.update(notificationBeans);
-    }*/
 
     private void synchronizeBeans(List<NotificationBean> ntfBeans) {
         // Svuota la lista esistente per riempirla con le notifiche aggiornate
