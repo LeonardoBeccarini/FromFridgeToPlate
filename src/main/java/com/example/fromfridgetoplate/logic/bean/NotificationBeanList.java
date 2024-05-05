@@ -12,7 +12,7 @@ import java.util.List;
 public class NotificationBeanList implements NotificationObserver {
 
     private List<NotificationBean> notificationBeans = new ArrayList<>();
-    CachingNotificationList notificationList; // sarebbe il concreteSubject del pattern
+    private CachingNotificationList notificationList; // sarebbe il concreteSubject del pattern
     private IUpdateable rgc; // graphiccontroller
 
 
@@ -44,7 +44,7 @@ public class NotificationBeanList implements NotificationObserver {
         for (Notification notification : notifications) {
 
             Order order = notification.getOrder();
-            AddressBean addressBean = new AddressBean(order.getShippingStreet(), order.getShippingStreetNumber(), order.getShippingCity(), order.getShippingProvince());
+            AddressBean addressBean = order.getAddressBean();
             OrderBean orderBean = new OrderBean(order.getRiderId(), order.getOrderId(), addressBean);
 
             NotificationBean ntfBean = new NotificationBean(

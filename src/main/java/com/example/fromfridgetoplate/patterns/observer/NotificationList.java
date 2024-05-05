@@ -7,7 +7,7 @@ import java.util.List;
 
 public abstract class NotificationList {
 
-    protected List<NotificationObserver> ntfObservers = new ArrayList<>();
+    private List<NotificationObserver> ntfObservers = new ArrayList<>();
 
     public void attach(NotificationObserver obs){
         ntfObservers.add(obs);  // controllerJavaFx o controllerCLI, questi 2 controller grafici implementano la stessa interfaccia NotificationObserver

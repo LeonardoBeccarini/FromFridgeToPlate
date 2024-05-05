@@ -20,9 +20,9 @@ public interface ResellerDAO {
 
     void assignRiderToOrder(int orderId, int riderId) throws DAOException ;
 
-    boolean isRiderAvailable(RiderBean riderBn) throws DAOException ;
+    boolean isRiderAvailable(int riderId) throws DAOException ;
 
-    List<Rider> getAvailableRiders(SearchBean rpBean) throws DAOException;
+    List<Rider> getAvailableRiders(String riderCity) throws DAOException;
 
 
 }

@@ -184,10 +184,10 @@ public class DbResellerDAO implements ResellerDAO{
         }
     }
 
-    public boolean isRiderAvailable(RiderBean riderBn) throws DAOException {
+    public boolean isRiderAvailable(int riderId) throws DAOException {
         String query = "{CALL GetRiderAvailability(?, ?)}";
         try (CallableStatement cstmt = connection.prepareCall(query)) {
-            cstmt.setInt(1, riderBn.getId());
+            cstmt.setInt(1, riderId);
             cstmt.registerOutParameter(2, Types.BOOLEAN);
             cstmt.execute();
 
@@ -199,14 +199,14 @@ public class DbResellerDAO implements ResellerDAO{
 
 
     // Metodo per ottenere i rider disponibili
-    public List<Rider> getAvailableRiders(SearchBean rpBean) throws DAOException {
+    public List<Rider> getAvailableRiders(String riderCity) throws DAOException {
         List<Rider> availableRiders = new ArrayList<>();
 
 
         try (CallableStatement cstmt = connection.prepareCall("{CALL GetAvailableRiders(?)}")) {
             // la stored procedure ritornerà un result_set con
             // i riders operanti in quella città(indiciata da pBean.getCity())
-            cstmt.setString(1, rpBean.getCity());
+            cstmt.setString(1, riderCity);
             ResultSet rs = cstmt.executeQuery();
 
             while (rs.next()) {

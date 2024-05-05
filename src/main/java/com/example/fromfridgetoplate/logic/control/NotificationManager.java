@@ -52,7 +52,7 @@ public class NotificationManager {
             throw new DAOException("Errore nella configurazione durante la creazione della RiderDAO: " + e.getMessage(), e);
         }
 
-        boolean isAvailable = resellerDAO.isRiderAvailable(riderBean);
+        boolean isAvailable = resellerDAO.isRiderAvailable(riderBean.getId());
         if (isAvailable) {
             // Crea una notifica nel database per il rider
             Order order = new Order(orderBean.getOrderId(), orderBean.getCustomerId(), orderBean.getShopId(), orderBean.getStatus(), orderBean.getOrderTime(), orderBean.getRiderId());

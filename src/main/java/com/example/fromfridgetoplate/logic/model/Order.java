@@ -1,5 +1,7 @@
 package com.example.fromfridgetoplate.logic.model;
 
+import com.example.fromfridgetoplate.logic.bean.AddressBean;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -161,8 +163,13 @@ public class Order implements Serializable {
         this.deliveryTime = deliveryTime;
     }
 
-    public boolean isAcceptedByRider() {
-        return isAcceptedByRider;
+    public AddressBean getAddressBean() {
+        return new AddressBean(
+                this.shippingStreet,
+                this.shippingStreetNumber,
+                this.shippingCity,
+                this.shippingProvince
+        );
     }
 
     public void setAcceptedByRider(boolean acceptedByRider) {
@@ -202,31 +209,6 @@ public class Order implements Serializable {
     }
 
 
-
-
-
-
-
-    // Altri metodi, come per accettare l'ordine da parte del rider
-    public void acceptOrderByRider(int riderId) {
-        this.riderId = riderId;
-        this.isAcceptedByRider = true;
-        this.status = "in consegna";
-    }
-
-
-
-    // Metodo per aggiornare lo stato dell'ordine
-    public void updateStatus(String status) {
-        this.status = status;
-    }
-
-
-
-    // Esempio di metodo per calcolare il tempo stimato di consegna
-    public void estimateDeliveryTime() {
-        // da finire
-    }
 
     public void setIsAcceptedByRider(boolean isAcceptedByRider) {
         // da finire

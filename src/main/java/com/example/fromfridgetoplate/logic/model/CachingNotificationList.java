@@ -11,7 +11,7 @@ import java.util.List;
 
 public class CachingNotificationList extends NotificationList {
 
-    protected List<Notification> notifications; // subjectstate
+    private List<Notification> notifications; // subjectstate
 
 
 
@@ -89,7 +89,7 @@ public class CachingNotificationList extends NotificationList {
 
 
 
-    @Override
+    /*@Override
     public void notifyObs() {
 
         for (NotificationObserver obs : ntfObservers) {
@@ -97,7 +97,7 @@ public class CachingNotificationList extends NotificationList {
                 obs.update();
             }
         }
-    }
+    }*/
 
 
 

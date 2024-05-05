@@ -186,11 +186,11 @@ public class FileResellerDAO extends FileDAOBase implements ResellerDAO {
     }
 
 
-    public boolean isRiderAvailable(RiderBean riderBn) throws DAOException {
+    public boolean isRiderAvailable(int riderId) throws DAOException {
         List<Rider> riders = getAllRiders();
 
         for (Rider rider : riders) {
-            if (rider.getId() == riderBn.getId()) {
+            if (rider.getId() == riderId) {
                 return rider.isAvailable();
             }
         }
@@ -199,12 +199,12 @@ public class FileResellerDAO extends FileDAOBase implements ResellerDAO {
     }
 
 
-    public List<Rider> getAvailableRiders(SearchBean rpBean) throws DAOException {
+    public List<Rider> getAvailableRiders(String riderCity) throws DAOException {
         List<Rider> allRiders = getAllRiders();
         List<Rider> availableRiders = new ArrayList<>();
 
         for (Rider rider : allRiders) {
-            if (rider.isAvailable() && rider.getAssignedCity().equalsIgnoreCase(rpBean.getCity())) {
+            if (rider.isAvailable() && rider.getAssignedCity().equalsIgnoreCase(riderCity)) {
                 availableRiders.add(rider); // Aggiungo il rider alla lista se è disponibile e opera nella città specificata
             }
         }

@@ -124,7 +124,7 @@ public class PendingOrdersController {
 
             throw new DAOException("Errore nella configurazione durante la creazione della ResellerDAO: " + e.getMessage(), e);
         }
-        List<Rider> availableRiders = resellerDAO.getAvailableRiders(searchBean);
+        List<Rider> availableRiders = resellerDAO.getAvailableRiders(searchBean.getCity());
         List<RiderBean> avRidersBean = new ArrayList<>();
         // bisogna convertire  List <Rider> in List <RiderBean>
         for (Rider rider : availableRiders) {

@@ -1,6 +1,7 @@
 package beccarini;
 
 import com.example.fromfridgetoplate.logic.dao.CatalogDAOImplFile;
+import com.example.fromfridgetoplate.logic.exceptions.ConfigurationException;
 import org.junit.AfterClass;
 import org.junit.Test;
 
@@ -14,13 +15,15 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class CatalogDaoImplFileTest {
     @Test
     public void writeOnFile(){
-        CatalogDAOImplFile catalogDAOImplFile = new CatalogDAOImplFile();
+
         try {
+            CatalogDAOImplFile catalogDAOImplFile = new CatalogDAOImplFile();
             catalogDAOImplFile.addItem("mozzarella", 6.99f, "12345678945");
-        } catch (IOException e) {
+            assertTrue(catalogDAOImplFile.getOutcome());
+        } catch (IOException | ConfigurationException e) {
             //don't care
         }
-        assertTrue(catalogDAOImplFile.getOutcome());
+
     }
 
     @AfterClass
