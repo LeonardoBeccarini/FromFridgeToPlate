@@ -45,7 +45,7 @@ public class MakeOrderControl {
         this.catalog = null;
     }
 
-    public List<ShopBean> loadShop(ShopSearchInfoBean shopSearchInfoBean) throws DAOException {
+    public List<ShopBean> loadShop(ShopSearchInfoBean shopSearchInfoBean) throws DAOException, ShopNotFoundException {
         List<ShopBean> listShopBean = new ArrayList<>();
 
         DAOAbsFactory daoAbsFactory = DAOFactoryProvider.getInstance().getDaoFactory();
@@ -53,11 +53,13 @@ public class MakeOrderControl {
         try {
             shopDAO = daoAbsFactory.createShopDAO();
         } catch (ConfigurationException e) {
-
-
             throw new DAOException("Errore nella configurazione durante la creazione della ShopDAO: " + e.getMessage());
         }
-        for(Shop shop: shopDAO.retrieveShopByName(shopSearchInfoBean.getName())){
+        List<Shop> shopList = shopDAO.retrieveShopByName(shopSearchInfoBean.getName());
+        if(shopList.isEmpty()){
+            throw new ShopNotFoundException("No shop found!");
+        }
+        for(Shop shop: shopList ){
             ShopBean shopBean = new ShopBean(shop.getName(), shop.getAddress(), shop.getPhoneNumber(), shop.getVATnumber());
             listShopBean.add(shopBean);
         }

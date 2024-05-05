@@ -4,6 +4,7 @@ import com.example.fromfridgetoplate.logic.bean.ShopSearchInfoBean;
 import com.example.fromfridgetoplate.logic.bean.ShopBean;
 import com.example.fromfridgetoplate.logic.control.MakeOrderControl;
 import com.example.fromfridgetoplate.logic.exceptions.DAOException;
+import com.example.fromfridgetoplate.logic.exceptions.ShopNotFoundException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -47,7 +48,7 @@ public class MarketListCLIcontroller {
             ProductListCLIcontroller productListCLIcontroller = new ProductListCLIcontroller(shopBean);
             navigatorCLI.goToWithCOntroller("ProductListCLI", productListCLIcontroller);
 
-        } catch (IOException | DAOException e) {
+        } catch (IOException | DAOException | ShopNotFoundException e) {
             Printer.print(e.getMessage());
         }
 

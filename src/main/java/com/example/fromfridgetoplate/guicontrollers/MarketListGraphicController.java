@@ -5,6 +5,7 @@ import com.example.fromfridgetoplate.logic.bean.ShopBean;
 import com.example.fromfridgetoplate.logic.bean.ShopSearchInfoBean;
 import com.example.fromfridgetoplate.logic.control.MakeOrderControl;
 import com.example.fromfridgetoplate.logic.exceptions.DAOException;
+import com.example.fromfridgetoplate.logic.exceptions.ShopNotFoundException;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -62,7 +63,7 @@ public class MarketListGraphicController extends GenericGraphicController {
             else{
                 try {
                     shopBeanList = makeOrderControl.loadShop(new ShopSearchInfoBean(nameTextField.getText()));
-                } catch (DAOException e) {
+                } catch (DAOException | ShopNotFoundException e) {
                     Alert alert = new Alert(Alert.AlertType.WARNING, e.getMessage());
                     alert.showAndWait();
                 }
