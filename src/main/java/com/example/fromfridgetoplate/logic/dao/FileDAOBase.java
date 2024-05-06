@@ -109,7 +109,7 @@ public abstract class FileDAOBase {
 
 
     // metodo per deserializzare la lista di riders
-    protected List<Rider> getAllRiders() throws DAOException {
+    public List<Rider> getAllRiders() throws DAOException {
 
         return readFromFile(ridersFilePath);
 

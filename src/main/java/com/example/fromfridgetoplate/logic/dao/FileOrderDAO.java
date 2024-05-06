@@ -191,7 +191,7 @@ public class FileOrderDAO extends FileDAOBase implements OrderDAO {
             }
         }
         order.setOrderId(maxOrderId + 1); // Assegna al nuovo ordine l'ID successivo all'ID massimo trovato
-
+        System.out.println("orderId:" + order.getOrderId());
         orders.add(order); // Aggiungo il nuovo ordine alla lista
 
         // Aggiungo gli item dell'ordine alla mappa
