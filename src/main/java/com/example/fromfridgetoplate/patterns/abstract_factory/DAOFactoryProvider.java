@@ -44,6 +44,10 @@ public class DAOFactoryProvider {
     public DAOAbsFactory getDaoFactory() {
         return daoFactory;
     }
+
+    public void setPersistenceType (PersistenceType type){
+        this.type = type;
+    }
 }
 
 

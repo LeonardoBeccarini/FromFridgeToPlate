@@ -271,11 +271,10 @@ public class RiderHPController {
                 order.getShippingCity(),
                 order.getShippingProvince()
         );
+        OrderBean orderBn = new OrderBean(order.getOrderId(), address);
+        orderBn.setStatus(order.getStatus());
+        return  orderBn;
 
-        return new OrderBean(
-                order.getOrderId(),
-                address
-        );
     }
 
     public void confirmDelivery(OrderBean orderBean) throws DAOException {

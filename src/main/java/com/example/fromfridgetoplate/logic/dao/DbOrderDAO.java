@@ -104,6 +104,7 @@ public class DbOrderDAO implements OrderDAO {
             try (ResultSet rs = cstmt.executeQuery()) {
                 if (rs.next()) {
                     order = new Order(rs.getInt("orderId"), rs.getString("shippingStreet"), rs.getInt("shippingStreetNumber"), rs.getString("shippingCity"), rs.getString("shippingProvince"));
+                    order.setStatus("in consegna");
                 } else {
                     // perchèse il resultSet è vuoto, significa che non è stato trovato alcun ordine 'in consegna' per il rider
                     throw new OrderNotFoundException("Nessun ordine 'in consegna' trovato");
