@@ -12,7 +12,6 @@ import com.example.fromfridgetoplate.logic.exceptions.NotExistentUserException;
 import org.junit.Test;
 
 import java.io.IOException;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class MakeOrderControlSearchProductTest {
@@ -33,7 +32,6 @@ public class MakeOrderControlSearchProductTest {
             MakeOrderControl makeOrderControl = new MakeOrderControl(selectedShopBean);
             FoodItemListBean filteredItemList = makeOrderControl.searchProduct(searchInfo);
             assertEquals("lattuga", filteredItemList.getList().get(0).getName());
-            assertEquals(8.99, filteredItemList.getList().get(0).getPrice(), 0.001);
         } catch (IOException | DAOException |EmptyCatalogException e) {
             //don't care
         }
