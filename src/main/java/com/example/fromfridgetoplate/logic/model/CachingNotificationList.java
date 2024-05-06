@@ -1,8 +1,8 @@
 package com.example.fromfridgetoplate.logic.model;
 
-import com.example.fromfridgetoplate.guicontrollers.NotificationObserver;
+
 import com.example.fromfridgetoplate.logic.bean.NotificationBean;
-import com.example.fromfridgetoplate.logic.bean.NotificationBeanList;
+
 import com.example.fromfridgetoplate.logic.exceptions.NotificationHandlingException;
 import com.example.fromfridgetoplate.patterns.observer.NotificationList;
 
@@ -88,16 +88,6 @@ public class CachingNotificationList extends NotificationList {
     }
 
 
-
-    /*@Override
-    public void notifyObs() {
-
-        for (NotificationObserver obs : ntfObservers) {
-            if (obs instanceof NotificationBeanList) {
-                obs.update();
-            }
-        }
-    }*/
 
 
 
