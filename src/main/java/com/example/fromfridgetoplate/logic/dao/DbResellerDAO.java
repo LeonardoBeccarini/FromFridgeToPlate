@@ -127,7 +127,7 @@ public class DbResellerDAO implements ResellerDAO{
 
 
     public void setAssignation(int orderId) throws DAOException {
-        System.out.println("proc:" + orderId);
+
         String query = "{CALL MoveOrderToAssigned(?)}";
         try (CallableStatement cstmt = connection.prepareCall(query)) {
             cstmt.setInt(1, orderId);

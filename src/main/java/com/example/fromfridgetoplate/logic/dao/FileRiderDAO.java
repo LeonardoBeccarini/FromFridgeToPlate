@@ -21,7 +21,7 @@ public class FileRiderDAO extends FileDAOBase implements RiderDAO {
 
         // Trovo il rider con l'ID specificato e aggiorno la sua disponibilità
         for (Rider rider : riders) {
-            System.out.println("riderId" + rider.getId());
+
             if (rider.getId() == riderId) {
                 rider.setAvailable(isAval);
                 break; // Interrompo  una volta trovato e aggiornato il rider
