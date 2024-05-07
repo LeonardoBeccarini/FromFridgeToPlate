@@ -44,7 +44,7 @@ public class LoginGraphicController implements Initializable {
 
         UserBean userBean = new UserBean(emailText.getText(), pwdText.getText());
         LoginController loginController = new LoginController();
-        UserBean loggedUser = null;
+        UserBean loggedUser;
 
         try {
             loggedUser = loginController.login(userBean);

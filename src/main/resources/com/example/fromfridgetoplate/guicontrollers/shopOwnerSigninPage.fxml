@@ -7,26 +7,27 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.fromfridgetoplate.guicontrollers.ShopSigninGraphicController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="900.0" style="-fx-background-color: #4f4f4f;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.fromfridgetoplate.guicontrollers.ShopSigninGraphicController">
    <children>
-      <BorderPane layoutX="-6.0" prefHeight="400.0" prefWidth="611.0" style="-fx-background-color: fccd8d;">
+      <BorderPane layoutX="-6.0" prefHeight="800.0" prefWidth="900.0">
          <center>
             <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                <children>
-                  <AnchorPane layoutX="153.0" layoutY="47.0" prefHeight="306.0" prefWidth="305.0" style="-fx-background-color: fa9c1b;">
+                  <AnchorPane layoutX="153.0" layoutY="47.0" prefHeight="306.0" prefWidth="305.0" style="-fx-background-color: ffecb3;" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="70.0" AnchorPane.rightAnchor="70.0" AnchorPane.topAnchor="70.0">
                      <children>
-                        <TextField fx:id="emailText" layoutX="71.0" layoutY="52.0" text="email" />
-                        <Text fill="WHITE" layoutX="120.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Signin" wrappingWidth="65.4700927734375">
+                        <TextField id="emailText" fx:id="emailText" layoutX="305.0" layoutY="102.0" text="Email" />
+                        <Text layoutX="346.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Signin" wrappingWidth="84.803466796875">
                            <font>
-                              <Font size="20.0" />
+                              <Font size="24.0" />
                            </font>
                         </Text>
-                        <Button fx:id="signInButton" layoutX="120.0" layoutY="251.0" mnemonicParsing="false" style="-fx-background-color: ffffff;" text="SignIn" />
-                        <TextField id="passwordText" fx:id="passwordText" layoutX="71.0" layoutY="86.0" text="password" />
-                        <TextField id="surnameText" fx:id="nameText" layoutX="71.0" layoutY="121.0" text="name" />
-                        <TextField id="addressText" fx:id="vatNumberText" layoutX="71.0" layoutY="153.0" text="VAT number" />
-                        <TextField id="addressText" fx:id="addressText" layoutX="71.0" layoutY="186.0" text="address" />
-                        <TextField id="addressText" fx:id="phoneText" layoutX="71.0" layoutY="218.0" text="phone Number" />
+                        <Button fx:id="signInButton" layoutX="355.0" layoutY="400.0" mnemonicParsing="false" style="-fx-background-color: ffffff;" text="SignIn" />
+                        <TextField id="emailText" fx:id="passwordText" layoutX="305.0" layoutY="147.0" text="Password" />
+                        <TextField id="emailText" fx:id="nameText" layoutX="305.0" layoutY="192.0" text="Name" />
+                        <TextField id="emailText" fx:id="addressText" layoutX="305.0" layoutY="237.0" text="Address" />
+                        <TextField id="emailText" fx:id="vatNumberText" layoutX="305.0" layoutY="283.0" text="VAT number" />
+                        <TextField id="emailText" fx:id="phoneText" layoutX="305.0" layoutY="330.0" text="phone number" />
+                        <Button fx:id="backButton" layoutX="355.0" layoutY="445.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="49.0" style="-fx-background-color: ffffff;" text="back" />
                      </children>
                   </AnchorPane>
                </children>

@@ -27,6 +27,8 @@ public class ClientSignInGraphicController implements Initializable {
     private TextField addressText;
     @FXML
     private Button signInButton;
+    @FXML
+    private Button backButton;
 
     Navigator navigator = Navigator.getInstance(null);
 
@@ -53,6 +55,15 @@ public class ClientSignInGraphicController implements Initializable {
                 }catch(DAOException e) {
                     GUIUtils.showErrorAlert("Errore di scittura/lettura", "Errore nel salvataggio delle credenziali del client", "" + e.getMessage());
                 }
+            }
+        });
+        backButton.setOnMouseClicked(event ->
+        {
+            try {
+                navigator.goTo("mainPage6.fxml");
+            } catch (IOException e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR, e.getMessage());
+                alert.showAndWait();
             }
         });
     }
