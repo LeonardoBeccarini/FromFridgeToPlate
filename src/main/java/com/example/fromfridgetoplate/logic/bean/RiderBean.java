@@ -10,6 +10,10 @@ public class RiderBean {
     private boolean isAvailable;
     private String assignedCity;
 
+    public RiderBean(int id, String name, String surname, boolean isAvailable, String assignedCity) {
+        this(name, surname, isAvailable, assignedCity);
+        this.id = id;
+    }
     public RiderBean(String name, String surname, boolean isAvailable, String assignedCity) {
 
         this.name = name;
@@ -18,13 +22,7 @@ public class RiderBean {
         this.assignedCity = assignedCity;
     }
 
-    public RiderBean(int id, String name, String surname, boolean isAvailable, String assignedCity) {
-        this.id = id;
-        this.name = name;
-        this.surname = surname;
-        this.isAvailable = isAvailable;
-        this.assignedCity = assignedCity;
-    }
+
 
     public String getName() {
         return name;
@@ -38,10 +36,6 @@ public class RiderBean {
         return surname;
     }
 
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
     public boolean isAvailable() {
         return isAvailable;
     }
@@ -52,10 +46,6 @@ public class RiderBean {
 
     public String getAssignedCity() {
         return assignedCity;
-    }
-
-    public void setAssignedCity(String assignedCity) {
-        this.assignedCity = assignedCity;
     }
 
     public int getId() {
