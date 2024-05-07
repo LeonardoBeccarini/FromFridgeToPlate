@@ -14,28 +14,40 @@
 
 <AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.fromfridgetoplate.guicontrollers.RiderHomePageGraphicController">
    <children>
-      <HBox prefHeight="50.0" prefWidth="899.0" style="-fx-background-color: gold;">
+      <HBox prefHeight="69.0" prefWidth="900.0" style="-fx-background-color: gold;">
          <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="home" wrappingWidth="37.00830078125" />
-            <AnchorPane prefHeight="42.0" prefWidth="862.0">
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Home" wrappingWidth="61.73329162597656">
+               <font>
+                  <Font size="24.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="20.0" right="5.0" top="20.0" />
+               </HBox.margin></Text>
+            <AnchorPane prefHeight="69.0" prefWidth="879.0">
                <children>
-                  <Button fx:id="homeButton" layoutX="712.0" layoutY="12.0" mnemonicParsing="false" text="Home" />
-                  <Button fx:id="profileButton" layoutX="777.0" layoutY="12.0" mnemonicParsing="false" text="Profile" />
+                  <Button fx:id="homeButton" layoutX="639.0" layoutY="13.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="66.0" style="-fx-background-color: white;" text="Home" />
+                  <Button fx:id="profileButton" layoutX="724.0" layoutY="14.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="66.0" style="-fx-background-color: white;" text="Profile" />
                </children>
             </AnchorPane>
          </children>
       </HBox>
-      <BorderPane layoutX="-8.0" layoutY="42.0" prefHeight="756.0" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+      <BorderPane layoutX="-8.0" layoutY="42.0" prefHeight="756.0" prefWidth="900.0" style="-fx-background-color: grey;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="70.0">
          <top>
             <HBox prefHeight="83.0" prefWidth="900.0" style="-fx-background-color: grey;" BorderPane.alignment="CENTER">
                <children>
                   <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Button fx:id="serviceBtn" mnemonicParsing="false" onAction="#goOnline" prefHeight="83.0" prefWidth="449.0" text="Entra in servizio" />
+                        <Button fx:id="serviceBtn" mnemonicParsing="false" onAction="#goOnline" prefHeight="82.0" prefWidth="449.0" style="-fx-background-color: CCFFCC;" text="Online">
+                           <font>
+                              <Font size="26.0" />
+                           </font></Button>
                      </children></VBox>
                   <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Button fx:id="offlineButton" mnemonicParsing="false" onAction="#goOffline" prefHeight="88.0" prefWidth="453.0" text="Vai fuori servizio" />
+                        <Button fx:id="offlineButton" mnemonicParsing="false" onAction="#goOffline" prefHeight="88.0" prefWidth="453.0" style="-fx-background-color: FFCCCC;" text="Offline">
+                           <font>
+                              <Font size="26.0" />
+                           </font></Button>
                      </children></VBox>
                </children>
             </HBox>
@@ -43,7 +55,7 @@
          <bottom>
             <HBox prefHeight="600.0" prefWidth="890.0" spacing="5.0" BorderPane.alignment="CENTER">
                <children>
-                  <VBox alignment="TOP_CENTER" prefHeight="550.0" prefWidth="294.0" style="-fx-background-color: linear-gradient(to bottom,   #FFECB3 0%,  /* Oro chiaro all'inizio */  #F7E0A3 30%, /* Oro chiaro mescolato gradualmente verso il grigio */  #D0C2A1 60%, /* Mescolanza intermedia fra oro e grigio */  #A8A295 80%, /* Grigio chiaro mescolato verso il grigio scuro */  #4F4F4F 100% /* Grigio scuro alla fine */); -fx-background-radius: 25;" stylesheets="@../../pendingOrders.css">
+                  <VBox alignment="TOP_CENTER" prefHeight="655.0" prefWidth="294.0" style="-fx-background-color: linear-gradient(to bottom,   #FFECB3 0%,  /* Oro chiaro all'inizio */  #F7E0A3 30%, /* Oro chiaro mescolato gradualmente verso il grigio */  #D0C2A1 60%, /* Mescolanza intermedia fra oro e grigio */  #A8A295 80%, /* Grigio chiaro mescolato verso il grigio scuro */  #4F4F4F 100% /* Grigio scuro alla fine */); -fx-background-radius: 25;" stylesheets="@../../pendingOrders.css">
                      <children>
                         <Text fill="#4f4f4f" strokeType="OUTSIDE" strokeWidth="0.0" text="Report consegne">
                            <font>
@@ -53,7 +65,7 @@
                               <Insets bottom="-10.0" top="10.0" />
                            </VBox.margin>
                         </Text>
-                        <StackPane fx:id="stackpaneId" prefHeight="585.0" prefWidth="271.0" styleClass="image-view-wrapper" stylesheets="@../../pendingOrders.css">
+                        <StackPane fx:id="stackpaneId" onMouseEntered="#onMouseEnteredForStackPane1" onMouseExited="#onMouseExitedForStackPane1" prefHeight="585.0" prefWidth="271.0" styleClass="image-view-wrapper" stylesheets="@../../pendingOrders.css">
                            <VBox.margin>
                               <Insets bottom="40.0" left="13.0" right="10.0" top="20.0" />
                            </VBox.margin>
@@ -70,7 +82,7 @@
                         <Insets bottom="5.0" />
                      </HBox.margin>
                   </VBox>
-                  <VBox alignment="TOP_CENTER" prefHeight="609.0" prefWidth="283.3" style="-fx-background-color: linear-gradient(to bottom,   #FFECB3 0%,  /* Oro chiaro all'inizio */  #F7E0A3 30%, /* Oro chiaro mescolato gradualmente verso il grigio */  #D0C2A1 60%, /* Mescolanza intermedia fra oro e grigio */  #A8A295 80%, /* Grigio chiaro mescolato verso il grigio scuro */  #4F4F4F 100% /* Grigio scuro alla fine */); -fx-background-radius: 25;" stylesheets="@../../pendingOrders.css">
+                  <VBox alignment="TOP_CENTER" prefHeight="656.0" prefWidth="291.0" style="-fx-background-color: linear-gradient(to bottom,   #FFECB3 0%,  /* Oro chiaro all'inizio */  #F7E0A3 30%, /* Oro chiaro mescolato gradualmente verso il grigio */  #D0C2A1 60%, /* Mescolanza intermedia fra oro e grigio */  #A8A295 80%, /* Grigio chiaro mescolato verso il grigio scuro */  #4F4F4F 100% /* Grigio scuro alla fine */); -fx-background-radius: 25;" stylesheets="@../../pendingOrders.css">
                      <children>
                         <Text fill="#4f4f4f" strokeType="OUTSIDE" strokeWidth="0.0" text="Centro messaggi">
                            <font>
@@ -80,7 +92,7 @@
                               <Insets bottom="-10.0" top="10.0" />
                            </VBox.margin>
                         </Text>
-                        <StackPane fx:id="stackpaneId2" prefHeight="601.0" prefWidth="271.0" styleClass="image-view-wrapper" stylesheets="@../../pendingOrders.css">
+                        <StackPane fx:id="stackpaneId2" onMouseEntered="#onMouseEnteredForStackPane2" onMouseExited="#onMouseExitedForStackPane2" prefHeight="601.0" prefWidth="271.0" styleClass="image-view-wrapper" stylesheets="@../../pendingOrders.css">
                            <VBox.margin>
                               <Insets bottom="40.0" left="10.0" right="10.0" top="20.0" />
                            </VBox.margin>
@@ -90,7 +102,7 @@
                                     <Image url="@../../images/centroMessaggi.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="notificationsButton" mnemonicParsing="false" onAction="#onNotificationsButtonClick" style="-fx-background-color: grey; -fx-background-radius: 25;" text="Nessuna nuova notifica" textFill="RED">
+                              <Button fx:id="notificationsButton" mnemonicParsing="false" onAction="#onNotificationsButtonClick" style="-fx-background-color: E0E0E0; -fx-background-radius: 25;" text="Nessuna nuova notifica" textFill="RED">
                                  <StackPane.margin>
                                     <Insets bottom="280.0" left="10.0" />
                                  </StackPane.margin>
@@ -115,7 +127,7 @@
                               <Insets bottom="-10.0" top="10.0" />
                            </VBox.margin>
                         </Text>
-                        <StackPane fx:id="stackpaneId3" prefHeight="585.0" prefWidth="260.0" styleClass="image-view-wrapper" stylesheets="@../../pendingOrders.css">
+                        <StackPane fx:id="stackpaneId3" onMouseEntered="#onMouseEnteredForStackPane3" onMouseExited="#onMouseExitedForStackPane3" prefHeight="585.0" prefWidth="260.0" styleClass="image-view-wrapper" stylesheets="@../../pendingOrders.css">
                            <VBox.margin>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="20.0" />
                            </VBox.margin>

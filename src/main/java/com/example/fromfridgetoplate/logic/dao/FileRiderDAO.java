@@ -135,6 +135,13 @@ public class FileRiderDAO extends FileDAOBase implements RiderDAO {
      * solo DAOException, non andremo a cambiare quei gestori di eccezioni quando cambiamo il metodo di storage. Devo solo mettere che
      *   le SQLException vengano convertite in DAOException nel  DAO.*/
 
+    public void setRidersFilePath(String filePath) {
+        this.ridersFilePath = filePath;
+    }
+    public String getRidersFilePath() {
+        return this.ridersFilePath;
+    }
+
 }
 
 

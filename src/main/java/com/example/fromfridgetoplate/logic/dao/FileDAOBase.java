@@ -136,9 +136,15 @@ public abstract class FileDAOBase {
             throw new DAOException("Errore nella scrittura del file degli ordini", e);
         }
     }
+
 /* Convertendo IOException in DAOException, centralizzamoi la gestione degli errori legati ai dati. se poi si cambia il modo in cui i dati sono memorizzati (ad esempio, si va da file a database), non dobbiamo cambiare altre parti del codice che gestiscono DAOException
 * tipo : Se cambio il metodo di salvataggio per usare un database, il metodo potrebbe iniziare a lanciare SQLException invece di IOException, se il resto del  codice gestisce
 * solo DAOException, non andremo a cambiare quei gestori di eccezioni quando cambiamo il metodo di storage. Devo solo mettere che
-*   le SQLException vengano convertite in DAOException nel  DAO.*/
+*   le SQLException vengano convertite in DAOException nel DAO.*/
+
+
+
+
+
 
 }

@@ -7,16 +7,16 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.fromfridgetoplate.guicontrollers.RiderSignInGraphicController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="900.0" style="-fx-background-color: grey;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.fromfridgetoplate.guicontrollers.RiderSignInGraphicController">
    <children>
-      <BorderPane layoutX="-6.0" prefHeight="400.0" prefWidth="611.0" style="-fx-background-color: fccd8d;">
+      <BorderPane layoutX="168.0" layoutY="178.0" prefHeight="400.0" prefWidth="611.0" style="-fx-background-color: fccd8d;">
          <center>
-            <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: grey;" BorderPane.alignment="CENTER">
                <children>
-                  <AnchorPane layoutX="153.0" layoutY="47.0" prefHeight="306.0" prefWidth="305.0" style="-fx-background-color: fa9c1b;">
+                  <AnchorPane layoutX="153.0" layoutY="47.0" prefHeight="306.0" prefWidth="305.0" style="-fx-background-color: FFECB3;">
                      <children>
                         <TextField fx:id="emailText" layoutX="71.0" layoutY="52.0" text="email" />
-                        <Text fill="WHITE" layoutX="120.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Signin" wrappingWidth="65.4700927734375">
+                        <Text layoutX="120.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Signin" wrappingWidth="65.4700927734375">
                            <font>
                               <Font size="20.0" />
                            </font>

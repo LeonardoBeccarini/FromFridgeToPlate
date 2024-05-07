@@ -8,38 +8,33 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.fromfridgetoplate.guicontrollers.PendingOrdersGraphicController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.fromfridgetoplate.guicontrollers.PendingOrdersGraphicController">
    <top>
-      <AnchorPane prefHeight="41.0" prefWidth="600.0" style="-fx-background-color: gold;" BorderPane.alignment="CENTER">
+      <AnchorPane prefHeight="69.0" prefWidth="600.0" style="-fx-background-color: gold;" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="homeButton" layoutX="719.0" layoutY="6.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="52.0" text="Home" />
-            <Button fx:id="profileButton" layoutX="784.0" layoutY="6.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="52.0" text="Profile" />
-            <Text layoutX="14.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Home" wrappingWidth="71.09033203125">
+            <Button fx:id="homeButton" layoutX="724.0" layoutY="14.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="66.0" style="-fx-background-color: white;" text="Home" />
+            <Button fx:id="profileButton" layoutX="811.0" layoutY="14.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="66.0" style="-fx-background-color: white;" text="Profile" />
+            <Text layoutX="35.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pending Orders " wrappingWidth="161.82568359375">
                <font>
-                  <Font size="27.0" />
+                  <Font size="24.0" />
                </font>
             </Text>
          </children>
       </AnchorPane>
    </top>
    <center>
-      <AnchorPane prefHeight="656.0" prefWidth="850.0" BorderPane.alignment="CENTER">
+      <AnchorPane prefHeight="656.0" prefWidth="850.0" style="-fx-background-color: grey;" BorderPane.alignment="CENTER">
          <children>
-            <TableView fx:id="ordersTable" layoutX="-1.0" layoutY="40.0" prefHeight="528.0" prefWidth="850.0">
+            <TableView fx:id="ordersTable" layoutX="39.0" layoutY="37.0" prefHeight="528.0" prefWidth="824.0" style="-fx-background-color: FFECB3;">
               <columns>
-                <TableColumn fx:id="orderIdColumn" prefWidth="170.0" text="order id" />
-                <TableColumn fx:id="customerIdColumn" prefWidth="170.0" text="customer id" />
-                  <TableColumn fx:id="orderTimeColumn" minWidth="0.0" prefWidth="170.0" text="order time" />
-                  <TableColumn fx:id="detailsColumn" prefWidth="170.0" text="food_items" />
-                  <TableColumn fx:id="shippingCityColumn" prefWidth="170.0" text="shipping city" />
+                <TableColumn fx:id="orderIdColumn" prefWidth="164.8" text="order id" />
+                <TableColumn fx:id="customerIdColumn" prefWidth="164.8" text="customer id" />
+                  <TableColumn fx:id="orderTimeColumn" minWidth="0.0" prefWidth="164.8" text="order time" />
+                  <TableColumn fx:id="detailsColumn" prefWidth="164.8" text="food_items" />
+                  <TableColumn fx:id="shippingCityColumn" prefWidth="164.8" text="shipping city" />
               </columns>
             </TableView>
-            <Text layoutX="305.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pending orders menu" textAlignment="CENTER" wrappingWidth="240.82568359375">
-               <font>
-                  <Font size="27.0" />
-               </font>
-            </Text>
-            <Button layoutX="381.0" layoutY="602.0" mnemonicParsing="false" onAction="#searchRiders" text="Search riders" AnchorPane.topAnchor="602.0" />
+            <Button layoutX="407.0" layoutY="625.0" mnemonicParsing="false" onAction="#searchRiders" prefHeight="41.0" prefWidth="89.0" style="-fx-background-color: white;" text="Search riders" AnchorPane.topAnchor="625.0" />
          </children>
       </AnchorPane>
    </center>
