@@ -18,8 +18,8 @@ public class UserBean {
     }
 
     public UserBean(String email, Role role) {
+        this(role);
         this.email = email;
-        this.role = role;
     }
 
     public String getEmail() {

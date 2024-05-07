@@ -9,7 +9,7 @@ public class TotalPriceBean {
 
 
     public TotalPriceBean(Double totalPrice, List<CouponBean> couponBeanList) {
-        this.totalPrice = totalPrice;
+        this(totalPrice);
         this.couponBeanList = couponBeanList;
     }
 

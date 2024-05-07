@@ -17,6 +17,8 @@ import com.example.fromfridgetoplate.logic.model.CartItem;
 import com.example.fromfridgetoplate.logic.model.Order;
 import com.example.fromfridgetoplate.patterns.abstract_factory.DAOFactoryProvider;
 import com.example.fromfridgetoplate.logic.model.OrderList;
+import com.example.fromfridgetoplate.patterns.factory.DbDAOFactory;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -26,12 +28,24 @@ import java.util.ArrayList;
 
 public class RiderHPControllerTest {
 
+// per eseguire il test, si suppone che il db sia configurato il modo che esista un rider con riderId pari a 5, in modo che
+// sia possibile nel test assegnargli un ordine
+
+    @Before
+    public void setUp() {
+        // Imposto il tipo di persistenza su JDBC per utilizzare il database nei test
+        DAOFactoryProvider.getInstance().setPersistenceType(PersistenceType.JDBC);
+    }
+
 
     @Test
     public void testAcceptOrder() throws DAOException, ConfigurationException, OrderAssignmentException {
         RiderHPController controller = new RiderHPController();
+        // Setup per usare db
+        // Imposto il tipo di persistenza su JDBC per utilizzare il database nei test
         OrderDAO orderDAO = DAOFactoryProvider.getInstance().getDaoFactory().createOrderDAO();
-        DAOFactoryProvider.getInstance().setPersistenceType(PersistenceType.JDBC); // Set per usare db
+        ResellerDAO resellerDAO = DAOFactoryProvider.getInstance().getDaoFactory().createResellerDAO();
+
 
         // Preparazione dei dati dell'ordine
         ArrayList<CartItem> cartItems = new ArrayList<>();
@@ -60,7 +74,6 @@ public class RiderHPControllerTest {
         // Assegnazione del rider all'ordine
         int riderId = 5; // ID del rider per il test
         testOrder.setRiderId(riderId);  // Aggiorna l'ID del rider nell'ordine
-        ResellerDAO resellerDAO = DAOFactoryProvider.getInstance().getDaoFactory().createResellerDAO();
         resellerDAO.assignRiderToOrder(testOrder.getOrderId(), riderId);
 
 
@@ -109,7 +122,7 @@ public class RiderHPControllerTest {
     public void testDeclineOrder() throws DAOException, ConfigurationException, OrderAssignmentException {
         RiderHPController controller = new RiderHPController();
         OrderDAO orderDAO = DAOFactoryProvider.getInstance().getDaoFactory().createOrderDAO();
-        ResellerDAO resellerDAO =  DAOFactoryProvider.getInstance().getDaoFactory().createResellerDAO();
+        ResellerDAO resellerDAO = DAOFactoryProvider.getInstance().getDaoFactory().createResellerDAO();
         DAOFactoryProvider.getInstance().setPersistenceType(PersistenceType.JDBC);
 
         // Creo e salvo l'ordine
@@ -132,7 +145,6 @@ public class RiderHPControllerTest {
         }
 
 
-
         // Assegnazione del rider all'ordine
         int riderId = 5; // ID del rider per il test
         testOrder.setRiderId(riderId);  // Aggiorno l'ID del rider nell'ordine
@@ -144,7 +156,6 @@ public class RiderHPControllerTest {
         NotificationBean testNotification = new NotificationBean(testOrderBean, "Order needs to be declined");
 
         resellerDAO.setAssignation(testOrder.getOrderId());
-
 
 
         // Tentativo di rifiutare l'ordine
@@ -173,10 +184,11 @@ public class RiderHPControllerTest {
 
 
         assertTrue("Order should be found in 'pronto' status", flag);
+
+
+
+
     }
-
-
-
 
 
 }

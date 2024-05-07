@@ -2,35 +2,39 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.Blend?>
+<?import javafx.scene.effect.Glow?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.fromfridgetoplate.guicontrollers.RiderCurrentOrderGraphicController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.fromfridgetoplate.guicontrollers.RiderCurrentOrderGraphicController">
    <top>
-      <AnchorPane prefHeight="41.0" prefWidth="600.0" style="-fx-background-color: gold;" BorderPane.alignment="CENTER">
+      <AnchorPane prefHeight="69.0" prefWidth="850.0" style="-fx-background-color: gold;" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="homeButton" layoutX="719.0" layoutY="6.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="52.0" text="Home" />
-            <Button fx:id="profileButton" layoutX="784.0" layoutY="6.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="52.0" text="Profile" />
-            <Text layoutX="14.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Home" wrappingWidth="87.75701904296875">
+            <Button fx:id="homeButton" layoutX="715.0" layoutY="15.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="66.0" style="-fx-background-color: white;" text="Home" />
+            <Button fx:id="profileButton" layoutX="806.0" layoutY="14.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="66.0" style="-fx-background-color: white;" text="Profile" />
+            <Text layoutX="30.0" layoutY="43.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Current order info" wrappingWidth="386.82568359375">
                <font>
-                  <Font size="27.0" />
+                  <Font size="24.0" />
                </font>
+               <effect>
+                  <Blend>
+                     <topInput>
+                        <Glow />
+                     </topInput>
+                  </Blend>
+               </effect>
             </Text>
          </children>
       </AnchorPane>
    </top>
    <center>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: FFECB3;" BorderPane.alignment="CENTER">
          <children>
-            <Text layoutX="232.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Your current order info" textAlignment="CENTER" wrappingWidth="386.82568359375">
-               <font>
-                  <Font name="Helvetica Bold" size="32.0" />
-               </font>
-            </Text>
-            <VBox layoutX="14.0" layoutY="80.0" prefHeight="497.0" prefWidth="829.0" spacing="80.0">
+            <VBox layoutX="11.0" layoutY="78.0" prefHeight="497.0" prefWidth="829.0" spacing="80.0">
                <children>
                   <Label fx:id="orderIdLabel" text="Label">
                      <font>
@@ -59,7 +63,7 @@
                   </Label>
                </children>
             </VBox>
-            <Button fx:id="confirmDeliveryButton" layoutX="400.0" layoutY="627.0" mnemonicParsing="false" onAction="#handleConfirmDelivery" text="Confirm Delivery" />
+            <Button fx:id="confirmDeliveryButton" layoutX="392.0" layoutY="632.0" mnemonicParsing="false" onAction="#handleConfirmDelivery" prefHeight="28.0" prefWidth="115.0" style="-fx-background-color: white;" text="Confirm Delivery" />
          </children>
       </AnchorPane>
    </center>

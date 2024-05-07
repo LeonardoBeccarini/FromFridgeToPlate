@@ -13,6 +13,7 @@ import com.example.fromfridgetoplate.secondguicontrollers.Printer;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -158,7 +159,7 @@ public class RiderHomePageGraphicController extends GenericGraphicController imp
 
 
     @FXML
-    void onNotificationsButtonClick(ActionEvent event
+    void onNotificationsButtonClick(Event event
     ) throws IOException {
 
         // Chiama il metodo nel controller applicativo per marcare le notifiche come lette
@@ -182,6 +183,8 @@ public class RiderHomePageGraphicController extends GenericGraphicController imp
         stage.setScene(scene);
         stage.show();
     }
+
+
 
     public void updateUIForOnlineState() {
         try {
@@ -260,8 +263,58 @@ public class RiderHomePageGraphicController extends GenericGraphicController imp
         } else if (sourceNode == orderImage) {
             goOffline(null);
             navigator.goTo("RiderCurrentOrder.fxml");
+        }else if (sourceNode == msgImage){
+            onNotificationsButtonClick(event);
         }
 
+    }
+
+    @FXML
+    void onMouseEnteredForStackPane1(MouseEvent event) {
+
+        stackpaneId.setScaleX(1.05);
+        stackpaneId.setScaleY(1.05);
+        stackpaneId.setStyle("-fx-border-color: blue; -fx-border-width: 2; -fx-border-style: solid;");
+    }
+
+    @FXML
+    void onMouseExitedForStackPane1(MouseEvent event) {
+
+        stackpaneId.setScaleX(1.0); // Reimposta la scala del StackPane
+        stackpaneId.setScaleY(1.0);
+        stackpaneId.setStyle("-fx-border-color: black; -fx-border-width: 2; -fx-border-style: solid;");
+    }
+
+    @FXML
+    void onMouseEnteredForStackPane2(MouseEvent event) {
+
+        stackpaneId2.setScaleX(1.05);
+        stackpaneId2.setScaleY(1.05);
+        stackpaneId2.setStyle("-fx-border-color: blue; -fx-border-width: 2; -fx-border-style: solid;");
+    }
+
+    @FXML
+    void onMouseExitedForStackPane2(MouseEvent event) {
+
+        stackpaneId2.setScaleX(1.0);
+        stackpaneId2.setScaleY(1.0);
+        stackpaneId2.setStyle("-fx-border-color: black; -fx-border-width: 2; -fx-border-style: solid;");
+    }
+
+    @FXML
+    void onMouseEnteredForStackPane3(MouseEvent event) {
+
+        stackpaneId3.setScaleX(1.05);
+        stackpaneId3.setScaleY(1.05);
+        stackpaneId3.setStyle("-fx-border-color: blue; -fx-border-width: 2; -fx-border-style: solid;");
+    }
+
+    @FXML
+    void onMouseExitedForStackPane3(MouseEvent event) {
+
+        stackpaneId3.setScaleX(1.0);
+        stackpaneId3.setScaleY(1.0);
+        stackpaneId3.setStyle("-fx-border-color: black; -fx-border-width: 2; -fx-border-style: solid;");
     }
 
 }

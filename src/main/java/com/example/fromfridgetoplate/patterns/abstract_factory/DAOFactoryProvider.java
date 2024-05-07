@@ -16,7 +16,7 @@ import com.example.fromfridgetoplate.patterns.factory.FileDAOFactory;
 public class DAOFactoryProvider {
     private static DAOFactoryProvider instance;
     private DAOAbsFactory daoFactory;
-    private PersistenceType type = PersistenceType.JDBC;
+    private PersistenceType type = PersistenceType.FILE_SYSTEM;
 
     protected DAOFactoryProvider() {
         initializeFactory();
@@ -45,8 +45,11 @@ public class DAOFactoryProvider {
         return daoFactory;
     }
 
-    public void setPersistenceType (PersistenceType type){
-        this.type = type;
+    public void setPersistenceType(PersistenceType newType){
+        if(this.type != newType) {
+            this.type = newType;
+            initializeFactory(); // reinizializzo la factory quando il tipo cambia
+        }
     }
 }
 
