@@ -75,6 +75,8 @@ public class RiderHomePageGraphicController extends GenericGraphicController imp
 
     private RiderStateContext stateContext;
 
+    private static final String STYLE = "-fx-border-color: blue; -fx-border-width: 2; -fx-border-style: solid;";
+    private static final String STYLE2 = "-fx-border-color: black; -fx-border-width: 2; -fx-border-style: solid;";
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -274,7 +276,7 @@ public class RiderHomePageGraphicController extends GenericGraphicController imp
 
         stackpaneId.setScaleX(1.05);
         stackpaneId.setScaleY(1.05);
-        stackpaneId.setStyle("-fx-border-color: blue; -fx-border-width: 2; -fx-border-style: solid;");
+        stackpaneId.setStyle(STYLE);
     }
 
     @FXML
@@ -282,7 +284,7 @@ public class RiderHomePageGraphicController extends GenericGraphicController imp
 
         stackpaneId.setScaleX(1.0); // Reimposta la scala del StackPane
         stackpaneId.setScaleY(1.0);
-        stackpaneId.setStyle("-fx-border-color: black; -fx-border-width: 2; -fx-border-style: solid;");
+        stackpaneId.setStyle(STYLE2);
     }
 
     @FXML
@@ -290,7 +292,7 @@ public class RiderHomePageGraphicController extends GenericGraphicController imp
 
         stackpaneId2.setScaleX(1.05);
         stackpaneId2.setScaleY(1.05);
-        stackpaneId2.setStyle("-fx-border-color: blue; -fx-border-width: 2; -fx-border-style: solid;");
+        stackpaneId2.setStyle(STYLE);
     }
 
     @FXML
@@ -298,7 +300,7 @@ public class RiderHomePageGraphicController extends GenericGraphicController imp
 
         stackpaneId2.setScaleX(1.0);
         stackpaneId2.setScaleY(1.0);
-        stackpaneId2.setStyle("-fx-border-color: black; -fx-border-width: 2; -fx-border-style: solid;");
+        stackpaneId2.setStyle(STYLE2);
     }
 
     @FXML
@@ -306,7 +308,7 @@ public class RiderHomePageGraphicController extends GenericGraphicController imp
 
         stackpaneId3.setScaleX(1.05);
         stackpaneId3.setScaleY(1.05);
-        stackpaneId3.setStyle("-fx-border-color: blue; -fx-border-width: 2; -fx-border-style: solid;");
+        stackpaneId3.setStyle(STYLE);
     }
 
     @FXML
@@ -314,7 +316,7 @@ public class RiderHomePageGraphicController extends GenericGraphicController imp
 
         stackpaneId3.setScaleX(1.0);
         stackpaneId3.setScaleY(1.0);
-        stackpaneId3.setStyle("-fx-border-color: black; -fx-border-width: 2; -fx-border-style: solid;");
+        stackpaneId3.setStyle(STYLE2);
     }
 
 }
