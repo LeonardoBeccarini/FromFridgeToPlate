@@ -1,11 +1,13 @@
 package com.example.fromfridgetoplate.logic.bean;
 
+
+
 public class NotificationBean {
 
     private int notificationId;
     private OrderBean orderBean;
 
-    private final String messageText;
+    private String messageText;
 
 
     public NotificationBean(OrderBean orderBean, String messageText) {
@@ -26,6 +28,10 @@ public class NotificationBean {
         return messageText;
     }
 
+    public void setMessageText(String messageText) {
+        this.messageText = messageText;
+    }
+
     public int getNotificationId() {
         return notificationId;
     }
@@ -42,8 +48,36 @@ public class NotificationBean {
         return orderBean.getShippingAddress();
     }
 
+    public String getStreet() {
+        return getAddress().getShippingStreet();
+    }
+
     public String getCity(){
         return getAddress().getShippingCity();
     }
-}
 
+    public int getStreetNumber() {
+        return getAddress().getShippingStreetNumber();
+    }
+
+    public String getProvince() {
+        return getAddress().getShippingProvince();
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}

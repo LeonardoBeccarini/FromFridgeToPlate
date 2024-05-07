@@ -57,7 +57,7 @@
                <children>
                   <VBox alignment="TOP_CENTER" prefHeight="655.0" prefWidth="294.0" style="-fx-background-color: linear-gradient(to bottom,   #FFECB3 0%,  /* Oro chiaro all'inizio */  #F7E0A3 30%, /* Oro chiaro mescolato gradualmente verso il grigio */  #D0C2A1 60%, /* Mescolanza intermedia fra oro e grigio */  #A8A295 80%, /* Grigio chiaro mescolato verso il grigio scuro */  #4F4F4F 100% /* Grigio scuro alla fine */); -fx-background-radius: 25;" stylesheets="@../../pendingOrders.css">
                      <children>
-                        <Text fill="#4f4f4f" strokeType="OUTSIDE" strokeWidth="0.0" text="Report consegne">
+                        <Text fill="#4f4f4f" strokeType="OUTSIDE" strokeWidth="0.0" text="Delivery Reports">
                            <font>
                               <Font name="Helvetica Bold" size="28.0" />
                            </font>
@@ -84,7 +84,7 @@
                   </VBox>
                   <VBox alignment="TOP_CENTER" prefHeight="656.0" prefWidth="291.0" style="-fx-background-color: linear-gradient(to bottom,   #FFECB3 0%,  /* Oro chiaro all'inizio */  #F7E0A3 30%, /* Oro chiaro mescolato gradualmente verso il grigio */  #D0C2A1 60%, /* Mescolanza intermedia fra oro e grigio */  #A8A295 80%, /* Grigio chiaro mescolato verso il grigio scuro */  #4F4F4F 100% /* Grigio scuro alla fine */); -fx-background-radius: 25;" stylesheets="@../../pendingOrders.css">
                      <children>
-                        <Text fill="#4f4f4f" strokeType="OUTSIDE" strokeWidth="0.0" text="Centro messaggi">
+                        <Text fill="#4f4f4f" strokeType="OUTSIDE" strokeWidth="0.0" text="Notification Centre">
                            <font>
                               <Font name="Helvetica Bold" size="28.0" />
                            </font>
@@ -119,7 +119,7 @@
                   </VBox>
                   <VBox alignment="TOP_CENTER" prefHeight="609.0" prefWidth="283.3" style="-fx-background-color: linear-gradient(to bottom,   #FFECB3 0%,  /* Oro chiaro all'inizio */  #F7E0A3 30%, /* Oro chiaro mescolato gradualmente verso il grigio */  #D0C2A1 60%, /* Mescolanza intermedia fra oro e grigio */  #A8A295 80%, /* Grigio chiaro mescolato verso il grigio scuro */  #4F4F4F 100% /* Grigio scuro alla fine */); -fx-background-radius: 25;" stylesheets="@../../pendingOrders.css">
                      <children>
-                        <Text fill="#4f4f4f" strokeType="OUTSIDE" strokeWidth="0.0" text="Ordine attuale">
+                        <Text fill="#4f4f4f" strokeType="OUTSIDE" strokeWidth="0.0" text="Current order">
                            <font>
                               <Font name="Helvetica Bold" size="28.0" />
                            </font>
