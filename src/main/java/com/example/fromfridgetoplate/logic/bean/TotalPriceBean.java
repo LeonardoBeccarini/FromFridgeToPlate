@@ -1,6 +1,5 @@
 package com.example.fromfridgetoplate.logic.bean;
 
-import java.text.DecimalFormat;
 import java.util.List;
 
 public class TotalPriceBean {
@@ -18,8 +17,7 @@ public class TotalPriceBean {
     }
 
     public Double getTotalPrice() {
-        DecimalFormat twoDForm = new DecimalFormat("#.##");
-        return Double.valueOf(twoDForm.format(totalPrice));
+        return (double) Math.round(totalPrice*100) /100;
     }
 
     public List<CouponBean> getCouponBeanList() {
