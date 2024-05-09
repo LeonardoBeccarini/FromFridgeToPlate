@@ -1,29 +1,27 @@
 package Quirici;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
-
 import com.example.fromfridgetoplate.logic.bean.AddressBean;
 import com.example.fromfridgetoplate.logic.bean.NotificationBean;
 import com.example.fromfridgetoplate.logic.bean.OrderBean;
 import com.example.fromfridgetoplate.logic.bean.RiderBean;
-import com.example.fromfridgetoplate.logic.control.MakeOrderControl;
-import com.example.fromfridgetoplate.logic.control.NotificationManager;
 import com.example.fromfridgetoplate.logic.control.RiderHPController;
-import com.example.fromfridgetoplate.logic.dao.*;
-import com.example.fromfridgetoplate.logic.exceptions.*;
+import com.example.fromfridgetoplate.logic.dao.OrderDAO;
+import com.example.fromfridgetoplate.logic.dao.PersistenceType;
+import com.example.fromfridgetoplate.logic.dao.ResellerDAO;
+import com.example.fromfridgetoplate.logic.exceptions.ConfigurationException;
+import com.example.fromfridgetoplate.logic.exceptions.DAOException;
+import com.example.fromfridgetoplate.logic.exceptions.OrderAssignmentException;
+import com.example.fromfridgetoplate.logic.exceptions.RiderGcException;
 import com.example.fromfridgetoplate.logic.model.CartItem;
 import com.example.fromfridgetoplate.logic.model.Order;
-import com.example.fromfridgetoplate.patterns.abstract_factory.DAOFactoryProvider;
 import com.example.fromfridgetoplate.logic.model.OrderList;
-import com.example.fromfridgetoplate.patterns.factory.DbDAOFactory;
+import com.example.fromfridgetoplate.patterns.abstract_factory.DAOFactoryProvider;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
+
+import static org.junit.Assert.assertTrue;
 
 
 public class RiderHPControllerTest {
@@ -49,11 +47,11 @@ public class RiderHPControllerTest {
 
         // Preparazione dei dati dell'ordine
         ArrayList<CartItem> cartItems = new ArrayList<>();
-        cartItems.add(new CartItem("Pasta", 2));
+        cartItems.add(new CartItem("Pomodoro", 2));
 
         Order testOrder = new Order(
-                "reseller123",
-                "customer@example.com",
+                "12345678945",
+                "leonardo.beccarini@hotmail.com",
                 "Via Roma",
                 123,
                 "Roma",
@@ -127,12 +125,16 @@ public class RiderHPControllerTest {
 
         // Creo e salvo l'ordine
         ArrayList<CartItem> cartItems = new ArrayList<>();
-        cartItems.add(new CartItem("Pasta", 2));
+        cartItems.add(new CartItem("Pomodoro", 2));
+
         Order testOrder = new Order(
-                "reseller123", // sarebbe vat
-                "customer@example.com",
-                "Via Roma", 123, "Roma", "RM",
-                "in consegna"
+                "12345678945",
+                "leonardo.beccarini@hotmail.com",
+                "Via Roma",
+                123,
+                "Roma",
+                "RM",
+                "pronto"  // Stato iniziale dell'ordine
         );
         testOrder.setItems(cartItems);
 
