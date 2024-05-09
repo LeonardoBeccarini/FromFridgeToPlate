@@ -45,8 +45,8 @@ public class CouponApplier {
         return couponList;
     }
 
-    public Discountable getFinalPrice() {
-        return finalPrice;
+    public Double getFinalPrice() {
+        return finalPrice.getPrice();
     }
 }
 

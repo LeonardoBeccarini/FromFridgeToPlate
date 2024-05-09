@@ -7,7 +7,7 @@ public abstract class Coupon implements Discountable {
 
     private double discount;
 
-    // interfaccia sulla quale apllicare il decorator (il coupon)
+    // interfaccia sulla quale apllicare il concrete decorator (il coupon)
     private Discountable disocuntable;
 
     protected Coupon(int code, double discount) {
@@ -30,6 +30,5 @@ public abstract class Coupon implements Discountable {
     public void setDisocuntable(Discountable disocuntable) {
         this.disocuntable = disocuntable;
     }
-
 
 }

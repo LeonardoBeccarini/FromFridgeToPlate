@@ -114,12 +114,12 @@ public class MakeOrderControl {
         Coupon retrievedCoupon =  couponDAO.retrieveCoupon(couponBean.getVatNumber(), couponBean.getCode());
         couponApplier.applyCoupon(retrievedCoupon);
         List<CouponBean> couponBeanList = convertToCouponBean(couponApplier.getCouponList());
-        return  new TotalPriceBean(couponApplier.getFinalPrice().getPrice(), couponBeanList);
+        return  new TotalPriceBean(couponApplier.getFinalPrice(), couponBeanList);
 
     }
 
     public TotalPriceBean getOriginalPrice() {
-        return new TotalPriceBean(couponApplier.getFinalPrice().getPrice());
+        return new TotalPriceBean(couponApplier.getFinalPrice());
     }
 
     private List<CouponBean> convertToCouponBean(CouponList couponList){
@@ -151,7 +151,7 @@ public class MakeOrderControl {
         AddressBean addressBean = orderBean.getShippingAddress();
         String customerId = Session.getSession().getUser().getEmail();
         DummyPaymentBoundary dummyPaymentBoundary = new DummyPaymentBoundary();
-        TotalPriceBean totalPriceBean = new TotalPriceBean(couponApplier.getFinalPrice().getPrice());
+        TotalPriceBean totalPriceBean = new TotalPriceBean(couponApplier.getFinalPrice());
         if(dummyPaymentBoundary.pay(totalPriceBean)){   // se il pagamento va a buon fine
             Order newOrder = new Order(orderBean.getShopId(), customerId, addressBean.getShippingStreet(), addressBean.getShippingStreetNumber(),  addressBean.getShippingCity(), addressBean.getShippingProvince(), "pronto" );
             newOrder.setOrderTime(LocalDateTime.now());
