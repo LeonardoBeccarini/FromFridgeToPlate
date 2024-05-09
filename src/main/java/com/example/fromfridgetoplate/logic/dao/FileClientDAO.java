@@ -16,12 +16,12 @@ public class FileClientDAO extends FileDAOBase implements ClientDAO {
 
     public boolean saveClient(Client newClient) throws DAOException {
         boolean outcome = true;
-        // Verifica se il cliente esiste già nel file degli utenti
+        // Verifico se il cliente esiste già nel file degli utenti
         if (isUserExists(newClient.getEmail())) {
             throw new DAOException("Cliente già registrato con questa email.");
         }
 
-        // Aggiungi il cliente al file degli utenti
+        // Aggiungo il cliente al file degli utenti
         User newUser = new User(newClient.getEmail(), newClient.getPassword(), Role.CLIENT);
         try{
             addUserToFile(newUser);

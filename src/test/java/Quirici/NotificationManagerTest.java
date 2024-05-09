@@ -1,21 +1,16 @@
 package Quirici;
 
-import com.example.fromfridgetoplate.logic.bean.RegistrationBean;
 import com.example.fromfridgetoplate.logic.bean.RiderBean;
 import com.example.fromfridgetoplate.logic.control.NotificationManager;
-import com.example.fromfridgetoplate.logic.control.RegisterController;
 import com.example.fromfridgetoplate.logic.dao.PersistenceType;
 import com.example.fromfridgetoplate.logic.dao.ResellerDAO;
-import com.example.fromfridgetoplate.logic.dao.RiderDAO;
-import com.example.fromfridgetoplate.logic.exceptions.DAOException;
-import com.example.fromfridgetoplate.logic.model.Role;
 import com.example.fromfridgetoplate.patterns.abstract_factory.DAOFactoryProvider;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class TestNotificationManager {
+public class NotificationManagerTest {
 
     @Before
     public void setUp() {

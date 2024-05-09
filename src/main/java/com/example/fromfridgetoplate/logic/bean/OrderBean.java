@@ -22,20 +22,10 @@ public class OrderBean {
     int riderId;
 
 
-
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
     public OrderBean( String customerId, int orderId, AddressBean shippingAddress) {
         this.customerId = customerId;
         this.orderId = orderId;
-       this.shippingAddress = shippingAddress;
+        this.shippingAddress = shippingAddress;
     }
     public OrderBean( int riderId, int orderId, AddressBean shippingAddress) {
         this.riderId = riderId;
@@ -75,6 +65,7 @@ public class OrderBean {
     }
 
     public OrderBean(){}
+
 
 
     public int getOrderId() {
@@ -136,6 +127,14 @@ public class OrderBean {
 
     public void setRiderId(int riderId) {
         this.riderId = riderId;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
 

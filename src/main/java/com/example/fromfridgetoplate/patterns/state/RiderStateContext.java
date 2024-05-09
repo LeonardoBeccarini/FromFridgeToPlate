@@ -23,6 +23,17 @@ public class RiderStateContext {
         currentState.goOffline(this);
     }
 
+    public void showAlreadyOffAlert (){
+        this.getController().showAlreadyOfflineAlert();
+    }
+
+    public void showAlreadyOnlAlert (){
+        this.getController().showAlreadyOnlineAlert();
+    }
+
+
+
+
     
 
     public RiderHomePageGraphicController getController() {

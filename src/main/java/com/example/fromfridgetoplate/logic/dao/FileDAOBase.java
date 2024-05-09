@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-public abstract class FileDAOBase {
+public class FileDAOBase {
     protected Properties properties = new Properties();
 
     protected String ordersFilePath;
@@ -52,6 +52,7 @@ public abstract class FileDAOBase {
         }
 
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filePath))) {
+            // la classe FileInputStream, è un canale di comunicazione in input orientato al byte, per leggere i dati
             Object readObject = ois.readObject();
             if (readObject instanceof List) {
                 return (List<T>) readObject;
@@ -69,23 +70,31 @@ public abstract class FileDAOBase {
     }
 
 
-    protected <T> void writeToFile(List<T> genericList, String filePath) throws IOException {
+    protected <T> void writeToFile(List<T> listOfGenerics, String filePath) throws IOException {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filePath))) {
-            oos.writeObject(genericList);
+            oos.writeObject(listOfGenerics);
         }
     }
+
+    /*Qui usiamo i tipi generici (vedi nota 3aprile per approfondimento): Quando dichiariamo un metodo come  <T> List<T> readFromFile(...),
+    diciamo che il metodo definisce internamente un tipo T, che sarà determinato quando il metodo è chiamato.
+    La dichiarazione di <T> prima del tipo di ritorno del metodo (che qui è: List<T>) indica che il metodo utilizza generici, e T è il
+    tipo generico definito per questo metodo.
+QUindi quando chiami il metodo, specifici il tipo concreto che sostituisce T. Ad esempio, se chiami
+readFromFile("filepath.txt") e assegni il risultato a una List<Integer>, allora T sarà interpretato come Integer per quella
+chiamata.*/
 
 
 
     protected List<Order> getAllOrders() throws DAOException {
 
-        // Utilizzo il metodo readFromFile ereditato dalla superclasse
+
         return this.readFromFile(ordersFilePath);
     }
 
     protected void writeOrdersToFile(List<Order> orders) throws DAOException {
         try {
-            // Chiamo il metodo della superclasse per scrivere gli ordini sul file
+
             this.writeToFile(orders, this.ordersFilePath);
         } catch (IOException e) {
             // Rilancio l'eccezione come DAOException
@@ -102,7 +111,7 @@ public abstract class FileDAOBase {
     }
 
     protected void writeAssignedOrdersToFile(List<Order> assignedOrders) throws IOException {
-        // Uso il metodo writeToFile della superclasse
+        // Uso il metodo writeToFile , qui il percoso del file è diverso
         writeToFile(assignedOrders, assignedOrdersFilePath);
 
     }

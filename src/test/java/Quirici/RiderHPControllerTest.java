@@ -169,9 +169,9 @@ public class RiderHPControllerTest {
         try {
             OrderList pendingOrders = resellerDAO.getPendingOrders("quircioreseller@gmail.com"); // questa email deve essere quella corrispondente allo shopid passato sopra nella tabella ordini: ""reseller123"
 
-            System.out.println("orderid:" + testOrder.getOrderId());
+            //System.out.println("orderid:" + testOrder.getOrderId());
             for (Order order : pendingOrders.getOrders()) {
-                System.out.println("pending orders id :" + order.getOrderId());
+                //System.out.println("pending orders id :" + order.getOrderId());
                 if (order.getOrderId() == testOrder.getOrderId() && "pronto".equals(order.getStatus())) {
                     flag = true;
                     break;

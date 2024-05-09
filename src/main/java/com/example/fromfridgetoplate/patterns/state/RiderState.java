@@ -1,8 +1,8 @@
 package com.example.fromfridgetoplate.patterns.state;
 
-public interface RiderState {
-    void goOnline(RiderStateContext context);
+public abstract class RiderState {
+    abstract void goOnline(RiderStateContext context);
 
-    void goOffline(RiderStateContext context);
+    abstract void goOffline(RiderStateContext context);
 }
 

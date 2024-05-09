@@ -1,15 +1,15 @@
 package com.example.fromfridgetoplate.patterns.state;
 
-public class OnlineState implements RiderState {
+public class OnlineState extends RiderState {
     @Override
     public void goOnline(RiderStateContext context) {
-        context.getController().showAlreadyOnlineAlert();
+        context.showAlreadyOnlAlert();
     }
 
     @Override
     public void goOffline(RiderStateContext context) {
         context.setState(new OfflineState());
-        // disattivare la disponibilità del rider, stoppare polling delle notifiche, ecc.
+
         context.getController().updateUIForOfflineState();
     }
 
